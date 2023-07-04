@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        <?php echo $web['title']; ?>
+    </title>
+    <meta name="keywords" content="<?php echo $web['keywords']; ?>">
+    <meta name="description" content="<?php echo $web['description']; ?>">
+    <link rel="stylesheet" type="text/css" href="/Public/Statics/app/index/main.css">
+</head>
+
+<body>
+    <div class="hero">
+        <div class="front-content">
+            <div class="container-mid">
+                <div class="animation-container animation-fade-down" data-animation-delay="0">
+                    <img class="img-responsive logo" src="/Public/Statics/app/index/logo.png" alt="image">
+                </div>
+                <div class="animation-container animation-fade-right" data-animation-delay="300">
+                    <h1>
+                        <?php echo $web['name']; ?>
+                    </h1>
+                </div>
+                <div class="animation-container animation-fade-left" data-animation-delay="600">
+                    <p class="subline">致力于提供稳定快捷的云端一站式服务</p>
+                </div>
+                <div class="animation-container animation-fade-up" data-animation-delay="900">
+                    <div class="open-popup">Let's Go ！</div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="animation-container animation-fade-up" data-animation-delay="1200">
+                    <p>
+                        ©
+                        <?php echo date("Y"); ?> All Right Reserved
+                        <?php if($domain['status']){
+                            echo  ' | <a href="http://www.beian.miit.gov.cn/" title="备案查询" target="_blank">'.$domain['service_licence'].'</a>';
+                        } ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="background-content parallax-on">
+            <div class="background-overlay" style="background-color:#02002638"></div>
+            <div id="background-img" class="background-img layer" data-depth="0.05"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/Public/Statics/app/index/main.js"></script>
+    <script>
+        let ele = document.getElementById("background-img");
+        ele.style.backgroundImage = "url(/Public/Statics/app/index/background.jpg)";
+    </script>
+</body>
+
+</html>

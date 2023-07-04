@@ -1,0 +1,162 @@
+@import '~antd/es/style/themes/default.less';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background: @layout-body-background;
+}
+
+.content {
+  flex: 1;
+  padding: 32px 0;
+}
+
+@media (min-width: @screen-md-min) {
+  .container {
+    background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
+    background-repeat: no-repeat;
+    background-position: center 110px;
+    background-size: 100%;
+  }
+
+  .content {
+    padding: 50px 0 24px;
+  }
+}
+
+.top {
+  text-align: center;
+}
+
+.header {
+  height: 40px;
+  line-height: 40px;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.logo {
+  height: 40px;
+  margin-right: 16px;
+  vertical-align: top;
+}
+
+.title {
+  position: relative;
+  top: 2px;
+  color: @heading-color;
+  font-weight: 600;
+  font-size: 33px;
+  font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.desc {
+  margin-top: 12px;
+  margin-bottom: 20px;
+  color: @text-color-secondary;
+  font-size: @font-size-base;
+}
+
+.main {
+  width: 328px;
+  margin: 0 auto;
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+    max-width: 300px;
+  }
+
+  :global {
+    .@{ant-prefix}-tabs-nav-list {
+      margin: auto;
+      font-size: 16px;
+    }
+  }
+
+  .icon {
+    margin-left: 16px;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .other {
+    margin-top: 24px;
+    line-height: 22px;
+    text-align: left;
+
+    .register {
+      float: right;
+    }
+  }
+
+  .prefixIcon {
+    color: @primary-color;
+    font-size: @font-size-base;
+  }
+
+  .auth {
+    margin: 40px auto;
+    text-align: center;
+    max-width: 280px;
+
+    .nick {
+      font-weight: bolder;
+      font-size: 15px;
+      margin: 10px auto;
+      width: 120px;
+      height: 30px;
+    }
+  }
+}
+
+/*四个角框*/
+.border_corner {
+  z-index: 2500;
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  background: rgba(0, 0, 0, 0);
+  border: 5px solid #0051eb;
+}
+
+.border_corner_left_top {
+  top: -3px;
+  left: -3px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+}
+
+.border_corner_right_top {
+  top: -3px;
+  right: -3px;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 10px;
+}
+
+.border_corner_left_bottom {
+  bottom: -3px;
+  left: -3px;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 10px;
+}
+
+.border_corner_right_bottom {
+  bottom: -3px;
+  right: -3px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 10px;
+}

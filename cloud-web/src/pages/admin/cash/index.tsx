@@ -254,6 +254,7 @@ export default (): React.ReactNode => {
         headerTitle={'提现列表'}
         actionRef={actionRef}
         formRef={ref}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         options={{
           density: true,

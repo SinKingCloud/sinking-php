@@ -300,6 +300,7 @@ export default (): React.ReactNode => {
             defaultSize={"small"}
             form={{layout: "vertical",autoFocusFirstInput:false}}
             headerTitle={'充值记录'}
+            scroll={{x: "auto"}}
             rowKey={'id'}
             options={{
               density: true,

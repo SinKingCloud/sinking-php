@@ -557,6 +557,7 @@ export default (): React.ReactNode => {
             headerTitle={false}
             actionRef={payActionRef}
             formRef={payRef}
+            scroll={{x: "auto"}}
             rowKey={'id'}
             options={false}
             // @ts-ignore
@@ -593,6 +594,7 @@ export default (): React.ReactNode => {
             headerTitle={false}
             actionRef={logActionRef}
             formRef={logRef}
+            scroll={{x: "auto"}}
             rowKey={'id'}
             options={false}
             // @ts-ignore
@@ -653,6 +655,7 @@ export default (): React.ReactNode => {
         headerTitle={'用户列表'}
         actionRef={actionRef}
         formRef={ref}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         options={{
           density: true,

@@ -156,6 +156,7 @@ export default (): React.ReactNode => {
         headerTitle={'订单记录'}
         actionRef={actionRef}
         formRef={ref}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         options={{
           density: true,

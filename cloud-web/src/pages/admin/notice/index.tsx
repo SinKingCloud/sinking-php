@@ -373,6 +373,7 @@ export default (): React.ReactNode => {
         headerTitle={'通知列表'}
         actionRef={actionRef}
         formRef={ref}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         options={{
           density: true,

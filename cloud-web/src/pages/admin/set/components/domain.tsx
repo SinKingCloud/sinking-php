@@ -171,6 +171,7 @@ const DomainView: React.FC = () => {
         headerTitle={'额度:' + domainConfig['master.domain.num']+'个'}
         actionRef={domainActionRef}
         formRef={domainRef}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         // @ts-ignore
         columns={domainColumns}

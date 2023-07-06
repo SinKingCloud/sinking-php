@@ -110,6 +110,7 @@ export default (): React.ReactNode => {
         headerTitle={'操作日志'}
         actionRef={actionRef}
         formRef={ref}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         options={{
           density: true,

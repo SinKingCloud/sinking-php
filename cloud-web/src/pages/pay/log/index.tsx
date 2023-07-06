@@ -95,6 +95,7 @@ export default (): React.ReactNode => {
         headerTitle={'消费明细'}
         actionRef={actionRef}
         formRef={ref}
+        scroll={{x: "auto"}}
         rowKey={'id'}
         options={{
           density: true,

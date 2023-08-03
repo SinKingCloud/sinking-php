@@ -25,5 +25,6 @@ class Common extends BaseController
         parent::beforeAction($action, $value);
         AuthService::getInstance()->checkUserInWeb();
         AuthService::getInstance()->checkIsMasterWeb();
+        AuthService::getInstance()->checkIsMasterUser();
     }
 }

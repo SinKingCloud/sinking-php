@@ -10,12 +10,9 @@ namespace app\Http\Master\Controller;
 
 use app\Constant\Input;
 use app\Model\Log;
-use app\Service\AuthService;
 use app\Service\LogService;
 use app\Service\CashService;
-use app\Service\DomainService;
 use app\Service\UserService;
-use app\Service\WebService;
 use Systems\Request;
 
 class Cash extends Common
@@ -77,7 +74,6 @@ class Cash extends Common
             array('status|状态', 'omitempty|number|in:0,1'),
             array('remark|备注', 'omitempty'),
         ), Request::param());
-        $user = AuthService::getInstance()->getCurrentUser();
         $where = array(
             array('id', $data['ids'], 'in'),
         );

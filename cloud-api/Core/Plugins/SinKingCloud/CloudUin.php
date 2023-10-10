@@ -1,118 +1,114 @@
 <?php
 
-namespace SinKingCloud;
+namespace Plugins\SinKingCloud;
 
-class CloudUin extends Client
+class Client
 {
+    public static $instance = array(); //单例
 
-    public function getServers()
+    public static function getInstance()
     {
-        $data = $this->request("/open/api/uin/servers")->getResponseData();
-        return $data;
-    }
-
-    public function buy($uin, $type, $month, $pwd = "", $server_key = "")
-    {
-        $param = array(
-            'uin' => (string)$uin,
-            "type" => (int)$type,
-            "month" => (int)$month,
-            "pwd" => (string)$pwd,
-            'server_key' => (string)$server_key,
-        );
-        $data = $this->request("/open/api/uin/buy", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        $name =  get_called_class();
+        if (!isset(self::$instance[$name])) {
+            self::$instance[$name] = new $name();
         }
-        return false;
+        return self::$instance[$name];
     }
 
-    public function changeSetting($uin, $type, $status)
+    protected $gateway = "http://gateway.clwl.online"; //网关地址2
+
+    protected $app_id = 1; //应用ID
+
+    protected $app_key = ''; //应用密匙
+
+    private $response = array(); //响应信息
+
+    public function setGateway($gateway)
     {
-        $param = array(
-            'uin' => (string)$uin,
-            "setting" => array($type => (string)($status ? "1" : "0")),
-        );
-        $data = $this->request("/open/api/uin/operate/setting", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        $this->gateway = $gateway;
+        return $this;
+    }
+
+    public function setAppId($app_id)
+    {
+        $this->app_id = $app_id;
+        return $this;
+    }
+
+    public function setAppKey($app_key)
+    {
+        $this->app_key = $app_key;
+        return $this;
+    }
+
+    protected function request($url, $data = array())
+    {
+        if (empty($data)) {
+            $post = 0;
+        } else {
+            $post = json_encode($data);
         }
-        return false;
+        $this->response = $this->curl($this->gateway . $url, $post);
+        return $this;
     }
 
-    public function changeServer($uin, $server_key)
+    public function getResponse()
     {
-        $param = array(
-            'uin' => (string)$uin,
-            "server_key" => $server_key,
-        );
-        $data = $this->request("/open/api/uin/operate/server", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        return $this->response;
+    }
+
+    public function getResponseData()
+    {
+        if (isset($this->response['data'])) {
+            return $this->response['data'];
         }
-        return false;
+        return array();
     }
 
-    public function changeTiming($uin, $timing)
+    public function getResponseCode()
     {
-        $param = array(
-            'uin' => (string)$uin,
-            "timing" => (int)$timing,
-        );
-        $data = $this->request("/open/api/uin/operate/timing", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        if (isset($this->response['code'])) {
+            return $this->response['code'];
         }
-        return false;
+        return 500;
     }
 
-    public function changePassword($uin, $pwd)
+    public function getResponseMessage()
     {
-        $param = array(
-            'uin' => (string)$uin,
-            "pwd" => (string)$pwd,
-        );
-        $data = $this->request("/open/api/uin/operate/password", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        if (isset($this->response['message'])) {
+            return $this->response['message'];
         }
-        return false;
+        return "请求失败";
     }
 
-    public function changePhone($uin, $phone)
+    public function getResponseId()
     {
-        $param = array(
-            'uin' => (string)$uin,
-            "phone" => (string)$phone,
-        );
-        $data = $this->request("/open/api/uin/operate/phone", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        if (isset($this->response['request_id'])) {
+            return $this->response['request_id'];
         }
-        return false;
+        return "";
     }
 
-    public function run($uin)
+    protected function curl($url, $post = 0)
     {
-        $param = array(
-            'uin' => (string)$uin,
-        );
-        $data = $this->request("/open/api/uin/operate/run", $param)->getResponse();
-        if ($data['code'] == 200) {
-            return true;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $clwl = array();
+        $clwl[] = "app-id:" . $this->app_id;
+        $clwl[] = "app-key:" . $this->app_key;
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $clwl);
+        if ($post) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         }
-        return false;
-    }
-
-    public function login($uin, $login_type = 'pwd', $step = 'normal', $ticket = '', $rand = '')
-    {
-        $param = array(
-            'uin' => (string)$uin,
-            "login_type" => (string)$login_type,
-            "step" => (string)$step,
-            "ticket" => (string)$ticket,
-            "rand" => (string)$rand,
-        );
-        return $this->request("/open/api/uin/operate/login", $param)->getResponse();
+        curl_setopt($ch, CURLOPT_ENCODING, "gzip");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $ret = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($ret, true);
     }
 }

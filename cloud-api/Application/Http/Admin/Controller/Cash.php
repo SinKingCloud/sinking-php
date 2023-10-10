@@ -103,7 +103,7 @@ class Cash extends Common
                         'type' => Pay::TYPE_COST,
                         'money' => $money,
                         'title' => Pay::TITLE_CASH,
-                        'content' => '给下级用户账号' . $temp_user['account'] . '(' . $temp_user['email'] . ')加款' . $money . '元扣费。' . $remark,
+                        'content' => '申请提现扣除' . $money . '元。',
                     )
                 );
                 //写入操作日志

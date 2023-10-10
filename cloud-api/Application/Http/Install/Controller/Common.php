@@ -9,6 +9,7 @@
 namespace app\Http\Install\Controller;
 
 use app\Exception\InstallException;
+use app\Exception\NoneException;
 use Systems\Controller;
 use Systems\Validate;
 

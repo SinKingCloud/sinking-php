@@ -8,7 +8,6 @@
 
 namespace app\Http\Auth\Controller;
 
-use app\Service\AuthService;
 use Systems\Config;
 use Systems\Upload as SystemsUpload;
 use Systems\Util;

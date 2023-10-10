@@ -16,7 +16,6 @@ use app\Service\PayService;
 use app\Service\UserService;
 use Systems\Request;
 use Systems\Util;
-use app\Model\User as UserModel;
 use app\Service\LogService;
 use app\Service\WebService;
 

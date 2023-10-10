@@ -8,14 +8,10 @@
 
 namespace app\Http\Master\Controller;
 
-use app\Constant\Config as Constant;
 use app\Constant\Input;
 use app\Model\Log;
-use app\Service\AuthService;
-use app\Service\ConfigService;
 use app\Service\LogService;
 use app\Service\PayService;
-use app\Service\UserService;
 use Systems\Request;
 
 class Pay extends Common

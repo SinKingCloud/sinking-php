@@ -86,12 +86,10 @@ if (!function_exists('checkAuth')) {
 		}
 		$auth = Config::get(Constant::AUTH);
 		$r = Cache::remember(md5("auth_" . $auth['code']), function () use ($auth) {
-			$url = urldecode(base64_decode('aHR0cCUzQS8vZ2F0ZXdheS5vcGVuLWFwaS5jbi9vcGVuL2FwaS9hdXRoL2NoZWNr'));
 			$param = array('code' => $auth['code'], 'domain' => $auth['domain']);
 			$config = ConfigService::getInstance();
-			$header = array('app-id:' . $config->get(Constant::SYSTEM_CLOUD_ID), 'app-key:' . $config->get(Constant::SYSTEM_CLOUD_KEY));
-			$res = Curl::get($url, $param, $header);
-			$arr = json_decode($res, true);
+			$ins = \Plugins\SinKingCloud\App::getInstance()->setAppId($config->get(Constant::SYSTEM_CLOUD_ID))->setAppKey($config->get(Constant::SYSTEM_CLOUD_KEY));
+			$arr = $ins->getAuthInfo($param);
 			if ($arr && isset($arr['code']) && $arr['code'] == 200) {
 				return true;
 			}

@@ -3,14 +3,18 @@
 namespace app\Exception;
 
 use app\Base\BaseException;
-use app\Constant\Config as Constant;
-use Systems\Config;
 
 /**
  * 异常截断空返回
  */
 class NoneException extends BaseException
 {
+    /**
+     * 构造参数
+     */
+    public function __construct()
+    {
+    }
     /**
      * 错误回调
      *

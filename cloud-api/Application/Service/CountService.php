@@ -3,7 +3,6 @@
 namespace app\Service;
 
 use app\Base\BaseService;
-use app\Constant\Lock;
 use app\Model\Count;
 use Systems\Cache;
 

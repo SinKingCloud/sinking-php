@@ -15,7 +15,7 @@ class Client
         return self::$instance[$name];
     }
 
-    protected $gateway = "http://gateway.clwl.online"; //网关地址
+    protected $gateway = "http://gateway.clwl.online"; //网关地址2
 
     protected $app_id = 1; //应用ID
 
@@ -93,10 +93,11 @@ class Client
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 600);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $clwl = array();
         $clwl[] = "app-id:" . $this->app_id;
         $clwl[] = "app-key:" . $this->app_key;
         curl_setopt($ch, CURLOPT_HTTPHEADER, $clwl);

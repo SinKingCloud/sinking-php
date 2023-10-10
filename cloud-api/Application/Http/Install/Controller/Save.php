@@ -8,13 +8,9 @@
 
 namespace app\Http\Install\Controller;
 
-use app\Service\ConfigService;
-use Systems\File;
 use Systems\Request;
 use app\Constant\Config as Constant;
-use app\Service\DomainService;
 use PDO;
-use Systems\Db;
 use Systems\Util;
 
 class Save extends Common

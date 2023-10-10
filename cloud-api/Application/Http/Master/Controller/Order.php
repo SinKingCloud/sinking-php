@@ -10,7 +10,6 @@ namespace app\Http\Master\Controller;
 
 use app\Constant\Input;
 use app\Model\Log;
-use app\Service\AuthService;
 use app\Service\LogService;
 use app\Service\OrderService;
 use app\Service\UserService;

@@ -6,7 +6,6 @@ use app\Base\BaseService;
 use app\Constant\Cache as Constant;
 use app\Constant\Lock;
 use app\Model\User;
-use Plugins\Util\Uin;
 use Systems\Cache;
 use Systems\Util;
 
@@ -17,7 +16,7 @@ class UserService extends BaseService
      */
     public function __construct()
     {
-        $class = User::getClass();//兼容php5.4
+        $class = User::getClass(); //兼容php5.4
         $this->model = new $class();
     }
 
@@ -133,12 +132,6 @@ class UserService extends BaseService
                 'email' => $data['email'],
                 'status' => 0,
             );
-            if (!$data['nick_name'] && $data['email']) {
-                $name = Uin::getNick($email_arr[0]);
-                if ($name) {
-                    $u['nick_name'] = $name;
-                }
-            }
             if ($obj->create($u)) {
                 $user = $obj->find(array('email' => $u['email']));
                 if ($user) {

@@ -529,7 +529,7 @@ class OrderService extends BaseService
                             UserService::getInstance()->clear($user['id']);
                             //更改订单状态
                             $out_trade_no = date("YmdHis") . rand(100000, 999999); //订单号
-                            $res = $this->changeStatusSync($order_info['trade_no'], $out_trade_no);
+                            $res = $obj->changeStatusSync($order_info['trade_no'], $out_trade_no);
                             if ($res) {
                                 User::commit(); //提交事务
                                 $ret = array('code' => 200, 'message' => '购买成功', 'trade_no' => $order_info['trade_no'], 'url' => '');

@@ -7,7 +7,7 @@ import {ExclamationCircleOutlined, WechatOutlined} from "@ant-design/icons";
 import {buySite, getSite} from "@/services/shop/site";
 import {getPayConfig} from "@/services/pay/pay";
 import {useModel} from "@@/plugin-model/useModel";
-import {checkMobile} from "@/util/device";
+import {checkMobile, isAppleDevice} from "@/util/device";
 
 
 export default (): React.ReactNode => {
@@ -46,7 +46,8 @@ export default (): React.ReactNode => {
     Modal.confirm({
       title: '确定要开通主站吗?',
       icon: <ExclamationCircleOutlined/>,
-      content: (<>请牢记您的域名：<Typography.Text copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
+      content: (<>请牢记您的域名：<Typography.Text
+        copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
       okType: 'primary',
       onOk() {
         setIsModalAddWebBtnLoading(true);
@@ -63,13 +64,14 @@ export default (): React.ReactNode => {
               Modal.confirm({
                 title: '开通成功,请点击确认访问您的网站',
                 icon: <ExclamationCircleOutlined/>,
-                content: (<>您的网站域名：<Typography.Text copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
+                content: (<>您的网站域名：<Typography.Text
+                  copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
                 async onOk() {
                   window.location.href = location.protocol + '//' + url
                 },
               });
             } else {
-              if (checkMobile()) {
+              if (checkMobile() || isAppleDevice()) {
                 window.location.href = r.data;
               } else {
                 window.open(r.data);

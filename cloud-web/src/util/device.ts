@@ -24,3 +24,12 @@ export function checkMobile(): boolean {
   }
   return false;
 }
+
+/**
+ * 判断是否苹果设备
+ */
+export function isAppleDevice() {
+  const userAgent = navigator.userAgent;
+  return /iPad|iPhone|Mac|iPod/.test(userAgent);
+}
+

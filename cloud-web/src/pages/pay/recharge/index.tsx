@@ -14,7 +14,7 @@ import {
   WechatOutlined
 } from "@ant-design/icons";
 import {getPayConfig, recharge} from "@/services/pay/pay";
-import {checkMobile} from "@/util/device";
+import {checkMobile, isAppleDevice} from "@/util/device";
 
 export default (): React.ReactNode => {
   const {initialState, setInitialState} = useModel('@@initialState');
@@ -161,7 +161,7 @@ export default (): React.ReactNode => {
                       } else {
                         // @ts-ignore
                         ref.current?.reload();
-                        if (checkMobile()) {
+                        if (checkMobile() || isAppleDevice()) {
                           window.location.href = r.data;
                         } else {
                           window.open(r.data);
@@ -298,7 +298,7 @@ export default (): React.ReactNode => {
           <ProTable
             actionRef={ref}
             defaultSize={"small"}
-            form={{layout: "vertical",autoFocusFirstInput:false}}
+            form={{layout: "vertical", autoFocusFirstInput: false}}
             headerTitle={'充值记录'}
             scroll={{x: "auto"}}
             rowKey={'id'}

@@ -45,7 +45,7 @@ class Pay extends Common
             $trade_no = $param['out_trade_no'];
             $out_trade_no = $param['trade_no'];
             $trade_status = $param['trade_status'];
-            if ($param['trade_status'] == 'TRADE_SUCCESS') {
+            if ($trade_status == 'TRADE_SUCCESS') {
                 OrderService::getInstance()->changeStatusSync($trade_no, $out_trade_no);
             }
             return "success";
@@ -67,7 +67,7 @@ class Pay extends Common
             $trade_no = $param['out_trade_no'];
             $out_trade_no = $param['trade_no'];
             $trade_status = $param['trade_status'];
-            if ($param['trade_status'] == 'TRADE_SUCCESS') {
+            if ($trade_status == 'TRADE_SUCCESS') {
                 OrderService::getInstance()->changeStatusSync($trade_no, $out_trade_no);
             }
             return "success";

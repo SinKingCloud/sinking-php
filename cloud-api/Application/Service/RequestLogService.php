@@ -16,7 +16,7 @@ class RequestLogService extends BaseService
      */
     public function __construct()
     {
-        $class = RequestLog::getClass();//兼容php5.4
+        $class = RequestLog::getClass(); //兼容php5.4
         $this->model = new $class();
     }
 
@@ -30,6 +30,12 @@ class RequestLogService extends BaseService
      */
     public function log($request_time = 0, $response_time = 0)
     {
+        if ($request_time == 0) {
+            $request_time = Config::get('request_time');
+        }
+        if ($response_time == 0) {
+            $response_time = Config::get('response_time');
+        }
         $request_id = Config::get(ConstantConfig::REQUEST_ID);
         $request_ip = Util::getIP();
         $data = array(
@@ -39,9 +45,9 @@ class RequestLogService extends BaseService
             'request_method' => Request::method(),
             'request_header' => json_encode(Request::headers()),
             'request_body' => file_get_contents("php://input"),
-            'request_time' => date("Y-m-d H:i:s", Config::get('request_time')),
+            'request_time' => date("Y-m-d H:i:s", $request_time),
             'response_body' => ob_get_contents(),
-            'response_time' => date("Y-m-d H:i:s", Config::get('response_time')),
+            'response_time' => date("Y-m-d H:i:s", $response_time),
         );
         return $this->create($data);
     }

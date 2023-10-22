@@ -7,6 +7,7 @@ import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} from "@/services/admin/notice";
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
+import {uploadFile} from "@/services/common/upload";
 
 export default (): React.ReactNode => {
   /**
@@ -327,6 +328,28 @@ export default (): React.ReactNode => {
                   onChange={(editorState: any) => {
                     setEditValue(editorState.toHTML());
                   }}
+                  media={{
+                    uploadFn: async (param) => {
+                      const formData = new FormData();
+                      formData.append('file', param.file);
+                      const res = await uploadFile(formData);
+                      if (res?.code == 200) {
+                        param.success({
+                          meta: {
+                            alt: param?.file?.name || "",
+                            autoPlay: false,
+                            controls: false,
+                            id: res?.data || "",
+                            loop: false,
+                            poster: param?.file?.name || "",
+                            title: param?.file?.name || ""
+                          }, url: res?.data || ""
+                        });
+                      } else {
+                        param.error({msg: "上传文件失败"});
+                      }
+                    }
+                  }}
                   className="my-editor"
                   style={{border: "1px solid #d1d1d1", borderRadius: "5px"}}
                   // @ts-ignore
@@ -349,7 +372,8 @@ export default (): React.ReactNode => {
 
       </Drawer>
 
-      <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑" visible={isModalEditVisible}
+      <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑"
+             visible={isModalEditVisible}
              onOk={edit.submit} okText={"确 认"} onCancel={() => {
         setIsModalEditVisible(false);
         edit.resetFields();
@@ -369,7 +393,7 @@ export default (): React.ReactNode => {
         // @ts-ignore
         columns={columns}
         defaultSize={"small"}
-        form={{layout: "vertical",autoFocusFirstInput:false}}
+        form={{layout: "vertical", autoFocusFirstInput: false}}
         headerTitle={'通知列表'}
         actionRef={actionRef}
         formRef={ref}

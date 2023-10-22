@@ -30,7 +30,7 @@ class Message extends Common
             array('create_time_end|创建结束时间', 'omitempty|date'),
             array('update_time_start|更新开始时间', 'omitempty|date'),
             array('update_time_end|更新结束时间', 'omitempty|date'),
-            array('order_by_field|排序字段', 'omitempty|default:sort|in:id'),
+            array('order_by_field|排序字段', 'omitempty|default:id|in:id'),
             array('order_by_type|排序类型', 'omitempty|default:desc|in:desc,asc'),
         ), Request::param());
         $user = AuthService::getInstance()->getCurrentUser();

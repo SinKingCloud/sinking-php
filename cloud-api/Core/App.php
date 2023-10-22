@@ -76,7 +76,7 @@ class App
             $this->value = Route::GetValue();
             $this->loadFile();
             return $this;
-        } catch (\Throwable $th) {
+        } catch (\Exception $th) {
             Errors::show($th);
         }
     }
@@ -150,7 +150,7 @@ class App
             } else {
                 Errors::show("方法不存在</br>" . $this->action);
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $th) {
             self::errorHandle($th, $this->value);
         }
     }

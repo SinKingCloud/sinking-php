@@ -34,12 +34,11 @@ const SiteView: React.FC = () => {
       } else {
         message.success(r.message || "修改成功").then();
       }
-    })
+    });
   }
   /**
    * 初始化数据
    */
-  // @ts-ignore
   useEffect( () => {
     setIsLoading(true)
     getConfigs().then(data => {

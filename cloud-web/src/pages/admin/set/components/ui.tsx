@@ -100,15 +100,16 @@ const UiView: React.FC = () => {
    * 初始化数据
    */
   // @ts-ignore
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true)
-    const data = await getConfigs();
-    setIndex(data?.["index.templates"]);
-    form?.setFieldsValue(data);
-    if (data?.["ui.logo"] != undefined && data?.["ui.logo"] != "") {
-      setUploadFileList([{uid: '-1', name: 'image.png', status: 'done', url: data?.["ui.logo"]}]);
-    }
-    setIsLoading(false);
+    getConfigs().then(data => {
+      setIndex(data?.["index.templates"]);
+      form?.setFieldsValue(data);
+      if (data?.["ui.logo"] != undefined && data?.["ui.logo"] != "") {
+        setUploadFileList([{uid: '-1', name: 'image.png', status: 'done', url: data?.["ui.logo"]}]);
+      }
+      setIsLoading(false);
+    });
   }, []);
 
   return (
@@ -174,7 +175,7 @@ const UiView: React.FC = () => {
               onPreview={(file) => {
                 // @ts-ignore
                 if (file?.url) {
-                  window.open(file?.url);
+                  window.open(file?.url || "");
                   return;
                 }
                 // @ts-ignore

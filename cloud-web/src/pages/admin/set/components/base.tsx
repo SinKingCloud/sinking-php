@@ -52,11 +52,12 @@ const BaseView: React.FC = () => {
    * 初始化数据
    */
   // @ts-ignore
-  useEffect(async () => {
-    setIsLoading(true)
-    const data = await getConfigs();
-    form?.setFieldsValue(data);
-    setIsLoading(false);
+  useEffect(() => {
+    setIsLoading(true);
+    getConfigs().then(data => {
+      form?.setFieldsValue(data);
+      setIsLoading(false);
+    });
   }, []);
 
   return (

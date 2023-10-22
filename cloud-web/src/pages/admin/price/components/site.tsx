@@ -51,12 +51,15 @@ const SiteView: React.FC = () => {
    * 初始化数据
    */
   // @ts-ignore
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true)
-    const data = await getConfigs();
-    form?.setFieldsValue(data);
-    setMyPrice(await getMyPrice());
-    setIsLoading(false);
+    getConfigs().then(data => {
+      form?.setFieldsValue(data);
+      getMyPrice().then(data => {
+        setMyPrice(data);
+        setIsLoading(false);
+      })
+    });
   }, []);
 
   return (
@@ -66,7 +69,7 @@ const SiteView: React.FC = () => {
           <ProFormText
             width="md"
             name="site.price"
-            label={"开通价格,成本:" + (myPrice['site.cost.price'] || 0) + "元/个,最低售价:" + (myPrice['site.min.price'] || 0)+"元/个"}
+            label={"开通价格,成本:" + (myPrice['site.cost.price'] || 0) + "元/个,最低售价:" + (myPrice['site.min.price'] || 0) + "元/个"}
             tooltip="用户开通分站价格"
             placeholder={"请输入用户开通分站价格"}
             rules={[{required: true, message: "请输入用户开通分站价格"}, {

@@ -42,15 +42,15 @@ const PayView: React.FC = () => {
   /**
    * 初始化数据
    */
-  // @ts-ignore
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true)
-    const data = await getConfigs();
-    form?.setFieldsValue(data);
-    epay1?.setFieldsValue(data);
-    epay2?.setFieldsValue(data);
-    epay3?.setFieldsValue(data);
-    setIsLoading(false);
+    getConfigs().then(data => {
+      form?.setFieldsValue(data);
+      epay1?.setFieldsValue(data);
+      epay2?.setFieldsValue(data);
+      epay3?.setFieldsValue(data);
+      setIsLoading(false);
+    });
   }, []);
 
   return (

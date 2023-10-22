@@ -22,12 +22,12 @@ const UpgradeView: React.FC = () => {
   /**
    * 初始化数据
    */
-  // @ts-ignore
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true)
-    const data = await getConfigs()
-    setVersionInfo(data);
-    setIsLoading(false);
+    getConfigs().then(data => {
+      setVersionInfo(data);
+      setIsLoading(false);
+    });
   }, []);
 
   const [updateBtnLoading, setUpdateBtnLoading] = useState(false);

@@ -123,7 +123,7 @@ const BaseView: React.FC = () => {
               Modal.confirm({
                 title: '确定要续费站点到期时间吗?',
                 icon: <ExclamationCircleOutlined/>,
-                content: '将会花费100元续期12个月网站时长',
+                content: '将会花费' + (myPrice?.['site.cost.price'] || 0) + '元续期' + (myPrice?.['site.month'] || 0) + '个月网站时长',
                 okType: 'primary',
                 onOk() {
                   message.loading({content: '正在进行续期操作', key, duration: 60}).then();

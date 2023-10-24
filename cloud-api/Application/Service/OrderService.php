@@ -371,6 +371,10 @@ class OrderService extends BaseService
                 }
                 //写入成功订单统计
                 $inc_data = array('order_succ_num' => '+1');
+                //写入消费统计
+                if ($order_info['order_type'] != Order::ORDER_TYPE_RECHARGE) {
+                    $inc_data['consume_money'] = '+' . $order_info['money'];
+                }
                 CountService::getInstance()->set(0, 0, $inc_data); //系统统计
                 CountService::getInstance()->set($order_info['web_id'], 0, $inc_data); //站点统计
                 CountService::getInstance()->set($order_info['web_id'], $order_info['user_id'], $inc_data); //用户统计

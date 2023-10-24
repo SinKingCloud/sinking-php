@@ -110,30 +110,46 @@ class UserService extends BaseService
         //并发锁
         Cache::lock(Lock::ADD_USER, function () use (&$obj, $data) {
             $obj->error();
+            //邮箱 手机号 账号必填一个
+            if ((!isset($data['email']) || empty($data['email'])) &&  (!isset($data['phone']) || empty($data['phone'])) && (!isset($data['account']) || empty($data['account']))) {
+                return $obj->error("登录{账号,邮箱,手机号}不能同时为空");
+            }
             //账号可自主设置
             if (isset($data['account']) && $obj->count(array('account' => $data['account']))) {
                 return $obj->error("该用户名已被占用");
             }
-            //邮箱必填
-            if (!isset($data['email']) || empty($data['email']) || $obj->count(array('email' => $data['email']))) {
+            if (isset($data['phone']) && $obj->count(array('phone' => $data['phone']))) {
+                return $obj->error("该手机号已被占用");
+            }
+            if (isset($data['email']) && $obj->count(array('email' => $data['email']))) {
                 return $obj->error("该邮箱已被占用");
             }
             //未设置密码则随机生成一个密码
             if (!isset($data['password']) || empty($data['password'])) {
-                $data['password'] = time() . rand(100000, 999999);
+                $data['password'] = time() . rand(100000, 999999) . rand(100000, 999999) . rand(100000, 999999);
             }
-            $email_arr = explode('@', $data['email']);
             $u = array(
                 'web_id' => isset($data['web_id']) && intval($data['web_id']) > 0 ? intval($data['web_id']) : 1,
-                'account' => isset($data['account']) && $data['account'] ? $data['account'] : '',
                 'password' => Util::getPassword($data['password']),
-                'nick_name' => isset($data['nick_name']) && !empty($data['nick_name']) ? $data['nick_name'] : $data['email'],
-                'avatar' => 'https://q1.qlogo.cn/g?b=qq&nk=' . (isset($email_arr[0]) && $email_arr[0] ? $email_arr[0] : '10000') . '&s=100&t=20190225',
-                'email' => $data['email'],
+                'nick_name' => isset($data['nick_name']) && !empty($data['nick_name']) ? $data['nick_name'] : '默认昵称',
+                'avatar' => 'https://q1.qlogo.cn/g?b=qq&nk=10000&s=100&t=20190225',
                 'status' => 0,
             );
+            if(isset($data['email']) && $data['email']){
+                $u['email'] = $data['email'];
+            }
+            if(isset($data['account']) && $data['account']){
+                $u['account'] = $data['account'];
+            }
+            if(isset($data['phone']) && $data['phone']){
+                $u['phone'] = $data['phone'];
+            }
             if ($obj->create($u)) {
-                $user = $obj->find(array('email' => $u['email']));
+                $user = $obj->find(array(
+                    'account' => $u['account'],
+                    'phone' => $u['phone'],
+                    'email' => $u['email']
+                ));
                 if ($user) {
                     //写入用户统计
                     $inc_data = array('user_num' => '+1');
@@ -209,6 +225,9 @@ class UserService extends BaseService
         if (isset($where['email']) && $where['email']) {
             $where_map['email'] = $where['email'];
         }
+        if (isset($where['phone']) && $where['phone']) {
+            $where_map['phone'] = $where['phone'];
+        }
         if (isset($where['status']) && $where['status'] >= 0) {
             $where_map['status'] = $where['status'];
         }
@@ -233,7 +252,7 @@ class UserService extends BaseService
         if (isset($where['update_time_end']) && $where['update_time_end']) {
             $where_map[] = array('update_time', $where['update_time_end'], '<=', 'and');
         }
-        $field = 'id,web_id,account,nick_name,avatar,email,money,status,login_ip,login_time,create_time,update_time';
+        $field = 'id,web_id,account,nick_name,avatar,phone,email,money,status,login_ip,login_time,create_time,update_time';
         return parent::page($where_map, $order_field, $order_type, $page, $page_size, $field);
     }
 }

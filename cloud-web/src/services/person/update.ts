@@ -24,9 +24,21 @@ export async function updatePassword(body: any, options?: { [key: string]: any }
   });
 }
 
-/** 修改手机 POST /admin/person/change_email */
+/** 修改邮箱 POST /admin/person/change_email */
 export async function updateEmail(body: any, options?: { [key: string]: any }) {
   return request<API.Response>('/user/person/change_email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 修改手机 POST /admin/person/change_phone */
+export async function updatePhone(body: any, options?: { [key: string]: any }) {
+  return request<API.Response>('/user/person/change_phone', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

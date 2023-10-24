@@ -6,7 +6,6 @@ use Systems\Config;
 use app\Constant\Config as Constant;
 use app\Service\ConfigService;
 use Systems\Cache;
-use Systems\Curl;
 use Systems\File;
 
 if (!function_exists('url')) {

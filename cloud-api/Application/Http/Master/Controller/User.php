@@ -34,6 +34,7 @@ class User extends Common
         $data = $this->validate(array(
             array('account|账号', 'omitempty'),
             array('email|邮箱', 'omitempty|email'),
+            array('phone|手机号', 'omitempty|number'),
             array('web_id|站点ID', 'omitempty|number'),
             array('login_ip|登陆ip', 'omitempty|ip'),
             array('status|状态', 'omitempty|number|in:0,1'),
@@ -68,6 +69,7 @@ class User extends Common
         $data = $this->validate(array(
             array('ids|用户ID列表', 'require|array|number|length_between:1,1000'),
             array('account|账号', 'omitempty|account'),
+            array('phone|手机号', 'omitempty|number|length:11'),
             array('email|账号', 'omitempty|email'),
             array('nick_name|昵称', 'omitempty'),
             array('password|密码', 'omitempty|length_between:5,20'),
@@ -78,7 +80,7 @@ class User extends Common
         if (in_array($user['id'], $data['ids'])) {
             unset($data['status']);
         }
-        if ((isset($data['account']) || isset($data['email'])) && count($data['ids']) > 1) {
+        if ((isset($data['account']) || isset($data['email']) || isset($data['phone']))  && count($data['ids']) > 1) {
             return $this->error('不支持批量修改账户和邮箱');
         }
         if (isset($data['account']) && $data['account']) {
@@ -90,7 +92,13 @@ class User extends Common
         if (isset($data['email']) && $data['email']) {
             $temp = UserService::getInstance()->find(array('email' => $data['email']));
             if ($temp && $temp['id'] != $data['ids'][0]) {
-                return $this->error('邮箱已被占用', $temp);
+                return $this->error('邮箱已被占用');
+            }
+        }
+        if (isset($data['phone']) && $data['phone']) {
+            $temp = UserService::getInstance()->find(array('phone' => $data['phone']));
+            if ($temp && $temp['id'] != $data['ids'][0]) {
+                return $this->error('手机号已被占用');
             }
         }
         if (isset($data['password']) && $data['password']) {
@@ -136,7 +144,7 @@ class User extends Common
             $remark = '';
         }
         $user_id = intval($data['user_id']);
-        $money = round($data['money'],2);
+        $money = round($data['money'], 2);
         $type = $data['type'] == 0 ? '+' : '-';
         if (UserService::getInstance()->auto($user_id, array('money' => $type . $money))) {
             //写入日志

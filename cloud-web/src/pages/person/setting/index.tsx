@@ -1,14 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import {PageContainer} from "@ant-design/pro-layout";
 import ProCard from "@ant-design/pro-card";
-import {Alert, Avatar, Button, Col, Form, Image, Input, message, Modal, Row, Space, Tag, Upload} from "antd";
+import {
+  Alert,
+  Avatar,
+  Button,
+  Col,
+  Dropdown,
+  Form,
+  Image,
+  Input,
+  Menu,
+  message,
+  Modal,
+  Row,
+  Space,
+  Tag,
+  Upload
+} from "antd";
 import ProForm, {ProFormText} from "@ant-design/pro-form";
-import {LockOutlined, SafetyOutlined, UploadOutlined} from "@ant-design/icons";
+import {DownOutlined, LockOutlined, MailOutlined, SafetyOutlined, UploadOutlined} from "@ant-design/icons";
 // @ts-ignore
 import {useModel} from "@@/plugin-model/useModel";
-import {updateInfo, updatePassword, updateEmail} from "@/services/person/update";
+import {updateInfo, updatePassword, updateEmail, updatePhone} from "@/services/person/update";
 import {getUploadUrl} from "@/services/common/upload";
 import EmailVerify from "@/components/Other/EmailVerify";
+import SmsVerify from "@/components/Other/SmsVerify";
 
 export default (): React.ReactNode => {
   const {initialState, setInitialState} = useModel('@@initialState');
@@ -39,7 +56,9 @@ export default (): React.ReactNode => {
    */
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false);
   const [isPasswordModalLoading, setIsPasswordModalLoading] = useState(false);
+  const [changePwdType, setChangePwdType] = useState('phone');
   const [passwordForm] = Form.useForm();
+
   /**
    * 修改邮箱modal
    */
@@ -47,6 +66,13 @@ export default (): React.ReactNode => {
   const [isEmailModalLoading, setIsEmailModalLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [emailForm] = Form.useForm();
+  /**
+   * 修改手机号modal
+   */
+  const [isPhoneModalVisible, setIsPhoneModalVisible] = useState(false);
+  const [isPhoneModalLoading, setIsPhoneModalLoading] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [phoneForm] = Form.useForm();
   return (
     <PageContainer title={false}>
       <Modal key={"editPassword"} width={430} destroyOnClose={true} forceRender={true} title="修改密码"
@@ -55,26 +81,53 @@ export default (): React.ReactNode => {
         setIsPasswordModalVisible(false);
         passwordForm.resetFields();
       }}>
-        <EmailVerify form={passwordForm} email={currentUser?.email} onFinish={async (values) => {
-          if (values.password.length > 20 || values.password.length < 6) {
-            message.error("密码长度必须为6-20位之间");
-            return;
-          }
-          setIsPasswordModalLoading(true);
-          updatePassword(values).then((r) => {
-            setIsPasswordModalLoading(false);
-            if (r.code != 200) {
-              message.error(r.message || "请求失败").then()
-            } else {
-              setIsPasswordModalVisible(false);
-              message.success(r.message).then();
+        {
+          changePwdType == 'email' &&
+          <EmailVerify form={passwordForm} email={currentUser?.email} onFinish={async (values) => {
+            if (values.password.length > 20 || values.password.length < 6) {
+              message.error("密码长度必须为6-20位之间");
+              return;
             }
-          })
-        }} bottomNodes={
-          <Form.Item name={"password"} label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
-            <Input placeholder="请输入新密码"/>
-          </Form.Item>
-        }/>
+            setIsPasswordModalLoading(true);
+            updatePassword({type: "email", code: values?.email_code, password: values?.password}).then((r) => {
+              setIsPasswordModalLoading(false);
+              if (r.code != 200) {
+                message.error(r.message || "请求失败").then()
+              } else {
+                setIsPasswordModalVisible(false);
+                message.success(r.message).then();
+              }
+            });
+          }} bottomNodes={
+            <Form.Item name={"password"} label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
+              <Input placeholder="请输入新密码"/>
+            </Form.Item>
+          }/>
+        }
+        {
+          changePwdType == 'phone' &&
+          <SmsVerify form={passwordForm} phone={currentUser?.phone} onFinish={async (values) => {
+            if (values.password.length > 20 || values.password.length < 6) {
+              message.error("密码长度必须为6-20位之间");
+              return;
+            }
+            setIsPasswordModalLoading(true);
+            updatePassword({type: "phone", code: values?.sms_code, password: values?.password}).then((r) => {
+              setIsPasswordModalLoading(false);
+              if (r.code != 200) {
+                message.error(r.message || "请求失败").then()
+              } else {
+                setIsPasswordModalVisible(false);
+                message.success(r.message).then();
+              }
+            });
+          }} bottomNodes={
+            <Form.Item name={"password"} label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
+              <Input placeholder="请输入新密码"/>
+            </Form.Item>
+          }/>
+        }
+
       </Modal>
       <Modal key={"editEmail"} width={430} destroyOnClose={true} forceRender={true} title="修改邮箱"
              visible={isEmailModalVisible} confirmLoading={isEmailModalLoading}
@@ -95,14 +148,38 @@ export default (): React.ReactNode => {
             }
           })
         }} topNodes={
-          <Form.Item name={"email"} label="安全邮箱" rules={[{required: true, message: '请输入需要绑定的安全邮箱',}]}>
+          <Form.Item name={"email"} label="新安全邮箱"
+                     rules={[{required: true, message: '请输入需要新绑定的安全邮箱',}]}>
             <Input placeholder="请输入需要绑定的邮箱" onChange={(e) => {
               setEmail(e.target.value);
             }}/>
           </Form.Item>
-        } bottomNodes={
-          <Form.Item name={"password"} label="账户密码" rules={[{required: true, message: '请输入新手机号',}]}>
-            <Input placeholder="请输入密码验证身份"/>
+        }/>
+      </Modal>
+      <Modal key={"editPhone"} width={430} destroyOnClose={true} forceRender={true} title="修改手机"
+             visible={isPhoneModalVisible} confirmLoading={isPhoneModalLoading}
+             onOk={phoneForm.submit} okText={"确 认"} onCancel={() => {
+        setIsPhoneModalVisible(false);
+        phoneForm.resetFields();
+      }}>
+        <SmsVerify form={phoneForm} phone={phone} onFinish={async (values) => {
+          setIsPhoneModalLoading(true);
+          updatePhone(values).then(async (r) => {
+            setIsPhoneModalLoading(false);
+            if (r.code != 200) {
+              message.error(r.message || "请求失败").then()
+            } else {
+              await fetchUserInfo();
+              setIsPhoneModalVisible(false);
+              message.success(r.message).then();
+            }
+          })
+        }} topNodes={
+          <Form.Item name={"phone"} label="新安全手机"
+                     rules={[{required: true, message: '请输入需要新绑定的安全手机',}]}>
+            <Input placeholder="请输入需要绑定的手机号" onChange={(e) => {
+              setPhone(e.target.value);
+            }}/>
           </Form.Item>
         }/>
       </Modal>
@@ -178,18 +255,47 @@ export default (): React.ReactNode => {
                   })
                 }}>
                   <ProFormText width="md" label="账号" name="account" tooltip="未设置用户可修改一次"
-                               rules={[{required: true, message: '请输入登陆账号',}]} initialValue={currentUser?.account}>
+                               rules={[{required: true, message: '请输入登陆账号',}]}
+                               initialValue={currentUser?.account}>
                     <Row gutter={6} wrap={false}>
                       <Col flex={5}>
                         <Input type="text" placeholder="请输入您的登陆账号" defaultValue={currentUser?.account}
-                               disabled={currentUser?.account != ""}/>
+                               disabled={currentUser?.account != undefined && currentUser?.account != ""}/>
+                      </Col>
+                      <Col flex={7}>
+                        <Dropdown placement="bottomCenter" arrow={true} trigger="click" overlay={<Menu>
+                          <Menu.Item key={"editByEmail"}>
+                            <a style={{fontSize: "small"}} onClick={() => {
+                              setChangePwdType('email');
+                              setIsPasswordModalVisible(true);
+                            }}>
+                              通过邮箱验证
+                            </a>
+                          </Menu.Item>
+                          <Menu.Item key={"editByPhone"}>
+                            <a style={{fontSize: "small"}} onClick={() => {
+                              setChangePwdType('phone');
+                              setIsPasswordModalVisible(true);
+                            }}>
+                              通过手机验证
+                            </a>
+                          </Menu.Item>
+                        </Menu>}>
+                          <Button><LockOutlined/>修改密码</Button>
+                        </Dropdown>
+                      </Col>
+                    </Row>
+                  </ProFormText>
+                  <ProFormText width="md" label="绑定手机" tooltip="账户绑定的安全手机">
+                    <Row gutter={6} wrap={false}>
+                      <Col flex={5}>
+                        <Input type="text" value={currentUser?.phone || "未绑定"} disabled={true}/>
                       </Col>
                       <Col flex={7}>
                         <Button onClick={() => {
-                          passwordForm.resetFields();
-                          setIsPasswordModalVisible(true);
+                          setIsPhoneModalVisible(true);
                         }}>
-                          <LockOutlined/>修改密码
+                          <SafetyOutlined/>修改手机
                         </Button>
                       </Col>
                     </Row>
@@ -197,13 +303,13 @@ export default (): React.ReactNode => {
                   <ProFormText width="md" label="绑定邮箱" tooltip="账户绑定的安全邮箱">
                     <Row gutter={6} wrap={false}>
                       <Col flex={5}>
-                        <Input type="text" value={currentUser?.email} disabled={true}/>
+                        <Input type="text" value={currentUser?.email || "未绑定"} disabled={true}/>
                       </Col>
                       <Col flex={7}>
                         <Button onClick={() => {
                           setIsEmailModalVisible(true);
                         }}>
-                          <SafetyOutlined/>修改邮箱
+                          <MailOutlined/>修改邮箱
                         </Button>
                       </Col>
                     </Row>

@@ -55,6 +55,7 @@ class Web extends Common
                 'money' => $user['money'],
                 'avatar' => $user['avatar'],
                 'nick_name' => $user['nick_name'],
+                'phone' => $user['phone'],
                 'email' => $user['email'],
                 'status' => $user['status'],
                 'login_ip' => $user['login_ip'],

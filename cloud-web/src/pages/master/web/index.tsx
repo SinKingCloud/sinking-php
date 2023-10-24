@@ -612,6 +612,15 @@ export default (): React.ReactNode => {
               </div>
             </Upload>
           </Form.Item>
+          <Form.Item name={"account"} label="账号">
+            <Input placeholder="请输入用户账号"/>
+          </Form.Item>
+          <Form.Item name={"phone"} label="手机号" >
+            <Input placeholder="请输入用户手机号"/>
+          </Form.Item>
+          <Form.Item name={"email"} label="邮箱">
+            <Input placeholder="请输入用户邮箱"/>
+          </Form.Item>
           <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
             <Select placeholder="请选择用户状态">
               <Select.Option value={0}>正常</Select.Option>

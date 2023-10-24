@@ -35,6 +35,7 @@ class User extends Common
         $data = $this->validate(array(
             array('account|账号', 'omitempty'),
             array('email|邮箱', 'omitempty|email'),
+            array('phone|手机号', 'omitempty|number'),
             array('login_ip|登陆ip', 'omitempty|ip'),
             array('status|状态', 'omitempty|number|in:0,1'),
             array('login_time_start|登陆开始时间', 'omitempty|date'),

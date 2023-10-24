@@ -24,6 +24,7 @@ const BaseView: React.FC = () => {
   }
 
   const [form] = Form.useForm();
+  const [form1] = Form.useForm();
   /**
    * 提交表单
    */
@@ -40,9 +41,10 @@ const BaseView: React.FC = () => {
    * 初始化数据
    */
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     getConfigs().then(data => {
       form?.setFieldsValue(data);
+      form1?.setFieldsValue(data);
       setIsLoading(false);
     });
   }, []);
@@ -95,6 +97,45 @@ const BaseView: React.FC = () => {
             tooltip="开启debug在遇到异常时将会直接抛出,如果是生产环境请关闭此选项"
             placeholder="请选择是否开启debug"
             rules={[{required: true, message: '请选择是否开启debug'}]}
+          />
+        </ProForm>
+        <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>注册设置</h3>
+        <ProForm key={"reg"} form={form1} onFinish={onFinish}>
+          <ProFormSelect
+            name="master.reg.email"
+            label="邮箱注册"
+            valueEnum={{
+              1: '开启',
+              0: '关闭',
+            }}
+            width="md"
+            tooltip="关闭后用户将禁止通过邮箱注册账号,不填则默认开启"
+            placeholder="请选择是否开启邮箱注册"
+            rules={[{required: true, message: '请选择是否开启邮箱注册'}]}
+          />
+          <ProFormSelect
+            name="master.reg.qrlogin"
+            label="QQ扫码注册"
+            valueEnum={{
+              1: '开启',
+              0: '关闭',
+            }}
+            width="md"
+            tooltip="关闭后用户将禁止通过QQ扫码注册注册账号,不填则默认开启"
+            placeholder="请选择是否开启QQ扫码注册注册"
+            rules={[{required: true, message: '请选择是否开启QQ扫码注册注册'}]}
+          />
+          <ProFormSelect
+            name="master.reg.phone"
+            label="手机注册"
+            valueEnum={{
+              1: '开启',
+              0: '关闭',
+            }}
+            width="md"
+            tooltip="关闭后用户将禁止通过手机注册账号,不填则默认开启"
+            placeholder="请选择是否开启手机注册"
+            rules={[{required: true, message: '请选择是否开启手机注册'}]}
           />
         </ProForm>
       </div>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 配置常量
  */
@@ -25,6 +24,16 @@ class Config
     const SYSTEM_IS_PROXY = 'master.is_proxy'; //是否使用代理
     const SYSTEM_REQUEST_LOG = 'master.request.log.open'; //是否开启日志记录
     const SYSTEM_DEBUG = 'master.debug'; //是否开启debug
+    #注册设置
+    const SYSTEM_REG_EMAIL = 'master.reg.email'; //是否开启邮箱注册
+    const SYSTEM_REG_QRLOGIN = 'master.reg.qrlogin'; //是否开启QQ扫码注册
+    const SYSTEM_REG_PHONE = 'master.reg.phone'; //是否开启手机注册
+    #短信设置
+    const SYSTEM_SMS_ALIYUN_KEY = 'sms.aliyun.key'; //阿里云短信key
+    const SYSTEM_SMS_ALIYUN_SECRET = 'sms.aliyun.secret'; //阿里云短信secret
+    const SYSTEM_SMS_CAPTCHA_SIGN = 'sms.captcha.sign'; //验证码发信模板签名
+    const SYSTEM_SMS_CAPTCHA_CODE = 'sms.captcha.code'; //验证码发信模板code
+    const SYSTEM_SMS_CAPTCHA_VAR = 'sms.captcha.var'; //验证码发信模板变量
     #邮件设置
     const SYSTEM_EMAIL_HOST = 'email.host'; //发信邮箱地址
     const SYSTEM_EMAIL_PORT = 'email.port'; //发信邮箱端口

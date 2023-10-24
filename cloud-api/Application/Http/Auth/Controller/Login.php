@@ -8,9 +8,11 @@
 
 namespace app\Http\Auth\Controller;
 
+use app\Constant\Config;
 use app\Constant\Input;
 use app\Model\Log;
 use app\Service\AuthService;
+use app\Service\ConfigService;
 use app\Service\LogService;
 use app\Service\UserService;
 use app\Service\VerifyService;
@@ -35,6 +37,9 @@ class Login extends Common
         if (!$user) {
             $user = UserService::getInstance()->find(array('email' => $data['account']));
         }
+        if (!$user) {
+            $user = UserService::getInstance()->find(array('phone' => $data['account']));
+        }
         if (!$user || !Util::checkPassword($data['password'], $user['password'])) {
             return $this->error('账号或密码错误');
         }
@@ -44,6 +49,55 @@ class Login extends Common
         $token = AuthService::getInstance()->genLoginToken($user['id'], $data['device']);
         if ($token) {
             LogService::getInstance()->add(Log::TYPE_LOGIN, '密码登陆', '密码验证登陆', $user['id']);
+            return $this->success("登陆成功", array('token' => $token));
+        }
+        return $this->error('生成授权票据失败,请联系管理员');
+    }
+
+     /**
+     * 短信登陆
+     *
+     * @return void
+     */
+    public function sms()
+    {
+        $data = $this->validate(array(
+            array('phone|手机号', 'require|number|length:11'),
+            array('sms_code|验证码', 'require|length:6|between:100000,999999'),
+            array('device|登陆设备', 'require|in:mobile,pc|default:mobile'),
+            array('captcha_id|验证码唯一标识', 'require|length:32'),
+            array('captcha_code|验证码', 'require|length:4|between:1000,9999'),
+        ), Request::param());
+        if (ConfigService::getInstance()->get(Config::SYSTEM_REG_PHONE) != 1) {
+            return $this->error("系统已关闭短信注册");
+        }
+        if (!VerifyService::getInstance()->checkCaptcha($data['captcha_id'], $data['captcha_code'])) {
+            return $this->error("图形验证码错误");
+        }
+        if (!VerifyService::getInstance()->checkCaptcha($data['phone'], $data['sms_code'], false)) {
+            return $this->error("短信验证失败");
+        }
+        $web = AuthService::getInstance()->getCurrentWeb();
+        //判断是否含有此号码
+        $user = UserService::getInstance()->find(array('phone' => $data['phone']));
+        //不存在则注册
+        if (!$user) {
+            $data['web_id'] = $web['id'];
+            if (!UserService::getInstance()->addUser($data)) {
+                return $this->error("账号注册失败,请联系管理员");
+            }
+            //清理验证码
+            VerifyService::getInstance()->checkCaptcha($data['phone'], $data['sms_code']);
+            //重新获取用户信息
+            $user = UserService::getInstance()->find(array('phone' => $data['phone']));
+        } else {
+            //判断用户是否属于此站点
+            AuthService::getInstance()->checkUserInWeb($user);
+        }
+        //生成token
+        $token = AuthService::getInstance()->genLoginToken($user['id'], $data['device']);
+        if ($token) {
+            LogService::getInstance()->add(Log::TYPE_LOGIN, '短信登陆', '短信验证登陆', $user['id']);
             return $this->success("登陆成功", array('token' => $token));
         }
         return $this->error('生成授权票据失败,请联系管理员');
@@ -63,6 +117,9 @@ class Login extends Common
             array('captcha_id|验证码唯一标识', 'require|length:32'),
             array('captcha_code|验证码', 'require|length:4|between:1000,9999'),
         ), Request::param());
+        if (ConfigService::getInstance()->get(Config::SYSTEM_REG_EMAIL) != 1) {
+            return $this->error("系统已关闭邮箱注册");
+        }
         if (!VerifyService::getInstance()->checkCaptcha($data['captcha_id'], $data['captcha_code'])) {
             return $this->error("图形验证码错误");
         }
@@ -106,6 +163,9 @@ class Login extends Common
             array('captcha_id|验证码唯一标识', 'require|length:32'),
             array('device|登陆设备', 'require|in:mobile,pc|default:mobile'),
         ), Request::param());
+        if (ConfigService::getInstance()->get(Config::SYSTEM_REG_QRLOGIN) != 1) {
+            return $this->error("系统已关闭邮箱注册");
+        }
         $ret = VerifyService::getInstance()->checkQrCode($data['captcha_id'], false);
         if (!$ret || $ret['code'] != 1) {
             return $this->error("登陆失败", $ret);

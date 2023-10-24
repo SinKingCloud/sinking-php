@@ -13,6 +13,7 @@ use app\Model\Log;
 use app\Service\ConfigService;
 use app\Service\LogService;
 use app\Service\MailService;
+use app\Service\SmsService;
 use Systems\Request;
 
 class Config extends Common
@@ -56,6 +57,25 @@ class Config extends Common
         }
         LogService::getInstance()->add(Log::TYPE_UPDATE, '修改设置', '修改系统设置');
         return $this->success('修改成功');
+    }
+
+    /**
+     * 测试短信
+     *
+     * @return void
+     */
+    public function test_sms()
+    {
+        $data = $this->validate(array(
+            array('phone|收信手机号', 'require|number|length:11'),
+        ), Request::param());
+        LogService::getInstance()->add(Log::TYPE_LOOK, '测试短信', '测试短信设置');
+        $obj = SmsService::getInstance();
+        if ($obj->sendCaptcha($data['phone'], rand(100000, 999999))) {
+            return $this->success('短信发送成功');
+        } else {
+            return $this->error('短信发送失败,原因:' . $obj->getError());
+        }
     }
 
     /**

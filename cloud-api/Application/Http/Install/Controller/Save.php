@@ -97,7 +97,10 @@ class Save extends Common
                 }
             }
             if ($error > 0) {
-                return $this->error("数据表导入失败");
+                return $this->error("数据表导入失败",array(
+                    'error' => $error,
+                    'error_message' => $error_msg,
+                ));
             }
             return $this->success("导入数据表成功", array(
                 'success' => $success,

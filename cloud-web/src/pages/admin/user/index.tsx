@@ -303,6 +303,8 @@ export default (): React.ReactNode => {
           <Tag>邮箱:<Typography.Text copyable>{record?.email || "未设置"}</Typography.Text></Tag>
           <br/>
           <Tag>账号:<Typography.Text copyable>{record?.account || "未设置"}</Typography.Text></Tag>
+          <br/>
+          <Tag>手机:<Typography.Text copyable>{record?.phone || "未设置"}</Typography.Text></Tag>
         </>;
       }
     },
@@ -310,14 +312,18 @@ export default (): React.ReactNode => {
       title: '账号',
       dataIndex: 'account',
       tip: '用户账号',
-      copyable: true,
       hideInTable: true,
     },
     {
       title: '邮箱',
       dataIndex: 'email',
       tip: '绑定邮箱',
-      copyable: true,
+      hideInTable: true,
+    },
+    {
+      title: '手机号',
+      dataIndex: 'phone',
+      tip: '绑定手机',
       hideInTable: true,
     },
     {

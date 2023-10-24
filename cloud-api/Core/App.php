@@ -27,10 +27,11 @@ class App
     public static function start()
     {
         $app = new self();
+        $app->init();
         if (PHP_SAPI == 'cli') {
-            return $app->init()->command();
+            return $app->command();
         }
-        return $app->init()->http();
+        return $app->http();
     }
     /**
      * 异常捕获

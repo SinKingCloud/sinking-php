@@ -8,6 +8,7 @@ import {buySite, getSite} from "@/services/shop/site";
 import {getPayConfig} from "@/services/pay/pay";
 import {useModel} from "@@/plugin-model/useModel";
 import {checkMobile, isAppleDevice} from "@/util/device";
+import {setPayJumpUrl} from "@/util/pay";
 
 
 export default (): React.ReactNode => {
@@ -71,6 +72,7 @@ export default (): React.ReactNode => {
                 },
               });
             } else {
+              setPayJumpUrl();
               if (checkMobile() || isAppleDevice()) {
                 window.location.href = r.data;
               } else {

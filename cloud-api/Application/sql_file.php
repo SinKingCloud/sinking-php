@@ -42,7 +42,7 @@ CREATE TABLE `cloud_configs`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`, `key`) USING BTREE,
   INDEX `idx_key`(`key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cloud_configs
@@ -84,6 +84,14 @@ INSERT INTO `cloud_configs` VALUES (35, 'cash.deduct', '5', '2022-06-14 16:16:06
 INSERT INTO `cloud_configs` VALUES (36, 'cash.min.money', '10', '2022-06-14 16:16:06', '2022-07-02 20:58:09');
 INSERT INTO `cloud_configs` VALUES (37, 'master.domain.num', '100', '2022-06-16 14:12:58', '2022-07-20 20:07:43');
 INSERT INTO `cloud_configs` VALUES (38, 'master.web.title', '{$name} - 最专业的网站', '2022-06-19 13:45:27', '2022-06-19 22:09:20');
+INSERT INTO `cloud_configs` VALUES (39, 'master.reg.email', '1', '2022-06-06 13:32:28', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (40, 'master.reg.qrlogin', '1', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (41, 'master.reg.phone', '1', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (42, 'sms.aliyun.key', 'abcefghijklmnopqist', '2022-06-06 13:32:28', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (43, 'sms.aliyun.secret', 'abcefghijklmnopqist', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (44, 'sms.captcha.sign', '测试签名', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (45, 'sms.captcha.code', '测试code', '2022-06-06 13:32:28', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (46, 'sms.captcha.var', 'code', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
 
 -- ----------------------------
 -- Table structure for cloud_counts
@@ -344,6 +352,7 @@ CREATE TABLE `cloud_users`  (
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户密码',
   `nick_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户昵称',
   `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户头像',
+  `phone` bigint(32) DEFAULT NULL COMMENT '手机号',
   `email` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户邮箱',
   `money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '用户余额',
   `login_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登陆token',
@@ -357,6 +366,7 @@ CREATE TABLE `cloud_users`  (
   INDEX `idx_webId_account`(`web_id`, `account`) USING BTREE,
   INDEX `idx_status`(`status`) USING BTREE,
   INDEX `idx_webId_status`(`web_id`, `status`) USING BTREE,
+  INDEX `idx_phone`(`phone`) USING BTREE,
   INDEX `idx_webId_email`(`web_id`, `email`) USING BTREE,
   INDEX `idx_createTime`(`create_time`) USING BTREE,
   INDEX `idx_updateTime`(`update_time`) USING BTREE,
@@ -366,7 +376,7 @@ CREATE TABLE `cloud_users`  (
 -- ----------------------------
 -- Records of cloud_users
 -- ----------------------------
-INSERT INTO `cloud_users` VALUES (1, 1, 'admin', '39316333663265373836626532363066313961633864313561656234353537393438633338653731', '流逝中沉沦', 'https://q1.qlogo.cn/g?b=qq&nk=2710911512&s=100&t=20190225', '2710911512@qq.com', 10000.00, '{\"pc\":\"3f4143c7da5d6434d702ea8c332ebeb1\",\"mobile\":\"\"}', '127.0.0.1', '2022-07-20 20:03:08', 0, '2022-05-29 17:10:47', '2022-07-20 20:05:35');
+INSERT INTO `cloud_users` VALUES (1, 1, 'admin', '39316333663265373836626532363066313961633864313561656234353537393438633338653731', '流逝中沉沦', 'https://q1.qlogo.cn/g?b=qq&nk=2710911512&s=100&t=20190225', 18888888888, '2710911512@qq.com', 10000.00, '{\"pc\":\"3f4143c7da5d6434d702ea8c332ebeb1\",\"mobile\":\"\"}', '127.0.0.1', '2022-07-20 20:03:08', 0, '2022-05-29 17:10:47', '2022-07-20 20:05:35');
 
 -- ----------------------------
 -- Table structure for cloud_webs

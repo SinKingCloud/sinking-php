@@ -7,13 +7,14 @@ import styles from './index.less';
 import {history, useModel} from "umi";
 import {getCaptchaUrl} from "@/services/common/captcha";
 import defaultSettings from "../../../../config/defaultSettings";
-import {genQrCode, loginByEmail, loginByPwd, qrLogin} from "@/services/user/login";
+import {genQrCode, loginByEmail, loginByPwd, loginBySms, qrLogin} from "@/services/user/login";
 import {setLoginToken} from "@/util/auth";
 import {sendEmail} from "@/services/common/email";
 import {checkMobile} from "@/util/device";
 // @ts-ignore
 import QRCode from "qrcode.react/lib";
 import {getRandStr, qqJumpUrl} from "@/util/string";
+import {sendSms} from "@/services/common/sms";
 
 const Login: React.FC = () => {
   /**
@@ -22,6 +23,7 @@ const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSendLoading, setIsEmailSendLoading] = useState(false);
+  const [isSmsSendLoading, setIsSmsSendLoading] = useState(false);
   const [isRead, setIsRead] = useState(true);
   /**
    * 表单
@@ -154,14 +156,18 @@ const Login: React.FC = () => {
               key="account"
               tab='密码登陆'
             />
-            <Tabs.TabPane
+            {initialState?.currentWeb?.reg_phone && <Tabs.TabPane
+              key="phone"
+              tab='短信登陆'
+            />}
+            {initialState?.currentWeb?.reg_qrlogin && <Tabs.TabPane
               key="qrcode"
               tab='扫码登陆'
-            />
-            <Tabs.TabPane
+            />}
+            {initialState?.currentWeb?.reg_email && <Tabs.TabPane
               key="email"
               tab='邮箱登陆'
-            />
+            />}
           </Tabs>
           <Form form={form} onFinish={(values: any) => {
             if (!isRead) {
@@ -179,7 +185,7 @@ const Login: React.FC = () => {
                 message.error("请输入正确的密码");
                 return;
               }
-            } else {
+            } else if (type == 'email') {
               values.captcha_id = token;
               login = loginByEmail;
               if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values.email)) {
@@ -194,6 +200,24 @@ const Login: React.FC = () => {
                 message.error("请输入图形验证码");
                 return;
               }
+            } else if (type == 'phone') {
+              values.captcha_id = token;
+              login = loginBySms;
+              if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)) {
+                message.error("请输入正确的邮箱");
+                return;
+              }
+              if (values.sms_code == undefined || values.sms_code?.length != 6) {
+                message.error("请输入正确的邮箱验证码");
+                return;
+              }
+              if (values.captcha_code == undefined || values.captcha_code?.length != 4) {
+                message.error("请输入图形验证码");
+                return;
+              }
+            } else {
+              message.error("不支持该登录方式");
+              return;
             }
             setIsLoading(true);
             login(values).then(async (r) => {
@@ -216,62 +240,113 @@ const Login: React.FC = () => {
               <>
                 <Form.Item name='account'>
                   <Input prefix={<UserOutlined className='site-form-item-icon'/>} size={'large'}
-                         placeholder='请输入账户或邮箱'/>
+                         placeholder='请输入账户或邮箱或手机号'/>
                 </Form.Item>
                 <Form.Item name='password'>
                   <Input type={"password"} prefix={<LockOutlined className='site-form-item-icon'/>} size={'large'}
-                         placeholder='请输入密码'/>
+                         placeholder='请输入账号密码'/>
                 </Form.Item></>
             )}
-            {type === 'email' && (
+            {(type === 'email' || type === 'phone') && (
               <>
-                <Form.Item name='email'>
-                  <Input prefix={<MailOutlined className='site-form-item-icon'/>} size={'large'}
-                         placeholder='请输入邮箱'/>
-                </Form.Item>
-                <Form.Item style={{marginBottom: "0px"}}>
-                  <Row gutter={4} wrap={false}>
-                    <Col flex='7'>
-                      <Form.Item name='email_code'>
-                        <Input prefix={<LockOutlined className='site-form-item-icon'/>} placeholder='邮箱验证码'
-                               size={'large'}/>
-                      </Form.Item>
-                    </Col>
-                    <Col>
-                      <Button size={'large'}
-                              loading={isEmailSendLoading}
-                              onClick={(e) => {
-                                const email = form.getFieldValue("email");
-                                if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)) {
-                                  message.error("请输入正确的邮箱")
-                                  return;
-                                }
-                                const captcha_code = form.getFieldValue("captcha_code");
-                                if (captcha_code == undefined || captcha_code.length != 4) {
-                                  message.error("请输入正确的图形验证码")
-                                  return;
-                                }
-                                setIsEmailSendLoading(true);
-                                sendEmail({
-                                  email: email,
-                                  captcha_id: token,
-                                  captcha_code: captcha_code
-                                }).then((r) => {
-                                  setIsEmailSendLoading(false);
-                                  changeCaptcha();
-                                  if (r.code != 200) {
-                                    message.error(r.message || "请求失败").then()
-                                  } else {
-                                    getCode(e);
-                                    form.setFieldsValue({captcha: ""});
-                                    message.success(r.message);
+                {type == 'email' && <>
+                  <Form.Item name='email'>
+                    <Input prefix={<MailOutlined className='site-form-item-icon'/>} size={'large'}
+                           placeholder='请输入邮箱'/>
+                  </Form.Item>
+                  <Form.Item style={{marginBottom: "0px"}}>
+                    <Row gutter={4} wrap={false}>
+                      <Col flex='7'>
+                        <Form.Item name='email_code'>
+                          <Input prefix={<LockOutlined className='site-form-item-icon'/>} placeholder='邮箱验证码'
+                                 size={'large'}/>
+                        </Form.Item>
+                      </Col>
+                      <Col>
+                        <Button size={'large'}
+                                loading={isEmailSendLoading}
+                                onClick={(e) => {
+                                  const email = form.getFieldValue("email");
+                                  if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)) {
+                                    message.error("请输入正确的邮箱")
+                                    return;
                                   }
-                                });
-                              }}
-                              disabled={sendCodeDisabled}>获取验证码</Button>
-                    </Col>
-                  </Row>
-                </Form.Item>
+                                  const captcha_code = form.getFieldValue("captcha_code");
+                                  if (captcha_code == undefined || captcha_code.length != 4) {
+                                    message.error("请输入正确的图形验证码")
+                                    return;
+                                  }
+                                  setIsEmailSendLoading(true);
+                                  sendEmail({
+                                    email: email,
+                                    captcha_id: token,
+                                    captcha_code: captcha_code
+                                  }).then((r) => {
+                                    setIsEmailSendLoading(false);
+                                    changeCaptcha();
+                                    if (r.code != 200) {
+                                      message.error(r.message || "请求失败").then()
+                                    } else {
+                                      getCode(e);
+                                      form.setFieldsValue({captcha: ""});
+                                      message.success(r.message);
+                                    }
+                                  });
+                                }}
+                                disabled={sendCodeDisabled}>获取验证码</Button>
+                      </Col>
+                    </Row>
+                  </Form.Item>
+                </>}
+                {type == 'phone' && <>
+                  <Form.Item name='phone'>
+                    <Input prefix={<UserOutlined className='site-form-item-icon'/>} size={'large'}
+                           placeholder='请输入手机号'/>
+                  </Form.Item>
+                  <Form.Item style={{marginBottom: "0px"}}>
+                    <Row gutter={4} wrap={false}>
+                      <Col flex='7'>
+                        <Form.Item name='sms_code'>
+                          <Input prefix={<LockOutlined className='site-form-item-icon'/>} placeholder='短信验证码'
+                                 size={'large'}/>
+                        </Form.Item>
+                      </Col>
+                      <Col>
+                        <Button size={'large'}
+                                loading={isSmsSendLoading}
+                                onClick={(e) => {
+                                  const phone = form.getFieldValue("phone");
+                                  if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(phone)) {
+                                    message.error("请输入正确的手机号")
+                                    return;
+                                  }
+                                  const captcha_code = form.getFieldValue("captcha_code");
+                                  if (captcha_code == undefined || captcha_code.length != 4) {
+                                    message.error("请输入正确的图形验证码")
+                                    return;
+                                  }
+                                  setIsSmsSendLoading(true);
+                                  sendSms({
+                                    phone: phone,
+                                    captcha_id: token,
+                                    captcha_code: captcha_code
+                                  }).then((r) => {
+                                    setIsSmsSendLoading(false);
+                                    changeCaptcha();
+                                    if (r.code != 200) {
+                                      message.error(r.message || "请求失败").then()
+                                    } else {
+                                      getCode(e);
+                                      form.setFieldsValue({captcha: ""});
+                                      message.success(r.message);
+                                    }
+                                  });
+                                }}
+                                disabled={sendCodeDisabled}>获取验证码</Button>
+                      </Col>
+                    </Row>
+                  </Form.Item>
+                </>}
                 <Row>
                   <Col span={16}>
                     <Form.Item
@@ -343,14 +418,10 @@ const Login: React.FC = () => {
             )}
             <Form.Item hidden={type != "account"} style={{marginTop: "-10px"}}>
               <a onClick={() => {
-                setType("qrcode");
-                getQrCode();
-                message.warning("使用邮箱或者扫码登陆自动创建账户")
+                message.warning("使用其他方式登陆自动创建账户")
               }}>注册帐号</a>
               <a style={{float: 'right',}} onClick={() => {
-                setType("qrcode");
-                getQrCode();
-                message.warning("请使用邮箱或者扫码验证登陆")
+                message.warning("请使用其他方式验证登陆后修改密码")
               }}>忘记密码</a>
             </Form.Item>
             <Form.Item hidden={type == "qrcode"}>

@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import {getPayConfig, recharge} from "@/services/pay/pay";
 import {checkMobile, isAppleDevice} from "@/util/device";
+import {setPayJumpUrl} from "@/util/pay";
 
 export default (): React.ReactNode => {
   const {initialState, setInitialState} = useModel('@@initialState');
@@ -161,6 +162,7 @@ export default (): React.ReactNode => {
                       } else {
                         // @ts-ignore
                         ref.current?.reload();
+                        setPayJumpUrl();
                         if (checkMobile() || isAppleDevice()) {
                           window.location.href = r.data;
                         } else {

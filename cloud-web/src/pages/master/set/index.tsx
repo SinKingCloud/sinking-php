@@ -10,10 +10,11 @@ import ProCard from "@ant-design/pro-card";
 import CashView from "@/pages/master/set/components/cash";
 import WebView from "@/pages/master/set/components/web";
 import UpgradeView from "@/pages/master/set/components/upgrade";
+import SmsView from "@/pages/master/set/components/sms";
 
 const {Item} = Menu;
 
-type SettingsStateKeys = 'base' | 'email' | 'pay' | 'cash' | 'web' | 'cloud' | 'upgrade';
+type SettingsStateKeys = 'base' | 'email' | 'sms' | 'pay' | 'cash' | 'web' | 'cloud' | 'upgrade';
 type SettingsState = {
   mode: 'inline' | 'horizontal';
   selectKey: SettingsStateKeys;
@@ -23,6 +24,7 @@ const Settings: React.FC = () => {
   const menuMap: Record<string, React.ReactNode> = {
     base: '基本设置',
     email: '邮箱设置',
+    sms: "短信设置",
     pay: '支付设置',
     cash: '提现设置',
     web: '分站设置',
@@ -48,6 +50,8 @@ const Settings: React.FC = () => {
         return <PayView/>;
       case 'email':
         return <EmailView/>;
+      case 'sms':
+        return <SmsView/>;
       case 'cash':
         return <CashView/>;
       case 'web':

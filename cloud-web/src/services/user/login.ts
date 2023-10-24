@@ -25,6 +25,18 @@ export async function loginByEmail(body: any, options?: { [key: string]: any }) 
   });
 }
 
+/** 邮箱登录 POST /auth/login/sms */
+export async function loginBySms(body: any, options?: { [key: string]: any }) {
+  return request<API.Response>('/auth/login/sms', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 退出登录 GET /auth/login/out */
 export async function outLogin(options?: { [key: string]: any }) {
   return request<API.Response>('/auth/login/out', {

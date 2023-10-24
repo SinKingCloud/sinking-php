@@ -48,9 +48,9 @@ class Pay extends Common
             if ($trade_status == 'TRADE_SUCCESS') {
                 OrderService::getInstance()->changeStatusSync($trade_no, $out_trade_no);
             }
-            return "success";
+            return '<script>window.location.href="/?s#/user/result"</script>';
         } else {
-            return "fail";
+            return '<script>window.location.href="/?s"</script>';
         }
     }
 

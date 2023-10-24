@@ -8,8 +8,13 @@
         routes: [
           {
             name: '账户登录',
-            path: '/user/login',
+            path: 'login',
             component: './user/login',
+          },
+          {
+            name: "支付结果",
+            path: 'result',
+            component: './user/result',
           },
         ],
       },

@@ -86,10 +86,10 @@ export default (): React.ReactNode => {
     }
     return updateUserInfo(values).then((r) => {
       setIsModalBtnLoading(false);
-      setIsModalVisible(false);
       if (r.code != 200) {
         message.error(r.message || "请求失败").then()
       } else {
+        setIsModalVisible(false);
         // @ts-ignore
         actionRef.current.reload()
         form.resetFields();
@@ -348,6 +348,12 @@ export default (): React.ReactNode => {
       hideInTable: true,
     },
     {
+      title: '手机号',
+      dataIndex: 'phone',
+      tip: '绑定手机',
+      hideInTable: true,
+    },
+    {
       title: '账号信息',
       dataIndex: 'account_info',
       tip: '账户身份',
@@ -357,6 +363,8 @@ export default (): React.ReactNode => {
           <Tag>邮箱:<Typography.Text copyable>{record?.email || "未设置"}</Typography.Text></Tag>
           <br/>
           <Tag>账号:<Typography.Text copyable>{record?.account || "未设置"}</Typography.Text></Tag>
+          <br/>
+          <Tag>手机:<Typography.Text copyable>{record?.phone || "未设置"}</Typography.Text></Tag>
           <br/>
           <Tag>余额:<Typography.Text
             copyable>{parseFloat(record?.money || 0).toFixed(2) + "元"}</Typography.Text></Tag>
@@ -575,7 +583,10 @@ export default (): React.ReactNode => {
           <Form.Item name={"account"} label="账号">
             <Input placeholder="请输入用户账号"/>
           </Form.Item>
-          <Form.Item name={"email"} label="邮箱" rules={[{required: true}]}>
+          <Form.Item name={"phone"} label="手机号">
+            <Input placeholder="请输入用户手机号"/>
+          </Form.Item>
+          <Form.Item name={"email"} label="邮箱">
             <Input placeholder="请输入用户邮箱"/>
           </Form.Item>
           <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
@@ -602,10 +613,11 @@ export default (): React.ReactNode => {
       }}>
         <Form form={add} name="control-hooks" onFinish={onAddFormFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"user_id"} label="用户ID" hidden={true} rules={[{required: true, message: "请输入操作金额"}, {
-            pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-            message: "请输入正确的用户ID"
-          }]}>
+          <Form.Item name={"user_id"} label="用户ID" hidden={true}
+                     rules={[{required: true, message: "请输入操作金额"}, {
+                       pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
+                       message: "请输入正确的用户ID"
+                     }]}>
             <Input placeholder="请输入用户ID"/>
           </Form.Item>
           <Form.Item name={"name"} label="站点名称" rules={[{required: true, message: "请输入操作金额"}]}>
@@ -722,10 +734,11 @@ export default (): React.ReactNode => {
       }}>
         <Form form={money} name="control-hooks" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"user_id"} label="用户ID" hidden={true} rules={[{required: true, message: "请输入操作金额"}, {
-            pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-            message: "请输入正确的用户ID"
-          }]}>
+          <Form.Item name={"user_id"} label="用户ID" hidden={true}
+                     rules={[{required: true, message: "请输入操作金额"}, {
+                       pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
+                       message: "请输入正确的用户ID"
+                     }]}>
             <Input placeholder="请输入用户ID"/>
           </Form.Item>
           <Form.Item name={"type"} label="类型" rules={[{required: true, message: "请选择操作类型"}]}>

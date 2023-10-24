@@ -44,22 +44,45 @@ class VerifyService extends BaseService
     /**
      * 发送邮件验证码
      *
-     * @param string $captcha_id 验证码标识
+     * @param string $email 收件人
      * @return void
      */
-    public function sendCaptcha($captcha_id)
+    public function sendEmailCaptcha($email)
     {
-        $send_time = Cache::get(Constant::CAPTCHA_NAME . '_time_' . $captcha_id);
+        $send_time = Cache::get(Constant::CAPTCHA_NAME . '_time_' . $email);
         if ($send_time && $send_time + 60 > time()) {
             return false;
         }
         $code = rand(100000, 999999);
         $web = AuthService::getInstance()->getCurrentWeb();
         $name = isset($web['name']) && !empty($web['name']) ? $web['name'] : '系统通知';
-        $res = MailService::getInstance()->send($captcha_id, $name, '验证码通知', "尊敬的用户,您的验证码为{$code},此验证码十分钟内有效,请勿泄露!");
+        $res = MailService::getInstance()->send($email, $name, '验证码通知', "尊敬的用户,您的验证码为{$code},此验证码十分钟内有效,请勿泄露!");
         if ($res) {
-            Cache::set(Constant::CAPTCHA_NAME . $captcha_id, $code, Constant::CAPTCHA_TIME);
-            Cache::set(Constant::CAPTCHA_NAME . '_time_' . $captcha_id, time(), Constant::CAPTCHA_TIME);
+            Cache::set(Constant::CAPTCHA_NAME . $email, $code, Constant::CAPTCHA_TIME);
+            Cache::set(Constant::CAPTCHA_NAME . '_time_' . $email, time(), Constant::CAPTCHA_TIME);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param string $phone 手机号
+     * @return void
+     */
+    public function sendSmsCaptcha($phone)
+    {
+        $send_time = Cache::get(Constant::CAPTCHA_NAME . '_time_' . $phone);
+        if ($send_time && $send_time + 60 > time()) {
+            return false;
+        }
+        $code = rand(100000, 999999);
+        $web = AuthService::getInstance()->getCurrentWeb();
+        $res = SmsService::getInstance()->sendCaptcha($phone, $code);
+        if ($res) {
+            Cache::set(Constant::CAPTCHA_NAME . $phone, $code, Constant::CAPTCHA_TIME);
+            Cache::set(Constant::CAPTCHA_NAME . '_time_' . $phone, time(), Constant::CAPTCHA_TIME);
             return true;
         }
         return false;

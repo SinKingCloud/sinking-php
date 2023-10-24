@@ -69,3 +69,15 @@ export async function testCloud(body: any, options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+/** 测试短信 POST /master/config/test_sms */
+export async function testSms(body: any, options?: { [key: string]: any }) {
+  return request<API.Response>('/master/config/test_sms', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

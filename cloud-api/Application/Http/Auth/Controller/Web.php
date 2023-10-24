@@ -10,6 +10,7 @@ namespace app\Http\Auth\Controller;
 
 use app\Constant\Config;
 use app\Service\AuthService;
+use app\Service\ConfigService;
 use app\Service\DomainService;
 use app\Service\SettingService;
 use Systems\Util;
@@ -26,6 +27,7 @@ class Web extends Common
         $web = AuthService::getInstance()->getCurrentWeb();
         $domain = DomainService::getInstance()->getIcp(Util::getHost());
         $set = SettingService::getInstance();
+        $config = ConfigService::getInstance();
         $layout = $set->getWeb($web['id'], Config::WEB_UI_LAYOUT);
         $theme = $set->getWeb($web['id'], Config::WEB_UI_THEME);
         return $this->success('获取成功', array(
@@ -40,6 +42,9 @@ class Web extends Common
             'water_mark' => $set->getWeb($web['id'], Config::WEB_UI_WATERMARK) == 1,
             'layout' => $layout == 'left' ? 'left' : 'top',
             'theme' => $theme == 'dark' ? 'dark' : 'light',
+            'reg_email' => $config->get(Config::SYSTEM_REG_EMAIL) == 1,
+            'reg_qrlogin' => $config->get(Config::SYSTEM_REG_QRLOGIN) == 1,
+            'reg_phone' => $config->get(Config::SYSTEM_REG_PHONE) == 1
         ));
     }
 }

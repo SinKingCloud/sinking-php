@@ -25,7 +25,7 @@ const isDev = process.env.NODE_ENV === 'development';
 /**
  * 无需登陆的页面
  */
-const allowPaths = ['/user/login'];//无需登陆页面
+const allowPaths = ['/user/login', '/user/result'];//无需登陆页面
 
 
 /** 获取用户信息展示一个 loading */
@@ -46,7 +46,7 @@ export async function getInitialState(): Promise<{
   fetchWebInfo?: () => Promise<API.WebInfo | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    const {redirect} = history.location.query as { redirect: string };
+    const {redirect} = history?.location?.query as { redirect: string };
     if (redirect) {
       localStorage.setItem("redirect", redirect || "");
     }

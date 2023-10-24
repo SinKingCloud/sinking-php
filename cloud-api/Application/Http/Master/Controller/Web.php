@@ -10,6 +10,7 @@ namespace app\Http\Master\Controller;
 
 use app\Constant\Config as Constant;
 use app\Constant\Input;
+use app\Model\Domain;
 use app\Model\Log;
 use app\Service\AuthService;
 use app\Service\ConfigService;
@@ -46,7 +47,7 @@ class Web extends Common
         ), Request::param());
         $data = WebService::getInstance()->page($data, $data['order_by_field'], $data['order_by_type'], $page, $page_size);
         foreach ($data['list'] as &$key) {
-            $domain = DomainService::getInstance()->get($key['id']);
+            $domain = DomainService::getInstance()->get($key['id'], false, Domain::STATUS_NORMAL);
             $key['domain'] = $domain['domain'];
             $user = UserService::getInstance()->get($key['user_id']);
             $key['user'] = array(
@@ -62,7 +63,7 @@ class Web extends Common
                 'login_time' => $user['login_time'],
             );
             $temp_web = WebService::getInstance()->get($key['web_id']);
-            $domain2 = DomainService::getInstance()->get($temp_web['id']);
+            $domain2 = DomainService::getInstance()->get($temp_web['id'], false, Domain::STATUS_NORMAL);
             $key['web'] = array(
                 'id' => $temp_web['id'],
                 'name' => $temp_web['name'],

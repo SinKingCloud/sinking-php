@@ -117,7 +117,7 @@ class AuthService extends BaseService
         }
         if ($user['web_id'] != $web['id']) {
             //不属于此站点，抛出异常
-            $domain = DomainService::getInstance()->get($user['web_id']);
+            $domain = DomainService::getInstance()->get($user['web_id'], false, Domain::STATUS_NORMAL);
             throw new \app\Exception\NotInWebException($domain['domain']);
         }
     }

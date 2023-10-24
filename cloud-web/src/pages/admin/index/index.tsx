@@ -219,7 +219,8 @@ export default (): React.ReactNode => {
           <Card bordered={false} loading={toDoLoading} style={{marginBottom: "20px"}}>
             <Row>
               <Col sm={12} md={12} xs={12}>
-                <Info title="我的提现" value={(toDoData?.cash || 0) > 0 ? toDoData?.cash + '个待处理' : '暂无'} bordered/>
+                <Info title="我的提现" value={(toDoData?.cash || 0) > 0 ? toDoData?.cash + '个待处理' : '暂无'}
+                      bordered/>
               </Col>
               <Col sm={12} md={12} xs={12}>
                 <Info title="累计提成 " value={'￥' + (toDoData?.deduct_money || 0)?.toFixed(2)}/>

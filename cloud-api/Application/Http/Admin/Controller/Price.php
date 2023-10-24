@@ -29,6 +29,7 @@ class Price extends Common
         return $this->success('获取成功', array(
             Constant::SYSTEM_SITE_COST_PRICE => $config->get(Constant::SYSTEM_SITE_COST_PRICE),
             Constant::SYSTEM_SITE_MIN_PRICE => $config->get(Constant::SYSTEM_SITE_MIN_PRICE),
+            Constant::SYSTEM_SITE_MONTH => $config->get(Constant::SYSTEM_SITE_MONTH) > 0 ? $config->get(Constant::SYSTEM_SITE_MONTH) : 999,
         ));
     }
 
@@ -59,7 +60,7 @@ class Price extends Common
             array(Constant::WEB_SITE_PRICE . '|分站售价', 'require|number|min:' . $config->get(Constant::SYSTEM_SITE_MIN_PRICE)),
         ), Request::param());
         $web = AuthService::getInstance()->getCurrentWeb();
-        if (SettingService::getInstance()->setWeb($web['id'], Constant::WEB_SITE_PRICE, round($data[Constant::WEB_SITE_PRICE],2))) {
+        if (SettingService::getInstance()->setWeb($web['id'], Constant::WEB_SITE_PRICE, round($data[Constant::WEB_SITE_PRICE], 2))) {
             LogService::getInstance()->add(Log::TYPE_UPDATE, '修改价格', '修改分站价格');
             return $this->success('修改成功');
         }

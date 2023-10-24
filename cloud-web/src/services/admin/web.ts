@@ -81,3 +81,14 @@ export async function updateDomain(body: any, options?: { [key: string]: any }) 
     ...(options || {}),
   });
 }
+
+export async function buySite(body: any, options?: { [key: string]: any }) {
+  return request<API.Response>('/admin/shop/buySite', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

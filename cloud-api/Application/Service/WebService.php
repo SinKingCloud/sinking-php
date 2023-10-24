@@ -16,7 +16,7 @@ class WebService extends BaseService
      */
     public function __construct()
     {
-        $class = Web::getClass();//兼容php5.4
+        $class = Web::getClass(); //兼容php5.4
         $this->model = new $class();
     }
 
@@ -121,7 +121,7 @@ class WebService extends BaseService
      * @param integer $months 开通月数
      * @return void
      */
-    public function add($user_id, $name, $domain, $months = 999)
+    public function add($user_id, $name, $domain, $months = -1)
     {
         if (empty($user_id) || empty($name) || empty($domain)) {
             return $this->error('参数不足');
@@ -148,6 +148,12 @@ class WebService extends BaseService
             'status' => Web::STATUS_NORMAL,
             'expire_time' => $datetime->setTimestamp(time() + $months * 30 * 24 * 60)->format('Y-m-d H:i:s'),
         );
+        if ($months <= 0) {
+            $months = intval(ConfigService::getInstance()->get(Config::SYSTEM_SITE_MONTH));
+            if ($months <= 0) {
+                $months = 999;
+            }
+        }
         Web::startTrans(); //开启事务
         //写入站点
         if ($this->create($w_data)) {

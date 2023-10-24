@@ -38,6 +38,7 @@ class Shop extends Common
             Constant::SYSTEM_DOMAINS => explode('|', $config->get(Constant::SYSTEM_DOMAINS)),
             Constant::SYSTEM_DOMAIN_NUM => intval($config->get(Constant::SYSTEM_DOMAIN_NUM)),
             Constant::SYSTEM_SITE_COST_PRICE => round($config->get(Constant::SYSTEM_SITE_COST_PRICE), 2),
+            Constant::SYSTEM_SITE_MONTH => intval($config->get(Constant::SYSTEM_SITE_MONTH)) > 0 ? intval($config->get(Constant::SYSTEM_SITE_MONTH)) : 999,
             Constant::SYSTEM_SITE_MIN_PRICE => round($config->get(Constant::SYSTEM_SITE_MIN_PRICE), 2),
             Constant::SYSTEM_SITE_RECHARGE_DEDUCT => intval($config->get(Constant::SYSTEM_SITE_RECHARGE_DEDUCT)),
             Constant::SYSTEM_SITE_ORDER_DEDUCT => intval($config->get(Constant::SYSTEM_SITE_ORDER_DEDUCT)),

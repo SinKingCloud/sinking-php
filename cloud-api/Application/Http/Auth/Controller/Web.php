@@ -36,6 +36,7 @@ class Web extends Common
             'title' => $web['title'],
             'keywords' => $web['keywords'],
             'description' => $web['description'],
+            'expire_time' => $web['expire_time'],
             'domain' => Util::getHost(),
             'service_licence' => $domain['service_licence'],
             'logo' => $set->getWeb($web['id'], Config::WEB_UI_LOGO),

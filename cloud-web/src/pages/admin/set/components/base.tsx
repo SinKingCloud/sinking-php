@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Form, message, Spin} from "antd";
+import {Button, Form, Input, message, Modal, Row, Spin, Typography} from "antd";
 import ProForm, {ProFormText, ProFormTextArea} from "@ant-design/pro-form";
 import {getWeb, setWeb} from "@/services/admin/set";
 import {useModel} from "@@/plugin-model/useModel";
+import {ExclamationCircleOutlined} from "@ant-design/icons";
+import {getMy} from "@/services/admin/price";
+import {buySite} from "@/services/admin/web";
 
 const BaseView: React.FC = () => {
   const {initialState, setInitialState} = useModel('@@initialState');
@@ -48,12 +51,25 @@ const BaseView: React.FC = () => {
       }
     });
   }
+
+  /**
+   * 获取成本价格
+   */
+  const [myPrice, setMyPrice] = useState({});
+  const getMyPrice = () => {
+    getMy().then((r): any => {
+      if (r?.code == 200) {
+        setMyPrice(r?.data || {});
+      }
+    });
+  }
   /**
    * 初始化数据
    */
   // @ts-ignore
   useEffect(() => {
     setIsLoading(true);
+    getMyPrice();
     getConfigs().then(data => {
       form?.setFieldsValue(data);
       setIsLoading(false);
@@ -96,6 +112,33 @@ const BaseView: React.FC = () => {
             placeholder={"请输入网站描述"}
             rules={[{required: true, message: "请输入网站描述"},]}
           />
+          <ProFormText
+            width="sm"
+            label="到期时间"
+            tooltip="网站的到期时间"
+          >
+            <Input style={{maxWidth: "180px"}} disabled={true} value={initialState?.currentWeb?.expire_time}/>
+            <Button style={{marginLeft: "10px"}} type={"primary"} ghost onClick={() => {
+              const key = 'buySite';
+              Modal.confirm({
+                title: '确定要续费站点到期时间吗?',
+                icon: <ExclamationCircleOutlined/>,
+                content: '将会花费100元续期12个月网站时长',
+                okType: 'primary',
+                onOk() {
+                  message.loading({content: '正在进行续期操作', key, duration: 60}).then();
+                  buySite({}).then((r) => {
+                    if (r?.code == 200) {
+                      fetchWebInfo();
+                      message.success({content: r?.message, key, duration: 2}).then();
+                    } else {
+                      message.error({content: r?.message || "续期失败", key, duration: 2}).then();
+                    }
+                  });
+                },
+              });
+            }}>续期</Button>
+          </ProFormText>
         </ProForm>
       </div>
     </Spin>

@@ -84,6 +84,10 @@ export default (): React.ReactNode => {
         2: {
           text: '在线下单',
           color: '#13e537',
+        },
+        3: {
+          text: '续费主站',
+          color: '#6d1aa1',
         }
       },
     },

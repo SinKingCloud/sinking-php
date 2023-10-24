@@ -45,6 +45,7 @@ class Config
     const SYSTEM_SITE_DEFAULT_PRICE = 'site.default.price'; //站点默认售价
     const SYSTEM_SITE_RECHARGE_DEDUCT = 'site.recharge.deduct'; //站点充值提成百分比
     const SYSTEM_SITE_ORDER_DEDUCT = 'site.order.deduct'; //站点下单提成百分比
+    const SYSTEM_SITE_MONTH = 'site.month'; //开通分站自动续期的月数
     #分站设置
     const SYSTEM_DOMAINS = 'master.domains'; //系统支持绑定的域名(|分割)
     const SYSTEM_DOMAIN_RESOLVE = 'master.domain.resolve'; //域名解析地址

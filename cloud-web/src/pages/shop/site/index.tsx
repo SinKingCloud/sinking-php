@@ -165,7 +165,10 @@ export default (): React.ReactNode => {
                           fontSize: "30px",
                           fontWeight: "bolder"
                         }}>￥{parseInt(siteConfig?.['site.price'])}</span>
-                        <span style={{color: "#999", fontSize: "12px"}}>/永久&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style={{
+                          color: "#999",
+                          fontSize: "12px"
+                        }}>/{parseInt(siteConfig?.['site.month'])}月&nbsp;&nbsp;&nbsp;&nbsp;</span>
                       </div>
                       <div style={{float: "right"}}>
                         <span style={{color: "#999", fontSize: "12px"}}>原价:</span>
@@ -174,7 +177,7 @@ export default (): React.ReactNode => {
                           fontSize: "16px",
                           fontWeight: "bolder",
                           textDecoration: "line-through"
-                        }}>￥1688</span>
+                        }}>￥{parseInt(siteConfig?.['site.price']) * 8.5}</span>
                         <span style={{color: "#999", fontSize: "12px"}}>/年</span>
                       </div>
                     </div>

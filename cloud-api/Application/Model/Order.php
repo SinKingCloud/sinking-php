@@ -18,6 +18,7 @@ class Order extends BaseModel
     const ORDER_TYPE_RECHARGE = 0; //余额充值
     const ORDER_TYPE_WEB = 1; //开通网站
     const ORDER_TYPE_BUY = 2; //在线下单
+    const ORDER_TYPE_REWEB = 3; //网站续期
 
     #订单状态
     const STATUS_UNPAY = 0; //未支付

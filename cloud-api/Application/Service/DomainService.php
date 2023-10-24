@@ -38,9 +38,10 @@ class DomainService extends BaseService
      * 获取域名信息
      *
      * @param string $domain 
+     * @param int $status 
      * @return void
      */
-    public function get($domain, $refresh = false)
+    public function get($domain, $refresh = false, $status = -1)
     {
         if ($refresh) {
             $this->clear($domain);
@@ -49,8 +50,12 @@ class DomainService extends BaseService
         if (is_numeric($domain)) {
             $key = 'web_id';
         }
-        return Cache::remember(Constant::DOMAIN_INFO_NAME . $domain, function () use ($key, $domain) {
-            return Domain::where(array($key => $domain))->find();
+        return Cache::remember(Constant::DOMAIN_INFO_NAME . $domain, function () use ($key, $domain, $status) {
+            $where = array($key => $domain);
+            if ($status >= 0) {
+                $where['status'] = $status;
+            }
+            return Domain::where($where)->order('id desc')->find();
         }, Constant::DOMAIN_INFO_TIME);
     }
 

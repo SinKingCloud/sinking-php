@@ -60,6 +60,7 @@ declare namespace API {
     title?: string;
     keywords?: string;
     description?: string;
+    expire_time?: string;
     domain?: string;
     service_licence?: string;
     logo?: string;

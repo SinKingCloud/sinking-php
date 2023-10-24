@@ -9,6 +9,7 @@
 namespace app\Http\Admin\Controller;
 
 use app\Constant\Input;
+use app\Model\Domain;
 use app\Model\Log;
 use app\Service\AuthService;
 use app\Service\DomainService;
@@ -46,7 +47,7 @@ class Web extends Common
         $data['web_id'] = $web['id'];
         $data = WebService::getInstance()->page($data, $data['order_by_field'], $data['order_by_type'], $page, $page_size);
         foreach ($data['list'] as &$key) {
-            $domain = DomainService::getInstance()->get($key['id']);
+            $domain = DomainService::getInstance()->get($key['id'], false, Domain::STATUS_NORMAL);
             $key['domain'] = $domain['domain'];
             $user = UserService::getInstance()->get($key['user_id']);
             $key['user'] = array(

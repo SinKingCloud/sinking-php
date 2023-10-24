@@ -69,7 +69,7 @@ const SiteView: React.FC = () => {
           <ProFormText
             width="md"
             name="site.price"
-            label={"开通价格,成本:" + (myPrice['site.cost.price'] || 0) + "元/个,最低售价:" + (myPrice['site.min.price'] || 0) + "元/个"}
+            label={"开通价格,成本:" + (myPrice['site.cost.price'] || 0) + "元/" + (myPrice['site.month'] || 0) + "月,最低售价:" + (myPrice['site.min.price'] || 0) + "元/" + (myPrice['site.month'] || 0) + "月"}
             tooltip="用户开通分站价格"
             placeholder={"请输入用户开通分站价格"}
             rules={[{required: true, message: "请输入用户开通分站价格"}, {

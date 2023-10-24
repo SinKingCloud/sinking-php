@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getConfigList, updateConfigs} from "@/services/master/config";
 import {Form, message, Spin} from "antd";
-import ProForm, {ProFormText} from "@ant-design/pro-form";
+import ProForm, {ProFormDigit, ProFormText} from "@ant-design/pro-form";
 
 const SiteView: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,7 @@ const SiteView: React.FC = () => {
   /**
    * 初始化数据
    */
-  useEffect( () => {
+  useEffect(() => {
     setIsLoading(true)
     getConfigs().then(data => {
       form?.setFieldsValue(data);
@@ -83,6 +83,16 @@ const SiteView: React.FC = () => {
               pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
               message: "请输入正确的金额"
             }]}
+          />
+          <ProFormDigit
+            width="md"
+            name="site.month"
+            label="开通月数"
+            tooltip="用户开通分站自动续期的月数,填写0或为空则永久"
+            placeholder={"用户开通分站自动续期的月数，填写0或为空则永久"}
+            min={0}
+            max={999}
+            rules={[{required: true, message: "请输入用户开通分站自动续期的月数，填写0或为空则永久"},]}
           />
           <ProFormText
             width="md"

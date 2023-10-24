@@ -42,7 +42,7 @@ CREATE TABLE `cloud_configs`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`, `key`) USING BTREE,
   INDEX `idx_key`(`key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cloud_configs
@@ -92,6 +92,7 @@ INSERT INTO `cloud_configs` VALUES (43, 'sms.aliyun.secret', 'abcefghijklmnopqis
 INSERT INTO `cloud_configs` VALUES (44, 'sms.captcha.sign', '测试签名', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
 INSERT INTO `cloud_configs` VALUES (45, 'sms.captcha.code', '测试code', '2022-06-06 13:32:28', '2022-07-20 20:09:01');
 INSERT INTO `cloud_configs` VALUES (46, 'sms.captcha.var', 'code', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
+INSERT INTO `cloud_configs` VALUES (47, 'site.month', '12', '2022-06-06 13:50:23', '2022-07-20 20:09:01');
 
 -- ----------------------------
 -- Table structure for cloud_counts

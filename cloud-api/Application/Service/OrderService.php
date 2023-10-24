@@ -144,6 +144,15 @@ class OrderService extends BaseService
     {
         $temp  = array();
         switch ($type) {
+            case Order::ORDER_TYPE_REWEB:
+                if (empty($data['web_id']) || empty($data['month'])) {
+                    return false;
+                }
+                $temp = array(
+                    'web_id' => intval($data['web_id']),
+                    'month' => intval($data['month']),
+                );
+                break;
             case Order::ORDER_TYPE_RECHARGE: //余额充值
                 if (empty($data['user_id']) || empty($data['money'])) {
                     return false;
@@ -232,6 +241,36 @@ class OrderService extends BaseService
         return true;
     }
 
+    /**
+     * 订单处理(续费网站)
+     *
+     * @param integer $trade_no 订单号
+     * @param array $param 参数
+     * @return void
+     */
+    private function orderReWeb($trade_no, $param = array())
+    {
+        $web_id = intval($param['web_id']);
+        $month = intval($param['month']);
+        if ($month <= 0) {
+            $month = 1;
+        }
+        $web = WebService::getInstance()->get($web_id, true);
+        if ($web) {
+            $time = strtotime($web['expire_time']);
+            if ($time < time()) {
+                $time = time();
+            }
+            $datetime = new \DateTime();
+            $data = array(
+                'expire_time' => $datetime->setTimestamp($time + $month * 30 * 24 * 60 * 60)->format('Y-m-d H:i:s'),
+            );
+            WebService::getInstance()->update(array('id' => $web['id']), $data);
+            WebService::getInstance()->clear($web['id']);
+        }
+        return true;
+    }
+
 
     /**
      * 更改订单状态
@@ -266,6 +305,9 @@ class OrderService extends BaseService
                 break;
             case Order::ORDER_TYPE_BUY: //在线下单
                 $res = $this->orderBuy($trade_no, $param);
+                break;
+            case Order::ORDER_TYPE_REWEB: //网站续期
+                $res = $this->orderReWeb($trade_no, $param);
                 break;
         }
         //更改订单状态

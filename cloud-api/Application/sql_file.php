@@ -398,7 +398,8 @@ CREATE TABLE `cloud_webs`  (
   PRIMARY KEY (`id`, `user_id`, `web_id`) USING BTREE,
   INDEX `idx_webId`(`web_id`) USING BTREE,
   INDEX `idx_userId`(`user_id`) USING BTREE,
-  INDEX `idx_status`(`status`) USING BTREE
+  INDEX `idx_status`(`status`) USING BTREE,
+  INDEX `idx_expireTime`(`expire_time`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------

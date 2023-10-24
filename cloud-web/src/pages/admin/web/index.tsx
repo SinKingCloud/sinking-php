@@ -734,10 +734,6 @@ export default (): React.ReactNode => {
           <Form.Item name={"description"} label="描述" rules={[{required: true, message: "请输入描述"}]}>
             <Input.TextArea placeholder="请输入描述"/>
           </Form.Item>
-          <Form.Item name={"expire_time"} label="到期时间" rules={[{required: true, message: "请选择到期时间"}]}>
-            < // @ts-ignore
-              DatePicker format='YYYY-MM-DD' placeholder="请选择到期时间"/>
-          </Form.Item>
           <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
             <Select placeholder="请选择站点状态">
               <Select.Option value={0}>正常</Select.Option>

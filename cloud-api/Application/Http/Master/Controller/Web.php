@@ -42,7 +42,7 @@ class Web extends Common
             array('create_time_end|创建结束时间', 'omitempty|date'),
             array('update_time_start|更新开始时间', 'omitempty|date'),
             array('update_time_end|更新结束时间', 'omitempty|date'),
-            array('order_by_field|排序字段', 'omitempty|default:id|in:id,status,login_time,create_time,update_time'),
+            array('order_by_field|排序字段', 'omitempty|default:id|in:id,status,login_time,create_time,expire_time,update_time'),
             array('order_by_type|排序类型', 'omitempty|default:desc|in:desc,asc'),
         ), Request::param());
         $data = WebService::getInstance()->page($data, $data['order_by_field'], $data['order_by_type'], $page, $page_size);

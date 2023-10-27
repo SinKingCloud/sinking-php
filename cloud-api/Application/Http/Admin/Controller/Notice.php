@@ -37,8 +37,8 @@ class Notice extends Common
             array('order_by_field|排序字段', 'omitempty|default:sort|in:id,sort,create_time,update_time'),
             array('order_by_type|排序类型', 'omitempty|default:desc|in:desc,asc'),
         ), Request::param());
-        $user = AuthService::getInstance()->getCurrentUser();
-        $data['web_id'] = $user['web_id'];
+        $web = AuthService::getInstance()->getCurrentWeb();
+        $data['web_id'] = $web['id'];
         return $this->success('获取成功', NoticeService::getInstance()->page($data, $data['order_by_field'], $data['order_by_type'], $page, $page_size));
     }
 

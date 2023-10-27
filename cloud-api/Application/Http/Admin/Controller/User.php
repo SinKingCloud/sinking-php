@@ -47,8 +47,8 @@ class User extends Common
             array('order_by_field|排序字段', 'omitempty|default:id|in:id,status,login_time,create_time,update_time'),
             array('order_by_type|排序类型', 'omitempty|default:desc|in:desc,asc'),
         ), Request::param());
-        $user = AuthService::getInstance()->getCurrentUser();
-        $data['web_id'] = $user['web_id'];
+        $web = AuthService::getInstance()->getCurrentWeb();
+        $data['web_id'] = $web['id'];
         LogService::getInstance()->add(Log::TYPE_LOOK, '查看用户', '查看用户数据');
         return $this->success('获取成功', UserService::getInstance()->page($data, $data['order_by_field'], $data['order_by_type'], $page, $page_size));
     }

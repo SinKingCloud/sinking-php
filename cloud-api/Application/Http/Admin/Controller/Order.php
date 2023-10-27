@@ -41,8 +41,8 @@ class Order extends Common
             array('order_by_field|排序字段', 'omitempty|default:id|in:id,pay_type,order_type,status,create_time,update_time'),
             array('order_by_type|排序类型', 'omitempty|default:desc|in:desc,asc'),
         ), Request::param());
-        $user = AuthService::getInstance()->getCurrentUser();
-        $data['web_id'] = $user['web_id'];
+        $web = AuthService::getInstance()->getCurrentWeb();
+        $data['web_id'] = $web['id'];
         $data = OrderService::getInstance()->page($data, $data['order_by_field'], $data['order_by_type'], $page, $page_size);
         foreach ($data['list'] as &$key) {
             $user = UserService::getInstance()->get($key['user_id']);

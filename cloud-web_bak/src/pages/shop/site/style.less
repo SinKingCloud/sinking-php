@@ -1,0 +1,227 @@
+@import '~antd/es/style/themes/default.less';
+
+.mainTitle {
+  background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 250px;
+  text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  .topTitle {
+    font-size: 30px;
+    color: #cfc8bd;
+    padding-top: 45px;
+  }
+}
+
+.main {
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 50px 40px 0 #eeeeeead;
+
+  .body {
+    margin: -100px auto 0 auto;
+
+    .cardTitle {
+      position: relative;
+      background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/personPackage.5c08b148.svg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 120px;
+      border-radius: 10px 10px 0 0;
+      text-align: center;
+
+      .topTitle {
+        font-size: 27px;
+        font-weight: bolder;
+        color: #af6e01;
+        height: 65px;
+        line-height: 75px;
+      }
+
+      .bottomTitle {
+        font-size: 18px;
+        color: #af6e01;
+      }
+    }
+
+    .cardBody {
+      border-radius: 0 0 10px 10px !important;
+
+      .button {
+        margin-top: 30px;
+        margin-left: -15px;
+        font-size: 13px;
+        width: 40%;
+        background: linear-gradient(303deg, #e7c183, #fce9c9 100%, #fce9c9 0, #fce9c9 0);
+        color: #ab6d28;
+        border: 0;
+        line-height: 20px;
+        height: 40px;
+      }
+
+      .box {
+        background-color: rgb(255 249 238);
+        border: 1px solid #ffdea8;
+        max-width: 350px;
+        margin: 20px auto 0 auto;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .top {
+        height: 100px;
+        text-align: left;
+
+        .tips {
+          background-color: rgb(233 198 140);
+          position: absolute;
+          border-radius: 7px 0 7px 0;
+          padding: 5px 10px;
+          margin-top: -15px;
+          font-size: 12px;
+          color: white;
+        }
+      }
+
+      .bottom {
+        height: 40px;
+        line-height: 40px;
+        background-color: papayawhip;
+        padding: 0 10px 0 10px;
+
+        .left {
+          float: left;
+        }
+
+        .right {
+          float: right;
+        }
+      }
+    }
+  }
+}
+
+.describe {
+  max-width: 80%;
+  margin: 40px auto 0 auto;
+
+  .contain {
+    overflow-y: hidden;
+  }
+
+  .table {
+    width: 800px;
+    overflow-x: scroll;
+    border: 1px solid #ebebeb;
+    border-radius: 15px;
+    margin: 0 auto;
+  }
+
+  .table .thead {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    border-bottom-color: rgba(205, 206, 207, 0.5);
+    align-items: center;
+    height: 90px;
+    background-color: #e4e4e4;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .table .tbody {
+    text-align: center;
+    font-weight: lighter;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  .tbody .tr, .thead .tr {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bolder;
+  }
+
+  .thead .tr {
+    font-size: 20px;
+    color: #3b434b !important;
+  }
+
+  .tbody .tr {
+    padding: 20px;
+    border-bottom: 1px solid rgba(205, 206, 207, 0.33);
+  }
+
+  .tr .td, .tr .th {
+    flex: 8;
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .mainTitle {
+    background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 60px;
+
+    .topTitle {
+      font-size: 10px;
+      color: #cfc8bd;
+      padding-top: 12px;
+    }
+  }
+
+  .main {
+    .body {
+      margin-top: -20px;
+      max-width: 95%;
+
+      .cardTitle {
+        height: 100px;
+
+        .topTitle {
+          height: 55px;
+          line-height: 65px;
+          font-size: 20px;
+        }
+
+        .bottomTitle {
+          font-size: 13px;
+          color: #af6e01;
+        }
+      }
+
+      .cardBody {
+        .button {
+          width: 100%;
+          line-height: 20px;
+          height: 40px;
+        }
+      }
+    }
+  }
+
+  .describe {
+    max-width: 95%;
+
+    .table {
+      border-radius: 0;
+    }
+
+    .table .thead {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .table .tbody {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

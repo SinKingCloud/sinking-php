@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>云程序 - 系统安装</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link href="/Public/Statics/bootstrap/css/bootstrap-quartz.css" rel="stylesheet" />
+    <script src="/Public/Statics/jquery/js/jquery-3.6.0.min.js"></script>
+    <script src="/Public/Statics/bootstrap/js/bootstrap.js"></script>
+</head>
+<style>
+    body {
+        background-image: url(/Public/Statics/app/index/background.jpg) !important;
+        background-color: aliceblue !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    /*  滚动条  */
+    ::-webkit-scrollbar {
+        width: 0;
+        /* 纵向滚动条 */
+        height: 0;
+        /* 横向滚动条 */
+        background-color: transparent;
+    }
+
+    /* 定义滚动条轨道 内阴影 */
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    }
+
+    /* 定义滑块 内阴影 */
+    ::-webkit-scrollbar-thumb {
+        background-color: #d2d2d2;
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xs-7 col-sm-8 col-lg-4 col-md-7">
+                <div class="row justify-content-center">
+                    <div class="col">
+                        <div class="mt-4 mb-4 text-center">
+                            <img src="/Public/Statics/app/index/logo.png" class="img-fluid" width="150">
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col">
+                        <div class="card border-light">
+                            <div class="card-header text-center" id="title">系统安装向导</div>
+                            <div class="card-body">
+                                <form id="step1" onsubmit="return false;">
+                                    <figure>
+                                        <blockquote class="blockquote">
+                                            <p class="mb-0 text-center" style="font-family: cursive;"
+                                                title="君子不用防，小人防不住。">
+                                                《周易 象传》</br>
+                                                天行健，君子以自强不息。</br>
+                                                地势坤，君子以厚德载物。</br>
+                                                随风巽，君子以申命行事。</br>
+                                                渐雷震，君子以恐惧修省。</br>
+                                                善如水，君子以作事谋始。</br>
+                                                火同人，君子以类族辨物。</br>
+                                                步泽履，君子以辨民安志。</br>
+                                                艮山谦，君子以裒多益寡。
+                                            </p>
+                                        </blockquote>
+                                    </figure>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="button" id="step1_btn" class="btn btn-light btn-sm">开始安装</button>
+                                    </div>
+                                </form>
+                                <form id="step2" style="display: none;" onsubmit="return false;">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">sql文件</label>
+                                        <input class="form-control form-control-sm env_sql_file" type="text"
+                                            placeholder="加载中" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">pdo扩展</label>
+                                        <input class="form-control form-control-sm env_pdo" type="text"
+                                            placeholder="加载中" disabled>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">curl扩展</label>
+                                        <input class="form-control form-control-sm env_curl" type="text"
+                                            placeholder="加载中" disabled>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">文件写入权限</label>
+                                        <input class="form-control form-control-sm env_file" type="text"
+                                            placeholder="加载中" disabled>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">php版本大于等于5.3</label>
+                                        <input class="form-control form-control-sm env_php" type="text"
+                                            placeholder="加载中" disabled>
+                                    </div>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="submit" id="step2_btn" style="display: none;"
+                                            class="btn btn-light btn-sm">下一步</button>
+                                    </div>
+                                </form>
+                                <form id="step3" style="display: none;" onsubmit="return false;">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">数据库地址</label>
+                                        <input class="form-control form-control-sm" name="host" value="localhost"
+                                            type="text" placeholder="请输入数据库地址">
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">数据库端口</label>
+                                        <input class="form-control form-control-sm" name="port" value="3306"
+                                            type="number" placeholder="请输入数据库端口">
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">数据库账号</label>
+                                        <input class="form-control form-control-sm" name="user" value="" type="text"
+                                            placeholder="请输入数据库账号">
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">数据库密码</label>
+                                        <input class="form-control form-control-sm" name="pwd" value="" type="text"
+                                            placeholder="请输入数据库密码">
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">数据库名称</label>
+                                        <input class="form-control form-control-sm" name="name" value="" type="text"
+                                            placeholder="请输入数据库名称">
+                                    </div>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="button" id="step3_btn" class="btn btn-light btn-sm">下一步</button>
+                                    </div>
+                                </form>
+                                <form id="step4" style="display: none;" onsubmit="return false;">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">云端APPID</label>
+                                        <input class="form-control form-control-sm" name="id" value="" type="number"
+                                            placeholder="请输入云端APPID">
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">云端APPKEY</label>
+                                        <input class="form-control form-control-sm" name="key" maxlength="32" value=""
+                                            type="text" placeholder="请输入云端APPKEY">
+                                    </div>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="button" id="step4_btn" class="btn btn-light btn-sm">下一步</button>
+                                    </div>
+                                </form>
+                                <form id="step5" style="display: none;" onsubmit="return false;">
+                                    <div class="form-group">
+                                        <label class="form-label fw-bold">环境检测</label>
+                                        <input class="form-control form-control-sm" type="text" placeholder="加载中"
+                                            value="已通过" disabled>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">数据库配置</label>
+                                        <input class="form-control form-control-sm" type="text" placeholder="加载中"
+                                            value="已配置" disabled>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">云端配置</label>
+                                        <input class="form-control form-control-sm" type="text" placeholder="加载中"
+                                            value="已配置" disabled>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label class="form-label fw-bold">数据表前缀</label>
+                                        <input class="form-control form-control-sm" type="text" placeholder="请填写数据库前缀"
+                                            name="prefix" value="cloud_">
+                                    </div>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="button" id="step5_btn" class="btn btn-light btn-sm">确认安装</button>
+                                    </div>
+                                </form>
+                                <form id="step6" style="display: none;" onsubmit="return false;">
+                                    <p>系统已安装完成</br>
+                                        初始账号: admin</br>
+                                        初始密码: 123456
+                                    </p>
+                                    <div style="font-size: 10px;">注意: 进入系统后,您需要设置邮箱,自动任务等配置系统才可正常运行。如有问题请联系官网客服</div>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="button" id="step6_btn" class="btn btn-light btn-sm">访问首页</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-static-bottom">
+            <div class="text-center">
+                <div class="p-3">
+                    <a href="https://www.clwl.online" style="text-decoration: none;" target="_blank">
+                        <span class="text-blue" style="font-size: 10px;">Copyright © 开放云平台</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            /**
+             * 展示步骤
+             */
+            function showStep(num = 1, callback = undefined) {
+                $("form").hide();
+                $("#step" + num).show();
+                switch (num) {
+                    case 2:
+                        $("#title").text("环境检测");
+                        break;
+                    case 3:
+                        $("#title").text("数据库配置");
+                        break;
+                    case 4:
+                        $("#title").text("云端配置");
+                        break;
+                    case 5:
+                        $("#title").text("确认环境");
+                        break;
+                    case 6:
+                        $("#title").text("安装完成");
+                        break;
+                    default:
+                        $("#title").text("系统安装向导");
+                        break;
+                }
+                if (callback != undefined) {
+                    callback();
+                }
+            }
+
+            $("#step1_btn").click(function () {
+                showStep(2, function () {
+                    $.get("/index.php/install/check/env", function (data) {
+                        if (data.code == 200) {
+                            for (let key in data.data) {
+                                if (data.data[key]) {
+                                    $(".env_" + key).val("支持");
+                                } else {
+                                    $(".env_" + key).val("不支持");
+                                }
+                            }
+                            if (data.data.curl && data.data.file && data.data.pdo && data.data.php && data.data.sql_file) {
+                                $("#step2_btn").show();
+                            }
+                        } else {
+                            alert("环境检测失败");
+                            showStep(1);
+                        }
+                    });
+                });
+            });
+
+            $("#step2_btn").click(function () {
+                showStep(3);
+            });
+
+            $("#step3_btn").click(function () {
+                $.post("/index.php/install/check/database", $("#step3").serialize(), function (data) {
+                    if (data.code == 200) {
+                        showStep(4);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            });
+
+            $("#step4_btn").click(function () {
+                $.post("/index.php/install/check/cloud", $("#step4").serialize(), function (data) {
+                    if (data.code == 200) {
+                        showStep(5);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            });
+
+            var step5_btn_lock = false;
+            $("#step5_btn").click(function () {
+                if (step5_btn_lock) {
+                    return alert("正在安装中,请勿重复点击");
+                }
+                step5_btn_lock = true;
+                $(this).text("正在安装中...");
+                let param = $("#step3").serialize() + '&' + $("#step4").serialize() + '&' + $("#step5").serialize();
+                $.post("/index.php/install/save", param, function (data) {
+                    step5_btn_lock = false;
+                    $("#step5_btn").text(data.message);
+                    if (data.code == 200) {
+                        showStep(6);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            });
+
+            $("#step6_btn").click(function () {
+                window.location.href = "/";
+            });
+        });
+    </script>
+</body>

@@ -1,0 +1,507 @@
+@import '~antd/es/style/themes/default.less';
+
+@header-shadow: 0px 0px 10px 0px #d9d9d9; //顶栏阴影
+@time-picker-radius: 10px; //日期选择框圆角
+@select-radius: 10px; //下拉选择框圆角
+@menu-radius: 10px; //菜单圆角
+@menu-shadow: 0px 0 20px 0px rgb(236 236 236); //菜单阴影
+@message-radius: 10px; //消息圆角
+@button-menu-radius: 10px; //按钮菜单圆角
+@modal-radius: 10px; //弹窗圆角
+@card-radius: 5px; //card圆角
+@card-shadow: 0px 0px 5px 0.5px #efefef; //card阴影
+@card-search-radius: 5px; //card-search圆角
+@card-search-shadow: 0px 0px 5px 0.5px #efefef; //card-search阴影
+@tooltip-radius: 10px; //提示圆角
+@page-container-shadow: 0 0 20px 0 #e7e7e7; //导航阴影
+@drawer-radius: 10px; //抽屉圆角
+@drawer-shadow: 0px 0 20px 0 #d2d2d2; //抽屉阴影
+@input-radius: 5px; //输入框圆角
+@btn-radius: 5px; //按钮圆角
+@radio-group-radius: 5px; //按钮组圆角
+@input-group-radius: 5px; //输入框组组圆角
+@input-radius: 5px; //输入框圆角
+@notice-panel-radius: 10px; //消息面板圆角
+@number-input-radius: 5px; //数字输入框圆角
+@tag-radius: 5px; //tag圆角
+@alert-radius: 5px; //alert圆角
+@dropdown-overlay-radius: 5px; //下拉框圆角
+@dropdown-overlay-shadow: 0px 0px 10px 10px rgba(241, 241, 241, 0.54); //下拉框阴影
+@ant-pagination-radius: 5px; //分页圆角
+html,
+body,
+#root {
+  height: 100%;
+}
+
+
+/**
+ * 全局滚动栏样式
+ */
+::-webkit-scrollbar {
+  width: 0; /* 纵向滚动条 */
+  height: 7px; /* 横向滚动条 */
+  background-color: transparent;
+}
+
+/* 定义滚动条轨道 内阴影 */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+}
+
+/* 定义滑块 内阴影 */
+::-webkit-scrollbar-thumb {
+  background-color: #d2d2d2;
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
+  left: unset;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Compatible with IE11
+@media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
+  body .ant-design-pro > .ant-layout {
+    min-height: 100vh;
+  }
+}
+
+//以下为自定义样式
+.ant-pro-global-header {
+  box-shadow: @header-shadow !important;
+}
+
+.ant-modal-mask {
+  background-color: #7272727a !important;
+}
+
+.ant-input {
+  border-radius: @input-radius !important;
+}
+
+.ant-alert-info {
+  border-radius: @alert-radius !important;
+}
+
+.ant-modal-body {
+  max-height: 50vh;
+  overflow: auto;
+  border-radius: @modal-radius !important;
+}
+
+.ant-modal-content {
+  border-radius: @modal-radius !important;
+}
+
+.ant-modal-header {
+  border-radius: @modal-radius !important;
+}
+
+.ant-modal-title {
+  color: rgb(81 81 81) !important;
+  font-weight: 700 !important;
+}
+
+.ant-message-notice-content {
+  border-radius: @message-radius !important;
+}
+
+.ant-pro-sider-logo h1 {
+  font-weight: 700 !important;
+  font-size: 20px !important;
+}
+
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  top: 19% !important;
+  right: 5px !important;
+  height: 60% !important;
+  border-right-width: 5px !important;
+  border-radius: @menu-radius 0 0 @menu-radius !important;
+}
+
+.ant-pro-sider .ant-layout-sider-children ::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.ant-menu-vertical > .ant-menu-item,
+.ant-menu-vertical-left > .ant-menu-item,
+.ant-menu-vertical-right > .ant-menu-item,
+.ant-menu-inline > .ant-menu-item,
+.ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title,
+.ant-menu-vertical-left > .ant-menu-submenu > .ant-menu-submenu-title,
+.ant-menu-vertical-right > .ant-menu-submenu > .ant-menu-submenu-title,
+.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+  height: 45px !important;
+  line-height: 45px !important;
+}
+
+.ant-menu-submenu > .ant-menu {
+  border-radius: @menu-radius;
+}
+
+.ant-menu-sub.ant-menu-inline > .ant-menu-item, .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+  height: 45px !important;
+  padding-left: 39px !important;
+  line-height: 45px !important;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  border-radius: @menu-radius !important;
+}
+
+.ant-menu-item:active,
+.ant-menu-submenu-title:active {
+  background: #f0f5ff;
+  border-radius: @menu-radius !important;
+}
+
+.ant-popover-inner {
+  border-radius: @menu-radius !important;
+}
+
+.ant-menu-vertical.ant-menu-sub:not([class*='-active']), .ant-menu-vertical-left.ant-menu-sub:not([class*='-active']), .ant-menu-vertical-right.ant-menu-sub:not([class*='-active']) {
+  border-radius: @menu-radius !important;
+}
+
+.ant-page-header.has-breadcrumb {
+  padding-top: 7px !important;
+}
+
+.ant-page-header {
+  padding: 7px 24px !important;
+}
+
+/**
+ * 日期选择样式
+ */
+.ant-picker-panel-container {
+  border-radius: @time-picker-radius !important;
+}
+
+/**
+ * 选择框样式
+ */
+.ant-select-dropdown {
+  border-radius: @select-radius !important;
+}
+
+/**
+ * 菜单下拉样式
+ */
+.ant-dropdown-menu {
+  border-radius: @button-menu-radius !important;
+}
+
+/**
+ * card 样式
+ */
+.ant-card {
+  border-radius: @card-radius !important;
+  box-shadow: @card-shadow !important;
+}
+
+.ant-card .ant-card {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.ant-pro-card .ant-card {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.ant-pro-card-title {
+  padding-left: 10px !important;
+  border-left: 5px solid @primary-color !important;
+  margin-left: -10px !important;
+}
+
+.ant-card-actions {
+  border-radius: 0 0 @card-radius @card-radius !important;
+}
+
+.ant-card-cover img {
+  border-radius: @card-radius @card-radius 0 0 !important;
+}
+
+/**
+ * card-search 样式
+ */
+.ant-pro-table-search {
+  border-radius: @card-search-radius !important;
+  box-shadow: @card-search-shadow !important;
+}
+
+.ant-pro-table-list-toolbar-title {
+  border-left: 5px solid @primary-color !important;
+  padding-left: 10px !important;
+  margin-left: -10px !important;
+}
+
+/**
+ * 菜单阴影
+ */
+.ant-pro-sider .ant-layout-sider .ant-pro-sider-fixed {
+  box-shadow: @menu-shadow !important;
+}
+
+/**
+ * 导航阴影
+ */
+.ant-pro-page-container-warp {
+  box-shadow: @page-container-shadow !important;
+}
+
+/**
+ * 提示圆角
+ */
+.ant-tooltip-inner {
+  border-radius: @tooltip-radius !important;
+}
+
+/**
+ * 导航栏顶部搜索
+ */
+.ant-select-single .ant-select-selector .ant-select-selection-search-input {
+  line-height: 30px !important;
+  border-radius: 10px !important;
+}
+
+/**
+ * 抽屉样式
+ */
+.ant-drawer-content {
+  box-shadow: @drawer-shadow !important;
+}
+
+.ant-drawer-left .ant-drawer-content {
+  border-radius: 0 @drawer-radius @drawer-radius 0 !important;
+}
+
+.ant-drawer-right .ant-drawer-content {
+  border-radius: @drawer-radius 0 0 @drawer-radius !important;
+}
+
+.ant-drawer-top .ant-drawer-content {
+  border-radius: 0 0 @drawer-radius @drawer-radius !important;
+}
+
+.ant-drawer-bottom .ant-drawer-content {
+  border-radius: @drawer-radius @drawer-radius 0 0 !important;
+}
+
+.ant-drawer-mask {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.ant-drawer-open .ant-drawer-content-wrapper {
+  box-shadow: none !important;
+}
+
+.ant-menu .ant-menu-item {
+  border-radius: @menu-radius !important;
+}
+
+.ant-menu .ant-menu-item:hover {
+  background-color: rgba(231, 231, 231, 0.3) !important;
+  transition: background-color 1s !important;
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-active::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+  border-bottom-width: 3px !important;
+  border-radius: @menu-radius @menu-radius 0 0 !important;
+}
+
+.ant-pro-top-nav-header.light .ant-pro-top-nav-header-logo h1 {
+  color: @primary-color !important;
+  font-weight: 700 !important;
+  font-size: revert !important;
+}
+
+.ant-pro-global-header-logo a img {
+  fill: #000 !important;
+}
+
+/**
+ * 输入框圆角
+ */
+.ant-input-affix-wrapper {
+  border-radius: @input-radius !important;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: @input-radius !important;
+}
+
+.ant-input-group .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: 0 @input-radius @input-radius 0 !important;
+}
+
+.ant-picker {
+  border-radius: @input-radius !important;
+}
+
+textarea {
+  border-radius: @input-radius !important;
+}
+
+/**
+ * 按钮圆角
+ */
+.ant-btn {
+  border-radius: @btn-radius !important;
+  box-shadow: 2px 2px 10px 0 #ababab2b !important;
+}
+
+/**
+ * 分步表单居中
+ */
+.ant-pro-steps-form {
+  text-align: center !important;
+}
+
+.ant-pro-steps-form-container {
+  min-width: auto !important;
+}
+
+/**
+ * 按钮组圆角
+ */
+.ant-radio-button-wrapper:first-child {
+  border-radius: @radio-group-radius 0 0 @radio-group-radius !important;
+}
+
+.ant-radio-button-wrapper:last-child {
+  border-radius: 0 @radio-group-radius @radio-group-radius 0 !important;
+}
+
+.ant-btn-group > .ant-btn:first-child:not(:last-child), .ant-btn-group > span:first-child:not(:last-child) > .ant-btn {
+  border-radius: @radio-group-radius 0 0 @radio-group-radius !important;
+}
+
+.ant-btn-group .ant-btn + .ant-btn, .ant-btn + .ant-btn-group, .ant-btn-group span + .ant-btn, .ant-btn-group .ant-btn + span, .ant-btn-group > span + span, .ant-btn-group + .ant-btn, .ant-btn-group + .ant-btn-group {
+  border-radius: 0 !important;
+}
+
+.ant-btn-group > .ant-btn:last-child:not(:first-child), .ant-btn-group > span:last-child:not(:first-child) > .ant-btn {
+  border-radius: 0 @radio-group-radius @radio-group-radius 0 !important;
+}
+
+/**
+ * 输入框组圆角
+ */
+.ant-input-group > .ant-input:first-child, .ant-input-group-addon:first-child {
+  border-radius: @input-group-radius 0 0 @input-group-radius !important;
+}
+
+.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button {
+  border-radius: 0 @input-group-radius @input-group-radius 0 !important;
+}
+
+/**
+ * 消息面板圆角
+ */
+.ant-spin-nested-loading {
+  border-radius: @notice-panel-radius !important;
+}
+
+/**
+ * 数字输入框圆角
+ */
+.ant-input-number {
+  border-radius: @number-input-radius !important;
+}
+
+/**
+ * tag圆角
+ */
+.ant-tag, .ant-tag a, .ant-tag a:hover {
+  border-radius: @tag-radius !important;
+}
+
+/**
+ * alert圆角
+ */
+.ant-alert-banner {
+  border-radius: @alert-radius !important;
+}
+
+/**
+ *pro card圆角
+ */
+.ant-pro-card {
+  border-radius: @card-radius !important;
+  box-shadow: @card-shadow !important;
+}
+
+.ant-pro-card .ant-pro-card {
+  box-shadow: none !important;
+}
+
+/**
+ * 查询下拉框
+ */
+.ant-pro-core-field-dropdown-overlay {
+  box-shadow: @dropdown-overlay-shadow !important;
+  border-radius: @dropdown-overlay-radius !important;
+}
+
+/**
+ * 分页框圆角
+ */
+.ant-pagination-item {
+  border-radius: @ant-pagination-radius !important;
+}
+
+.ant-pro-checkcard-checked::after {
+  top: 0 !important;
+  right: -1px !important;
+  border-top-right-radius: 6px !important;
+}

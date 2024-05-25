@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "author": "",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/charts": "^2.1.1",
+    "@ant-design/icons": "^5.3.7",
+    "@ant-design/pro-components": "^2.7.9",
+    "@umijs/plugins": "^4.1.1",
+    "antd": "^5.14.1",
+    "antd-style": "^3.6.1",
+    "numeral": "^2.0.6",
+    "react-fast-marquee": "^1.6.4",
+    "react-load-script": "^0.0.6",
+    "umi": "^4.1.8",
+    "umi-request": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.3"
+  }
+}

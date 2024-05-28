@@ -11,63 +11,95 @@ import {createStyles, useResponsive} from "antd-style";
 
 const useStyles = createStyles(({css, responsive}): any => {
     return {
-        mainTitle: {
-            backgroundImage: "url(https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png)",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            height: "250px",
-            textAlign: "center",
-            borderTopLeftRadius: "10px",
-            borderTopRightRadius: "10px",
-        },
-        topTitle: {
-            fontSize: "30px",
-            color: "#cfc8bd !important",
-            paddingTop: "45px",
-            boxSizing: "border-box"
-        },
+        mainTitle:css`
+            background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 250px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                height: 60px;
+            }
+        `,
+        topTitle:css`
+            font-size: 30px;
+            color: #cfc8bd !important;
+            padding-top: 45px;
+            box-sizing: border-box;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                font-size: 14px;
+                padding-top: 12px;
+            }
+        `,
         main: {
             maxWidth: "600px",
             margin: "0 auto",
             boxShadow: "0 50px 40px 0 #eeeeeead",
         },
-        body: {
-            margin: "-100px auto 0 auto",
-        },
-        cardTitle: {
-            position: "relative",
-            backgroundImage: "url(https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/personPackage.5c08b148.svg)",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            height: "120px",
-            borderRadius: "10px 10px 0 0",
-            textAlign: "center",
-        },
-        topTitle2: {
-            fontSize: "27px",
-            fontWeight: "bolder",
-            color: "#af6e01",
-            height: "65px",
-            lineHeight: "75px",
-        },
-        bottomTitle: {
-            fontSize: "18px",
-            color: "#af6e01",
-        },
+        body:css`
+            margin: -100px auto 0 auto;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                margin: -15px auto 0 auto;
+            }
+        `,
+        cardTitle:css`
+            position: relative;
+            background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/personPackage.5c08b148.svg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 120px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                height: 90px;
+                width: 90%;
+                margin-left: 5%;
+            }
+        `,
+        topTitle2:css`
+            font-size: 27px;
+            font-weight: bolder;
+            color: #af6e01;
+            height: 65px;
+            line-height: 75px;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                font-size: 20px;
+                height: 50px;
+                line-height: 65px;
+            }
+        ` ,
+        bottomTitle: css`
+            font-size: 18px;
+            color: #af6e01;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                font-size: 13px;
+            }
+        `,
         cardBody: {
             borderRadius: "0 0 10px 10px !important"
         },
-        button: {
-            marginTop: "30px",
-            marginLeft: "-15px",
-            fontSize: "13px",
-            width: "40%",
-            background: "linear-gradient(303deg, #e7c183, #fce9c9 100%, #fce9c9 0, #fce9c9 0)",
-            color: "#ab6d28",
-            border: 0,
-            lineHeight: "20px",
-            height: "40px",
-        },
+        button: css`
+            margin-top: 30px;
+            font-size: 13px;
+            width: 40%;
+            margin-left: 30%;
+            background: linear-gradient(303deg, #e7c183, #fce9c9 100%, #fce9c9 0, #fce9c9 0) !important;
+            color: #ab6d28 !important;
+            border: 0;
+            line-height: 20px;
+            height: 40px;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                width: 60%;
+                margin-left: 20%;
+            }
+        `,
+        label:css`
+            .ant-form-item-label >label{
+                font-size: 14px;
+            }
+        `,
         box: {
             backgroundColor: "rgb(255 249 238)",
             border: "1px solid #ffdea8",
@@ -153,7 +185,7 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td
+            table, thead, tbody, tr, th, td,label
         }
     } = useStyles()
     /**
@@ -252,10 +284,9 @@ export default (): React.ReactNode => {
                 setIsModalAddWebVisible(false);
                 add.resetFields();
             }}>
-                <Form form={add} name="control-hooks" onFinish={onAddFormFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 16}}>
+                <Form className={label} size="large" form={add} name="control-hooks" onFinish={onAddFormFinish}  labelCol={{span: 6}} wrapperCol={{span: 16}}>
                     <Form.Item name={"name"} label="网站名称" rules={[{required: true, message: "请输入网站名称"}]}>
-                        <Input placeholder="请输入网站名称"/>
+                        <Input  placeholder="请输入网站名称"/>
                     </Form.Item>
                     <Form.Item label="绑定域名">
                             <Form.Item
@@ -270,7 +301,7 @@ export default (): React.ReactNode => {
                                 noStyle
                                 rules={[{required: true, message: '请选择后缀'}]}
                             >
-                                <Select placeholder="请选择后缀" style={{width: '55%'}}>
+                                <Select  placeholder="请选择后缀" style={{width: '55%'}}>
                                     {siteConfig?.['master.domains']?.map((k: any) => {
                                         return <Select.Option key={"domain_" + k} value={k}>.{k}</Select.Option>
                                     })}
@@ -278,7 +309,7 @@ export default (): React.ReactNode => {
                             </Form.Item>
                     </Form.Item>
                     <Form.Item name={"type"} label="支付方式" rules={[{required: true, message: "请选择支付方式"}]}>
-                        <Select placeholder="请选择支付方式">
+                        <Select  placeholder="请选择支付方式" >
                             <Select.Option
                                 value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
                             {payConfig?.['pay.qqpay.type'] && <Select.Option value={2}>QQ支付</Select.Option>}
@@ -353,7 +384,7 @@ export default (): React.ReactNode => {
                                     </div>
                                 </div>
                             </div>
-                            <Button className={button} type="primary" size={"large"} onClick={() => {
+                            <Button className={button} type={"primary"} size={"large"} onClick={() => {
                                 add?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
                                 setIsModalAddWebVisible(true);
                             }}>

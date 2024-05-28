@@ -51,7 +51,8 @@ export default (): React.ReactNode => {
             dataIndex: 'money',
             tip: '金额',
             hideInSearch: true,
-            render: (record: any) => {
+            render: (text:any,record: any) => {
+                console.log(record)
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -87,9 +88,16 @@ export default (): React.ReactNode => {
                 headerTitle={'消费明细'}
                 actionRef={actionRef}
                 rowKey={'id'}
+                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                scroll={{x:true}}
                 columns={columns}
                 request={async (params, sort) => {
-                    const data = await getPayLog(getParams(params, sort));
+                    const fetchParams = getParams(params, sort)
+                    const data = await getPayLog({
+                        body:{
+                            ...fetchParams
+                        }
+                    });
                     if (data.code != 200) {
                         message.error(data.message);
                     }

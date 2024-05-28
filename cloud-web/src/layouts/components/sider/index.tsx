@@ -1,8 +1,9 @@
-import {useLocation, history, useSelectedRoutes, useModel} from 'umi';
+import {useModel, useLocation, history, useSelectedRoutes} from 'umi';
 import React, {useEffect, useState} from 'react';
 import {ConfigProvider, Menu, theme, Layout} from 'antd';
 import {createStyles, useResponsive} from "antd-style";
-import {Icon} from "@/components"
+import {Icon} from "@/components";
+
 const useStyles = createStyles(({token}): any => {
     return {
         left: {
@@ -35,15 +36,17 @@ const useStyles = createStyles(({token}): any => {
         menuTop: {
             zIndex: 2,
             userSelect: "none",
-            height: "64px",
-            lineHeight: "64px !important",
+            height: "55px",
+            lineHeight: "55px !important",
             width: "100%",
-            padding: "5px !important",
-            textAlign: "center",
+            padding: "10px !important",
             overflow: "hidden",
             position: "sticky",
             cursor: "pointer",
             top: 0,
+            display: "flex",
+            alignItems:"center",
+            justifyContent: "center",
         },
         menuBottom: {
             background: token?.colorBgContainer,
@@ -70,6 +73,7 @@ const useStyles = createStyles(({token}): any => {
         },
     };
 });
+
 export type SiderProps = {
     collapsed?: boolean;//菜单展开状态
     menus?: any;//菜单列表
@@ -81,6 +85,7 @@ export type SiderProps = {
     menuBottomBtnText?: string;//底部按钮文字
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
 };
+
 const Sider: React.FC<SiderProps> = (props) => {
     const {
         collapsed,

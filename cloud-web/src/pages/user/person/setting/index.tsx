@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ProCard from "@ant-design/pro-card";
 import {
     Alert, App,
@@ -19,13 +19,19 @@ import ProForm, {ProFormText} from "@ant-design/pro-form";
 import { LockOutlined, MailOutlined, SafetyOutlined, UploadOutlined} from "@ant-design/icons";
 import {updateInfo, updatePassword, updateEmail, updatePhone} from "@/service/person/update";
 import {getUploadUrl} from "@/service/common/upload";
-import SmsVerify from "@/components/smsVerify";
+import SmsVerify from "@/pages/components/smsVerify";
 import { Body } from '@/layouts/components';
 import {useModel} from "umi";
-import EmailVerify from "@/components/emailVerify";
+import EmailVerify from "@/pages/components/emailVerify";
 
 export default (): React.ReactNode => {
-    const user = useModel("user")
+    const user= useModel('user');
+    const refresh = useModel("user")
+    useEffect(()=>{
+        if(!user.web){
+            refresh.refreshWebUser()
+        }
+    },[user])
     const {message} = App.useApp()
     const [isUploadAvatarLoading, setIsUploadAvatarLoading] = useState(false);
     /**
@@ -107,11 +113,9 @@ export default (): React.ReactNode => {
                                 password: values?.password
                             },
                             onSuccess:(r:any)=>{
-                                setIsPasswordModalLoading(false)
                                 if(r?.code == 200){
                                     message?.success(r?.message)
                                     setIsPasswordModalVisible(false)
-                                    setIsPasswordModalLoading(false)
                                 }
                             },
                             onFail:(r:any)=>{
@@ -143,9 +147,8 @@ export default (): React.ReactNode => {
                         },
                         onSuccess:(r:any)=>{
                             if(r?.code == 200){
-                                setIsEmailModalVisible(false)
                                 message?.success(r?.message)
-                                setIsEmailModalLoading(false)
+                                setIsEmailModalVisible(false)
                             }
                         },
                         onFail:(r:any)=>{
@@ -167,8 +170,8 @@ export default (): React.ReactNode => {
             <Modal key={"editPhone"} width={430} destroyOnClose={true} forceRender={true} title="修改手机"
                    open={isPhoneModalVisible} confirmLoading={isPhoneModalLoading}
                    onOk={phoneForm.submit} okText={"确 认"} onCancel={() => {
-                setIsPhoneModalVisible(false);
-                phoneForm.resetFields();
+                    setIsPhoneModalVisible(false);
+                    phoneForm.resetFields();
             }}>
                 <SmsVerify form={phoneForm} phone={phone} onFinish={async (values: any) => {
                     setIsPhoneModalLoading(true);
@@ -178,9 +181,8 @@ export default (): React.ReactNode => {
                         },
                         onSuccess:(r:any)=>{
                             if(r?.code == 200){
-                                setIsPhoneModalVisible(false)
                                 message?.success(r?.message)
-                                setIsPhoneModalLoading(false);
+                                setIsPhoneModalVisible(false)
                             }
                         },
                         onFail:(r:any)=>{
@@ -287,7 +289,7 @@ export default (): React.ReactNode => {
                                 }}>
                                     <ProFormText width="md" label="账号" name="account" tooltip="未设置用户可修改一次"
                                                  rules={[{required: true, message: '请输入登陆账号',}]}
-                                                 initialValue={user?.web?.account}>
+                                                 initialValue={user?.web?.account || "未设置"}>
                                         <Row gutter={6} wrap={false}>
                                             <Col flex={5}>
                                                 <Input type="text" placeholder="请输入您的登陆账号" defaultValue={user?.web?.account}

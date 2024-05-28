@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import ProTable, {ProColumns} from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
 import {App} from "antd";
@@ -14,7 +14,7 @@ export default (): React.ReactNode => {
     /**
      * table表格渲染
      */
-    const columns: ProColumns[] = [
+    const columns = [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -22,27 +22,23 @@ export default (): React.ReactNode => {
             hideInSearch: true,
             hideInTable: true,
             sorter: true,
-            align:"center"
         },
         {
             title: '请求ID',
             dataIndex: 'request_id',
             tip: '该请求的唯一ID',
             copyable: true,
-            align:"center"
         },
         {
             title: '请求IP',
             dataIndex: 'request_ip',
             tip: '请求者IP',
             copyable: true,
-            align:"center"
         },
         {
             title: '事件类型',
             dataIndex: 'type',
             tip: '事件类型',
-            align:"center",
             valueEnum: {
                 0: {
                     text: '登陆',
@@ -71,14 +67,12 @@ export default (): React.ReactNode => {
             dataIndex: 'title',
             tip: '标题',
             hideInSearch: true,
-            align:"center"
         },
         {
             title: '内容',
             dataIndex: 'content',
             tip: '内容',
             hideInSearch: true,
-            align:"center"
         },
         {
             title: '操作时间',
@@ -88,13 +82,11 @@ export default (): React.ReactNode => {
             sorter: true,
             hideInSearch: true,
             editable: false,
-            align:"center"
         },
         {
             title: '操作时间',
             valueType: 'dateTimeRange',
             dataIndex: 'create_time',
-            align:"center",
             tip: '请求接口时间',
             hideInTable: true,
             search: {
@@ -110,27 +102,35 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-            <ProTable
-                form={{layout: "vertical",autoFocusFirstInput:false}}
-                headerTitle={'操作日志'}
-                actionRef={actionRef}
-                rowKey={'id'}
-                columns={columns}
-                request={async (params, sort) => {
-                    const data = await getLogList(getParams(params, sort));
-                    if (data?.code != 200) {
-                        message?.error(data?.message);
-                    }
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
-                }}
-                search={{
-                    labelWidth: "auto",
-                }}
-            />
+                <ProTable
+                    form={{layout: "vertical",autoFocusFirstInput:false}}
+                    headerTitle={'操作日志'}
+                    actionRef={actionRef}
+                    style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                    scroll={{x:true}}
+                    rowKey={'id'}
+                    //@ts-ignore
+                    columns={columns}
+                    request={async (params, sort) => {
+                        const fetchParams = getParams(params, sort)
+                        const data = await getLogList({
+                            body:{
+                                ...fetchParams
+                            }
+                        });
+                        if (data?.code != 200) {
+                            message?.error(data?.message);
+                        }
+                        return {
+                            data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
+                            success: data.code === 200,
+                            total: data.data.total,
+                        };
+                    }}
+                    search={{
+                        labelWidth: "auto",
+                    }}
+                />
         </Body>
     );
 };

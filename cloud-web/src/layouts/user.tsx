@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from "react";
+import React, {useEffect, useState} from "react";
 import Layout from "@/layouts/components";
 import {getUserMenuItems} from "@/utils/route";
 import defaultSettings from "../../config/defaultSettings";
@@ -6,12 +6,13 @@ import {Icon} from "@/components";
 import {useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
-import {App, Avatar,  Col,  Popover, Row} from "antd";
+import {App, Avatar, Col, Popover, Row} from "antd";
 import {createStyles} from "antd-style";
 import Settings from "@/../config/defaultSettings";
-import {Bottom, Exit, Order, Setting} from "@/components/icon";
+import {Bottom, Exit, Order, Right, Setting} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
+
 /**
  * 中间件
  * @param ctx context
@@ -52,6 +53,7 @@ const RightTop: React.FC = () => {
             profile: css`
                 margin-left: 10px;
                 margin-right: 20px;
+
                 .anticon {
                     margin-left: 2px;
                     font-size: 10px;
@@ -98,30 +100,65 @@ const RightTop: React.FC = () => {
                 letterSpacing: "1px",
                 lineHeight: "100%",
                 marginLeft: "8px",
-                width:"auto"
+                width: "auto"
             },
-            text: {
-                cursor: "pointer",
-                borderRadius: "5px",
-                letterSpacing: "1px",
-                height: "42px",
-                lineHeight: "42px",
-                color: "#000",
-                fontSize: "14px",
-                paddingLeft: "10px",
-                boxSizing: "border-box",
-                transition: "background-color 0.5s ease",
-                ":hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+            // text: {
+            //     cursor: "pointer",
+            //     borderRadius: "5px",
+            //     letterSpacing: "1px",
+            //     height: "34px",
+            //     lineHeight: "34px",
+            //     color: "#000",
+            //     fontSize: "13px",
+            //     paddingLeft: "10px",
+            //     boxSizing: "border-box",
+            //     marginBottom: "3px",
+            //     transition: "background-color 0.5s ease",
+            //     ":hover": {
+            //         backgroundColor: "rgba(0, 0, 0, 0.1)",
+            //     }
+            // }
+            menu: {
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                userSelect: "none",
+                "li:last-of-type": {
+                    borderTop: "0.5px solid rgba(189, 189, 189, 0.2)",
+                    borderRadius: "0px 0px 5px 5px",
+                    height: "45px",
+                    lineHeight: "45px",
                 }
-            }
+            },
+            menuItem: {
+                cursor: "pointer",
+                letterSpacing: "1px",
+                height: "40px",
+                lineHeight: "40px",
+                fontSize: "12px",
+                padding: "0px 15px",
+                transition: "background-color 0.3s ease",
+                color: "rgb(115, 115, 115)",
+                display: "flex",
+                justifyContent: "space-between",
+                ":hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.03)",
+                },
+                ".anticon": {
+                    fontSize: "11px",
+                },
+                "div>.anticon": {
+                    fontSize: "12.5px",
+                    marginRight: "7px"
+                }
+            },
         };
     });
-    const {styles: {img, nickname, profile, pop, content_top, ava, text, top_text, box}} = useStyles();
+    const {styles: {img, nickname, profile, pop, content_top, ava, text, top_text, box,menu,menuItem}} = useStyles();
     return <>
         <Popover className={profile} overlayInnerStyle={{padding: 0}} overlayClassName={box} autoAdjustOverflow={false}
                  placement="bottomRight"
-                 content={<div style={{width: "200px"}}>
+                 content={<div style={{width: "210px"}}>
                      <Row className={content_top}>
                          <Col span={6}><Avatar className={ava} src={user?.web?.avatar}/></Col>
                          <Col span={16} className={top_text}>
@@ -133,31 +170,38 @@ const RightTop: React.FC = () => {
                              <div>{user?.web?.phone}</div>
                          </Col>
                      </Row>
-                     <ul style={{listStyle: "none", padding: 0, margin: 0, borderBottom: "1px solid #f0f0f0"}}>
-                         <li className={text}><Icon type={Setting} style={{fontSize:16,marginRight:4}}/>账号设置</li>
-                         <li className={text}><Icon type={Order} style={{fontSize:16,marginRight:4}}/>操作设置</li>
-                     </ul>
-                     <ul style={{listStyle: "none", padding: 0, margin: 0}}>
-                         <li className={text} onClick={async () => {
+                     <ul className={menu}>
+                         <li className={menuItem} onClick={()=>historyPush("user.setting")}>
+                             <div><Icon type={Setting} style={{fontSize: 16, marginRight: 4}}/>账号设置</div>
+                             <Icon type={Right}></Icon>
+                         </li>
+                         <li className={menuItem} onClick={()=>historyPush("user.log2")}>
+                            <div> <Icon type={Order} style={{fontSize: 16, marginRight: 4}} />操作设置</div>
+                             <Icon type={Right}></Icon>
+                         </li>
+                         <li className={menuItem} onClick={async () => {
                              message?.loading({content: '正在退出登录', duration: 600000, key: "outLogin"});
                              await outLogin({
-                                 onSuccess:(r)=>{
-                                     if(r?.code == 200){
+                                 onSuccess: (r) => {
+                                     if (r?.code == 200) {
                                          message?.success(r?.message || "退出登录成功")
                                          deleteHeader()
                                          message?.destroy("outLogin")
                                          historyPush("user.login");
                                      }
                                  },
-                                 onFail:(r)=>{
-                                     if(r?.code == 500){
+                                 onFail: (r) => {
+                                     if (r?.code == 500) {
                                          message?.error(r?.message || "退出登录失败")
                                      }
                                  }
                              })
-                         }}><Icon type={Exit} style={{fontSize:16,marginRight:4}} />退出登录
+                         }}>
+                            <div><Icon type={Exit} style={{fontSize: 16, marginRight: 4}}/>退出登录</div>
+                             <Icon type={Right}></Icon>
                          </li>
                      </ul>
+
                  </div>}>
             <div className={pop}>
                 <Avatar className={img} src={user?.web?.avatar}>
@@ -216,21 +260,19 @@ export default () => {
                     console.log("点击了菜单", item)
                 }}
                 collapsedLogo={() => {
-                    return <img src={(Settings?.base || "/") + "logo.svg"} width="40px"
-                                alt={web?.info?.name}/>
+                    return <img src={(Settings?.base || "/") + "logo.svg"} width="36"
+                                alt={Settings?.title}/>
                 }}
                 unCollapsedLogo={() => {
                     return (
-                        <span style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-                             <img src={(Settings?.base || "/") + "logo.svg"} width={40}
-                                  alt={web?.info?.name}/>
-                            <span style={{
-                                fontSize: 20,
-                                marginLeft: 8,
-                                color: "#0051eb",
-                                fontWeight: 700,
-                            }}>{web?.info?.name}</span>
-                        </span>
+                        <>
+                            <img src={(Settings?.base || "/") + "logo.svg"} width="36"
+                                 alt="沉沦云网络"/>
+                            <h5 style={{
+                                fontSize: "20px", color: "#0051eb", display: "inline-block",
+                                height: "20px", lineHeight: "20px", marginLeft: "5px"
+                            }}>{web?.info?.name || Settings?.title}</h5>
+                        </>
 
                     )
                 }}

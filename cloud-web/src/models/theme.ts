@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {theme} from "antd";
-
 // 获取默认风格
 const getLightTheme = (): any => {
     return {
@@ -30,11 +29,10 @@ const getLightTheme = (): any => {
 const getDarkTheme = (): any => {
     let themes = getLightTheme()
     themes.mode = "dark"
-    themes.components.Layout.headerBg = "#141414"
-    themes.algorithm = [theme.darkAlgorithm, theme.compactAlgorithm]
+    // themes.components.Layout.headerBg = "#141414"
+    // themes.algorithm = [ theme.darkAlgorithm,theme.compactAlgorithm]
     return themes
 }
-
 export default () => {
     const [themes, setThemes] = useState<any>(localStorage?.getItem("theme") == "light" ? getLightTheme() : getDarkTheme());
     const setLightTheme = () => {

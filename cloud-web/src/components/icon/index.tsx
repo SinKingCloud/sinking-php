@@ -1,38 +1,36 @@
-import {createFromIconfontCN} from '@ant-design/icons';
 
+import { createFromIconfontCN } from '@ant-design/icons';
 /**
  * 图标组件(生产环境需使用本地资源)
  */
 const Icon = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/c/font_4556436_p35ije88dm.js', // 在 iconfont.cn 上生成
+    scriptUrl: '//at.alicdn.com/t/c/font_4556436_oc8eto7gb3.js',
 });
 /**
  * 图标数据
  */
-const Exit = "icon-tuichu1"
+const Exit = "icon-exit"
 const Right = "icon-right"
-const Order = "icon-dingdanguanli"
-const Home = "icon-zhuye"
+const Order = "icon-order"
+const Home = "icon.home"
 const Setting = "icon-set"
-const User = "icon-yonghu"
-const Shop = "icon-shangcheng"
-const System = "icon-xitong"
-const Business  = "icon-zongheyewu"
-const Link = "icon-lianjie"
-const Money = "icon-jinqian"
+const User = "icon-user"
+const Shop = "icon-shop"
+const System = "icon-system"
+const Link = "icon-link"
+const Money = "icon-money"
 const Bottom = "icon-bottom"
 export {
     Icon,
+    Home,
     Exit,
     Right,
     Order,
-    Home,
     Setting,
     User,
     Shop,
     System,
-    Business,
     Link,
     Money,
-    Bottom
+    Bottom,
 }

@@ -9,7 +9,7 @@ export const user = [
         component: "@/pages/user/index",
         title: "数据概览",
         name: "user.index",
-        icon: 'icon-zhuye',
+        icon: 'icon-home',
         hideInMenu: false,
         routes:[
             {
@@ -26,7 +26,7 @@ export const user = [
         component: "@/pages/user/shop",
         title: "在线商城",
         name: "user.shop",
-        icon: 'icon-shangcheng',
+        icon: 'icon-shop',
         hideInMenu: false,
         routes:[
             {
@@ -42,7 +42,7 @@ export const user = [
         path: "pay",
         title: "财务管理",
         name: "user.pay",
-        icon: 'icon-jinqian',
+        icon: 'icon-money',
         hideInMenu: false,
         routes:[
             {
@@ -72,7 +72,7 @@ export const user = [
         path: "person",
         title: "账户管理",
         name: "user.person",
-        icon: 'icon-yonghu',
+        icon: 'icon-user',
         hideInMenu: false,
         routes:[
             {
@@ -95,7 +95,7 @@ export const user = [
         path: "master",
         title: "系统管理",
         name: "master.index",
-        icon: 'icon-yonghu',
+        icon: 'icon-system',
         hideInMenu: false,
         routes:[
             {
@@ -193,6 +193,13 @@ export default [
             },
             {
                 path: '/' + userPath + '/login',
+                component: '@/pages/user/login',
+                name: "user.login",
+                title: "帐号登录",
+                hideInMenu: false,
+            },
+            {
+                path: '/' + userPath,
                 component: '@/pages/user/login',
                 name: "user.login",
                 title: "帐号登录",

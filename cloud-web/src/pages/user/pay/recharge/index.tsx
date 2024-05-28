@@ -15,7 +15,7 @@ import {getPayConfig, recharge} from "@/service/pay/pay";
 import {setPayJumpUrl} from "@/utils/pay";
 import {Body} from '@/layouts/components';
 import {useResponsive} from "antd-style";
-import ProTable,{ProColumns} from "@ant-design/pro-table";
+import ProTable, {ProColumns} from "@ant-design/pro-table";
 
 export default (): React.ReactNode => {
     const {message} = App.useApp()
@@ -49,21 +49,18 @@ export default (): React.ReactNode => {
             hideInSearch: true,
             hideInTable: true,
             sorter: true,
-            align: "center",
         },
         {
             title: '订单ID',
             dataIndex: 'trade_no',
             tip: '订单唯一ID',
             copyable: true,
-            align: "center",
         },
         {
             title: '充值金额',
             dataIndex: 'money',
             tip: '充值金额',
-            align: "center",
-            render: (text: string, record: any) => {
+            render: (text:any,record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -71,7 +68,6 @@ export default (): React.ReactNode => {
             title: '状态',
             dataIndex: 'status',
             tip: '订单状态',
-            align: "center",
             valueEnum: {
                 0: {
                     text: '未支付',
@@ -89,7 +85,6 @@ export default (): React.ReactNode => {
         },
         {
             title: '创建时间',
-            align: "center",
             dataIndex: 'create_time',
             tip: '订单创建时间',
             hideInSearch: true,
@@ -100,7 +95,6 @@ export default (): React.ReactNode => {
             dataIndex: 'update_time',
             tip: '订单创建时间',
             hideInSearch: true,
-            align: "center",
         },
     ];
     return (
@@ -135,7 +129,7 @@ export default (): React.ReactNode => {
                     </Row>
                     <Row>
                         <Col xs={{span: 24}} lg={{span: 24}}>
-                            <ProCard bordered title="账户充值" loading={loading} headerBordered>
+                            <ProCard bordered title="账户充值" loading={loading} >
                                 <Form
                                     form={form}
                                     labelCol={{span: 12}}
@@ -147,11 +141,11 @@ export default (): React.ReactNode => {
                                         values = {money: parseInt(values?.money), type: parseInt(values?.type)}
                                         setPayBtnLoading(true);
                                         recharge({
-                                            body:{
+                                            body: {
                                                 ...values
                                             },
-                                            onSuccess:(r:any)=>{
-                                                if(r?.code == 200){
+                                            onSuccess: (r: any) => {
+                                                if (r?.code == 200) {
                                                     // @ts-ignore
                                                     ref?.current?.reload();
                                                     setPayJumpUrl();
@@ -172,7 +166,7 @@ export default (): React.ReactNode => {
                                                     setPayBtnLoading(false);
                                                 }
                                             },
-                                            onFail:(r:any)=>{
+                                            onFail: (r: any) => {
                                                 message?.error(r?.message || "请求错误")
                                                 setPayBtnLoading(false);
                                             }
@@ -196,48 +190,80 @@ export default (): React.ReactNode => {
                                                 title="10元"
                                                 size={"small"}
                                                 value="10"
-                                                style={{width: "auto", borderRadius: "10px"}}
+                                                style={{
+                                                    borderRadius: "10px",
+                                                    padding: "2px 7px",
+                                                    width: "auto",
+                                                    boxSizing: "border-box"
+                                                }}
                                             />
                                             <CheckCard
                                                 title="50元"
                                                 size={"small"}
                                                 value="50"
-                                                style={{width: "auto", borderRadius: "10px"}}
+                                                style={{
+                                                    borderRadius: "10px",
+                                                    padding: "2px 7px",
+                                                    width: "auto",
+                                                    boxSizing: "border-box"
+                                                }}
                                             />
                                             <CheckCard
                                                 title="100元"
                                                 size={"small"}
                                                 value="100"
-                                                style={{width: "auto", borderRadius: "10px"}}
+                                                style={{
+                                                    borderRadius: "10px",
+                                                    padding: "2px 7px",
+                                                    width: "auto",
+                                                    boxSizing: "border-box"
+                                                }}
                                             />
                                             <CheckCard
                                                 title="500元"
                                                 size={"small"}
                                                 value="500"
-                                                style={{width: "auto", borderRadius: "10px"}}
+                                                style={{
+                                                    borderRadius: "10px",
+                                                    padding: "2px 7px",
+                                                    width: "auto",
+                                                    boxSizing: "border-box"
+                                                }}
                                             />
                                             <CheckCard
                                                 title="1000元"
                                                 size={"small"}
                                                 value="1000"
                                                 style={{
-                                                    width: "auto",
                                                     borderRadius: "10px",
-                                                    display: moneyInput ? "inline-block" : "none"
+                                                    padding: "2px 7px",
+                                                    width: "auto",
+                                                    boxSizing: "border-box"
                                                 }}
                                             />
                                             <CheckCard
                                                 title="自定义"
                                                 size={"small"}
                                                 value=""
-                                                style={{width: "auto", borderRadius: "10px"}}
+                                                style={{
+                                                    borderRadius: "10px",
+                                                    padding: "2px 7px",
+                                                    width: "auto",
+                                                    boxSizing: "border-box"
+                                                }}
                                             />
-                                            <Input placeholder={"金额"}  hidden={moneyInput}
+                                            <Input placeholder={"金额"} hidden={moneyInput}
                                                    onChange={(e) => {
                                                        setMoney(e.target.value);
                                                        form.setFieldsValue({money: e.target.value});
                                                    }}
-                                                   style={{height: "47px", width: "80px", margin: "0px"}}/>
+                                                   style={{
+                                                       height: "41.5px",
+                                                       width: "68px",
+                                                       margin: "0px",
+                                                       borderRadius: "10px",
+                                                       textAlign: "center"
+                                                   }}/>
                                         </CheckCard.Group>
                                     </Form.Item>
                                     <Form.Item
@@ -254,7 +280,7 @@ export default (): React.ReactNode => {
                                                         value="0"
                                                         size={"small"}
                                                         style={{
-                                                            maxWidth: "95px",
+                                                            maxWidth: "70px",
                                                             borderRadius: "10px",
                                                             display: payConfig['pay.alipay.type'] ? 'inline-block' : 'none'
                                                         }}
@@ -264,7 +290,7 @@ export default (): React.ReactNode => {
                                                         value="1"
                                                         size={"small"}
                                                         style={{
-                                                            maxWidth: "85px",
+                                                            maxWidth: "70px",
                                                             borderRadius: "10px",
                                                             display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
                                                         }}
@@ -274,7 +300,7 @@ export default (): React.ReactNode => {
                                                         value="2"
                                                         size={"small"}
                                                         style={{
-                                                            maxWidth: "85px",
+                                                            maxWidth: "70px",
                                                             borderRadius: "10px",
                                                             display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
                                                         }}
@@ -304,6 +330,8 @@ export default (): React.ReactNode => {
                         form={{layout: "vertical", autoFocusFirstInput: false}}
                         headerTitle={'充值记录'}
                         rowKey={'id'}
+                        style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                        scroll={{x:true}}
                         columns={columns}
                         request={async (params, sort) => {
                             params.order_type = 0;

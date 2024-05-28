@@ -9,99 +9,105 @@ import {NotificationOutlined, PlusOutlined} from "@ant-design/icons";
 import {getNoticeList} from "@/service/person/notice";
 import {ago} from "@/utils/time";
 import {getContact, getNotice} from "@/service/person/config";
-import NoticeInfo from "@/components/noticeInfo";
+import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles} from "antd-style";
 import {Body} from "@/layouts/components";
 //@ts-ignore
 const useStyles = createStyles(({css, token, responsive}): any => {
     return {
-        pageHeaderContent: {
-            height: "150px",
-            display: "flex",
-            alignItems: "center",
-        },
-        avatar: {
-            height: "65px",
-            width: "65px",
-            marginRight: "15px"
-        },
-        title: {
-            fontSize: "20px",
-            color: "rgba(0, 0, 0, 0.85)",
-            marginBottom: "8px"
-        },
-        content: {
-            fontSize: 14,
-            color: "rgba(0, 0, 0, 0.45)"
-        },
-        right: {
-            display: "flex",
-            height:"150xpx"
-        },
-        money: {
-            marginBottom: "4px",
-            color: "rgba(0, 0, 0, 0.45)",
-            fontSize: "14px",
-            padding: "0 32px",
-        },
-        my: css`
-            line-height: 30px !important;
-
-            &::before {
-                position: absolute;
-                font-size: 16px;
-                top: 10px;
-                left: 6px;
-                width: 4px;
-                height: 26px;
-                background-color: #0051eb;
-                content: '';
+        pageHeaderContent: css`
+             display: flex;
+             align-items: center;
+            margin-bottom: 20px;
+        `,
+        avatar: css`
+            height: 65px;
+            width: 65px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+                margin-bottom: 10px;
             }
         `,
-        notice: css`
-            line-height: 30px !important;
-
-            &::before {
-                position: absolute;
-                font-size: 16px;
-                top: 8px;
-                left: 6px;
-                width: 4px;
-                height: 24px;
-                background-color: #0051eb;
-                content: '';
+        box:css`
+            height: 65px;
+        `,
+        title: css`
+            margin-top: 8px;
+            font-size: 20px;
+            color: rgba(0, 0, 0, 0.85) !important;
+            line-height: 1;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+                text-align: center;
+                margin-top: 0;
+                line-height: 1;
             }
         `,
-        projectGrid: {
-            width: "33.33%",
-            border: "1px solid #f6f6f6",
-            borderRadius: " 0 !important",
-            padding: "0px !important"
-        },
+        content:css`
+            font-size: 15px;
+            line-height: 1;
+            color: rgba(0, 0, 0, 0.45);
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                line-height: 20px;
+            }
+        `,
+        right: css`
+            display: flex;
+            align-items: center;
+        `,
+        money:css`
+            margin-bottom: 4px;
+            color: rgba(0, 0, 0, 0.45);
+            font-size: 14px;
+            padding: 0 30px;
+            box-sizing: border-box;
+            display:flex;
+            align-items:center;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                padding: 0 30px;
+                box-sizing: border-box;
+                .ant-statistic-title{
+                    font-size: 14px;
+                }
+                .ant-statistic-content{
+                    font-size: 22px !important;
+                }
+            }
+        `,
+        projectGrid:css`
+            width: 33.33%;
+            border: 1px solid #f6f6f6;
+            border-radius:  0 !important;
+            padding: 0 !important;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+                width: 100%;
+                .ant-card-body{
+                    padding:0 !important;
+                }
+            }
+        `,
         newButton: {
             width: "100%",
             height: "145px",
             borderRadius: "0 !important",
-            color: "#979797",
+            color: "rgba(0, 0, 0, 0.45)",
             boxShadow: "none !important",
             border: "none !important",
             padding: "0px !important"
         },
-        card: css`
-            .ant-card-body {
-                padding: 0 !important;
-            }
-        `,
         contact: {
             padding: "15px",
-            height:"100%",
-            width:"100%",
-            display:"flex",
-            alignItems:"center",
-            justifyContent:"space-between",
-            avatar2: {
-                marginRight:"10px"
-            },
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            avatar2: css`
+                margin-right: 10px;
+                ${responsive.md}{
+                    margin-right: 5px;
+                }
+            `,
             info: {
                 marginLeft: "10px",
                 marginTop: "-3px",
@@ -122,21 +128,49 @@ const useStyles = createStyles(({css, token, responsive}): any => {
                 }
             }
         },
-        inner:{
-            display:"flex",
-            width:"135px",
-            justifyContent:"space-between"
+        inner: {
+            display: "flex",
+            width: "135px",
+            justifyContent: "space-between"
         },
-        inner1:{
-            display:"flex",
-            width:"105px",
-            justifyContent:"space-between"
+        inner1: {
+            display: "flex",
+            width: "105px",
+            justifyContent: "space-between"
         },
+        align: css`
+            width: 100%;
+            display: flex;
+            align-items: center;
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+                display: flex;
+                flex-direction: column;
+                .ant-col-16{
+                    max-width: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center
+                }
+                .ant-col-8{
+                    max-width: 100%;
+                }
+            }
+        `,
+        my:css`
+            .ant-pro-card-header{
+                margin-bottom: 5px;
+            }
+        `,
+        card:css`
+            .ant-card-body{
+                padding: 0 !important;
+            }
+        `
     };
 });
 const PageHeaderContent: FC = () => {
     const {
-        styles: {pageHeaderContent, avatar, title, content}
+        styles: {box, avatar, title, content}
     } = useStyles();
     const user = useModel("user")
     const loading = user && Object.keys(user).length;
@@ -144,32 +178,34 @@ const PageHeaderContent: FC = () => {
         return <Skeleton avatar paragraph={{rows: 1}} active/>;
     }
     return (
-        <div className={pageHeaderContent}>
-            <Avatar src={user?.web?.avatar} className={avatar}/>
-            <div>
+        <>
+            <Avatar src={user?.web?.avatar} className={avatar}/><br/>
+            <div className={box}>
                 <div className={title}>
                     你好，
                     {user?.web?.nick_name}！
                 </div>
+                <br/>
                 <div style={{maxWidth: "450px"}} className={content}>
                     尊敬的 <b>{user?.web?.nick_name}</b> ,欢迎回来，我们已等候多时！
                 </div>
             </div>
-        </div>
+        </>
+
     );
 };
 const ExtraContent: FC = () => {
     const user = useModel("user")
     const {styles: {right, money}} = useStyles();
     return (
-        <div className={right}>
+        <>
             <div className={money}>
                 <Statistic title="余额" prefix={"￥"} value={parseFloat(user?.web?.money || 0).toFixed(2)}/>
             </div>
             <div className={money}>
-                <Statistic  title="身份" value={user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}/>
+                <Statistic title="身份" value={user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}/>
             </div>
-        </div>
+        </>
     )
 };
 
@@ -186,10 +222,13 @@ export default () => {
             projectGrid,
             newButton,
             my,
-            card,
             notice,
             inner,
-            inner1
+            inner1,
+            align,
+            pageHeaderContent,
+            right,
+            card
         }
     } = useStyles();
     /**
@@ -282,13 +321,13 @@ export default () => {
     }, []);
     return (
         <Body>
-            <NoticeInfo id={noticeId} visible={noticeVisible} onClose={hideNoticeInfoModal}/>
+            <NoticeInfo id={noticeId} open={noticeVisible} onClose={hideNoticeInfoModal}/>
             <Row gutter={24}>
                 <Skeleton title={false} loading={notice2Loading} active>
                     <Col xl={24} md={24}
                          hidden={notice2Data?.['notice.index'] == "" || notice2Data?.['notice.index'] == null}>
                         <Alert
-                            style={{fontSize:"14px", marginTop:"8px",marginBottom:"15px"}} banner
+                            style={{fontSize: "14px", marginTop: "8px", marginBottom: "15px"}} banner
                             type={"info"}
                             message={
                                 <Marquee pauseOnHover gradient={false}>
@@ -299,12 +338,12 @@ export default () => {
                     </Col>
                 </Skeleton>
                 <Col xl={24} md={24}>
-                    <Card style={{marginBottom: "20px",height:"150px"}} className={card}>
-                        <Row >
-                            <Col span={12} style={{paddingLeft:"20px",boxSizing:"border-box"}}>
+                    <Card style={{marginBottom: "20px"}}>
+                        <Row className={align}>
+                            <Col span={16} className={pageHeaderContent}>
                                 <PageHeaderContent/>
                             </Col>
-                            <Col  span={12} style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <Col span={8} className={right}>
                                 <ExtraContent/>
                             </Col>
                         </Row>
@@ -315,17 +354,15 @@ export default () => {
                         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
                             <ProCard
                                 className={my}
-                                headerBordered
                                 style={{marginBottom: 24}}
                                 title="我的数据"
-                                bordered={false}
-                                extra={<Link to="/user/index">查看全部</Link>}
+                                extra={<Link to="/user/index/dashboard">查看全部</Link>}
                                 loading={false}
                                 bodyStyle={{padding: 0}}
                             >
                                 <Card.Grid className={projectGrid} style={{padding: "0px"}}>
                                     <Card className={card} bordered={false}>
-                                        <Button type="dashed" className={newButton}>
+                                        <Button  className={newButton}>
                                             <PlusOutlined/> 立即添加
                                         </Button>
                                     </Card>
@@ -335,19 +372,19 @@ export default () => {
                         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
                             <ProCard
                                 className={projectList}
-                                headerBordered
                                 style={{marginBottom: 24}}
                                 bordered={false}
                                 loading={contactLoading}
                                 bodyStyle={{padding: 0}}
                             >
                                 <Row>
-                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} hidden={contactData?.['contact.one'] == ''}>
+                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
+                                         hidden={contactData?.['contact.one'] == ''}>
                                         <div className={contact}>
                                             <div className={inner}>
                                                 <Avatar className={avatar2}
-                                                    src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
-                                                    size="large" shape="square" style={{borderRadius: "5px"}}/>
+                                                        src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
+                                                        size="large" shape="square" style={{borderRadius: "5px"}}/>
                                                 <div className={info}>
                                                     <div><span className={text}>官方客服</span></div>
                                                     <div><span
@@ -360,7 +397,8 @@ export default () => {
                                             }}>联系</Button>
                                         </div>
                                     </Col>
-                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} hidden={contactData?.['contact.two'] == ''}>
+                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
+                                         hidden={contactData?.['contact.two'] == ''}>
                                         <div className={contact}>
                                             <div className={inner1}>
                                                 <Avatar className={avatar2}
@@ -378,7 +416,7 @@ export default () => {
                                             }}>联系</Button>
                                         </div>
                                     </Col>
-                                    <Col xl={8} lg={8} md={8} sm={24} xs={24}
+                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
                                          hidden={contactData?.['contact.three'] == '' || contactData?.['contact.four'] == ''}>
                                         <div className={contact}>
                                             <div className={inner}>
@@ -406,7 +444,6 @@ export default () => {
                     <ProCard
                         style={{marginBottom: 24}}
                         className={notice}
-                        headerBordered
                         title="系统公告"
                         loading={noticeLoading}
                         bodyStyle={{padding: "0 20px 0 20px"}}

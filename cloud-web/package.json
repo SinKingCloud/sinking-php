@@ -9,12 +9,13 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@ant-design/charts": "^2.1.1",
+    "@ant-design/charts": "0.9.4",
     "@ant-design/icons": "^5.3.7",
     "@ant-design/pro-components": "^2.7.9",
     "@umijs/plugins": "^4.1.1",
     "antd": "^5.14.1",
     "antd-style": "^3.6.1",
+    "braft-editor": "^2.3.9",
     "numeral": "^2.0.6",
     "react-fast-marquee": "^1.6.4",
     "react-load-script": "^0.0.6",

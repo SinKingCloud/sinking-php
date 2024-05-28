@@ -14,5 +14,4 @@ export default () => {
     Notification = staticFunction.notification;
     return null;
 };
-
 export { Message, Notification, Modal };

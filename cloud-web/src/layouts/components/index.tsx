@@ -116,9 +116,8 @@ const Layout: React.FC<LayoutProps> = (props) => {
         }
         onMenuBtnClick?.(status);
     }
-
     return (
-        <ConfigProvider locale={zhCN}>
+        <ConfigProvider theme={systemTheme?.themes} locale={zhCN}>
             <App>
                 {(loading && <Loading/>) || <SkLayout>
                     <SkLayout.Sider className={sider} trigger={null} collapsible collapsed={collapsed}
@@ -173,10 +172,12 @@ const Layout: React.FC<LayoutProps> = (props) => {
         </ConfigProvider>
     );
 }
+
 export {
     Body,
     Footer,
     Header,
     Sider,
 }
+
 export default Layout;

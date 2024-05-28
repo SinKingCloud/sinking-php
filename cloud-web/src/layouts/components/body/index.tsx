@@ -51,6 +51,7 @@ const Body: React.FC<BodyProps> = (props) => {
     const {children, loading, style, className, space = true, breadCrumb = true, themes = undefined} = props;
     const {styles: {body, load, gutter, bread, breadStyle}} = useStyles();
     const systemTheme = useModel("theme");
+
     /**
      * 初始化面包屑
      */
@@ -97,7 +98,7 @@ const Body: React.FC<BodyProps> = (props) => {
     /**
      * 页面容器
      */
-    return <ConfigProvider locale={zhCN}>
+    return <ConfigProvider theme={themes ? themes : systemTheme?.themes} locale={zhCN}>
         <App>
             {(loading && <Spin spinning={true} size="large" className={load}></Spin>) ||
                 <Layout style={style}>

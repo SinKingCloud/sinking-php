@@ -8,12 +8,11 @@ import {getCaptchaUrl} from "@/service/common/captcha";
 import {genQrCode, loginByEmail, loginByPwd, loginBySms, qrLogin} from "@/service/user/login";
 import {setLoginToken} from "@/utils/auth";
 import {sendEmail} from "@/service/common/email";
-import {checkMobile} from "@/utils/device";
 // @ts-ignore
 import QRCode from "qrcode.react/lib";
 import {getRandStr, qqJumpUrl} from "@/utils/string";
 import {sendSms} from "@/service/common/sms";
-import {createStyles} from "antd-style";
+import {createStyles, useResponsive} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {historyPush} from "@/utils/route";
 
@@ -36,8 +35,7 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         main: css`
             width: 328px;
             margin: 0 auto;
-
-            ${responsive.md} {
+            ${responsive.sm} {
                 width: 95%;
                 max-width: 300px;
             }
@@ -170,6 +168,15 @@ const Index: React.FC = () => {
     /**
      * 扫码登陆
      */
+    const {mobile} = useResponsive()
+    const [isMobile, setIsMobile] = useState("pc")
+    useEffect(()=>{
+        if(mobile){
+            setIsMobile("mobile")
+        }else{
+            setIsMobile("pc")
+        }
+    },[isMobile])
     const [qrcode, setQrcode] = useState("");
     const [qrcodeLoading, setQrcodeLoading] = useState(true);
     const [qrcodeMessage, setQrcodeMessage] = useState("正在生成二维码");
@@ -177,18 +184,17 @@ const Index: React.FC = () => {
         if (localStorage.getItem("captcha_id") != id || history.location.pathname != "/user/login") {
             return;
         }
-        const device = checkMobile() ? 'mobile' : 'pc';
         qrLogin({
             body: {
                 captcha_id: id,
-                device: device
+                device: isMobile
             },
             onSuccess: (r: any) => {
                 if (r?.code == 200) {
                     setQrcodeLoading(true);
                     localStorage.removeItem("captcha_id");
                     setQrcodeMessage("验证成功,正在登陆");
-                    setLoginToken(device, r?.data?.token);
+                    setLoginToken(isMobile, r?.data?.token);
                     historyPush("user.dashboard");
                     localStorage.removeItem("redirect");
                     setQrcode("");
@@ -266,7 +272,7 @@ const Index: React.FC = () => {
                     <div className={top}>
                         <div className={header}>
                             <img alt='logo' className={logo}
-                                 src={web?.info?.logo || (process.env.NODE_ENV === 'development' ? '/logo.svg' : "/Public/Web/logo.svg")}/>
+                                 src={web?.info?.logo || (Settings.base ? '/logo.svg' : "/Public/Web/logo.svg")}/>
                             <span style={{
                                 fontSize: "30px",
                                 fontWeight: "bolder"
@@ -283,12 +289,12 @@ const Index: React.FC = () => {
                                 getQrCode();
                             }
                         }}/>
-                        <Form form={form} onFinish={(values: any) => {
+                        <Form form={form} size={"large"} onFinish={(values: any) => {
                             if (!isRead) {
                                 message?.error("请阅读并同意《用户使用条款》协议")
                                 return;
                             }
-                            values.device = checkMobile() ? 'mobile' : 'pc';
+                            values.device = isMobile;
                             let login = loginByPwd;
                             if (type == "account") {
                                 if (values.account == undefined || values.account.length < 5) {
@@ -341,7 +347,7 @@ const Index: React.FC = () => {
                                 onSuccess: (r: any) => {
                                     if (r?.code == 200) {
                                         localStorage.removeItem("captcha_id");
-                                        setLoginToken(checkMobile() ? 'mobile' : 'pc', r?.data?.token);
+                                        setLoginToken(isMobile, r?.data?.token);
                                         message?.success(r?.message);
                                         setIsLoading(false);
                                         historyPush("user.dashboard");
@@ -360,8 +366,8 @@ const Index: React.FC = () => {
                             {type === 'account' && (
                                 <>
                                     <Form.Item name='account'>
-                                        <Input prefix={<UserOutlined className='site-form-item-icon'/>} size={'large'}
-                                               placeholder='请输入账户或邮箱或手机号'/>
+                                        <Input prefix={<UserOutlined className='site-form-item-icon'/>}
+                                               placeholder='请输入账户或邮箱或手机号' size={'large'}/>
                                     </Form.Item>
                                     <Form.Item name='password'>
                                         <Input type={"password"}
@@ -411,14 +417,15 @@ const Index: React.FC = () => {
                                                                     onSuccess: (r: any) => {
                                                                         if (r?.code == 200) {
                                                                             getCode(e);
-                                                                            form.setFieldsValue({captcha: ""});
-                                                                            message?.success(r.message);
+                                                                            setIsEmailSendLoading(false)
+                                                                            message?.success(r?.message);
                                                                         }
                                                                     },
                                                                     onFail: (r: any) => {
                                                                         if (r?.code == 500) {
-                                                                            message?.error(r.message || "请求失败")
                                                                             setIsEmailSendLoading(false)
+                                                                            message?.error(r.message || "请求失败")
+                                                                            form.setFieldsValue({captcha: ""});
                                                                             changeCaptcha()
                                                                         }
                                                                     }
@@ -468,15 +475,16 @@ const Index: React.FC = () => {
                                                                     onSuccess: (r: any) => {
                                                                         if (r?.code == 200) {
                                                                             getCode(e);
-                                                                            form.setFieldsValue({captcha: ""});
+                                                                            setIsSmsSendLoading(false);
                                                                             message?.success(r.message);
                                                                         }
                                                                     },
                                                                     onFail: (r: any) => {
                                                                         if (r?.code == 500) {
+                                                                            message?.error(r.message || "请求失败")
                                                                             setIsSmsSendLoading(false);
                                                                             changeCaptcha();
-                                                                            message?.error(r.message || "请求失败")
+                                                                            form.setFieldsValue({captcha: ""});
                                                                         }
                                                                     }
                                                                 })
@@ -554,7 +562,7 @@ const Index: React.FC = () => {
                                             {qrcodeMessage || "请扫描二维码"}
                                         </div>
                                     </Form.Item>
-                                    <Form.Item hidden={!checkMobile()} style={{textAlign: "center"}}>
+                                    <Form.Item hidden={!isMobile} style={{textAlign: "center"}}>
                                         <Button type='primary' style={{maxWidth: "200px", marginTop: "10px"}}
                                                 htmlType='button' block
                                                 onClick={() => {

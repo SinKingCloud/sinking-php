@@ -3,7 +3,7 @@ import {getParams} from "@/utils/page";
 import {getPayOrder} from "@/service/pay/order";
 import { Body } from '@/layouts/components';
 import {App} from "antd";
-import ProTable,{ ProColumns } from "@ant-design/pro-table";
+import ProTable from "@ant-design/pro-table";
 
 export default (): React.ReactNode => {
     /**
@@ -14,7 +14,7 @@ export default (): React.ReactNode => {
     /**
      * table表格渲染
      */
-    const column: ProColumns[] = [
+    const column= [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -22,20 +22,17 @@ export default (): React.ReactNode => {
             hideInSearch: true,
             hideInTable: true,
             sorter: true,
-            align: "center",
         },
         {
             title: '订单ID',
             dataIndex: 'trade_no',
             tip: '订单唯一ID',
             copyable: true,
-            align: "center",
         },
         {
             title: '订单类型',
             dataIndex: 'order_type',
             tip: '订单类型',
-            align: "center",
             valueEnum: {
                 0: {
                     text: '余额充值',
@@ -48,6 +45,10 @@ export default (): React.ReactNode => {
                 2: {
                     text: '在线下单',
                     color: '#13e537',
+                },
+                3: {
+                    text: '网站续费',
+                    color: '#dee513',
                 }
             },
         },
@@ -56,15 +57,13 @@ export default (): React.ReactNode => {
             dataIndex: 'name',
             tip: '订单名称',
             hideInSearch: true,
-            align: "center",
         },
         {
             title: '订单金额',
             dataIndex: 'money',
             tip: '订单金额',
-            align: "center",
             hideInSearch: true,
-            render: (record: any) => {
+            render: (text:any,record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -72,7 +71,6 @@ export default (): React.ReactNode => {
             title: '支付方式',
             dataIndex: 'pay_type',
             tip: '支付方式',
-            align: "center",
             valueEnum: {
                 0: {
                     text: '支付宝',
@@ -96,7 +94,6 @@ export default (): React.ReactNode => {
             title: '状态',
             dataIndex: 'status',
             tip: '订单状态',
-            align: "center",
             valueEnum: {
                 0: {
                     text: '未支付',
@@ -114,14 +111,12 @@ export default (): React.ReactNode => {
             tip: '订单创建时间',
             hideInSearch: true,
             sorter: true,
-            align: "center",
         },
         {
             title: '支付时间',
             dataIndex: 'update_time',
             tip: '订单创建时间',
             hideInSearch: true,
-            align: "center",
         },
         {
             title: '支付时间',
@@ -129,7 +124,6 @@ export default (): React.ReactNode => {
             dataIndex: 'update_time',
             tip: '订单支付时间',
             hideInTable: true,
-            align: "center",
             search: {
                 transform: (value: any) => {
                     return {
@@ -145,7 +139,6 @@ export default (): React.ReactNode => {
             dataIndex: 'create_time',
             tip: '订单创建时间',
             hideInTable: true,
-            align: "center",
             search: {
                 transform: (value: any) => {
                     return {
@@ -163,10 +156,18 @@ export default (): React.ReactNode => {
                 headerTitle={'订单记录'}
                 actionRef={actionRef}
                 rowKey={'id'}
+                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                scroll={{x:true}}
                 columns={column}
                 request={async (params, sort) => {
-                    const data = await getPayOrder(getParams(params, sort));
-                    if (data.code != 200) {
+                    const fetchParams = getParams(params,sort)
+                    const data = await getPayOrder({
+                         body:{
+                             ...fetchParams
+                         },
+
+                     });
+                    if (data?.code != 200) {
                         message?.error(data?.message);
                     }
                     return {

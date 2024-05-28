@@ -1,6 +1,6 @@
 import React from "react";
 import {Body} from "@/layouts/components";
-import {Button, Result} from "antd";
+import { Button, Result} from "antd";
 import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";
 
@@ -21,10 +21,10 @@ export default () => {
             <Result
                 status="404"
                 title="404"
-                subTitle="对不起, 您访问的页面不存在."
+                subTitle="对不起, 账号已在别处登录，请重新登录."
                 extra={<Button type="primary" onClick={() => {
-                    historyPush("user.dashboard");
-                }}>返回首页</Button>}
+                    historyPush("user.login");
+                }}>返回登录页</Button>}
             />
         </Body>
     );

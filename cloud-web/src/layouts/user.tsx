@@ -102,22 +102,6 @@ const RightTop: React.FC = () => {
                 marginLeft: "8px",
                 width: "auto"
             },
-            // text: {
-            //     cursor: "pointer",
-            //     borderRadius: "5px",
-            //     letterSpacing: "1px",
-            //     height: "34px",
-            //     lineHeight: "34px",
-            //     color: "#000",
-            //     fontSize: "13px",
-            //     paddingLeft: "10px",
-            //     boxSizing: "border-box",
-            //     marginBottom: "3px",
-            //     transition: "background-color 0.5s ease",
-            //     ":hover": {
-            //         backgroundColor: "rgba(0, 0, 0, 0.1)",
-            //     }
-            // }
             menu: {
                 listStyle: "none",
                 padding: 0,
@@ -154,7 +138,7 @@ const RightTop: React.FC = () => {
             },
         };
     });
-    const {styles: {img, nickname, profile, pop, content_top, ava, text, top_text, box,menu,menuItem}} = useStyles();
+    const {styles: {img, nickname, profile, pop, content_top, ava, text, top_text, box, menu, menuItem}} = useStyles();
     return <>
         <Popover className={profile} overlayInnerStyle={{padding: 0}} overlayClassName={box} autoAdjustOverflow={false}
                  placement="bottomRight"
@@ -171,12 +155,12 @@ const RightTop: React.FC = () => {
                          </Col>
                      </Row>
                      <ul className={menu}>
-                         <li className={menuItem} onClick={()=>historyPush("user.setting")}>
+                         <li className={menuItem} onClick={() => historyPush("user.setting")}>
                              <div><Icon type={Setting} style={{fontSize: 16, marginRight: 4}}/>账号设置</div>
                              <Icon type={Right}></Icon>
                          </li>
-                         <li className={menuItem} onClick={()=>historyPush("user.log2")}>
-                            <div> <Icon type={Order} style={{fontSize: 16, marginRight: 4}} />操作设置</div>
+                         <li className={menuItem} onClick={() => historyPush("user.log2")}>
+                             <div><Icon type={Order} style={{fontSize: 16, marginRight: 4}}/>操作设置</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={async () => {
@@ -197,7 +181,7 @@ const RightTop: React.FC = () => {
                                  }
                              })
                          }}>
-                            <div><Icon type={Exit} style={{fontSize: 16, marginRight: 4}}/>退出登录</div>
+                             <div><Icon type={Exit} style={{fontSize: 16, marginRight: 4}}/>退出登录</div>
                              <Icon type={Right}></Icon>
                          </li>
                      </ul>
@@ -247,10 +231,6 @@ export default () => {
                 menus={getUserMenuItems()}
                 footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                 headerRight={<RightTop/>}
-                menuBottomBtnText={"开发文档"}
-                onMenuBottomBtnClick={() => {
-                    console.log("点击了底部按钮")
-                }}
                 menuCollapsedWidth={60}
                 menuUnCollapsedWidth={210}
                 onLogoClick={() => {
@@ -260,13 +240,13 @@ export default () => {
                     console.log("点击了菜单", item)
                 }}
                 collapsedLogo={() => {
-                    return <img src={(Settings?.base || "/") + "logo.svg"} width="36"
+                    return <img src={(Settings?.basePath || "/") + "logo.svg"} width="36"
                                 alt={Settings?.title}/>
                 }}
                 unCollapsedLogo={() => {
                     return (
                         <>
-                            <img src={(Settings?.base || "/") + "logo.svg"} width="36"
+                            <img src={(Settings?.basePath || "/") + "logo.svg"} width="36"
                                  alt="沉沦云网络"/>
                             <h5 style={{
                                 fontSize: "20px", color: "#0051eb", display: "inline-block",

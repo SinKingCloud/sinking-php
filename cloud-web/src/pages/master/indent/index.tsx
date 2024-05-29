@@ -290,7 +290,7 @@ export default (): React.ReactNode => {
                             }
                         ]} />
                     </Form.Item>
-                    <Form.Item name={"pay_type"} label="支付方式" rules={[{required: true}]} initialValue={"-1"}>
+                    <Form.Item name="pay_type" label="支付方式" rules={[{required: true}]} initialValue={"-1"}>
                         <Select placeholder="请选择支付方式" options={[
                             {
                                 label: '全部',
@@ -314,7 +314,7 @@ export default (): React.ReactNode => {
                             }
                         ]} />
                     </Form.Item>
-                    <Form.Item name={"order_type"} label="订单类型" rules={[{required: true}]} initialValue={"-1"}>
+                    <Form.Item name="order_type" label="订单类型" rules={[{required: true}]} initialValue={"-1"}>
                         <Select placeholder="请选择订单类型" options={[
                             {
                                 label: '全部',

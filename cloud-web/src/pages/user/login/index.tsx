@@ -274,7 +274,7 @@ const Index: React.FC = () => {
                     <div className={top}>
                         <div className={header}>
                             <img alt='logo' className={logo}
-                                 src={web?.info?.logo || (Settings?.basePath ? 'logo.svg' : "/Public/Web/logo.svg")}/>
+                                 src={web?.info?.logo || ((Settings?.basePath || '/') + 'logo.svg')}/>
                             <span style={{
                                 fontSize: "30px",
                                 fontWeight: "bolder"

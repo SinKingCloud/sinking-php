@@ -34,7 +34,7 @@ const getDarkTheme = (): any => {
     return themes
 }
 export default () => {
-    const [themes, setThemes] = useState<any>(localStorage?.getItem("theme") == "light" ? getLightTheme() : getDarkTheme());
+    const [themes, setThemes] = useState<any>(localStorage?.getItem("theme") != "dark" ? getLightTheme() : getDarkTheme());
     const setLightTheme = () => {
         setThemes(getLightTheme());
         localStorage?.setItem("theme", "light");

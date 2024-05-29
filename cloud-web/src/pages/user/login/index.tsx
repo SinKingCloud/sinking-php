@@ -3,7 +3,7 @@ import {Alert, App, Button, Checkbox, Col, Form, Image, Input, Row, Spin, Tabs, 
 import React, {useEffect, useState} from 'react';
 import {Body, Footer} from '@/layouts/components';
 // @ts-ignore
-import {history, useModel} from "umi";
+import {history, useLocation, useModel} from "umi";
 import {getCaptchaUrl} from "@/service/common/captcha";
 import {genQrCode, loginByEmail, loginByPwd, loginBySms, qrLogin} from "@/service/user/login";
 import {setLoginToken} from "@/utils/auth";
@@ -35,6 +35,7 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         main: css`
             width: 328px;
             margin: 0 auto;
+
             ${responsive.sm} {
                 width: 95%;
                 max-width: 300px;
@@ -170,18 +171,19 @@ const Index: React.FC = () => {
      */
     const {mobile} = useResponsive()
     const [isMobile, setIsMobile] = useState("pc")
-    useEffect(()=>{
-        if(mobile){
+    useEffect(() => {
+        if (mobile) {
             setIsMobile("mobile")
-        }else{
+        } else {
             setIsMobile("pc")
         }
-    },[isMobile])
+    }, [isMobile])
     const [qrcode, setQrcode] = useState("");
     const [qrcodeLoading, setQrcodeLoading] = useState(true);
     const [qrcodeMessage, setQrcodeMessage] = useState("正在生成二维码");
+    const location = useLocation();
     const queryQrCodeStatus = (id?: string) => {
-        if (localStorage.getItem("captcha_id") != id || history.location.pathname != "/user/login") {
+        if (localStorage.getItem("captcha_id") != id || location.pathname != "/user/login") {
             return;
         }
         qrLogin({
@@ -272,7 +274,7 @@ const Index: React.FC = () => {
                     <div className={top}>
                         <div className={header}>
                             <img alt='logo' className={logo}
-                                 src={web?.info?.logo || (Settings.base ? '/logo.svg' : "/Public/Web/logo.svg")}/>
+                                 src={web?.info?.logo || ((Settings?.basePath || '/') + 'logo.svg')}/>
                             <span style={{
                                 fontSize: "30px",
                                 fontWeight: "bolder"

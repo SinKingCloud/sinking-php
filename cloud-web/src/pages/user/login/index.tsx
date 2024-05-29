@@ -562,7 +562,7 @@ const Index: React.FC = () => {
                                             {qrcodeMessage || "请扫描二维码"}
                                         </div>
                                     </Form.Item>
-                                    <Form.Item hidden={!isMobile} style={{textAlign: "center"}}>
+                                    <Form.Item hidden={!mobile} style={{textAlign: "center"}}>
                                         <Button type='primary' style={{maxWidth: "200px", marginTop: "10px"}}
                                                 htmlType='button' block
                                                 onClick={() => {

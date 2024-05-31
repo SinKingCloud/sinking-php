@@ -90,9 +90,12 @@ const useStyles = createStyles(({css, responsive}): any => {
             border: 0;
             line-height: 20px;
             height: 40px;
+            .ant-btn-primary{
+                box-shadow: 0 0 0 rgba(5, 95, 255, 0.1)!important;
+            }
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
-                width: 60%;
-                margin-left: 20%;
+                width: 100%;
+                margin-left: 0;
             }
         `,
         label:css`
@@ -384,7 +387,7 @@ export default (): React.ReactNode => {
                                     </div>
                                 </div>
                             </div>
-                            <Button className={button} type={"primary"} size={"large"} onClick={() => {
+                            <Button className={button}  size={"large"} onClick={() => {
                                 add?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
                                 setIsModalAddWebVisible(true);
                             }}>

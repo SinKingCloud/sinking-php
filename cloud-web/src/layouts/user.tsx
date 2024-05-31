@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import Layout from "@/layouts/components";
-import {getUserMenuItems} from "@/utils/route";
-import defaultSettings from "../../config/defaultSettings";
+import {getMasterMenuItems, getUserMenuItems} from "@/utils/route";
 import {Icon} from "@/components";
 import {useModel} from "umi";
-import {deleteHeader, getLoginToken} from "@/utils/auth";
+import {deleteHeader, deleteSystem, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
 import {App, Avatar, Col, Popover, Row} from "antd";
 import {createStyles} from "antd-style";
@@ -170,6 +169,7 @@ const RightTop: React.FC = () => {
                                      if (r?.code == 200) {
                                          message?.success(r?.message || "退出登录成功")
                                          deleteHeader()
+                                         deleteSystem()
                                          message?.destroy("outLogin")
                                          historyPush("user.login");
                                      }
@@ -222,13 +222,16 @@ export default () => {
             setLoading(false);
         });
     }
+    const userMenu = getUserMenuItems()
+    const masterMenu = getMasterMenuItems()
+    let newMenu = [...userMenu, ...masterMenu]
     useEffect(() => {
         initUser();
     }, []);
 
     return (
         <Layout loading={loading}
-                menus={getUserMenuItems()}
+                menus={newMenu}
                 footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                 headerRight={<RightTop/>}
                 menuCollapsedWidth={60}

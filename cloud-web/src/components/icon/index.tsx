@@ -4,7 +4,7 @@ import { createFromIconfontCN } from '@ant-design/icons';
  * 图标组件(生产环境需使用本地资源)
  */
 const Icon = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/c/font_4556436_u8az6ubr1pd.js',
+    scriptUrl: '//at.alicdn.com/t/c/font_4556436_qsj4k19ni6m.js',
 });
 /**
  * 图标数据

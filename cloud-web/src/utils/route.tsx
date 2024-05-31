@@ -1,5 +1,5 @@
 import {history} from 'umi';
-import route, {user, userPath, indexPath, index} from '../../config/routes'
+import route, {user, userPath, indexPath, index,master,masterPath} from '../../config/routes'
 import {Icon} from "@/components"
 import React from "react"
 /**
@@ -145,13 +145,18 @@ export function getParentList(data: any[], name: string): any[] {
 export function getUserMenuItems() {
     return getMenuItems(user, '/' + userPath);
 }
-
-
 /**
  * 获取index菜单
  */
 export function getIndexMenuItems() {
     return getMenuItems(index, '/' + indexPath);
+}
+
+/**
+ * 获取master菜单
+ */
+export function getMasterMenuItems() {
+    return getMenuItems(master, '/' + masterPath);
 }
 
 /**
@@ -177,6 +182,9 @@ export function getCurrentPath(pathName: any): any {
     if (mode == indexPath) {
         return '/' + indexPath;
     }
+    if (mode == masterPath) {
+        return '/' + masterPath;
+    }
     return "/";
 }
 
@@ -195,6 +203,9 @@ export function getCurrentMenus(pathName: any): any {
     }
     if (mode == indexPath) {
         return getIndexMenuItems();
+    }
+    if (mode == masterPath) {
+        return getMasterMenuItems();
     }
     return [];
 }

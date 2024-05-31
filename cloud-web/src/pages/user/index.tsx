@@ -102,12 +102,6 @@ const useStyles = createStyles(({css, token, responsive}): any => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            avatar2: css`
-                margin-right: 10px;
-                ${responsive.md}{
-                    margin-right: 5px;
-                }
-            `,
             info: {
                 marginLeft: "10px",
                 marginTop: "-3px",
@@ -128,14 +122,11 @@ const useStyles = createStyles(({css, token, responsive}): any => {
                 }
             }
         },
+        avatar2: css`
+                margin-right: 15px;
+            `,
         inner: {
             display: "flex",
-            width: "135px",
-            justifyContent: "space-between"
-        },
-        inner1: {
-            display: "flex",
-            width: "105px",
             justifyContent: "space-between"
         },
         align: css`
@@ -196,7 +187,7 @@ const PageHeaderContent: FC = () => {
 };
 const ExtraContent: FC = () => {
     const user = useModel("user")
-    const {styles: {right, money}} = useStyles();
+    const {styles: { money}} = useStyles();
     return (
         <>
             <div className={money}>
@@ -224,7 +215,6 @@ export default () => {
             my,
             notice,
             inner,
-            inner1,
             align,
             pageHeaderContent,
             right,
@@ -400,7 +390,7 @@ export default () => {
                                     <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
                                          hidden={contactData?.['contact.two'] == ''}>
                                         <div className={contact}>
-                                            <div className={inner1}>
+                                            <div className={inner}>
                                                 <Avatar className={avatar2}
                                                         src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.two'] || 10000) + "&spec=100"}
                                                         size="large" shape="square" style={{borderRadius: "5px"}}/>

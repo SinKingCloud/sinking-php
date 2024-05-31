@@ -33,6 +33,19 @@ export function deleteHeader() {
 }
 
 /**
+ * 删除设置
+ */
+export function  deleteSystem() {
+    localStorage.removeItem('date');
+    localStorage.removeItem('pay');
+    localStorage.removeItem('cloud');
+    localStorage.removeItem('myData');
+    localStorage.removeItem('sms');
+    localStorage.removeItem('web');
+    localStorage.removeItem('cash');
+    localStorage.removeItem('price');
+}
+/**
  * 返回请求header
  * @returns {{}}
  */

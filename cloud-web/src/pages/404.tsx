@@ -21,7 +21,7 @@ export default () => {
             <Result
                 status="404"
                 title="404"
-                subTitle="对不起, 账号已在别处登录，请重新登录."
+                subTitle="对不起, 您访问的页面不存在."
                 extra={<Button type="primary" onClick={() => {
                     historyPush("user.login");
                 }}>返回登录页</Button>}

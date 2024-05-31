@@ -23,7 +23,6 @@ export const user = [
     },
     {
         path: "shop",
-        component: "@/pages/user/shop",
         title: "在线商城",
         name: "user.shop",
         icon: 'icon-shop',
@@ -91,8 +90,11 @@ export const user = [
             },
         ]
     },
+];
+export const masterPath = "master";
+export const master = [
     {
-        path: "master",
+        path:"index",
         title: "系统管理",
         name: "master.index",
         icon: 'icon-system',
@@ -100,7 +102,7 @@ export const user = [
         routes:[
             {
                 path: "system",
-                component: "@/pages/master/system",
+                component: "@/pages/master/index",
                 title: "系统概览",
                 name: "master.system",
                 hideInMenu: false,
@@ -156,7 +158,7 @@ export const user = [
             },
         ]
     },
-];
+]
 /**
  * 首页系统路由
  */
@@ -237,6 +239,25 @@ export default [
         routes: user,
     },
     /**
+     * master路由
+     */
+    {
+        path: "/" + masterPath,
+        name: "redirect." + masterPath,
+        redirect: '/' + masterPath + '/' + (master[0]?.path || 'index'),
+        layout: false,
+        hideInMenu: true,
+    },
+    {
+        path: masterPath,
+        name: masterPath,
+        title: "后台系统",
+        icon: 'icon-system',
+        layout: false,
+        component: '@/layouts/user',
+        routes: master,
+    },
+    /**
      * 500
      */
     {
@@ -252,7 +273,7 @@ export default [
      */
     {
         path: '/403',
-        component: '@/pages/500.tsx',
+        component: '@/pages/403.tsx',
         name: "notAllowed",
         title: "无权限",
         layout: false,

@@ -1,94 +1,119 @@
-import React from 'react';
-import {Tabs} from 'antd';
-import type { TabsProps } from 'antd';
-import {Body} from "@/layouts/components";
-import ProForm, {ProFormDigit, ProFormText} from "@ant-design/pro-form";
-const App: React.FC = () =>{
-    const [form] = ProForm.useForm()
-    /**
-     *
-     * @param key
-     */
-    const onChange = (key: string) => {
-        console.log(key);
+import React, {useState} from 'react';
+import {Menu} from 'antd';
+import ProCard from "@ant-design/pro-card";
+import SiteView from "./components";
+import {createStyles} from "antd-style";
+
+const {Item} = Menu;
+
+type SettingsStateKeys = 'site';
+type SettingsState = {
+    mode: 'inline' | 'horizontal';
+    selectKey: SettingsStateKeys;
+};
+const useStyles = createStyles(({css,responsive}):any=>{
+    return{
+        main:css`
+            display: flex;
+            width: 100%;
+            height: 100%;
+            padding-bottom: 16px;
+            .ant-menu-light.ant-menu-inline .ant-menu-item::after{
+                top: 19%;
+                right: 6px;
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+                height: 60%;
+            }
+            .ant-menu-light.ant-menu-root.ant-menu-inline{
+                border-right: none;
+            }
+            ${responsive.md}{
+                flex-direction: column;
+            }
+        `,
+        leftMenu:css`
+            width: 224px;
+            .ant-menu-item{
+                position: absolute;
+                font-weight: bold;
+                font-size: 14px;
+                border-radius: 10px;
+            }
+            ${responsive.md}{
+                width: 100%;
+                border: none;
+                margin-bottom: 10px;
+            }
+        `,
+        right:css`
+            flex: 1;
+            padding: 8px 40px;
+            margin-left: 1px;
+            border-left:1px solid #f0f0f0 ;
+            ${responsive.md}{
+                padding: 10px;
+                border-left:none;
+            }
+        `,
+        title:css`
+            margin-bottom: 20px;
+            font-weight: bolder;
+            font-size: 25px;
+            line-height: 28px;
+        `,
+        card:css`
+            .ant-pro-card-body{
+                padding: 24px;
+            }
+        `,
+    }
+})
+const Settings: React.FC = () => {
+    const {styles:{main,leftMenu,right,title,card}} = useStyles()
+    const menuMap: Record<string, React.ReactNode> = {
+        site: '系统价格',
     };
-    const items: TabsProps['items'] = [
-        {
-            key: 'price',
-            label: '系统价格',
-            children: (
-                <ProForm form={form} layout={"horizontal"}>
-                    <ProFormText
-                        width="md"
-                        name="site.cost.price"
-                        label="开通成本"
-                        tooltip="下级开通分站成本金额,设置为0可无限开通分站"
-                        placeholder={"请输入开通分站成本金额"}
-                        rules={[{required: true, message: "请输入开通分站成本金额"}, {
-                            pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-                            message: "请输入正确的金额"
-                        }]}
-                    />
-                    <ProFormText
-                        width="md"
-                        name="site.min.price"
-                        label="最低售价"
-                        tooltip="下级可设置的前台最低销售价格"
-                        placeholder={"请输入最低销售价格"}
-                        rules={[{required: true, message: "请输入最低销售价格"}, {
-                            pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-                            message: "请输入正确的金额"
-                        }]}
-                    />
-                    <ProFormText
-                        width="md"
-                        name="site.default.price"
-                        label="默认售价"
-                        tooltip="新站点开通默认售价"
-                        placeholder={"请输入默认销售价格"}
-                        rules={[{required: true, message: "请输入默认销售价格"}, {
-                            pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-                            message: "请输入正确的金额"
-                        }]}
-                    />
-                    <ProFormDigit
-                        width="md"
-                        name="site.month"
-                        label="开通月数"
-                        tooltip="用户开通分站自动续期的月数,填写0或为空则永久"
-                        placeholder={"用户开通分站自动续期的月数，填写0或为空则永久"}
-                        min={0}
-                        max={999}
-                        rules={[{required: true, message: "请输入用户开通分站自动续期的月数，填写0或为空则永久"},]}
-                    />
-                    <ProFormText
-                        width="md"
-                        name="site.recharge.deduct"
-                        label="充值提成(%)"
-                        tooltip="网站用户充值余额站长获得订单金额的百分比,填写0则无提成"
-                        placeholder={"请输入充值提成百分比"}
-                        rules={[{
-                            required: true,
-                            message: "请输入充值提成百分比"
-                        }, {pattern: /^([0-9]{1,2}$)|(^[0-9]{1,2}\.[0-9]{1,2}$)|100$|100.00$/, message: "请输入正确的百分比"}]}
-                    />
-                    <ProFormText
-                        width="md"
-                        name="site.order.deduct"
-                        label="上级分润(%)"
-                        tooltip="站长下级站点用户消费上级站长获得利润金额的百分比,填写0则不分润"
-                        placeholder={"请输入利润金额的提成百分比"}
-                        rules={[{
-                            required: true,
-                            message: "请输入利润金额的提成百分比"
-                        }, {pattern: /^([0-9]{1,2}$)|(^[0-9]{1,2}\.[0-9]{1,2}$)|100$|100.00$/, message: "请输入正确的百分比"}]}
-                    />
-                </ProForm>
-            ),
-        },
-    ];
-   return <Body>
-                <Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
-        </Body>
-}
-export default App;
+    const [initConfig, setInitConfig] = useState<SettingsState>({
+        mode: 'inline',
+        selectKey: 'site',
+    });
+    const getMenu = () => {
+        return Object.keys(menuMap).map((item) => <Item key={item}>{menuMap[item]}</Item>);
+    };
+
+    const renderChildren = () => {
+        const {selectKey} = initConfig;
+        switch (selectKey) {
+            case 'site':
+                return <SiteView/>;
+            default:
+                return null;
+        }
+    };
+    return (
+            <ProCard title={"价格设置"} headerBordered className={card}>
+                <div className={main}>
+                    <div className={leftMenu}>
+                        <Menu
+                            mode={initConfig.mode}
+                            selectedKeys={[initConfig.selectKey]}
+                            onClick={({key}) => {
+                                setInitConfig({
+                                    ...initConfig,
+                                    selectKey: key as SettingsStateKeys,
+                                });
+                            }}
+                        >
+                            {getMenu()}
+                        </Menu>
+                    </div>
+                    <div className={right}>
+                        <div className={title}>{menuMap[initConfig.selectKey]}</div>
+                        {renderChildren()}
+                    </div>
+                </div>
+            </ProCard>
+    );
+};
+export default Settings;

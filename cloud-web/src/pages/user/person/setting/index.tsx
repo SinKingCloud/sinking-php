@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ProCard from "@ant-design/pro-card";
 import {
     Alert, App,
@@ -68,29 +68,29 @@ export default (): React.ReactNode => {
                     changePwdType == 'email' &&
                     <EmailVerify form={passwordForm} email={user?.web?.email} onFinish={async (values:any) => {
                         if (values.password.length > 20 || values.password.length < 6) {
-                            message.error("密码长度必须为6-20位之间");
+                            message?.error("密码长度必须为6-20位之间");
                             return;
                         }
                         setIsPasswordModalLoading(true);
-                        updatePassword({
-                            body:{
-                                type: "email",
-                                code: values?.email_code,
-                                password: values?.password
-                            },
-                            onSuccess:(r:any)=>{
-                                if(r?.code == 200){
-                                    message?.success(r?.message)
-                                    setIsPasswordModalVisible(false)
+                           await updatePassword({
+                                body:{
+                                    type: "email",
+                                    code: values?.email_code,
+                                    password: values?.password
+                                },
+                                onSuccess:(r:any)=>{
+                                    if(r?.code == 200){
+                                        message?.success(r?.message)
+                                        setIsPasswordModalVisible(false)
+                                    }
+                                },
+                                onFail:(r:any)=>{
+                                    if (r.code != 200) {
+                                        message?.error(r?.message || "请求失败")
+                                        setIsPasswordModalLoading(false)
+                                    }
                                 }
-                            },
-                            onFail:(r:any)=>{
-                                if (r.code != 200) {
-                                    message?.error(r?.message || "请求失败")
-                                    setIsPasswordModalLoading(false)
-                                }
-                            }
-                        });
+                            });
                     }} bottomNodes={
                         <Form.Item name={"password"} label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
                             <Input placeholder="请输入新密码"/>

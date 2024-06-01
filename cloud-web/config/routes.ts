@@ -159,6 +159,74 @@ export const master = [
         ]
     },
 ]
+export const adminPath = "admin";
+export const admin = [
+    {
+        path:"index",
+        title: "网站管理",
+        name: "admin.index",
+        icon: 'icon-set',
+        hideInMenu: false,
+        routes:[
+            {
+                path: "system",
+                component: "@/pages/admin/index",
+                title: "网站概览",
+                name: "admin.system",
+                hideInMenu: false,
+            },
+            {
+                path: "user",
+                component: "@/pages/admin/user",
+                title: "用户管理",
+                name: "admin.user",
+                hideInMenu: false,
+            },
+            {
+                path: "substation",
+                component: "@/pages/admin/substation",
+                title: "分站管理",
+                name: "admin.substation",
+                hideInMenu: false,
+            },
+            {
+                path: "notice",
+                component: "@/pages/admin/notice",
+                title: "公告管理",
+                name: "admin.notice",
+                hideInMenu: false,
+            },
+            {
+                path: "order",
+                component: "@/pages/admin/order",
+                title: "订单管理",
+                name: "admin.order",
+                hideInMenu: false,
+            },
+            {
+                path: "withdraw",
+                component: "@/pages/admin/withdraw",
+                title: "提现管理",
+                name: "admin.withdraw",
+                hideInMenu: false,
+            },
+            {
+                path: "price",
+                component: "@/pages/admin/price",
+                title: "价格设置",
+                name: "admin.price",
+                hideInMenu: false,
+            },
+            {
+                path: "web",
+                component: "@/pages/admin/web",
+                title: "网站设置",
+                name: "admin.web",
+                hideInMenu: false,
+            },
+        ]
+    },
+]
 /**
  * 首页系统路由
  */
@@ -256,6 +324,25 @@ export default [
         layout: false,
         component: '@/layouts/user',
         routes: master,
+    },
+    /**
+     * admin路由
+     */
+    {
+        path: "/" + adminPath,
+        name: "redirect." + adminPath,
+        redirect: '/' + adminPath + '/' + (admin[0]?.path || 'index'),
+        layout: false,
+        hideInMenu: true,
+    },
+    {
+        path: adminPath,
+        name: adminPath,
+        title: "后台网站",
+        icon: 'icon-set',
+        layout: false,
+        component: '@/layouts/user',
+        routes: admin,
     },
     /**
      * 500

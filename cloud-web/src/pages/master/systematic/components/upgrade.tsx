@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {getUpgradeList, systemUpgrade} from "@/service/master/config";
 import {Alert, App, Button, Result, Spin, Tag, Timeline} from "antd";
 import {history} from "umi";
-
 const UpgradeView: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()

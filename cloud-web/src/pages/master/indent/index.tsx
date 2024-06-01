@@ -5,16 +5,6 @@ import {getParams} from "@/utils/page";
 import {deleteOrder, getOrderList} from "@/service/master/order";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 import { Body } from '@/layouts/components';
-import {createStyles} from "antd-style";
-const useStyles = createStyles(({css}) => {
-    return {
-        label: css`
-            .ant-form-item-label > label {
-                font-size: 14px;
-            }
-        `,
-    }
-})
 export default (): React.ReactNode => {
     /**
      * 表单处理
@@ -22,7 +12,6 @@ export default (): React.ReactNode => {
     const actionRef = useRef();
     const ref = useRef();
     const {message,modal} = App.useApp()
-    const {styles:{label}} = useStyles()
     /**
      * table表格渲染
      */
@@ -273,7 +262,7 @@ export default (): React.ReactNode => {
                 deleteForm.resetFields();
             }}>
                 <Form form={deleteForm} name="control-hooks" onFinish={onDeleteFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 24}} size={"large"} className={label}>
+                      wrapperCol={{span: 24}} >
                     <Form.Item name={"status"} label="订单状态" rules={[{required: true}]} initialValue={"0"}>
                         <Select placeholder="请选择订单状态" options={[
                             {

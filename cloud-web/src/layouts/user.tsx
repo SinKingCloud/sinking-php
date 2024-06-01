@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from "react";
 import Layout from "@/layouts/components";
-import {getMasterMenuItems, getUserMenuItems} from "@/utils/route";
+import {getAdminMenuItems, getMasterMenuItems, getUserMenuItems} from "@/utils/route";
 import {Icon} from "@/components";
 import {useModel} from "umi";
 import {deleteHeader, deleteSystem, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
-import {App, Avatar, Col, Popover, Row} from "antd";
+import {App, Avatar, Col, message, Popover, Row} from "antd";
 import {createStyles} from "antd-style";
 import Settings from "@/../config/defaultSettings";
 import {Bottom, Exit, Order, Right, Setting} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
-
 /**
  * 中间件
  * @param ctx context
@@ -20,8 +19,8 @@ import request from "@/utils/request";
 const check = async (ctx: any, next: any) => {
     await next();
     if (ctx.res.code == 503 || ctx.res.code == 403) {
-        deleteHeader();
-        historyPush("user.login");
+        historyPush("user.dashboard");
+        message?.error(ctx.res.message)
     }
 }
 request.use(check);
@@ -155,11 +154,11 @@ const RightTop: React.FC = () => {
                      </Row>
                      <ul className={menu}>
                          <li className={menuItem} onClick={() => historyPush("user.setting")}>
-                             <div><Icon type={Setting} style={{fontSize: 16, marginRight: 4}}/>账号设置</div>
+                             <div><Icon type={Setting} style={{fontSize: 14, marginRight: 4}}/>账号设置</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={() => historyPush("user.log2")}>
-                             <div><Icon type={Order} style={{fontSize: 16, marginRight: 4}}/>操作设置</div>
+                             <div><Icon  type={Order} style={{fontSize: 14, marginRight: 4}}/>操作设置</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={async () => {
@@ -181,7 +180,7 @@ const RightTop: React.FC = () => {
                                  }
                              })
                          }}>
-                             <div><Icon type={Exit} style={{fontSize: 16, marginRight: 4}}/>退出登录</div>
+                             <div><Icon type={Exit} style={{fontSize: 14, marginRight: 4}}/>退出登录</div>
                              <Icon type={Right}></Icon>
                          </li>
                      </ul>
@@ -224,14 +223,16 @@ export default () => {
     }
     const userMenu = getUserMenuItems()
     const masterMenu = getMasterMenuItems()
-    let newMenu = [...userMenu, ...masterMenu]
+    const adminMenu = getAdminMenuItems()
+    const newMenu = [...userMenu,...masterMenu,...adminMenu];
+    const newMenu1 = [...userMenu,...masterMenu]
     useEffect(() => {
         initUser();
     }, []);
 
     return (
         <Layout loading={loading}
-                menus={newMenu}
+                menus={user?.web?.is_admin&&user?.web?.is_master?newMenu : newMenu1}
                 footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                 headerRight={<RightTop/>}
                 menuCollapsedWidth={60}

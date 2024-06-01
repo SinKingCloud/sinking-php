@@ -1,9 +1,10 @@
 import {extend} from 'umi-request';
 import Settings from "@/../config/defaultSettings"
-import {getHeaders} from "@/utils/auth";
+import {deleteHeader, getHeaders} from "@/utils/auth";
 import {API} from "../../typings";
 import {Modal} from "@/components/antd";
-import {history} from "umi";
+import {historyPush} from "@/utils/route";
+import {message} from "antd";
 /**
  * request对象
  */
@@ -49,7 +50,9 @@ const check = async (ctx: any, next: any) => {
     ctx.req.options.headers = getHeaders();
     await next();
     if (ctx.res.code == 401) {
-        history.push("notAllowed");//无权限页面;
+        historyPush("user.login");//无权限页面;
+        deleteHeader()
+        message?.error("登录失效，请重新登录")
     }
 }
 request.use(check);

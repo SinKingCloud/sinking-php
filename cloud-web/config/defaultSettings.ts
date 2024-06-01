@@ -5,5 +5,5 @@ export default ({
     gateway: "http://sinking-php.clwl.online/index.php",
     version: "1.0",
     basePath: '/',
-    favicons: '/favicon.ico'
+    favicons: '/favicon.ico',
 });

@@ -2,19 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormText, ProFormTextArea} from "@ant-design/pro-form";
-import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        label:css`
-            .ant-form-item-label >label{
-                font-size: 14px;
-            }
-        `
-    }
-})
 const WebView: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const {styles:{label}} = useStyles()
     const {message} = App.useApp()
     const [data,setData] = useState(()=>{
         return JSON.parse(localStorage.getItem('web') || '{}')
@@ -79,7 +68,7 @@ const WebView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>基础设置</h3>
-                <ProForm key={"web"} form={form} onFinish={onFinish} size="large" className={label}>
+                <ProForm key={"web"} form={form} onFinish={onFinish} >
                     <ProFormText
                         width="md"
                         name="master.domains"
@@ -116,7 +105,7 @@ const WebView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>新开设置</h3>
-                <ProForm key={"web_new"} form={form1} onFinish={onFinish} size="large" className={label}>
+                <ProForm key={"web_new"} form={form1} onFinish={onFinish} >
                     <ProFormText
                         width="md"
                         name="master.web.title"

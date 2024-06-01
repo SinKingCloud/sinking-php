@@ -3,7 +3,7 @@ import {API} from "../../../typings";
 import {post} from "@/utils/request";
 
 export function getUploadUrl(): string {
-    return Settings.api + "/auth/upload/file"
+    return Settings.gateway + "/auth/upload/file"
 }
 
 export async function uploadFile(params: API.RequestParams = {}) {

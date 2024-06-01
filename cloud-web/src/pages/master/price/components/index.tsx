@@ -2,18 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormDigit, ProFormText} from "@ant-design/pro-form";
-import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        label:css`
-            .ant-form-item-label >label{
-                font-size: 14px;
-            }
-        `
-    }
-})
 const SiteView: React.FC = () => {
-    const {styles:{label}} = useStyles()
     const {message} = App.useApp()
     const [isLoading, setIsLoading] = useState(false);
     const [data,setData] = useState(()=>{
@@ -74,7 +63,7 @@ const SiteView: React.FC = () => {
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key={"form"} form={form} onFinish={onFinish} size={"large"} className={label}>
+                <ProForm key={"form"} form={form} onFinish={onFinish} >
                     <ProFormText
                         width="md"
                         name="site.cost.price"

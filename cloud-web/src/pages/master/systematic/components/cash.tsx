@@ -2,19 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormSelect, ProFormText} from "@ant-design/pro-form";
-import {createStyles} from "antd-style";
-
-const useStyles = createStyles(({css})=>{
-    return{
-        label:css`
-            .ant-form-item-label >label{
-                font-size: 14px;
-            }
-        `
-    }
-})
 const CashView: React.FC = () => {
-    const {styles:{label}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
     const [data,setData] = useState(()=>{
@@ -78,7 +66,7 @@ const CashView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>基本设置</h3>
-                <ProForm key={"cash"} form={form} onFinish={onFinish} size={"large"} className={label}>
+                <ProForm key={"cash"} form={form} onFinish={onFinish} >
                     <ProFormSelect
                         name="cash.open"
                         label="开启提现"

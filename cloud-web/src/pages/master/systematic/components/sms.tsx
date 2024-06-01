@@ -2,19 +2,8 @@ import ProForm, { ProFormText} from '@ant-design/pro-form';
 import React, {useEffect, useState} from 'react';
 import {getConfigList, testSms, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
-import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        label:css`
-            .ant-form-item-label >label{
-                font-size: 14px;
-            }
-        `
-    }
-})
 const SmsView: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const {styles:{label}} = useStyles()
     const {message} = App.useApp()
     const [data,setData] = useState(()=>{
         return JSON.parse(localStorage.getItem('sms') || '{}')
@@ -79,7 +68,7 @@ const SmsView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>阿里云设置</h3>
-                <ProForm key={"sms.aliyun"} form={form} onFinish={onFinish} size="large" className={label}>
+                <ProForm key={"sms.aliyun"} form={form} onFinish={onFinish} >
                     <ProFormText
                         width="md"
                         name="sms.aliyun.key"
@@ -98,7 +87,7 @@ const SmsView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>验证码模版</h3>
-                <ProForm key={"sms.captcha"} form={form1} onFinish={onFinish} size="large" className={label}>
+                <ProForm key={"sms.captcha"} form={form1} onFinish={onFinish} >
                     <ProFormText
                         width="md"
                         name="sms.captcha.sign"
@@ -125,7 +114,7 @@ const SmsView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"} size="large" className={label} onFinish={async (values: any) => {
+                <ProForm key={"form"} onFinish={async (values: any) => {
                     await testSms({
                         body:{
                             ...values

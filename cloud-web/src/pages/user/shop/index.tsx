@@ -98,11 +98,6 @@ const useStyles = createStyles(({css, responsive}): any => {
                 margin-left: 0;
             }
         `,
-        label:css`
-            .ant-form-item-label >label{
-                font-size: 14px;
-            }
-        `,
         box: {
             backgroundColor: "rgb(255 249 238)",
             border: "1px solid #ffdea8",
@@ -188,7 +183,7 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td,label
+            table, thead, tbody, tr, th, td
         }
     } = useStyles()
     /**
@@ -287,7 +282,7 @@ export default (): React.ReactNode => {
                 setIsModalAddWebVisible(false);
                 add.resetFields();
             }}>
-                <Form className={label} size="large" form={add} name="control-hooks" onFinish={onAddFormFinish}  labelCol={{span: 6}} wrapperCol={{span: 16}}>
+                <Form   form={add} name="control-hooks" onFinish={onAddFormFinish}  labelCol={{span: 6}} wrapperCol={{span: 16}}>
                     <Form.Item name={"name"} label="网站名称" rules={[{required: true, message: "请输入网站名称"}]}>
                         <Input  placeholder="请输入网站名称"/>
                     </Form.Item>

@@ -18,22 +18,10 @@ import {getParams} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {getCashList, updateCash} from "@/service/master/withdraw";
 import {Body} from '@/layouts/components';
-import {createStyles} from "antd-style";
-
-const useStyles = createStyles(({css}) => {
-    return {
-        label: css`
-            .ant-form-item-label > label {
-                font-size: 14px;
-            }
-        `,
-    }
-})
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
-    const {styles: {label}} = useStyles()
     const actionRef = useRef();
     const ref = useRef();
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -293,7 +281,7 @@ export default (): React.ReactNode => {
                         form.resetFields();
             }}>
                 <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 16}} className={label} size={"large"}>
+                      wrapperCol={{span: 16}} >
                     <Form.Item name={"id"} label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
@@ -340,7 +328,7 @@ export default (): React.ReactNode => {
                 edit.resetFields();
             }}>
                 <Form form={edit} name="control-hooks1" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 16}} size={"large"} className={label}>
+                      wrapperCol={{span: 16}} >
                     <Form.Item name={"status"} label="状态">
                         <Select placeholder="请选择提现状态" options={[
                             {

@@ -335,7 +335,12 @@ export default (): React.ReactNode => {
                         columns={columns}
                         request={async (params, sort) => {
                             params.order_type = 0;
-                            const data = await getPayOrder(getParams(params, sort));
+                            const fetchParams = getParams(params, sort)
+                            const data = await getPayOrder({
+                                body:{
+                                    ...fetchParams
+                                }
+                            });
                             if (data?.code != 200) {
                                 message?.error(data?.message);
                             }

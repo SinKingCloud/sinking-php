@@ -2,18 +2,7 @@ import ProForm, {ProFormDigit, ProFormText} from '@ant-design/pro-form';
 import React, {useEffect, useState} from 'react';
 import {getConfigList, testEmail, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
-import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        label:css`
-            .ant-form-item-label >label{
-                font-size: 14px;
-            }
-        `
-    }
-})
 const EmailView: React.FC = () => {
-    const {styles:{label}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
     const [data,setData] = useState(()=>{
@@ -77,7 +66,7 @@ const EmailView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>发信设置</h3>
-                <ProForm key={"email"} form={form} onFinish={onFinish} size="large" className={label}>
+                <ProForm key={"email"} form={form} onFinish={onFinish} >
                     <ProFormText
                         width="md"
                         name="email.host"
@@ -112,7 +101,7 @@ const EmailView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"} size={"large"} className={label} onFinish={async (values: any) => {
+                <ProForm key={"form"}  onFinish={async (values: any) => {
                     await testEmail({
                         body:{
                             ...values

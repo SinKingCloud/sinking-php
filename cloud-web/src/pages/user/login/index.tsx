@@ -36,7 +36,7 @@ const useStyles = createStyles(({css, token, responsive}): any => {
             width: 328px;
             margin: 0 auto;
             .ant-tabs-nav-list{
-                width: 328px;/
+                width: 328px;
             }
             .ant-tabs .ant-tabs-tab{
                 padding-left: 1px;
@@ -299,7 +299,7 @@ const Index: React.FC = () => {
                         </div>
                     </div>
                     <div className={main}>
-                        <Tabs items={items} className={tab} activeKey={type} onChange={(key) => {
+                        <Tabs items={items} style={{marginBottom:"10px"}} className={tab} activeKey={type} onChange={(key) => {
                             setType(key);
                             if (key == "qrcode") {
                                 getQrCode();

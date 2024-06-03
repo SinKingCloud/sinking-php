@@ -78,10 +78,11 @@ const useStyles = createStyles(({css, responsive}): any => {
             }
         `,
         cardBody: {
-            borderRadius: "0 0 10px 10px !important"
+            borderRadius: "0 0 10px 10px !important",
+            padding:"12px 0"
         },
         button: css`
-            margin-top: 30px;
+            margin-top: 20px;
             font-size: 13px;
             width: 40%;
             margin-left: 30%;
@@ -131,10 +132,14 @@ const useStyles = createStyles(({css, responsive}): any => {
         right: {
             float: "right"
         },
-        describe: {
-            maxWidth: "80%",
-            margin: "40px auto 0 auto",
-        },
+        describe:css`
+            max-width: 80%;
+            margin: 40px auto 0 auto;
+            ${responsive.md}{
+                max-width: 100%;
+                margin: 0;
+            }
+        `,
         contain: {
             overflowY: "hidden"
         },

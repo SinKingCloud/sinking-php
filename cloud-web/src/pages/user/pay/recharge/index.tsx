@@ -14,11 +14,23 @@ import {
 import {getPayConfig, recharge} from "@/service/pay/pay";
 import {setPayJumpUrl} from "@/utils/pay";
 import {Body} from '@/layouts/components';
-import {useResponsive} from "antd-style";
+import {createStyles, useResponsive} from "antd-style";
 import ProTable, {ProColumns} from "@ant-design/pro-table";
-
+const useStyles = createStyles(({css})=>{
+    return {
+        border:css`
+            .ant-pro-checkcard-checked:after {
+                border: 6px solid #0735ed;
+                border-block-end: 6px solid transparent;
+                border-inline-start: 6px solid transparent;
+                border-start-end-radius: 6px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
-    const {message} = App.useApp()
+    const {styles:{border}} = useStyles()
+    const {message,modal} = App.useApp()
     const {mobile} = useResponsive()
     const user = useModel("user")
     const [loading, setLoading] = useState(false);
@@ -154,7 +166,7 @@ export default (): React.ReactNode => {
                                                     } else {
                                                         window.open(r.data);
                                                     }
-                                                    Modal.confirm({
+                                                    modal.confirm({
                                                         title: '订单是否已支付成功?',
                                                         icon: <ExclamationCircleOutlined/>,
                                                         content: '如支付成功请点击确认或点击刷新按钮刷新余额',
@@ -175,7 +187,7 @@ export default (): React.ReactNode => {
                                 >
                                     <Form.Item name="money" label="充值金额" initialValue={"10"}
                                                rules={[{required: true, message: '请输入充值金额'}]}>
-                                        <CheckCard.Group style={{width: '100%', textAlign: "center"}}
+                                        <CheckCard.Group style={{width: '100%', textAlign: "center"}} className={border}
                                                          onChange={(values) => {
                                                              if (values == "") {
                                                                  setMoneyInput(false);
@@ -252,18 +264,19 @@ export default (): React.ReactNode => {
                                                     boxSizing: "border-box"
                                                 }}
                                             />
-                                            <Input placeholder={"金额"} hidden={moneyInput}
-                                                   onChange={(e) => {
-                                                       setMoney(e.target.value);
-                                                       form.setFieldsValue({money: e.target.value});
-                                                   }}
-                                                   style={{
-                                                       height: "41.5px",
-                                                       width: "68px",
-                                                       margin: "0px",
-                                                       borderRadius: "7px",
-                                                       textAlign: "center"
-                                                   }}/>
+                                            {!moneyInput &&  <Input placeholder={"金额"}
+                                                                    onChange={(e) => {
+                                                                        setMoney(e.target.value);
+                                                                        form.setFieldsValue({money: e.target.value});
+                                                                    }}
+                                                                    style={{
+                                                                        height: "41.5px",
+                                                                        width: "68px",
+                                                                        margin: "0px",
+                                                                        borderRadius: "7px",
+                                                                        textAlign: "center"
+                                                                    }}/>}
+
                                         </CheckCard.Group>
                                     </Form.Item>
                                     <Form.Item
@@ -272,7 +285,7 @@ export default (): React.ReactNode => {
                                         rules={[{required: true, message: '请选择充值方式'}]}
                                         initialValue={"0"}
                                     >
-                                        <CheckCard.Group>
+                                        <CheckCard.Group className={border}>
                                             <Row gutter={10} wrap={true} style={{margin: "10px 0px 0px 0px"}}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>
                                                     <CheckCard

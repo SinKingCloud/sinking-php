@@ -6,6 +6,6 @@ export function getUploadUrl(): string {
     return Settings.gateway + "/auth/upload/file"
 }
 
-export async function uploadFile(params: API.RequestParams = {}) {
+export async function uploadFile(params?: FormData) {
     return post("/auth/upload/file", params?.body, params?.onSuccess, params?.onFail, params?.onFinally);
 }

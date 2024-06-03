@@ -365,38 +365,25 @@ export default (): React.ReactNode => {
                                         setEditValue(editorState.toHTML());
                                     }}
                                     media={{
-                                        uploadFn: async (param: any) => {
+                                        uploadFn: async (param) => {
                                             const formData = new FormData();
-                                            formData.append('name', param.name);
-                                            formData.append('size', param.size);
-                                            formData.append('type', param.type);
-                                            formData.append('webkitRelativePath', param.webkitRelativePath);
-                                            formData.append('lastModified', param.lastModified);
-                                            await uploadFile({
-                                                body: {
-                                                    ...formData
-                                                },
-                                                onSuccess: (r: any) => {
-                                                    console.log(r)
-                                                    if (r?.code == 200) {
-                                                        param?.success({
-                                                            meta: {
-                                                                alt: param?.file?.name || "",
-                                                                autoPlay: false,
-                                                                controls: false,
-                                                                id: r?.data || "",
-                                                                loop: false,
-                                                                poster: param?.file?.name || "",
-                                                                title: param?.file?.name || ""
-                                                            }, url: r?.data || ""
-                                                        });
-                                                    }
-                                                },
-                                                onFail: (r:any) => {
-                                                    console.log(r)
-                                                    param?.error({msg: "上传文件失败"});
-                                                }
-                                            });
+                                            formData.append('file', param.file);
+                                            const res = await uploadFile(formData);
+                                            if (res?.code == 200) {
+                                                param.success({
+                                                    meta: {
+                                                        alt: param?.file?.name || "",
+                                                        autoPlay: false,
+                                                        controls: false,
+                                                        id: res?.data || "",
+                                                        loop: false,
+                                                        poster: param?.file?.name || "",
+                                                        title: param?.file?.name || ""
+                                                    }, url: res?.data || ""
+                                                });
+                                            } else {
+                                                param.error({msg: "上传文件失败"});
+                                            }
                                         }
                                     }}
                                     className="my-editor"

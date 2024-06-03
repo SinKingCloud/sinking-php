@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import {Tag, Typography} from "antd";
 import {getParams} from "@/utils/page";
 import {getOrderList} from "@/service/admin/order";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 
 export default (): React.ReactNode => {
     /**

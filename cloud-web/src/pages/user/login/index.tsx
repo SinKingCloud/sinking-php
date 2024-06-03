@@ -1,7 +1,7 @@
 import {LockOutlined, MailOutlined, SafetyCertificateOutlined, UserOutlined} from '@ant-design/icons';
 import {Alert, App, Button, Checkbox, Col, Form, Image, Input, Row, Spin, Tabs, TabsProps} from 'antd';
 import React, {useEffect, useState} from 'react';
-import {Body, Footer} from '@/layouts/components';
+import {Body, Footer} from '@/components';
 // @ts-ignore
 import {history, useLocation, useModel} from "umi";
 import {getCaptchaUrl} from "@/service/common/captcha";

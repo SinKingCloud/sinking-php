@@ -5,7 +5,7 @@ import {getChart, getCount, getToDo, getTopWeb} from "@/service/master";
 import SalesCard from "./components/salesCard";
 import dayjs from "dayjs";
 import {Card, Col, Row} from "antd";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 const Info: React.FC<{
     title: React.ReactNode;
     value: React.ReactNode;

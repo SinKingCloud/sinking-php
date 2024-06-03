@@ -28,7 +28,7 @@ import {
     updateWebInfo
 } from "@/service/admin/web";
 import moment from "moment";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 import {useModel} from "umi";
 
 export default (): React.ReactNode => {

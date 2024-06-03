@@ -7,7 +7,7 @@ import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} 
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
-import {Body} from '@/layouts/components';
+import {Body} from '@/components';
 export default (): React.ReactNode => {
     const {message, modal} = App.useApp()
     /**

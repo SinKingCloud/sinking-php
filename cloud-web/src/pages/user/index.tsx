@@ -11,7 +11,7 @@ import {ago} from "@/utils/time";
 import {getContact, getNotice} from "@/service/person/config";
 import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles} from "antd-style";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 //@ts-ignore
 const useStyles = createStyles(({css, token, responsive}): any => {
     return {

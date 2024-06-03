@@ -1,17 +1,16 @@
-import Body from "@/layouts/components/body";
-import Footer from "@/layouts/components/footer";
-import Header from "@/layouts/components/header";
-import Sider from "@/layouts/components/sider";
+import Footer from "../footer";
+import Header from "../header";
+import Sider from "../sider";
 import {createStyles, useResponsive} from "antd-style";
 import React, {useState} from "react";
-import {Outlet, useModel} from "umi";
+import {Outlet} from "umi";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import Loading from "@/loading"
-import {App, Button, ConfigProvider, Drawer, Layout as SkLayout} from "antd";
+import {App, Button, ConfigProvider, Drawer, Layout} from "antd";
 import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 
-const useLayoutStyles = createStyles((): any => {
+const useLayoutStyles = createStyles(({isDarkMode, token}): any => {
     return {
         sider: {
             zIndex: 2,
@@ -19,6 +18,9 @@ const useLayoutStyles = createStyles((): any => {
             height: '100vh',
             position: "fixed !important",
             bottom: 0,
+            ".ant-layout-header": {
+                backgroundColor: token?.colorBgContainer
+            }
         },
         menuBtn: {
             width: "55px !important",
@@ -36,26 +38,32 @@ const useLayoutStyles = createStyles((): any => {
         },
         body: {
             transition: "margin-left 0.2s !important",
+            transform: "translateY(1px)",
+            backgroundColor: isDarkMode ? "black" : "transparent"
         },
         header: {
             padding: 0,
             height: "55px",
             lineHeight: "55px !important",
             width: "100%",
-            zIndex: 1,
+            zIndex: 3,
             boxShadow: "0 2px 8px 0 rgba(29, 35, 41, 0.05)",
             position: "sticky",
             top: 0,
             userSelect: "none",
+            transform: "translateY(-1px)",
+            background: token?.colorBgContainer + " !important"
         },
         content: {
-            minHeight: "calc(100vh - 110px)",
+            minHeight: "calc(100vh - 117px)",
             maxWidth: "100%",
             height: "100%",
-            overflow: "auto"
+            overflow: "auto",
+            transform: "translateY(-1px)",
         },
         footer: {
             textAlign: 'center',
+            transform: "translateY(-1px)",
         },
     };
 });
@@ -78,7 +86,7 @@ export type LayoutProps = {
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
 };
 
-const Layout: React.FC<LayoutProps> = (props) => {
+const SinKing: React.FC<LayoutProps> = (props) => {
     const {
         loading = false,
         menus,
@@ -88,6 +96,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
         collapsedLogo,
         unCollapsedLogo,
         headerRight,
+        headerLeft,
         menuCollapsedWidth = 60,
         menuUnCollapsedWidth = 220,
         menuBottomBtnIcon = undefined,
@@ -101,7 +110,6 @@ const Layout: React.FC<LayoutProps> = (props) => {
     const [open, setOpen] = useState(false);
     const {styles: {sider, header, content, footer, body, drawMenu, menuBtn,}} = useLayoutStyles();
     const {mobile} = useResponsive();
-    const systemTheme = useModel("theme");
     const menuBtnOnClick = () => {
         let status: boolean;
         if (mobile) {
@@ -116,17 +124,19 @@ const Layout: React.FC<LayoutProps> = (props) => {
         }
         onMenuBtnClick?.(status);
     }
-    return (
-        <ConfigProvider theme={systemTheme?.themes} locale={zhCN}>
-            <App>
-                {(loading && <Loading/>) || <SkLayout>
-                    <SkLayout.Sider className={sider} trigger={null} collapsible collapsed={collapsed}
-                                    width={menuUnCollapsedWidth} collapsedWidth={menuCollapsedWidth} hidden={mobile}>
-                        {(mobile && <Drawer placement={"left"} closable={false} open={open} width={menuUnCollapsedWidth}
-                                            classNames={{body: drawMenu}}
-                                            onClose={() => {
-                                                setOpen(false)
-                                            }}>
+
+    return (<ConfigProvider locale={zhCN}>
+        <App>
+            {(loading && <Loading/>) || <Layout>
+                <Layout.Sider className={sider} trigger={null} collapsible collapsed={collapsed}
+                              width={menuUnCollapsedWidth} collapsedWidth={menuCollapsedWidth}
+                              hidden={mobile}>
+                    {(mobile &&
+                            <Drawer placement={"left"} closable={false} open={open} width={menuUnCollapsedWidth}
+                                    classNames={{body: drawMenu}}
+                                    onClose={() => {
+                                        setOpen(false)
+                                    }}>
                                 <Sider collapsed={collapsed}
                                        unCollapsedLogo={unCollapsedLogo}
                                        menuBottomBtnIcon={menuBottomBtnIcon}
@@ -139,45 +149,36 @@ const Layout: React.FC<LayoutProps> = (props) => {
                                            onMenuClick?.(item);
                                        }}/>
                             </Drawer>)
-                            ||
-                            <Sider collapsed={collapsed}
-                                   onLogoClick={onLogoClick}
-                                   collapsedLogo={collapsedLogo}
-                                   unCollapsedLogo={unCollapsedLogo}
-                                   menuBottomBtnIcon={menuBottomBtnIcon}
-                                   menuBottomBtnText={menuBottomBtnText}
-                                   onMenuBottomBtnClick={onMenuBottomBtnClick}
-                                   menus={menus}
-                                   onMenuClick={(item) => {
-                                       onMenuClick?.(item);
-                                   }}/>}
-                    </SkLayout.Sider>
-                    <SkLayout className={body}
-                              style={{marginLeft: mobile ? 0 : (collapsed ? menuCollapsedWidth + "px" : menuUnCollapsedWidth + "px")}}>
-                        <SkLayout.Header className={header}>
-                            <Button type="text" size={"large"}
-                                    icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
-                                    onClick={menuBtnOnClick} className={menuBtn}/>
-                            <Header  right={headerRight}/>
-                        </SkLayout.Header>
-                        <SkLayout.Content className={content}>
-                            <Outlet/>
-                        </SkLayout.Content>
-                        {props?.footer && <SkLayout.Footer className={footer}>
-                            <Footer> {props?.footer}</Footer>
-                        </SkLayout.Footer>}
-                    </SkLayout>
-                </SkLayout>}
-            </App>
-        </ConfigProvider>
-    );
+                        ||
+                        <Sider collapsed={collapsed}
+                               onLogoClick={onLogoClick}
+                               collapsedLogo={collapsedLogo}
+                               unCollapsedLogo={unCollapsedLogo}
+                               menuBottomBtnIcon={menuBottomBtnIcon}
+                               menuBottomBtnText={menuBottomBtnText}
+                               onMenuBottomBtnClick={onMenuBottomBtnClick}
+                               menus={menus}
+                               onMenuClick={(item) => {
+                                   onMenuClick?.(item);
+                               }}/>}
+                </Layout.Sider>
+                <Layout className={body}
+                        style={{marginLeft: mobile ? 0 : (collapsed ? menuCollapsedWidth + "px" : menuUnCollapsedWidth + "px")}}>
+                    <Layout.Header className={header}>
+                        <Button type="text" size={"large"}
+                                icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+                                onClick={menuBtnOnClick} className={menuBtn}/>
+                        <Header left={headerLeft} right={headerRight}/>
+                    </Layout.Header>
+                    <Layout.Content className={content}>
+                        <Outlet/>
+                    </Layout.Content>
+                    {props?.footer && <Layout.Footer className={footer}>
+                        <Footer> {props?.footer}</Footer>
+                    </Layout.Footer>}
+                </Layout>
+            </Layout>}
+        </App>
+    </ConfigProvider>);
 }
-
-export {
-    Body,
-    Footer,
-    Header,
-    Sider,
-}
-
-export default Layout;
+export default SinKing;

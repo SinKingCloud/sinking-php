@@ -1,5 +1,5 @@
 import React from "react";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 import {Button, Result} from "antd";
 import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";

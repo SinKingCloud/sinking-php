@@ -9,7 +9,7 @@ import {getUploadUrl} from "@/service/common/upload";
 import {getPayLog} from "@/service/admin/pay";
 import {getLogList} from "@/service/admin/log";
 import {useModel} from "umi";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 
 export default (): React.ReactNode => {
     /**

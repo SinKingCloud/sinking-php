@@ -5,7 +5,7 @@ import {ExclamationCircleOutlined, WechatOutlined} from "@ant-design/icons";
 import {buySite, getSite} from "@/service/shop/site";
 import {getPayConfig} from "@/service/pay/pay";
 import {setPayJumpUrl} from "@/utils/pay";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 import {useModel} from "umi";
 import {createStyles, useResponsive} from "antd-style";
 

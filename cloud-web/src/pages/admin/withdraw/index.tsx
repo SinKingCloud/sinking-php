@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {createCash, getCashConfig, getCashList, updateCash} from "@/service/admin/cash";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 
 export default (): React.ReactNode => {
     /**

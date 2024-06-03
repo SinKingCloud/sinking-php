@@ -1,7 +1,7 @@
-import {useModel, useLocation, history, useSelectedRoutes} from 'umi';
+import {useLocation, history, useSelectedRoutes} from 'umi';
 import React, {useEffect, useState} from 'react';
 import {ConfigProvider, Menu, theme, Layout} from 'antd';
-import {createStyles, useResponsive} from "antd-style";
+import {createStyles, useResponsive, useTheme} from "antd-style";
 import {Icon} from "@/components";
 
 const useStyles = createStyles(({token}): any => {
@@ -31,22 +31,24 @@ const useStyles = createStyles(({token}): any => {
                 height: "60% !important",
                 borderRightWidth: "5px !important",
                 borderRadius: "10px 0 0 10px",
+            },
+            ".ant-menu-item,.ant-menu-submenu-title": {
+                transition: "border-color 0.3s,background 0.3s !important"
             }
         },
         menuTop: {
             zIndex: 2,
             userSelect: "none",
-            height: "55px",
-            lineHeight: "55px !important",
+            height: "100px",
+            lineHeight: "100px !important",
             width: "100%",
             padding: "10px !important",
             overflow: "hidden",
-            position: "sticky",
             cursor: "pointer",
-            top: 0,
             display: "flex",
-            alignItems:"center",
             justifyContent: "center",
+            alignItems: "center",
+            background: token?.colorBgContainer + " !important",
         },
         menuBottom: {
             background: token?.colorBgContainer,
@@ -79,8 +81,8 @@ export type SiderProps = {
     menus?: any;//菜单列表
     onMenuClick?: (item: any) => void;//点击菜单回调
     onLogoClick?: () => void;//点击logo回调
-    collapsedLogo?: (isLight: boolean) => any;//折叠时logo
-    unCollapsedLogo?: (isLight: boolean) => any;//展开时logo
+    collapsedLogo?: (isLight: boolean | undefined) => any;//折叠时logo
+    unCollapsedLogo?: (isLight: boolean | undefined) => any;//展开时logo
     menuBottomBtnIcon?: string;//底部按钮图标
     menuBottomBtnText?: string;//底部按钮文字
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
@@ -99,7 +101,7 @@ const Sider: React.FC<SiderProps> = (props) => {
         onMenuBottomBtnClick,
     } = props;
     const {mobile} = useResponsive();
-    const systemTheme = useModel("theme");
+    const systemTheme = useTheme();
     const {styles: {left, menu, menuTop, menuBottom}} = useStyles();
     const [selectedKeys, setSelectedKeys] = useState<any>([]);
     const location = useLocation();
@@ -156,10 +158,10 @@ const Sider: React.FC<SiderProps> = (props) => {
                 onLogoClick?.();
             }}>
                 {(mobile || (!mobile && !collapsed)) &&
-                    unCollapsedLogo?.(systemTheme?.isLightTheme())
+                    unCollapsedLogo?.(!systemTheme?.isDarkMode)
                 }
                 {!mobile && collapsed &&
-                    collapsedLogo?.(systemTheme?.isLightTheme())
+                    collapsedLogo?.(systemTheme?.isDarkMode)
                 }
             </Layout.Header>
             <Layout.Content>

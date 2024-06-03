@@ -3,7 +3,7 @@ import ProTable, {ProColumns} from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
 import {message} from "antd";
 import {getPayLog} from "@/service/pay/pay";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 
 export default (): React.ReactNode => {
     const actionRef = useRef();

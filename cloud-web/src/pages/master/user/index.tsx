@@ -9,7 +9,7 @@ import {createWeb} from "@/service/master/web";
 import {getDomainConfig} from "@/service/admin/web";
 import {getPayLog} from "@/service/master/pay";
 import {getLogList} from "@/service/master/log";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 export default (): React.ReactNode => {
     /**
      * 表单处理

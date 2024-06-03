@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Layout from "@/layouts/components";
+import {Layout, Theme} from "@/components";
 import {getAdminMenuItems, getMasterMenuItems, getUserMenuItems} from "@/utils/route";
 import {Icon} from "@/components";
 import {useModel} from "umi";
@@ -11,6 +11,7 @@ import Settings from "@/../config/defaultSettings";
 import {Bottom, Exit, Order, Right, Setting} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
+
 /**
  * 中间件
  * @param ctx context
@@ -136,7 +137,7 @@ const RightTop: React.FC = () => {
             },
         };
     });
-    const {styles: {img, nickname, profile, pop, content_top, ava, text, top_text, box, menu, menuItem}} = useStyles();
+    const {styles: {img, nickname, profile, pop, content_top, ava, top_text, box, menu, menuItem}} = useStyles();
     return <>
         <Popover className={profile} overlayInnerStyle={{padding: 0}} overlayClassName={box} autoAdjustOverflow={false}
                  placement="bottomRight"
@@ -158,7 +159,7 @@ const RightTop: React.FC = () => {
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={() => historyPush("user.log2")}>
-                             <div><Icon  type={Order} style={{fontSize: 14, marginRight: 4}}/>操作设置</div>
+                             <div><Icon type={Order} style={{fontSize: 14, marginRight: 4}}/>操作设置</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={async () => {
@@ -223,15 +224,43 @@ export default () => {
     const userMenu = getUserMenuItems()
     const masterMenu = getMasterMenuItems()
     const adminMenu = getAdminMenuItems()
-    const newMenu = [...userMenu,...masterMenu,...adminMenu];
-    const newMenu1 = [...userMenu,...masterMenu]
+    const newMenu = [...userMenu, ...masterMenu, ...adminMenu];
+    const newMenu1 = [...userMenu, ...masterMenu]
     useEffect(() => {
         initUser();
     }, []);
 
+    /**
+     * 样式信息
+     */
+    const useStyles = createStyles((): any => {
+        return {
+            collapsedImg: {
+                width: "35px",
+            },
+            unCollapsed: {
+                overflow: "hidden",
+                position: "absolute",
+                display: "inline-flex",
+                ">img": {
+                    width: "35px",
+                    float: "left"
+                },
+                ">div": {
+                    color: "#0051eb",
+                    fontSize: "25px",
+                    marginLeft: "5px", fontWeight: "bolder",
+                    float: "left",
+                    lineHeight: "30px",
+                    whiteSpace: "nowrap",
+                }
+            }
+        };
+    });
+    const {styles: {collapsedImg, unCollapsed}} = useStyles();
     return (
         <Layout loading={loading}
-                menus={user?.web?.is_admin&&user?.web?.is_master?newMenu : newMenu1}
+                menus={user?.web?.is_admin && user?.web?.is_master ? newMenu : newMenu1}
                 footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                 headerRight={<RightTop/>}
                 menuCollapsedWidth={60}
@@ -243,21 +272,16 @@ export default () => {
                     console.log("点击了菜单", item)
                 }}
                 collapsedLogo={() => {
-                    return <img src={(Settings?.basePath || "/") + "logo.svg"} width="36"
-                                alt={Settings?.title}/>
+                    return <img src={(Settings?.basePath || "/") + "logo.svg"}
+                                alt={Settings?.title} className={collapsedImg}/>
                 }}
                 unCollapsedLogo={() => {
                     return (
-                        <>
-                            <img src={(Settings?.basePath || "/") + "logo.svg"} width="36"
+                        <div className={unCollapsed}>
+                            <img src={(Settings?.basePath || "/") + "logo.svg"}
                                  alt="沉沦云网络"/>
-                            <h5 style={{
-                                fontSize: "20px", color: "#0051eb", display: "inline-block",
-                                height: "20px", lineHeight: "20px", marginLeft: "5px"
-                            }}>{web?.info?.name || Settings?.title}</h5>
-                        </>
-
-                    )
+                            <div>{web?.info?.name || Settings?.title}</div>
+                        </div>)
                 }}
                 onMenuBtnClick={(state) => {
                     console.log("点击了菜单按钮", state)

@@ -1,5 +1,5 @@
 import React from "react";
-import {Body} from "@/layouts/components";
+import {Body} from "@/components";
 import {App, Button} from "antd";
 
 export default () => {

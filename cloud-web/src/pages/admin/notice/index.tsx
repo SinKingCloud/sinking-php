@@ -20,14 +20,15 @@ import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} 
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
-import { Body } from '@/layouts/components';
+import {Body} from '@/components';
+
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
     const actionRef = useRef();
     const ref = useRef();
-    const {message,modal} = App.useApp()
+    const {message, modal} = App.useApp()
     const [selectedRowsState, setSelectedRows] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalEditVisible, setIsModalEditVisible] = useState(false);
@@ -262,9 +263,9 @@ export default (): React.ReactNode => {
             editable: false,
             render: (text: string, record: any) => {
                 return <Dropdown menu={{
-                    items:[
+                    items: [
                         {
-                            key:"edit",
+                            key: "edit",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -275,7 +276,7 @@ export default (): React.ReactNode => {
                             )
                         },
                         {
-                            key:"delete",
+                            key: "delete",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     // @ts-ignore
@@ -287,7 +288,7 @@ export default (): React.ReactNode => {
                         }
                     ]
                 }} trigger={['click']} placement={"bottom"} arrow={true}>
-                    <Button size={"small"}  onClick={e => e.preventDefault()}>操
+                    <Button size={"small"} onClick={e => e.preventDefault()}>操
                         作 <DownOutlined/></Button>
                 </Dropdown>;
             }
@@ -303,7 +304,7 @@ export default (): React.ReactNode => {
      * @param id 公告ID
      */
     const [noticeLoading, setNoticeLoading] = useState(false);
-    const showNoticeInfo =async (id: number) => {
+    const showNoticeInfo = async (id: number) => {
         setNoticeLoading(true);
         setIsModalVisible(true);
         await getNoticeInfo({
@@ -327,7 +328,7 @@ export default (): React.ReactNode => {
     }
 
     return (
-        <Body >
+        <Body>
             <Drawer key={"form"} destroyOnClose={true} forceRender={true} width={"100%"}
                     title={form.getFieldValue("id") == undefined ? "新 建" : "编 辑"}
                     open={isModalVisible} onClose={() => {
@@ -336,7 +337,8 @@ export default (): React.ReactNode => {
             }}>
                 <Spin spinning={noticeLoading}>
                     <div style={{display: !noticeLoading ? "block" : "none"}}>
-                        <Form form={form} name="control-hooks" onFinish={onFormFinish}  labelAlign="right" labelCol={{span: 2}}
+                        <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right"
+                              labelCol={{span: 2}}
                               wrapperCol={{span: 21}}>
                             <Form.Item name={"id"} label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
@@ -351,17 +353,18 @@ export default (): React.ReactNode => {
                                         label: "系统首页"
                                     },
                                     {
-                                        value:"shop",
+                                        value: "shop",
                                         label: "用户商城"
                                     },
                                     {
-                                        value:"admin",
+                                        value: "admin",
                                         label: "分站后台"
                                     }
-                                ]} style={{maxWidth: "500px"}} />
+                                ]} style={{maxWidth: "500px"}}/>
                             </Form.Item>
                             <Form.Item name={"sort"} label="排序" rules={[{required: true}]}>
-                                <InputNumber placeholder="请输入排序数值" style={{maxWidth: "500px", minWidth: "150px"}}/>
+                                <InputNumber placeholder="请输入排序数值"
+                                             style={{maxWidth: "500px", minWidth: "150px"}}/>
                             </Form.Item>
                             <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
                                 <Select placeholder="请选择公告状态" options={[
@@ -373,7 +376,7 @@ export default (): React.ReactNode => {
                                         value: 1,
                                         label: "隐藏"
                                     }
-                                ]} style={{maxWidth: "500px"}} />
+                                ]} style={{maxWidth: "500px"}}/>
                             </Form.Item>
                             <Form.Item name={"content"} label="内容" rules={[{required: true}]}>
                                 <
@@ -445,13 +448,13 @@ export default (): React.ReactNode => {
                         <Select placeholder="请选择公告状态" options={[
                             {
                                 value: 0,
-                                    label: "显示"
-                                },
-                                {
-                                    value: 1,
-                                    label: "隐藏"
+                                label: "显示"
+                            },
+                            {
+                                value: 1,
+                                label: "隐藏"
                             }
-                        ]} />
+                        ]}/>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -465,7 +468,7 @@ export default (): React.ReactNode => {
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 rowKey={'id'}
                 options={{
                     density: true,
@@ -499,7 +502,7 @@ export default (): React.ReactNode => {
                 request={async (params, sort) => {
                     const fetchParams = getParams(params, sort)
                     const data = await getNoticeList({
-                        body:{
+                        body: {
                             ...fetchParams
                         }
                     });

@@ -22,7 +22,7 @@ import {getUploadUrl} from "@/service/common/upload";
 import {createDomain, deleteDomain, getWebList, updateDomain, updateWebInfo} from "@/service/master/web";
 import moment from "moment";
 import {getDomainList} from "@/service/admin/web";
-import {Body} from '@/layouts/components';
+import {Body} from '@/components';
 export default (): React.ReactNode => {
     /**
      * 表单处理

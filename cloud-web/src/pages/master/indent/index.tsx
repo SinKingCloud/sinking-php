@@ -4,7 +4,7 @@ import {App, Button, DatePicker, Form, Modal, Select, Tag, Typography} from "ant
 import {getParams} from "@/utils/page";
 import {deleteOrder, getOrderList} from "@/service/master/order";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 export default (): React.ReactNode => {
     /**
      * 表单处理

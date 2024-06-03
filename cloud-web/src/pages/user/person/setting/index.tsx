@@ -20,7 +20,7 @@ import { LockOutlined, MailOutlined, SafetyOutlined, UploadOutlined} from "@ant-
 import {updateInfo, updatePassword, updateEmail, updatePhone} from "@/service/person/update";
 import {getUploadUrl} from "@/service/common/upload";
 import SmsVerify from "@/pages/components/smsVerify";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 import {useModel} from "umi";
 import EmailVerify from "@/pages/components/emailVerify";
 

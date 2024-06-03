@@ -17,7 +17,7 @@ import ProTable from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {getCashList, updateCash} from "@/service/master/withdraw";
-import {Body} from '@/layouts/components';
+import {Body} from '@/components';
 export default (): React.ReactNode => {
     /**
      * 表单处理

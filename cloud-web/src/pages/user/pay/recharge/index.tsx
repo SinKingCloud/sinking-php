@@ -13,7 +13,7 @@ import {
 } from "@ant-design/icons";
 import {getPayConfig, recharge} from "@/service/pay/pay";
 import {setPayJumpUrl} from "@/utils/pay";
-import {Body} from '@/layouts/components';
+import {Body} from '@/components';
 import {createStyles, useResponsive} from "antd-style";
 import ProTable, {ProColumns} from "@ant-design/pro-table";
 const useStyles = createStyles(({css})=>{

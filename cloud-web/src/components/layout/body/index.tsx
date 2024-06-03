@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {useLocation, useModel, useRouteData} from "umi";
+import {useLocation, useRouteData} from "umi";
 import {ConfigProvider, Layout} from "antd";
 import {createStyles} from "antd-style";
 import {Spin, Space, Breadcrumb, App} from "antd";
 import {getCurrentMenus, getFirstMenuWithoutChildren, getParentList, historyPush} from "@/utils/route";
 import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
+import {Animation, Theme} from "@/components";
+import {Animate} from "@/components/animation";
 
 const useStyles = createStyles(({token}): any => {
     return {
@@ -37,10 +39,12 @@ export type BodyProps = {
     loading?: boolean;//是否加载状态
     space?: boolean;//是否开启间距
     breadCrumb?: boolean;//面包屑
+    animation?: boolean;//动画
     style?: any;//样式
     className?: any;//样式名
     children?: any;//子内容
     themes?: any;//主题
+    mode?: any;//模式
 };
 /**
  * 页面主体部分
@@ -48,9 +52,18 @@ export type BodyProps = {
  * @constructor
  */
 const Body: React.FC<BodyProps> = (props) => {
-    const {children, loading, style, className, space = true, breadCrumb = true, themes = undefined} = props;
+    const {
+        children,
+        loading,
+        style,
+        className,
+        space = true,
+        breadCrumb = true,
+        themes = undefined,
+        mode = undefined,
+        animation = true
+    } = props;
     const {styles: {body, load, gutter, bread, breadStyle}} = useStyles();
-    const systemTheme = useModel("theme");
 
     /**
      * 初始化面包屑
@@ -74,7 +87,7 @@ const Body: React.FC<BodyProps> = (props) => {
                 historyPush(x?.name);
             }
         }
-        items.map((x, n) => {
+        items.map((x) => {
             temp.push({
                 title: x?.label,
                 onClick: () => {
@@ -98,19 +111,26 @@ const Body: React.FC<BodyProps> = (props) => {
     /**
      * 页面容器
      */
-    return <ConfigProvider theme={themes ? themes : systemTheme?.themes} locale={zhCN}>
-        <App>
-            {(loading && <Spin spinning={true} size="large" className={load}></Spin>) ||
-                <Layout style={style}>
-                    {breadCrumb && breadCrumbData?.length > 0 && <Breadcrumb className={bread} items={breadCrumbData}/>}
-                    <div className={className ? className : body}>
-                        {(space && <Space direction="vertical" size="middle" className={gutter}>
-                            {children}
-                        </Space>) || children}
-                    </div>
-                </Layout>}
-        </App>
-    </ConfigProvider>;
+    return (
+        <Theme theme={themes} mode={mode}>
+            <ConfigProvider locale={zhCN}>
+                <App>
+                    {(loading && <Spin spinning={true} size="large" className={load}></Spin>) ||
+                        <Layout style={style}>
+                            {breadCrumb && breadCrumbData?.length > 0 &&
+                                <Breadcrumb className={bread} items={breadCrumbData}/>}
+                            <div className={className ? className : body}>
+                                <Animation animate={animation ? Animate.FadeUp : Animate.None}>
+                                    {(space && <Space direction="vertical" size="middle" className={gutter}>
+                                        {children}
+                                    </Space>) || children}
+                                </Animation>
+                            </div>
+                        </Layout>}
+                </App>
+            </ConfigProvider>
+        </Theme>
+    );
 }
 
 export default Body

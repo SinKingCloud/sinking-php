@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
 import {App} from "antd";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 export default (): React.ReactNode => {
     /**
      * 表单处理

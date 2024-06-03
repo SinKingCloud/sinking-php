@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {getParams} from "@/utils/page";
 import {getPayOrder} from "@/service/pay/order";
-import { Body } from '@/layouts/components';
+import { Body } from '@/components';
 import {App} from "antd";
 import ProTable from "@ant-design/pro-table";
 

@@ -2,12 +2,22 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, testCloud, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormText} from "@ant-design/pro-form";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        box:css`
+            .ant-form-item .ant-form-item-control{
+                margin-bottom: 10px !important;
+            }
+        `
+    }
+})
 const CloudView: React.FC = () => {
+    const {styles:{box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
-    const [data,setData] = useState(()=>{
-        return JSON.parse(localStorage.getItem('cloud') || '{}')
-    })
+    const [form] = Form.useForm();
+
     /**
      * 初始化表单值
      */
@@ -24,15 +34,13 @@ const CloudView: React.FC = () => {
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
                     });
-                    setData(temp)
-                    localStorage.setItem('cloud', JSON.stringify(temp))
+                    form.setFieldsValue(temp)
                     setIsLoading(false)
                 }
             }
         });
     }
 
-    const [form] = Form.useForm();
     /**
      * 提交表单
      */
@@ -72,16 +80,14 @@ const CloudView: React.FC = () => {
      * 初始化数据
      */
     useEffect(() => {
-        getConfigs().then(() => {
-            form?.setFieldsValue(data);
-        });
+        getConfigs()
     }, []);
 
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>基本设置</h3>
-                <ProForm key={"cloud"} form={form} onFinish={onFinish} >
+                <ProForm key={"cloud"} form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="cloud.id"

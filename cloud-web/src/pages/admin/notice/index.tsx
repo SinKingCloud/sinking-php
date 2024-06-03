@@ -1,6 +1,18 @@
 import React, {useRef, useState} from 'react';
-import {App, Button, Drawer, Dropdown, Form, Input, InputNumber, Menu, message, Modal, Select, Spin, Table} from 'antd';
-import {FooterToolbar} from '@ant-design/pro-layout';
+import {
+    App,
+    Button,
+    Drawer,
+    Dropdown,
+    Form,
+    Input,
+    InputNumber,
+    Modal,
+    Select,
+    Space,
+    Spin,
+    Table
+} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
 import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
@@ -19,17 +31,6 @@ export default (): React.ReactNode => {
     const [selectedRowsState, setSelectedRows] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalEditVisible, setIsModalEditVisible] = useState(false);
-
-    /**
-     * 获取选中项
-     */
-    const getSelectedIds = () => {
-        const ids: any[] = [];
-        selectedRowsState.map((k: any) => {
-            ids.push(k.id);
-        });
-        return ids;
-    };
 
     /**
      * 表单
@@ -51,15 +52,23 @@ export default (): React.ReactNode => {
         }
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         values.content = editValue || "";
-        setIsModalVisible(false)
-        api(values).then((r) => {
-            if (r.code != 200) {
-                message.error(r.message || "请求失败").then()
-            } else {
-                // @ts-ignore
-                actionRef.current.reload()
-                form.resetFields();
-                message.success(r.message).then()
+        await api({
+            body: {
+                ...values
+            },
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
+                    message?.success(r?.message)
+                    setIsModalVisible(false)
+                    form.resetFields();
+                    //@ts-ignore
+                    actionRef.current.reload()
+                }
+            },
+            onFail: (r: any) => {
+                if (r?.code != 200) {
+                    message?.error(r?.message || "请求失败")
+                }
             }
         })
     }
@@ -68,22 +77,34 @@ export default (): React.ReactNode => {
      * 批量修改提交表单
      * @param values 表单项
      */
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const showBatchModal = () => {
+        setIsModalEditVisible(true);
+    }
     const onEditFinish = async (values: any) => {
-        setIsModalEditVisible(false);
-        values.ids = getSelectedIds()
         if (values.status != undefined && values.status >= 0) {
             values.status = values.status.toString();
         }
-        updateNotice(values).then((r) => {
-            if (r.code != 200) {
-                message.error(r.message || "请求失败").then()
-            } else {
-                // @ts-ignore
-                actionRef.current.reload()
-                // @ts-ignore
-                actionRef.current.clearSelected();
-                edit.resetFields();
-                message.success(r.message).then()
+        await updateNotice({
+            body: {
+                ...values
+            },
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
+                    message?.success(r?.message)
+                    setIsModalEditVisible(false);
+                    // @ts-ignore
+                    actionRef.current.reload()
+                    // @ts-ignore
+                    actionRef.current.clearSelected();
+                    edit.resetFields();
+                }
+            },
+            onFail: (r: any) => {
+                if (r?.code != 200) {
+                    message?.error(r?.message || "请求失败")
+                    setIsModalEditVisible(false)
+                }
             }
         })
     }
@@ -93,30 +114,34 @@ export default (): React.ReactNode => {
      * @param ids id列表
      */
     const deleteSubmit = (ids: any[]) => {
-        Modal.confirm({
+        modal.confirm({
             title: '您确定要删除该数据吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '删除后该数据不可恢复',
             okType: 'danger',
-            onOk() {
-                deleteNotice({ids: ids}).then((r) => {
-                    if (r.code != 200) {
-                        message.error(r.message || "请求失败").then()
-                    } else {
-                        // @ts-ignore
-                        actionRef.current.reloadAndRest()
-                        message.success(r.message).then()
+            onOk: async () => {
+                message?.loading({content: '正在删除公告', duration: 600000, key: "notice"})
+                await deleteNotice({
+                    body: {
+                        ids: ids
+                    },
+                    onSuccess: (r: any) => {
+                        if (r?.code == 200) {
+                            message?.success(r?.message)
+                            message.destroy("notice")
+                            //@ts-ignore
+                            actionRef.current.reloadAndRest()
+                        }
+                    },
+                    onFail: (r: any) => {
+                        if (r?.code != 200) {
+                            message?.error(r?.message || "请求失败")
+                            message.destroy("notice")
+                        }
                     }
                 })
             },
         });
-    }
-
-    /**
-     * 批量删除
-     */
-    const modalDelete = () => {
-        deleteSubmit(getSelectedIds())
     }
 
     /**
@@ -236,27 +261,33 @@ export default (): React.ReactNode => {
             hideInSearch: true,
             editable: false,
             render: (text: string, record: any) => {
-                return <Dropdown overlay={(
-                    <Menu>
-                        <Menu.Item key={"edit"}>
-                            <a style={{fontSize: "small"}} onClick={() => {
-                                // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                                showNoticeInfo(record?.id)
-                            }}>
-                                编 辑
-                            </a>
-                        </Menu.Item>
-                        <Menu.Item key={"delete"}>
-                            <a style={{fontSize: "small"}} onClick={() => {
-                                // @ts-ignore
-                                deleteSubmit([record.id])
-                            }}>
-                                删 除
-                            </a>
-                        </Menu.Item>
-                    </Menu>
-                )} trigger={['click']} placement={"bottomCenter"} arrow={true}>
-                    <Button size={"small"} style={{fontSize: "small"}} onClick={e => e.preventDefault()}>操
+                return <Dropdown menu={{
+                    items:[
+                        {
+                            key:"edit",
+                            label: (
+                                <a style={{fontSize: "small"}} onClick={() => {
+                                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                                    showNoticeInfo(record?.id)
+                                }}>
+                                    编 辑
+                                </a>
+                            )
+                        },
+                        {
+                            key:"delete",
+                            label: (
+                                <a style={{fontSize: "small"}} onClick={() => {
+                                    // @ts-ignore
+                                    deleteSubmit([record.id])
+                                }}>
+                                    删 除
+                                </a>
+                            )
+                        }
+                    ]
+                }} trigger={['click']} placement={"bottom"} arrow={true}>
+                    <Button size={"small"}  onClick={e => e.preventDefault()}>操
                         作 <DownOutlined/></Button>
                 </Dropdown>;
             }
@@ -272,33 +303,40 @@ export default (): React.ReactNode => {
      * @param id 公告ID
      */
     const [noticeLoading, setNoticeLoading] = useState(false);
-    const showNoticeInfo = (id: number) => {
+    const showNoticeInfo =async (id: number) => {
         setNoticeLoading(true);
         setIsModalVisible(true);
-        getNoticeInfo({id: id}).then((r) => {
-            setNoticeLoading(false);
-            if (r?.code == 200) {
-                // @ts-ignore
-                r.data.content = BraftEditor.createEditorState(r?.data?.content);
-                form.setFieldsValue(r?.data);
-            } else {
-                message.error(r?.message || "获取数据失败").then();
+        await getNoticeInfo({
+            body: {
+                id: id
+            },
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
+                    r.data.content = BraftEditor.createEditorState(r?.data?.content);
+                    form.setFieldsValue(r?.data);
+                    setNoticeLoading(false);
+                }
+            },
+            onFail: (r: any) => {
+                if (r?.code != 200) {
+                    message?.error(r?.message || "请求失败")
+                    setNoticeLoading(false);
+                }
             }
         });
     }
 
     return (
-        <Body title={false}>
-            <Drawer key={"form"} destroyOnClose={true} forceRender={true}
-                    width={"100%"}
+        <Body >
+            <Drawer key={"form"} destroyOnClose={true} forceRender={true} width={"100%"}
                     title={form.getFieldValue("id") == undefined ? "新 建" : "编 辑"}
-                    visible={isModalVisible} onClose={() => {
+                    open={isModalVisible} onClose={() => {
                 setIsModalVisible(false);
                 form.resetFields();
             }}>
                 <Spin spinning={noticeLoading}>
                     <div style={{display: !noticeLoading ? "block" : "none"}}>
-                        <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 2}}
+                        <Form form={form} name="control-hooks" onFinish={onFormFinish}  labelAlign="right" labelCol={{span: 2}}
                               wrapperCol={{span: 21}}>
                             <Form.Item name={"id"} label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
@@ -307,20 +345,35 @@ export default (): React.ReactNode => {
                                 <Input placeholder="请输入标题" style={{maxWidth: "500px"}}/>
                             </Form.Item>
                             <Form.Item name={"place"} label="位置" rules={[{required: true}]}>
-                                <Select placeholder="请输入显示位置" style={{maxWidth: "500px"}}>
-                                    <Select.Option value="index">系统首页</Select.Option>
-                                    <Select.Option value="shop">用户商城</Select.Option>
-                                    <Select.Option value="admin">分站后台</Select.Option>
-                                </Select>
+                                <Select placeholder="请输入显示位置" options={[
+                                    {
+                                        value: "index",
+                                        label: "系统首页"
+                                    },
+                                    {
+                                        value:"shop",
+                                        label: "用户商城"
+                                    },
+                                    {
+                                        value:"admin",
+                                        label: "分站后台"
+                                    }
+                                ]} style={{maxWidth: "500px"}} />
                             </Form.Item>
                             <Form.Item name={"sort"} label="排序" rules={[{required: true}]}>
                                 <InputNumber placeholder="请输入排序数值" style={{maxWidth: "500px", minWidth: "150px"}}/>
                             </Form.Item>
                             <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
-                                <Select placeholder="请选择公告状态" style={{maxWidth: "500px"}}>
-                                    <Select.Option value={0}>显示</Select.Option>
-                                    <Select.Option value={1}>隐藏</Select.Option>
-                                </Select>
+                                <Select placeholder="请选择公告状态" options={[
+                                    {
+                                        value: 0,
+                                        label: "显示"
+                                    },
+                                    {
+                                        value: 1,
+                                        label: "隐藏"
+                                    }
+                                ]} style={{maxWidth: "500px"}} />
                             </Form.Item>
                             <Form.Item name={"content"} label="内容" rules={[{required: true}]}>
                                 <
@@ -333,22 +386,29 @@ export default (): React.ReactNode => {
                                         uploadFn: async (param) => {
                                             const formData = new FormData();
                                             formData.append('file', param.file);
-                                            const res = await uploadFile(formData);
-                                            if (res?.code == 200) {
-                                                param.success({
-                                                    meta: {
-                                                        alt: param?.file?.name || "",
-                                                        autoPlay: false,
-                                                        controls: false,
-                                                        id: res?.data || "",
-                                                        loop: false,
-                                                        poster: param?.file?.name || "",
-                                                        title: param?.file?.name || ""
-                                                    }, url: res?.data || ""
-                                                });
-                                            } else {
-                                                param.error({msg: "上传文件失败"});
-                                            }
+                                            await uploadFile({
+                                                body: {
+                                                    ...formData
+                                                },
+                                                onSuccess: (r: any) => {
+                                                    if (r?.code == 200) {
+                                                        param?.success({
+                                                            meta: {
+                                                                alt: param?.file?.name || "",
+                                                                autoPlay: false,
+                                                                controls: false,
+                                                                id: r?.data || "",
+                                                                loop: false,
+                                                                poster: param?.file?.name || "",
+                                                                title: param?.file?.name || ""
+                                                            }, url: r?.data || ""
+                                                        });
+                                                    }
+                                                },
+                                                onFail: () => {
+                                                    param?.error({msg: "上传文件失败"});
+                                                }
+                                            });
                                         }
                                     }}
                                     className="my-editor"
@@ -374,7 +434,7 @@ export default (): React.ReactNode => {
             </Drawer>
 
             <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑"
-                   visible={isModalEditVisible}
+                   open={isModalEditVisible}
                    onOk={edit.submit} okText={"确 认"} onCancel={() => {
                 setIsModalEditVisible(false);
                 edit.resetFields();
@@ -382,10 +442,16 @@ export default (): React.ReactNode => {
                 <Form form={edit} name="control-hooks" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
                     <Form.Item name={"status"} label="状态">
-                        <Select placeholder="请选择公告状态">
-                            <Select.Option value={0}>显示</Select.Option>
-                            <Select.Option value={1}>隐藏</Select.Option>
-                        </Select>
+                        <Select placeholder="请选择公告状态" options={[
+                            {
+                                value: 0,
+                                    label: "显示"
+                                },
+                                {
+                                    value: 1,
+                                    label: "隐藏"
+                            }
+                        ]} />
                     </Form.Item>
                 </Form>
             </Modal>
@@ -398,22 +464,45 @@ export default (): React.ReactNode => {
                 headerTitle={'通知列表'}
                 actionRef={actionRef}
                 formRef={ref}
-                scroll={{x: "auto"}}
+                scroll={{x: true}}
+                style={{overflowX:"auto",whiteSpace:"nowrap"}}
                 rowKey={'id'}
                 options={{
                     density: true,
                     fullScreen: true,
                     setting: true,
                 }}
-
                 rowSelection={{
-                    selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
-                    onChange: (_, selectedRows: any) => {
-                        setSelectedRows(selectedRows);
+                    selectedRowKeys,
+                    selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+                    onChange: (newSelectedRowKeys) => {
+                        setSelectedRowKeys(newSelectedRowKeys);
                     },
                 }}
+                tableAlertRender={({selectedRowKeys, onCleanSelected,}) => {
+                    return (<Space size={24}>
+                        <span>已选 {selectedRowKeys.length} 项
+                            <a style={{marginInlineStart: 8}} onClick={onCleanSelected}>取消选择</a>
+                        </span>
+                    </Space>);
+                }}
+                tableAlertOptionRender={() => {
+                    return (
+                        <Space size={16}>
+                            <a onClick={showBatchModal}>批量修改</a>
+                            <a onClick={() => {
+                                deleteSubmit(selectedRowKeys)
+                            }}>批量删除</a>
+                        </Space>
+                    );
+                }}
                 request={async (params, sort) => {
-                    const data = await getNoticeList(getParams(params, sort));
+                    const fetchParams = getParams(params, sort)
+                    const data = await getNoticeList({
+                        body:{
+                            ...fetchParams
+                        }
+                    });
                     return {
                         data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
                         success: data.code === 200,
@@ -431,24 +520,6 @@ export default (): React.ReactNode => {
                         新建
                     </Button>,
                 ]}/>
-            {selectedRowsState?.length > 0 && (
-                <FooterToolbar
-                    extra={
-                        <div>
-                            已选择&nbsp;&nbsp;<a style={{fontWeight: 600}}>{selectedRowsState.length}</a>&nbsp;&nbsp;项
-                        </div>
-                    }>
-                    <Button danger={true} onClick={modalDelete}>
-                        批量删除
-                    </Button>
-                    <Button type="primary"
-                            onClick={async () => {
-                                setIsModalEditVisible(true);
-                            }}>
-                        批量编辑
-                    </Button>
-                </FooterToolbar>
-            )}
         </Body>
     );
 };

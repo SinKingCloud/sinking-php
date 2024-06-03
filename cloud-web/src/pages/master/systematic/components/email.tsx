@@ -2,12 +2,21 @@ import ProForm, {ProFormDigit, ProFormText} from '@ant-design/pro-form';
 import React, {useEffect, useState} from 'react';
 import {getConfigList, testEmail, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        box:css`
+            .ant-form-item .ant-form-item-control{
+                margin-bottom: 10px !important;
+            }
+        `
+    }
+})
 const EmailView: React.FC = () => {
+    const {styles:{box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
-    const [data,setData] = useState(()=>{
-        return JSON.parse(localStorage.getItem('email') || '{}')
-    })
+    const [form] = Form.useForm();
     /**
      * 初始化表单值
      */
@@ -24,15 +33,14 @@ const EmailView: React.FC = () => {
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
                     });
-                    setData(temp)
-                    localStorage.setItem('email', JSON.stringify(temp))
+                    form.setFieldsValue(temp)
                     setIsLoading(false)
                 }
             }
         });
     }
 
-    const [form] = Form.useForm();
+
     /**
      * 提交表单
      */
@@ -57,16 +65,14 @@ const EmailView: React.FC = () => {
      * 初始化数据
      */
     useEffect(() => {
-        getConfigs().then(() => {
-            form?.setFieldsValue(data);
-        });
+        getConfigs()
     }, []);
 
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>发信设置</h3>
-                <ProForm key={"email"} form={form} onFinish={onFinish} >
+                <ProForm key={"email"} form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="email.host"
@@ -101,7 +107,7 @@ const EmailView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"}  onFinish={async (values: any) => {
+                <ProForm key={"form"} className={box}  onFinish={async (values: any) => {
                     await testEmail({
                         body:{
                             ...values

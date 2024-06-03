@@ -35,8 +35,17 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         main: css`
             width: 328px;
             margin: 0 auto;
-
-            ${responsive.sm} {
+            .ant-tabs-nav-list{
+                width: 328px;/
+            }
+            .ant-tabs .ant-tabs-tab{
+                padding-left: 1px;
+                font-size: 14px;
+            }
+            ${responsive.md} {
+                .ant-tabs .ant-tabs-tab{
+                    font-size: 12px;
+                }
                 width: 95%;
                 max-width: 300px;
             }
@@ -108,14 +117,19 @@ const useStyles = createStyles(({css, token, responsive}): any => {
             borderLeft: "none",
             borderTop: "none",
             borderBottomRightRadius: "10px"
-        }
+        },
+        tab:css`
+            .ant-tabs-tab{
+                width: 25% !important;
+            }
+        `
     };
 });
 
 const Index: React.FC = () => {
     const {
         styles: {
-            container, content, top, header, logo, desc, border_corner, main,
+            container, content, top, header, logo, desc, border_corner, main,tab,
             border_corner_left_top, border_corner_right_top, border_corner_left_bottom, border_corner_right_bottom
         }
     } = useStyles();
@@ -252,7 +266,7 @@ const Index: React.FC = () => {
     const items: TabsProps['items'] = [
         {
             key: 'account',
-            label: '密码登录',
+            label : '密码登录',
         },
         {
             key: 'phone',
@@ -285,7 +299,7 @@ const Index: React.FC = () => {
                         </div>
                     </div>
                     <div className={main}>
-                        <Tabs items={items} activeKey={type} onChange={(key) => {
+                        <Tabs items={items} className={tab} activeKey={type} onChange={(key) => {
                             setType(key);
                             if (key == "qrcode") {
                                 getQrCode();
@@ -512,7 +526,7 @@ const Index: React.FC = () => {
                                         </Col>
                                         <Col span={7} offset={1}>
                                             <Image
-                                                height={40}
+                                                height={33}
                                                 preview={false}
                                                 src={captchaUrl}
                                                 onClick={() => {

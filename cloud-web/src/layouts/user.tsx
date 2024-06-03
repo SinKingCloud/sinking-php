@@ -3,7 +3,7 @@ import Layout from "@/layouts/components";
 import {getAdminMenuItems, getMasterMenuItems, getUserMenuItems} from "@/utils/route";
 import {Icon} from "@/components";
 import {useModel} from "umi";
-import {deleteHeader, deleteSystem, getLoginToken} from "@/utils/auth";
+import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
 import {App, Avatar, Col, message, Popover, Row} from "antd";
 import {createStyles} from "antd-style";
@@ -168,7 +168,6 @@ const RightTop: React.FC = () => {
                                      if (r?.code == 200) {
                                          message?.success(r?.message || "退出登录成功")
                                          deleteHeader()
-                                         deleteSystem()
                                          message?.destroy("outLogin")
                                          historyPush("user.login");
                                      }

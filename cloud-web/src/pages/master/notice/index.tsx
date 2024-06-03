@@ -367,12 +367,17 @@ export default (): React.ReactNode => {
                                     media={{
                                         uploadFn: async (param: any) => {
                                             const formData = new FormData();
-                                            formData.append('file', param.file);
+                                            formData.append('name', param.name);
+                                            formData.append('size', param.size);
+                                            formData.append('type', param.type);
+                                            formData.append('webkitRelativePath', param.webkitRelativePath);
+                                            formData.append('lastModified', param.lastModified);
                                             await uploadFile({
                                                 body: {
                                                     ...formData
                                                 },
                                                 onSuccess: (r: any) => {
+                                                    console.log(r)
                                                     if (r?.code == 200) {
                                                         param?.success({
                                                             meta: {
@@ -387,7 +392,8 @@ export default (): React.ReactNode => {
                                                         });
                                                     }
                                                 },
-                                                onFail: () => {
+                                                onFail: (r:any) => {
+                                                    console.log(r)
                                                     param?.error({msg: "上传文件失败"});
                                                 }
                                             });

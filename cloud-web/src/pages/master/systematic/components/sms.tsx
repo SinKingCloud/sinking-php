@@ -2,12 +2,22 @@ import ProForm, { ProFormText} from '@ant-design/pro-form';
 import React, {useEffect, useState} from 'react';
 import {getConfigList, testSms, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        box:css`
+            .ant-form-item .ant-form-item-control{
+                margin-bottom: 10px !important;
+            }
+        `
+    }
+})
 const SmsView: React.FC = () => {
+    const {styles:{box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
-    const [data,setData] = useState(()=>{
-        return JSON.parse(localStorage.getItem('sms') || '{}')
-    })
+    const [form] = Form.useForm();
+    const [form1] = Form.useForm();
     /**
      * 初始化表单值
      */
@@ -24,16 +34,14 @@ const SmsView: React.FC = () => {
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
                     });
-                    setData(temp)
-                    localStorage.setItem('sms', JSON.stringify(temp))
+                    form?.setFieldsValue(temp);
+                    form1?.setFieldsValue(temp);
                     setIsLoading(false)
                 }
             }
         });
     }
 
-    const [form] = Form.useForm();
-    const [form1] = Form.useForm();
     /**
      * 提交表单
      */
@@ -58,17 +66,14 @@ const SmsView: React.FC = () => {
      * 初始化数据
      */
     useEffect(() => {
-        getConfigs().then(() => {
-            form?.setFieldsValue(data);
-            form1?.setFieldsValue(data);
-        });
+        getConfigs()
     }, []);
 
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>阿里云设置</h3>
-                <ProForm key={"sms.aliyun"} form={form} onFinish={onFinish} >
+                <ProForm key={"sms.aliyun"} form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="sms.aliyun.key"
@@ -87,7 +92,7 @@ const SmsView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>验证码模版</h3>
-                <ProForm key={"sms.captcha"} form={form1} onFinish={onFinish} >
+                <ProForm key={"sms.captcha"} form={form1} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="sms.captcha.sign"
@@ -114,7 +119,7 @@ const SmsView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"} onFinish={async (values: any) => {
+                <ProForm key={"form"} className={box} onFinish={async (values: any) => {
                     await testSms({
                         body:{
                             ...values

@@ -2,13 +2,26 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormSelect, ProFormText} from "@ant-design/pro-form";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        box:css`
+            .ant-form-item .ant-form-item-control{
+                margin-bottom: 10px !important;
+            }
+        `
+    }
+})
 const PayView: React.FC = () => {
+    const {styles:{box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
-    const [data,setData] = useState(()=>{
-        return JSON.parse(localStorage.getItem('pay') || '{}')
-    })
+    const [form] = Form.useForm();
+    const [epay1] = Form.useForm();
+    const [epay2] = Form.useForm();
+    const [epay3] = Form.useForm();
     /**
+     *
      * 初始化表单值
      */
     const getConfigs = async () => {
@@ -24,18 +37,16 @@ const PayView: React.FC = () => {
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
                     });
-                    setData(temp)
-                    localStorage.setItem('pay', JSON.stringify(temp))
+                    form?.setFieldsValue(temp);
+                    epay1?.setFieldsValue(temp);
+                    epay2?.setFieldsValue(temp);
+                    epay3?.setFieldsValue(temp);
                     setIsLoading(false)
                 }
             }
         });
     }
 
-    const [form] = Form.useForm();
-    const [epay1] = Form.useForm();
-    const [epay2] = Form.useForm();
-    const [epay3] = Form.useForm();
     /**
      * 提交表单
      */
@@ -60,19 +71,14 @@ const PayView: React.FC = () => {
      * 初始化数据
      */
     useEffect(() => {
-        getConfigs().then(() => {
-            form?.setFieldsValue(data);
-            epay1?.setFieldsValue(data);
-            epay2?.setFieldsValue(data);
-            epay3?.setFieldsValue(data);
-        });
+        getConfigs()
     }, []);
 
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>通道设置</h3>
-                <ProForm key={"pay"} form={form} onFinish={onFinish} >
+                <ProForm key={"pay"} form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.min.money"
@@ -128,7 +134,7 @@ const PayView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>易支付通道A</h3>
-                <ProForm key={"epay1"} form={epay1} onFinish={onFinish} >
+                <ProForm key={"epay1"} form={epay1} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.epay1.url"
@@ -155,7 +161,7 @@ const PayView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>易支付通道B</h3>
-                <ProForm key={"epay2"} form={epay2} onFinish={onFinish} >
+                <ProForm key={"epay2"} form={epay2} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.epay2.url"
@@ -182,7 +188,7 @@ const PayView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>易支付通道C</h3>
-                <ProForm key={"epay3"} form={epay3} onFinish={onFinish} >
+                <ProForm key={"epay3"} form={epay3} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.epay3.url"

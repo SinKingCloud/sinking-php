@@ -175,7 +175,13 @@ const useStyles = createStyles(({css, responsive}): any => {
         },
         td: {
             flex: 8
-        }
+        },
+        select:css`
+            .ant-select-selector{
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        `
     }
 })
 export default (): React.ReactNode => {
@@ -183,7 +189,7 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td
+            table, thead, tbody, tr, th, td,select
         }
     } = useStyles()
     /**
@@ -292,14 +298,15 @@ export default (): React.ReactNode => {
                                 noStyle
                                 rules={[{required: true, message: '请输入前缀'}]}
                             >
-                                <Input style={{width: '45%'}} placeholder="请输入前缀"/>
+                                <Input style={{width: '45%',borderTopRightRadius: 0,
+                                    borderBottomRightRadius: 0,}} placeholder="请输入前缀"/>
                             </Form.Item>
                             <Form.Item
                                 name="domain"
                                 noStyle
                                 rules={[{required: true, message: '请选择后缀'}]}
                             >
-                                <Select  placeholder="请选择后缀" style={{width: '55%'}}>
+                                <Select  placeholder="请选择后缀" style={{width: '55%'}} className={select}>
                                     {siteConfig?.['master.domains']?.map((k: any) => {
                                         return <Select.Option key={"domain_" + k} value={k}>.{k}</Select.Option>
                                     })}

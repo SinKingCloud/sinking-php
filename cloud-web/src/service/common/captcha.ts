@@ -6,7 +6,7 @@ import {getRandStr} from "@/utils/string";
 export function getCaptchaUrl(): any {
     const tempToken = getRandStr(32);
     return {
-        url: defaultSettings.api + "/auth/verify/captcha?captcha_id=" + tempToken,
+        url: defaultSettings.gateway + "/auth/verify/captcha?captcha_id=" + tempToken,
         token: tempToken,
     }
 }

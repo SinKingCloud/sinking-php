@@ -191,8 +191,8 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value="10"
                                                 style={{
-                                                    borderRadius: "10px",
-                                                    padding: "2px 7px",
+                                                    borderRadius: "7px",
+                                                    padding: "2px 12px",
                                                     width: "auto",
                                                     boxSizing: "border-box"
                                                 }}
@@ -202,8 +202,8 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value="50"
                                                 style={{
-                                                    borderRadius: "10px",
-                                                    padding: "2px 7px",
+                                                    borderRadius: "7px",
+                                                    padding: "2px 12px",
                                                     width: "auto",
                                                     boxSizing: "border-box"
                                                 }}
@@ -213,8 +213,8 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value="100"
                                                 style={{
-                                                    borderRadius: "10px",
-                                                    padding: "2px 7px",
+                                                    borderRadius: "7px",
+                                                    padding: "2px 12px",
                                                     width: "auto",
                                                     boxSizing: "border-box"
                                                 }}
@@ -224,8 +224,8 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value="500"
                                                 style={{
-                                                    borderRadius: "10px",
-                                                    padding: "2px 7px",
+                                                    borderRadius: "7px",
+                                                    padding: "2px 12px",
                                                     width: "auto",
                                                     boxSizing: "border-box"
                                                 }}
@@ -235,8 +235,8 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value="1000"
                                                 style={{
-                                                    borderRadius: "10px",
-                                                    padding: "2px 7px",
+                                                    borderRadius: "7px",
+                                                    padding: "2px 12px",
                                                     width: "auto",
                                                     boxSizing: "border-box"
                                                 }}
@@ -246,8 +246,8 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value=""
                                                 style={{
-                                                    borderRadius: "10px",
-                                                    padding: "2px 7px",
+                                                    borderRadius: "7px",
+                                                    padding: "2px 12px",
                                                     width: "auto",
                                                     boxSizing: "border-box"
                                                 }}
@@ -261,7 +261,7 @@ export default (): React.ReactNode => {
                                                        height: "41.5px",
                                                        width: "68px",
                                                        margin: "0px",
-                                                       borderRadius: "10px",
+                                                       borderRadius: "7px",
                                                        textAlign: "center"
                                                    }}/>
                                         </CheckCard.Group>

@@ -2,12 +2,22 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormDigit, ProFormText} from "@ant-design/pro-form";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        box:css`
+            .ant-form-item .ant-form-item-control{
+                margin-bottom: 10px !important;
+            }
+        `
+    }
+})
+
 const SiteView: React.FC = () => {
+    const {styles:{box}} = useStyles()
     const {message} = App.useApp()
     const [isLoading, setIsLoading] = useState(false);
-    const [data,setData] = useState(()=>{
-        return JSON.parse(localStorage.getItem('price') || '{}')
-    })
+    const [form] = Form.useForm();
     /**
      * 初始化表单值
      */
@@ -20,18 +30,21 @@ const SiteView: React.FC = () => {
             },
             onSuccess:(r:any)=>{
                 if(r?.code == 200){
+                    setIsLoading(false)
                     let temp:any = {};
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
                     });
-                    setData(temp)
-                    localStorage.setItem('price',JSON.stringify(temp))
-                    setIsLoading(false)
+                     form.setFieldsValue(temp)
                 }
             },
+            onFail:(r:any)=>{
+                if(r?.code != 200){
+                    return {}
+                }
+            }
         });
     }
-    const [form] = Form.useForm();
     /**
      * 提交表单
      */
@@ -56,14 +69,12 @@ const SiteView: React.FC = () => {
      * 初始化数据
      */
     useEffect(() => {
-        getConfigs().then(()=>{
-           form.setFieldsValue(data)
-        })
+        getConfigs()
     }, []);
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key={"form"} form={form} onFinish={onFinish} >
+                <ProForm key={"form"} form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="site.cost.price"

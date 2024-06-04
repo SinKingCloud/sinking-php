@@ -2,8 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {App, Form,  Spin} from "antd";
 import ProForm, {ProFormText} from "@ant-design/pro-form";
 import {getMy, getWeb, setWeb} from "@/service/admin/price";
-
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        box:css`
+            .ant-form-item .ant-form-item-control{
+                margin-bottom: 10px !important;
+            }
+        `
+    }
+})
 const SiteView: React.FC = () => {
+    const {styles:{box}} = useStyles()
+
     const [isLoading, setIsLoading] = useState(false);
     const [myPrice, setMyPrice] = useState({});
     const {message} = App.useApp()
@@ -80,7 +91,7 @@ const SiteView: React.FC = () => {
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key={"form"} form={form} onFinish={onFinish}>
+                <ProForm key={"form"} form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="site.price"

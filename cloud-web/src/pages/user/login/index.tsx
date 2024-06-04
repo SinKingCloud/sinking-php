@@ -38,10 +38,12 @@ const useStyles = createStyles(({css, token, responsive}): any => {
             //.ant-tabs .ant-tabs-tab{
             //    font-size: 13px;
             //}
+
             ${responsive.md} {
-                .ant-tabs .ant-tabs-tab{
+                .ant-tabs .ant-tabs-tab {
                     font-size: 12px;
                 }
+
                 width: 95%;
                 max-width: 300px;
             }
@@ -212,7 +214,6 @@ const Index: React.FC = () => {
             onFail: (r: any) => {
                 if (r?.code != 200) {
                     if (r?.data?.code == -1) {
-                        // eslint-disable-next-line @typescript-eslint/no-use-before-define
                         getQrCode();
                     } else if (r?.data?.code == 0) {
                         setTimeout(() => {
@@ -257,17 +258,17 @@ const Index: React.FC = () => {
     const items: TabsProps['items'] = [
         {
             key: 'account',
-            label : '密码登录',
+            label: '密码登录',
         },
-        {
+        web?.info?.reg_phone && {
             key: 'phone',
             label: '短信登录',
         },
-        {
+        web?.info?.reg_qrlogin && {
             key: 'qrcode',
             label: '扫码登录',
         },
-        {
+        web?.info?.reg_email && {
             key: 'email',
             label: '邮箱登录',
         },
@@ -290,12 +291,13 @@ const Index: React.FC = () => {
                         </div>
                     </div>
                     <div className={main}>
-                        <Tabs items={items} style={{marginBottom:"10px"}} activeKey={type} onChange={(key) => {
-                            setType(key);
-                            if (key == "qrcode") {
-                                getQrCode();
-                            }
-                        }}/>
+                        <Tabs items={items} centered style={{marginBottom: "10px"}} defaultActiveKey={type}
+                              onChange={(key: string) => {
+                                  setType(key)
+                                  if (key == "qrcode") {
+                                      getQrCode();
+                                  }
+                              }}/>
                         <Form form={form} size="large" onFinish={(values: any) => {
                             if (!isRead) {
                                 message?.error("请阅读并同意《用户使用条款》协议")

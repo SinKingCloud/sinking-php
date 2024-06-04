@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {App, Button, Drawer, Dropdown, Form, Input, InputNumber, Modal, Select, Space, Spin, Table} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import {getParams} from "@/utils/page";
@@ -312,11 +312,15 @@ export default (): React.ReactNode => {
             }
         });
     }
+    const [title, setTitle] = useState<any>()
+    useEffect(()=>{
+        setTitle(form.getFieldValue("id"))
+    },[])
     return (
         <Body>
             <Drawer key="form" destroyOnClose={true} forceRender={true}
                     width="100%"
-                    title={form.getFieldValue("id") == undefined ? "新 建" : "编 辑"}
+                    title={title == undefined ? "新 建" : "编 辑"}
                     open={isModalVisible} onClose={() => {
                 setIsModalVisible(false);
                 form.resetFields();

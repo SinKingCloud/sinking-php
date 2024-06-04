@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     App,
     Button,
@@ -183,7 +183,7 @@ export default (): React.ReactNode => {
             hideInTable: true,
         },
         {
-            title: '修改时间',
+            title: '完成时间',
             valueType: 'dateTime',
             dataIndex: 'update_time',
             tip: '修改时间',
@@ -199,7 +199,7 @@ export default (): React.ReactNode => {
             hideInSearch: true,
         },
         {
-            title: '修改时间',
+            title: '完成时间',
             valueType: 'dateTimeRange',
             dataIndex: 'update_time',
             tip: '上次修改时间',
@@ -272,11 +272,14 @@ export default (): React.ReactNode => {
             }
         },
     ];
-
+    const [title,setTitle] = useState<any>()
+    useEffect(()=>{
+        setTitle(form.getFieldValue("id"))
+    },[])
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} width={400} forceRender={true}
-                   title={form.getFieldValue("id") == undefined ? "申请提现" : "编辑提现"}
+                   title={title == undefined ? "申请提现" : "编辑提现"}
                    open={isModalVisible} onOk={form.submit} okText={"确 认"} onCancel={() => {
                         setIsModalVisible(false);
                         form.resetFields();
@@ -300,7 +303,7 @@ export default (): React.ReactNode => {
                     <Form.Item name="account" label="提现账号" rules={[{required: true}]}>
                         <Input placeholder="请输入提现账号"/>
                     </Form.Item>
-                    <Form.Item name="money" label="提现金额" hidden={form.getFieldValue('id') != undefined}
+                    <Form.Item name="money" label="提现金额" hidden={title != undefined}
                                rules={[{required: true}]}>
                         <InputNumber placeholder="请输入提现金额" style={{minWidth: "150px"}}/>
                     </Form.Item>
@@ -401,11 +404,7 @@ export default (): React.ReactNode => {
                     defaultCollapsed: true,
                     labelWidth: 'auto',
                 }}
-                toolBarRender={() => [
-                    <Button onClick={()=>setIsModalVisible(true)} type="primary">
-                        处理提现
-                    </Button>,
-                ]}/>
+            />
         </Body>
     );
 };

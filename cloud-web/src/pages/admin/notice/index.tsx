@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     App,
     Button,
@@ -326,11 +326,14 @@ export default (): React.ReactNode => {
             }
         });
     }
-
+    const [title, setTitle] = useState<any>()
+    useEffect(()=>{
+        setTitle(form.getFieldValue("id"))
+    },[])
     return (
         <Body>
             <Drawer key={"form"} destroyOnClose={true} forceRender={true} width={"100%"}
-                    title={form.getFieldValue("id") == undefined ? "新 建" : "编 辑"}
+                    title={title == undefined ? "新 建" : "编 辑"}
                     open={isModalVisible} onClose={() => {
                 setIsModalVisible(false);
                 form.resetFields();
@@ -435,7 +438,7 @@ export default (): React.ReactNode => {
                 setIsModalEditVisible(false);
                 edit.resetFields();
             }}>
-                <Form form={edit} name="control-hooks" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
+                <Form form={edit} name="control-hooks1" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
                     <Form.Item name="status" label="状态">
                         <Select placeholder="请选择公告状态" options={[

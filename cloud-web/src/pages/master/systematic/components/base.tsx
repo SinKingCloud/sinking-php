@@ -12,6 +12,7 @@ const useStyles = createStyles(({css})=>{
         `
     }
 })
+
 const BaseView: React.FC = () => {
     const {styles:{box}} = useStyles()
 

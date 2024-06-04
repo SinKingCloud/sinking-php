@@ -1,4 +1,3 @@
-
 /**
  * 用户系统路由
  */
@@ -18,7 +17,7 @@ export const user = [
         name: "user.shop",
         icon: 'icon-shop',
         hideInMenu: false,
-        routes:[
+        routes: [
             {
                 path: "site",
                 component: "@/pages/user/shop",
@@ -34,7 +33,7 @@ export const user = [
         name: "user.pay",
         icon: 'icon-money',
         hideInMenu: false,
-        routes:[
+        routes: [
             {
                 path: "recharge",
                 component: "@/pages/user/pay/recharge",
@@ -64,7 +63,7 @@ export const user = [
         name: "user.person",
         icon: 'icon-user',
         hideInMenu: false,
-        routes:[
+        routes: [
             {
                 path: "setting",
                 component: "@/pages/user/person/setting",
@@ -85,17 +84,17 @@ export const user = [
 export const masterPath = "master";
 export const master = [
     {
-        path:"index",
+        path: "index",
         title: "系统管理",
-        name: "master.index",
+        name: "master.system",
         icon: 'icon-system',
         hideInMenu: false,
-        routes:[
+        routes: [
             {
                 path: "",
                 component: "@/pages/master/index",
                 title: "系统概览",
-                name: "master.system",
+                name: "master.index",
                 hideInMenu: false,
             },
             {
@@ -153,17 +152,17 @@ export const master = [
 export const adminPath = "admin";
 export const admin = [
     {
-        path:"index",
+        path: "index",
         title: "网站管理",
-        name: "admin.index",
+        name: "admin.system",
         icon: 'icon-set',
         hideInMenu: false,
-        routes:[
+        routes: [
             {
                 path: "",
                 component: "@/pages/admin/index",
                 title: "网站概览",
-                name: "admin.system",
+                name: "admin.index",
                 hideInMenu: false,
             },
             {
@@ -290,14 +289,6 @@ export default [
         component: '@/layouts/user',
         routes: user,
     },
-    {
-        path: '/' + userPath,
-        component: '@/pages/user/index',
-        redirect: "/master  /index/",
-        name: "master.index",
-        title: "系统概览",
-        hideInMenu: false,
-    },
     /**
      * master路由
      */
@@ -307,14 +298,6 @@ export default [
         redirect: '/' + masterPath + '/' + (master[0]?.path || 'index'),
         layout: false,
         hideInMenu: true,
-    },
-    {
-        path: '/' + masterPath,
-        component: '@/pages/master/index',
-        redirect: "/master/index/",
-        name: "master.index",
-        title: "系统概览",
-        hideInMenu: false,
     },
     {
         path: masterPath,

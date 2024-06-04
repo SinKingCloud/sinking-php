@@ -20,7 +20,7 @@ export function getRandStr(length = 16) {
  */
 export function getUrlQuery(url: string) {
     const noMatchData = {};
-    if (!url || false) return noMatchData;
+    if (!url) return noMatchData;
     const reg = /(?:\?|&)(?:(?:([^=&]+?)=([^&#]+))|([^&#]+))/gi;
     const obj = {};
     // @ts-ignore
@@ -42,7 +42,6 @@ export function getUrlQuery(url: string) {
  */
 export function getQueryString(url: string = ""): string {
     if (url == "") {
-        // eslint-disable-next-line no-param-reassign
         url = window.location.href;
     }
     const firstIndex = decodeURI(url).indexOf("?");

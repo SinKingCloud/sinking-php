@@ -6,14 +6,12 @@
 export function getParams(params: any, sort: any): any {
     function getOrder(obj: any): any {
         for (const key in obj) {
-            const temp = {
+            const temp: any = {
                 order_by_field: key
             };
             if (obj[key] == "ascend") {
-                // @ts-ignore
                 temp.order_by_type = "asc"
             } else {
-                // @ts-ignore
                 temp.order_by_type = "desc"
             }
             return temp;

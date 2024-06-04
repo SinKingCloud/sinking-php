@@ -25,12 +25,11 @@ const getTheme = (): any => {
  * 获取主题模式
  */
 const getMode = (): string => {
-    return "light";
-    // const mode = localStorage?.getItem("theme")
-    // if (mode == "light" || mode == "dark") {
-    //     return mode;
-    // }
-    // return "auto"
+    const mode = localStorage?.getItem("theme")
+    if (mode == "light" || mode == "dark") {
+        return mode;
+    }
+    return "auto"
 }
 /**
  * 设置主题模式
@@ -70,6 +69,7 @@ export default () => {
     const setLightMode = () => {
         setMode(lightMode);
         setMode2(lightMode)
+        setAppearance(lightMode);
     }
 
     /**
@@ -78,6 +78,7 @@ export default () => {
     const setDarkMode = () => {
         setMode(darkMode);
         setMode2(darkMode);
+        setAppearance(darkMode);
     }
 
     /**
@@ -86,6 +87,7 @@ export default () => {
     const setAutoMode = () => {
         setMode(autoMode);
         setMode2(autoMode);
+        setAppearance(null);
     }
 
     /**

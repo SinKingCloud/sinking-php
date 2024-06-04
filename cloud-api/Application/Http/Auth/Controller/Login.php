@@ -164,7 +164,7 @@ class Login extends Common
             array('device|登陆设备', 'require|in:mobile,pc|default:mobile'),
         ), Request::param());
         if (ConfigService::getInstance()->get(Config::SYSTEM_REG_QRLOGIN) != 1) {
-            return $this->error("系统已关闭邮箱注册");
+            return $this->error("系统已关闭扫码注册");
         }
         $ret = VerifyService::getInstance()->checkQrCode($data['captcha_id'], false);
         if (!$ret || $ret['code'] != 1) {

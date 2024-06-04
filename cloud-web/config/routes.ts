@@ -6,20 +6,11 @@ export const userPath = "user";
 export const user = [
     {
         path: "index",
-        component: "@/pages/user/index",
         title: "数据概览",
         name: "user.index",
         icon: 'icon-home',
         hideInMenu: false,
-        routes:[
-            {
-                path: "dashboard",
-                component: "@/pages/user/index",
-                title: "控制台",
-                name: "user.dashboard",
-                hideInMenu: false,
-            },
-        ]
+        component: "@/pages/user/index",
     },
     {
         path: "shop",
@@ -101,7 +92,7 @@ export const master = [
         hideInMenu: false,
         routes:[
             {
-                path: "system",
+                path: "",
                 component: "@/pages/master/index",
                 title: "系统概览",
                 name: "master.system",
@@ -169,7 +160,7 @@ export const admin = [
         hideInMenu: false,
         routes:[
             {
-                path: "system",
+                path: "",
                 component: "@/pages/admin/index",
                 title: "网站概览",
                 name: "admin.system",
@@ -268,13 +259,6 @@ export default [
                 title: "帐号登录",
                 hideInMenu: false,
             },
-            {
-                path: '/' + userPath,
-                component: '@/pages/user/login',
-                name: "user.login",
-                title: "帐号登录",
-                hideInMenu: false,
-            },
         ],
         layout: false,
     },
@@ -306,6 +290,14 @@ export default [
         component: '@/layouts/user',
         routes: user,
     },
+    {
+        path: '/' + userPath,
+        component: '@/pages/user/index',
+        redirect: "/master  /index/",
+        name: "master.index",
+        title: "系统概览",
+        hideInMenu: false,
+    },
     /**
      * master路由
      */
@@ -315,6 +307,14 @@ export default [
         redirect: '/' + masterPath + '/' + (master[0]?.path || 'index'),
         layout: false,
         hideInMenu: true,
+    },
+    {
+        path: '/' + masterPath,
+        component: '@/pages/master/index',
+        redirect: "/master/index/",
+        name: "master.index",
+        title: "系统概览",
+        hideInMenu: false,
     },
     {
         path: masterPath,

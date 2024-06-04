@@ -92,7 +92,7 @@ export default (): React.ReactNode => {
                                 }
                             });
                     }} bottomNodes={
-                        <Form.Item name={"password"} label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
+                        <Form.Item name="password" label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
                             <Input placeholder="请输入新密码"/>
                         </Form.Item>
                     }/>
@@ -126,22 +126,22 @@ export default (): React.ReactNode => {
                             }
                         });
                     }} bottomNodes={
-                        <Form.Item name={"password"} label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
+                        <Form.Item name="password" label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
                             <Input placeholder="请输入新密码"/>
                         </Form.Item>
                     }/>
                 }
 
             </Modal>
-            <Modal key={"editEmail"} width={430} destroyOnClose={true} forceRender={true} title="修改邮箱"
+            <Modal key="editEmail" width={430} destroyOnClose={true} forceRender={true} title="修改邮箱"
                    open={isEmailModalVisible} confirmLoading={isEmailModalLoading}
-                   onOk={emailForm.submit} okText={"确 认"} onCancel={() => {
+                   onOk={emailForm.submit} okText="确 认" onCancel={() => {
                 setIsEmailModalVisible(false);
                 emailForm.resetFields();
             }}>
                 <EmailVerify form={emailForm} email={email} onFinish={async (values:any) => {
                     setIsEmailModalLoading(true);
-                    updateEmail({
+                   await updateEmail({
                         body:{
                             ...values
                         },
@@ -159,7 +159,7 @@ export default (): React.ReactNode => {
                         }
                     })
                 }} topNodes={
-                    <Form.Item name={"email"} label="新安全邮箱"
+                    <Form.Item name="email" label="新安全邮箱"
                                rules={[{required: true, message: '请输入需要新绑定的安全邮箱',}]}>
                         <Input placeholder="请输入需要绑定的邮箱" onChange={(e) => {
                             setEmail(e.target.value);
@@ -193,7 +193,7 @@ export default (): React.ReactNode => {
                         }
                     })
                 }} topNodes={
-                    <Form.Item name={"phone"} label="新安全手机"
+                    <Form.Item name="phone" label="新安全手机"
                                rules={[{required: true, message: '请输入需要新绑定的安全手机',}]}>
                         <Input placeholder="请输入需要绑定的手机号" onChange={(e) => {
                             setPhone(e.target.value);

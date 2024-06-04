@@ -35,13 +35,9 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         main: css`
             width: 328px;
             margin: 0 auto;
-            .ant-tabs-nav-list{
-                width: 328px;
-            }
-            .ant-tabs .ant-tabs-tab{
-                padding-left: 1px;
-                font-size: 14px;
-            }
+            //.ant-tabs .ant-tabs-tab{
+            //    font-size: 13px;
+            //}
             ${responsive.md} {
                 .ant-tabs .ant-tabs-tab{
                     font-size: 12px;
@@ -118,18 +114,13 @@ const useStyles = createStyles(({css, token, responsive}): any => {
             borderTop: "none",
             borderBottomRightRadius: "10px"
         },
-        tab:css`
-            .ant-tabs-tab{
-                width: 25% !important;
-            }
-        `
     };
 });
 
 const Index: React.FC = () => {
     const {
         styles: {
-            container, content, top, header, logo, desc, border_corner, main,tab,
+            container, content, top, header, logo, desc, border_corner, main,
             border_corner_left_top, border_corner_right_top, border_corner_left_bottom, border_corner_right_bottom
         }
     } = useStyles();
@@ -211,7 +202,7 @@ const Index: React.FC = () => {
                     localStorage.removeItem("captcha_id");
                     setQrcodeMessage("验证成功,正在登陆");
                     setLoginToken(isMobile, r?.data?.token);
-                    historyPush("user.dashboard");
+                    historyPush("user.index");
                     localStorage.removeItem("redirect");
                     setQrcode("");
                     setQrcodeLoading(false);
@@ -299,13 +290,13 @@ const Index: React.FC = () => {
                         </div>
                     </div>
                     <div className={main}>
-                        <Tabs items={items} style={{marginBottom:"10px"}} className={tab} activeKey={type} onChange={(key) => {
+                        <Tabs items={items} style={{marginBottom:"10px"}} activeKey={type} onChange={(key) => {
                             setType(key);
                             if (key == "qrcode") {
                                 getQrCode();
                             }
                         }}/>
-                        <Form form={form} size={"large"} onFinish={(values: any) => {
+                        <Form form={form} size="large" onFinish={(values: any) => {
                             if (!isRead) {
                                 message?.error("请阅读并同意《用户使用条款》协议")
                                 return;
@@ -366,7 +357,7 @@ const Index: React.FC = () => {
                                         setLoginToken(isMobile, r?.data?.token);
                                         message?.success(r?.message);
                                         setIsLoading(false);
-                                        historyPush("user.dashboard");
+                                        historyPush("user.index");
                                         localStorage.removeItem("redirect");
                                     }
                                 },

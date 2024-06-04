@@ -1,4 +1,4 @@
-import {API} from "../../../typings";
+
 import {post} from "@/utils/request";
 
 /** 发送短信验证码 POST /auth/verify/sms */

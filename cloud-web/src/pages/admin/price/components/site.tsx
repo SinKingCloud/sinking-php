@@ -12,11 +12,17 @@ const SiteView: React.FC = () => {
      */
     const getConfigs = async () => {
         setIsLoading(true);
-        return await getWeb().then((r): any => {
-            if (r?.code != 200) {
-                return {};
-            } else {
-                return r?.data || {};
+        return await getWeb({
+            onSuccess:(r:any)=>{
+                setIsLoading(false)
+                if(r?.code == 200){
+                    form.setFieldsValue(r?.data)
+                }
+            },
+            onFail:(r:any)=>{
+                if(r?.code !=200){
+                    r?.error(r?.message || "请求失败")
+                }
             }
         });
     }
@@ -26,11 +32,17 @@ const SiteView: React.FC = () => {
      */
     const getMyPrice = async () => {
         setIsLoading(true);
-        return await getMy().then((r): any => {
-            if (r?.code != 200) {
-                return {};
-            } else {
-                return r?.data || {};
+        return await getMy({
+            onSuccess:(r:any)=>{
+                setIsLoading(false)
+                if(r?.code == 200){
+                    setMyPrice(r?.data)
+                }
+            },
+            onFail:(r:any)=>{
+                if(r?.code !=200){
+                    r?.error(r?.message || "请求失败")
+                }
             }
         });
     }
@@ -61,14 +73,8 @@ const SiteView: React.FC = () => {
      */
     // @ts-ignore
     useEffect(() => {
-        setIsLoading(true)
-        getConfigs().then(data => {
-            form?.setFieldsValue(data);
-            getMyPrice().then(data => {
-                setMyPrice(data);
-                setIsLoading(false);
-            })
-        });
+       getConfigs()
+        getMyPrice()
     }, []);
 
     return (

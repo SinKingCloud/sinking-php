@@ -289,7 +289,7 @@ export default (): React.ReactNode => {
                                             <Row gutter={10} wrap={true} style={{margin: "10px 0px 0px 0px"}}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>
                                                     <CheckCard
-                                                        title={(<><AlipayCircleOutlined/> 支付宝</>)}
+                                                        title={(<><AlipayCircleOutlined style={{marginRight:"5px"}}/> 支付宝</>)}
                                                         value="0"
                                                         size={"small"}
                                                         style={{
@@ -299,22 +299,24 @@ export default (): React.ReactNode => {
                                                         }}
                                                     />
                                                     <CheckCard
-                                                        title={(<><WechatOutlined/> 微信</>)}
+                                                        title={(<><WechatOutlined style={{marginRight:"5px"}}/> 微信</>)}
                                                         value="1"
                                                         size={"small"}
                                                         style={{
                                                             maxWidth: "70px",
                                                             borderRadius: "10px",
+                                                            paddingLeft:"6px",
                                                             display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />
                                                     <CheckCard
-                                                        title={(<><QqOutlined/> QQ</>)}
+                                                        title={(<><QqOutlined style={{marginRight:"5px"}}/> QQ</>)}
                                                         value="2"
                                                         size={"small"}
                                                         style={{
                                                             maxWidth: "70px",
                                                             borderRadius: "10px",
+                                                            paddingLeft:"6px",
                                                             display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />

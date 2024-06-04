@@ -546,10 +546,10 @@ export default (): React.ReactNode => {
                    }}>
                 <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 4}}
                       wrapperCol={{span: 18}}>
-                    <Form.Item name={"id"} label="ID" hidden={true}>
+                    <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
-                    <Form.Item name={"avatar"} label="头像">
+                    <Form.Item name="avatar" label="头像">
                         <Upload
                             name="file"
                             listType="picture-card"
@@ -576,7 +576,7 @@ export default (): React.ReactNode => {
                             </div>
                         </Upload>
                     </Form.Item>
-                    <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+                    <Form.Item name="status" label="状态" rules={[{required: true}]}>
                         <Select placeholder="请选择用户状态" options={[
                             {
                                 value: 0,
@@ -588,21 +588,20 @@ export default (): React.ReactNode => {
                             }
                         ]} />
                     </Form.Item>
-                    <Form.Item name={"password"} label="密码">
+                    <Form.Item name="password" label="密码">
                         <Input placeholder="不修改则留空"/>
                     </Form.Item>
-                    <Form.Item name={"nick_name"} label="昵称">
+                    <Form.Item name="nick_name" label="昵称">
                         <Input placeholder="请输入用户昵称"/>
                     </Form.Item>
                 </Form>
             </Modal>
 
-            <Modal key={"pay"} destroyOnClose={true} forceRender={true} title={"余额明细"} open={isModalPayVisible}
+            <Modal key="pay" destroyOnClose={true} forceRender={true} title="余额明细" open={isModalPayVisible}
                    onOk={() => {
                 money?.setFieldsValue({user_id: payUserId, type: 0});
                 setIsModalMoneyVisible(true);
-            }} okText={"加款"}
-                   onCancel={() => {
+            }} okText="加款" onCancel={() => {
                        setIsModalPayVisible(false);
                    }}  width={700}>
                 {isModalPayVisible && (
@@ -641,7 +640,7 @@ export default (): React.ReactNode => {
                 )}
             </Modal>
 
-            <Modal key={"log"} destroyOnClose={true} forceRender={true} title={"操作日志"} open={isModalLogVisible} footer={null}
+            <Modal key="log" destroyOnClose={true} forceRender={true} title="操作日志" open={isModalLogVisible} footer={null}
                    onCancel={() => {
                        setIsModalLogVisible(false);
                    }} width={700}>
@@ -681,34 +680,34 @@ export default (): React.ReactNode => {
                 )}
             </Modal>
 
-            <Modal key={"money"} width={350} destroyOnClose={true} okButtonProps={{loading: isModalMoneyBtnLoading}}
+            <Modal key="money" width={350} destroyOnClose={true} okButtonProps={{loading: isModalMoneyBtnLoading}}
                    forceRender={true} title="用户加款"
                    open={isModalMoneyVisible}
-                   onOk={money.submit} okText={"确 认"} onCancel={() => {
+                   onOk={money.submit} okText="确 认" onCancel={() => {
                 setIsModalMoneyVisible(false);
                 money.resetFields();
             }}>
                 <Form form={money} name="control-hooks1" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
-                    <Form.Item name={"user_id"} label="用户ID" hidden={true} rules={[{required: true, message: "请输入操作金额"}, {
+                    <Form.Item name="user_id" label="用户ID" hidden={true} rules={[{required: true, message: "请输入操作金额"}, {
                         pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
                         message: "请输入正确的用户ID"
                     }]}>
                         <Input placeholder="请输入用户ID"/>
                     </Form.Item>
-                    <Form.Item name={"type"} label="类型" rules={[{required: true, message: "请选择操作类型"}]}>
+                    <Form.Item name="type" label="类型" rules={[{required: true, message: "请选择操作类型"}]}>
                         <Select placeholder="请选择操作类型" options={[{
                             value:0,
                             label:"充值"
                         }]}/>
                     </Form.Item>
-                    <Form.Item name={"money"} label="金额" rules={[{required: true, message: "请输入操作金额"}, {
+                    <Form.Item name="money" label="金额" rules={[{required: true, message: "请输入操作金额"}, {
                         pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
                         message: "请输入正确的金额"
                     }]}>
                         <Input placeholder="请输入操作金额"/>
                     </Form.Item>
-                    <Form.Item name={"remark"} label="备注">
+                    <Form.Item name="remark" label="备注">
                         <Input.TextArea placeholder="请输入用户备注(选填)"/>
                     </Form.Item>
                 </Form>

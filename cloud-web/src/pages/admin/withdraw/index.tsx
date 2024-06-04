@@ -218,7 +218,7 @@ export default (): React.ReactNode => {
                         }
                     ]
                 }}  trigger={['click']} placement="bottom" arrow={true}>
-                    <Button size={"small"} onClick={e => e.preventDefault()}>操
+                    <Button size="small" onClick={e => e.preventDefault()}>操
                         作 <DownOutlined/></Button>
                 </Dropdown>;
             }
@@ -242,7 +242,7 @@ export default (): React.ReactNode => {
                     <Form.Item name={"id"} label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
-                    <Form.Item name={"type"} label="提现方式" rules={[{required: true}]}>
+                    <Form.Item name="type" label="提现方式" rules={[{required: true}]}>
                         <Select placeholder="请选择提现方式" options={[
                             {
                                 value: 0,
@@ -250,13 +250,13 @@ export default (): React.ReactNode => {
                             }
                         ]} />
                     </Form.Item>
-                    <Form.Item name={"name"} label="提现姓名" rules={[{required: true}]}>
+                    <Form.Item name="name" label="提现姓名" rules={[{required: true}]}>
                         <Input placeholder="请输入提现姓名"/>
                     </Form.Item>
-                    <Form.Item name={"account"} label="提现账号" rules={[{required: true}]}>
+                    <Form.Item name="account" label="提现账号" rules={[{required: true}]}>
                         <Input placeholder="请输入提现账号"/>
                     </Form.Item>
-                    <Form.Item name={"money"} label="提现金额" hidden={form.getFieldValue('id') != undefined}
+                    <Form.Item name="money" label="提现金额" hidden={form.getFieldValue('id') != undefined}
                                rules={[{required: true}]}>
                         <InputNumber placeholder="请输入提现金额" style={{minWidth: "150px"}}/>
                     </Form.Item>

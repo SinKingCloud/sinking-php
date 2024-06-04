@@ -1,15 +1,14 @@
 import {extend} from 'umi-request';
-import Settings from "@/../config/defaultSettings"
+import defaultSettings from "@/../config/defaultSettings"
 import {deleteHeader, getHeaders} from "@/utils/auth";
 import {API} from "../../typings";
 import {Modal} from "@/components/antd";
 import {historyPush} from "@/utils/route";
-import {message} from "antd";
 /**
  * request对象
  */
 const request = extend({
-    prefix: Settings?.gateway || '',
+    prefix: defaultSettings?.gateway || '',
     timeout: 60000,
     errorHandler: errorHandle,
 });
@@ -52,7 +51,6 @@ const check = async (ctx: any, next: any) => {
     if (ctx.res.code == 401) {
         historyPush("user.login");//无权限页面;
         deleteHeader()
-        message?.error("登录失效，请重新登录")
     }
 }
 request.use(check);

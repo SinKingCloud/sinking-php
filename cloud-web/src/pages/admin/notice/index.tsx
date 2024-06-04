@@ -340,13 +340,13 @@ export default (): React.ReactNode => {
                         <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right"
                               labelCol={{span: 2}}
                               wrapperCol={{span: 21}}>
-                            <Form.Item name={"id"} label="ID" hidden={true}>
+                            <Form.Item name="id" label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
                             </Form.Item>
-                            <Form.Item name={"title"} label="标题" rules={[{required: true}]}>
+                            <Form.Item name="title" label="标题" rules={[{required: true}]}>
                                 <Input placeholder="请输入标题" style={{maxWidth: "500px"}}/>
                             </Form.Item>
-                            <Form.Item name={"place"} label="位置" rules={[{required: true}]}>
+                            <Form.Item name="place" label="位置" rules={[{required: true}]}>
                                 <Select placeholder="请输入显示位置" options={[
                                     {
                                         value: "index",
@@ -362,11 +362,11 @@ export default (): React.ReactNode => {
                                     }
                                 ]} style={{maxWidth: "500px"}}/>
                             </Form.Item>
-                            <Form.Item name={"sort"} label="排序" rules={[{required: true}]}>
+                            <Form.Item name="sort" label="排序" rules={[{required: true}]}>
                                 <InputNumber placeholder="请输入排序数值"
                                              style={{maxWidth: "500px", minWidth: "150px"}}/>
                             </Form.Item>
-                            <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+                            <Form.Item name="status" label="状态" rules={[{required: true}]}>
                                 <Select placeholder="请选择公告状态" options={[
                                     {
                                         value: 0,
@@ -378,7 +378,7 @@ export default (): React.ReactNode => {
                                     }
                                 ]} style={{maxWidth: "500px"}}/>
                             </Form.Item>
-                            <Form.Item name={"content"} label="内容" rules={[{required: true}]}>
+                            <Form.Item name="content" label="内容" rules={[{required: true}]}>
                                 <
                                     // @ts-ignore
                                     BraftEditor
@@ -389,29 +389,22 @@ export default (): React.ReactNode => {
                                         uploadFn: async (param) => {
                                             const formData = new FormData();
                                             formData.append('file', param.file);
-                                            await uploadFile({
-                                                body: {
-                                                    ...formData
-                                                },
-                                                onSuccess: (r: any) => {
-                                                    if (r?.code == 200) {
-                                                        param?.success({
-                                                            meta: {
-                                                                alt: param?.file?.name || "",
-                                                                autoPlay: false,
-                                                                controls: false,
-                                                                id: r?.data || "",
-                                                                loop: false,
-                                                                poster: param?.file?.name || "",
-                                                                title: param?.file?.name || ""
-                                                            }, url: r?.data || ""
-                                                        });
-                                                    }
-                                                },
-                                                onFail: () => {
-                                                    param?.error({msg: "上传文件失败"});
-                                                }
-                                            });
+                                            const res = await uploadFile(formData);
+                                            if (res?.code == 200) {
+                                                param.success({
+                                                    meta: {
+                                                        alt: param?.file?.name || "",
+                                                        autoPlay: false,
+                                                        controls: false,
+                                                        id: res?.data || "",
+                                                        loop: false,
+                                                        poster: param?.file?.name || "",
+                                                        title: param?.file?.name || ""
+                                                    }, url: res?.data || ""
+                                                });
+                                            } else {
+                                                param.error({msg: "上传文件失败"});
+                                            }
                                         }
                                     }}
                                     className="my-editor"
@@ -436,15 +429,15 @@ export default (): React.ReactNode => {
 
             </Drawer>
 
-            <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑"
+            <Modal key="edit" width={350} destroyOnClose={true} forceRender={true} title="批量编辑"
                    open={isModalEditVisible}
-                   onOk={edit.submit} okText={"确 认"} onCancel={() => {
+                   onOk={edit.submit} okText="确 认" onCancel={() => {
                 setIsModalEditVisible(false);
                 edit.resetFields();
             }}>
                 <Form form={edit} name="control-hooks" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
-                    <Form.Item name={"status"} label="状态">
+                    <Form.Item name="status" label="状态">
                         <Select placeholder="请选择公告状态" options={[
                             {
                                 value: 0,
@@ -462,7 +455,7 @@ export default (): React.ReactNode => {
             <ProTable
                 // @ts-ignore
                 columns={columns}
-                defaultSize={"small"}
+                defaultSize="small"
                 form={{layout: "vertical", autoFocusFirstInput: false}}
                 headerTitle={'通知列表'}
                 actionRef={actionRef}

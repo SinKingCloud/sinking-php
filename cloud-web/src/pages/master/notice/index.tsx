@@ -314,8 +314,8 @@ export default (): React.ReactNode => {
     }
     return (
         <Body>
-            <Drawer key={"form"} destroyOnClose={true} forceRender={true}
-                    width={"100%"}
+            <Drawer key="form" destroyOnClose={true} forceRender={true}
+                    width="100%"
                     title={form.getFieldValue("id") == undefined ? "新 建" : "编 辑"}
                     open={isModalVisible} onClose={() => {
                 setIsModalVisible(false);
@@ -325,13 +325,13 @@ export default (): React.ReactNode => {
                     <div style={{display: !noticeLoading ? "block" : "none"}}>
                         <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right"
                               labelCol={{span: 2}} wrapperCol={{span: 21}} >
-                            <Form.Item name={"id"} label="ID" hidden={true}>
+                            <Form.Item name="id" label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
                             </Form.Item>
-                            <Form.Item name={"title"} label="标题" rules={[{required: true}]}>
+                            <Form.Item name="title" label="标题" rules={[{required: true}]}>
                                 <Input placeholder="请输入标题" style={{maxWidth: "500px"}}/>
                             </Form.Item>
-                            <Form.Item name={"place"} label="位置" rules={[{required: true}]}>
+                            <Form.Item name="place" label="位置" rules={[{required: true}]}>
                                 <Select placeholder="请输入显示位置" style={{maxWidth: "500px"}} options={[{
                                     value: "index",
                                     label: "系统首页"
@@ -343,11 +343,11 @@ export default (): React.ReactNode => {
                                     label: "分站后台"
                                 }]}/>
                             </Form.Item>
-                            <Form.Item name={"sort"} label="排序" rules={[{required: true}]}>
+                            <Form.Item name="sort" label="排序" rules={[{required: true}]}>
                                 <InputNumber placeholder="请输入排序数值"
                                              style={{maxWidth: "500px", minWidth: "150px"}}/>
                             </Form.Item>
-                            <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+                            <Form.Item name="status" label="状态" rules={[{required: true}]}>
                                 <Select placeholder="请选择公告状态" style={{maxWidth: "500px"}} options={[{
                                     value: 0,
                                     label: "显示"
@@ -357,10 +357,8 @@ export default (): React.ReactNode => {
                                 }]}/>
 
                             </Form.Item>
-                            <Form.Item name={"content"} label="内容" rules={[{required: true}]}>
-                                <
-                                    // @ts-ignore
-                                    BraftEditor
+                            <Form.Item name="content" label="内容" rules={[{required: true}]}>
+                                <BraftEditor
                                     onChange={(editorState: any) => {
                                         setEditValue(editorState.toHTML());
                                     }}
@@ -388,7 +386,6 @@ export default (): React.ReactNode => {
                                     }}
                                     className="my-editor"
                                     style={{border: "1px solid #d1d1d1", borderRadius: "5px"}}
-                                    // @ts-ignore
                                     placeholder="请输入通知内容"
                                 />
                             </Form.Item>
@@ -414,7 +411,7 @@ export default (): React.ReactNode => {
                 edit.resetFields();
             }}>
                 <Form form={edit} name="control-hooks1" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 5}} wrapperCol={{span: 18}}>
-                    <Form.Item name={"status"} label="状态" colon
+                    <Form.Item name="status" label="状态" colon
                                rules={[{required: true, message: "请选择修改的状态"}]}>
                         <Select placeholder="请选择公告状态" options={[{
                             value: 0,

@@ -677,10 +677,10 @@ export default (): React.ReactNode => {
                    }}>
                 <Form form={form} name="control-hooks1" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 4}}
                       wrapperCol={{span: 18}} >
-                    <Form.Item name={"id"} label="ID" hidden={true}>
+                    <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
-                    <Form.Item name={"avatar"} label="头像">
+                    <Form.Item name="avatar" label="头像">
                         <Upload
                             name="file"
                             listType="picture-card"
@@ -707,16 +707,16 @@ export default (): React.ReactNode => {
                             </div>
                         </Upload>
                     </Form.Item>
-                    <Form.Item name={"account"} label="账号">
+                    <Form.Item name="account" label="账号">
                         <Input placeholder="请输入用户账号"/>
                     </Form.Item>
-                    <Form.Item name={"phone"} label="手机号">
+                    <Form.Item name="phone" label="手机号">
                         <Input placeholder="请输入用户手机号"/>
                     </Form.Item>
-                    <Form.Item name={"email"} label="邮箱">
+                    <Form.Item name="email" label="邮箱">
                         <Input placeholder="请输入用户邮箱"/>
                     </Form.Item>
-                    <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+                    <Form.Item name="status" label="状态" rules={[{required: true}]}>
                         <Select placeholder="请选择用户状态" options={[{
                             value: 0,
                             label: "正常"
@@ -725,10 +725,10 @@ export default (): React.ReactNode => {
                             label: "禁止"
                         }]}/>
                     </Form.Item>
-                    <Form.Item name={"password"} label="密码">
+                    <Form.Item name="password" label="密码">
                         <Input placeholder="不修改则留空"/>
                     </Form.Item>
-                    <Form.Item name={"nick_name"} label="昵称">
+                    <Form.Item name="nick_name" label="昵称">
                         <Input placeholder="请输入用户昵称"/>
                     </Form.Item>
                 </Form>
@@ -775,14 +775,14 @@ export default (): React.ReactNode => {
                     />
                 )}
             </Modal>
-            <Modal key={"domain_add"} width={350} destroyOnClose={true} forceRender={true} title={"添加"} open={isModalDomainAddVisible}
-                   onOk={domainAdd.submit} okButtonProps={{loading: isModalDomainAddBtnLoading}} okText={"确 认"}
+            <Modal key="domain_add" width={350} destroyOnClose={true} forceRender={true} title="添加" open={isModalDomainAddVisible}
+                   onOk={domainAdd.submit} okButtonProps={{loading: isModalDomainAddBtnLoading}} okText="确 认"
                    onCancel={() => {
                        setIsModalDomainAddVisible(false);
                    }}>
                 <Form form={domainAdd} name="control-hooks2" onFinish={onDomainAddFormFinish} labelAlign="right"
                       labelCol={{span: 4}} wrapperCol={{span: 20}} >
-                    <Form.Item name={"domain"} label="域名" rules={[{
+                    <Form.Item name="domain" label="域名" rules={[{
                         required: true,
                         message: "请输入域名"
                     }, {
@@ -792,7 +792,7 @@ export default (): React.ReactNode => {
                     ]}>
                         <Input placeholder="请输入域名"/>
                     </Form.Item>
-                    <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+                    <Form.Item name="status" label="状态" rules={[{required: true}]}>
                         <Select placeholder="请选择域名状态" options={[{
                             value: 0,
                             label: "正常"
@@ -804,36 +804,36 @@ export default (): React.ReactNode => {
                 </Form>
             </Modal>
 
-            <Modal key={"web"} destroyOnClose={true} forceRender={true} title={"编 辑"} open={isModalWebVisible}
+            <Modal key="web" destroyOnClose={true} forceRender={true} title="编 辑" open={isModalWebVisible}
                    onOk={web.submit} okButtonProps={{loading: isModalWebBtnLoading}}
-                   okText={"确 认"}
+                   okText="确 认"
                    onCancel={() => {
                        setIsModalWebVisible(false);
                        web.resetFields();
                    }}>
                 <Form form={web} name="control-hooks3" onFinish={onWebFormFinish} labelAlign="right" labelCol={{span: 4}}
                       wrapperCol={{span: 18}} >
-                    <Form.Item name={"id"} label="ID" hidden={true}>
+                    <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
-                    <Form.Item name={"name"} label="名称" rules={[{required: true, message: "请输入名称"}]}>
+                    <Form.Item name="name" label="名称" rules={[{required: true, message: "请输入名称"}]}>
                         <Input placeholder="请输入名称"/>
                     </Form.Item>
-                    <Form.Item name={"title"} label="标题" rules={[{required: true, message: "请输入标题"}]}>
+                    <Form.Item name="title" label="标题" rules={[{required: true, message: "请输入标题"}]}>
                         <Input placeholder="请输入标题"/>
                     </Form.Item>
-                    <Form.Item name={"keywords"} label="关键词" rules={[{required: true, message: "请输入关键词"}]}>
+                    <Form.Item name="keywords" label="关键词" rules={[{required: true, message: "请输入关键词"}]}>
                         <Input.TextArea placeholder="请输入关键词"/>
                     </Form.Item>
-                    <Form.Item name={"description"} label="描述" rules={[{required: true, message: "请输入描述"}]}>
+                    <Form.Item name="description" label="描述" rules={[{required: true, message: "请输入描述"}]}>
                         <Input.TextArea placeholder="请输入描述"/>
                     </Form.Item>
-                    <Form.Item name={"expire_time"} label="到期时间" rules={[{required: true, message: "请选择到期时间"}]}>
+                    <Form.Item name="expire_time" label="到期时间" rules={[{required: true, message: "请选择到期时间"}]}>
                         <
                             // @ts-ignore
                             DatePicker format='YYYY-MM-DD' placeholder="请选择到期时间"/>
                     </Form.Item>
-                    <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+                    <Form.Item name="status" label="状态" rules={[{required: true}]}>
                         <Select placeholder="请选择站点状态" options={[{
                             value: 0,
                             label: "正常"
@@ -846,22 +846,22 @@ export default (): React.ReactNode => {
                 </Form>
             </Modal>
 
-            <Modal key={"money"} width={350} destroyOnClose={true} okButtonProps={{loading: isModalMoneyBtnLoading}}
+            <Modal key="money" width={350} destroyOnClose={true} okButtonProps={{loading: isModalMoneyBtnLoading}}
                    forceRender={true} title="用户加款" open={isModalMoneyVisible}
-                   onOk={money.submit} okText={"确 认"} onCancel={() => {
+                   onOk={money.submit} okText="确 认" onCancel={() => {
                 setIsModalMoneyVisible(false);
                 money.resetFields();
             }}>
                 <Form form={money} name="control-hooks4" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
-                    <Form.Item name={"user_id"} label="用户ID" hidden={true}
+                    <Form.Item name="user_id" label="用户ID" hidden={true}
                                rules={[{required: true, message: "请输入操作金额"}, {
                                    pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
                                    message: "请输入正确的用户ID"
                                }]}>
                         <Input placeholder="请输入操作金额"/>
                     </Form.Item>
-                    <Form.Item name={"type"} label="类型" rules={[{required: true, message: "请选择操作类型"}]}>
+                    <Form.Item name="type" label="类型" rules={[{required: true, message: "请选择操作类型"}]}>
                         <Select placeholder="请选择操作类型" options={[{
                             value: 0,
                             label: "充值"
@@ -870,13 +870,13 @@ export default (): React.ReactNode => {
                             label: "扣除"
                         }]}/>
                     </Form.Item>
-                    <Form.Item name={"money"} label="金额" rules={[{required: true, message: "请输入操作金额"}, {
+                    <Form.Item name="money" label="金额" rules={[{required: true, message: "请输入操作金额"}, {
                         pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
                         message: "请输入正确的金额"
                     }]}>
                         <Input placeholder="请输入操作金额"/>
                     </Form.Item>
-                    <Form.Item name={"remark"} label="备注">
+                    <Form.Item name="remark" label="备注">
                         <Input.TextArea placeholder="请输入用户备注(选填)"/>
                     </Form.Item>
                 </Form>

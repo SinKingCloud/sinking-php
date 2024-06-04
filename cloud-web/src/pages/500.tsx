@@ -23,7 +23,7 @@ export default () => {
                 title="500"
                 subTitle="服务器连接失败,请返回首页稍后重试"
                 extra={<Button type="primary" onClick={() => {
-                    historyPush("user.dashboard");
+                    historyPush("user.index");
                 }}>返回首页</Button>}
             />
         </Body>

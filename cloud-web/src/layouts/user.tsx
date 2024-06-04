@@ -19,9 +19,8 @@ import request from "@/utils/request";
  */
 const check = async (ctx: any, next: any) => {
     await next();
-    if (ctx.res.code == 503 || ctx.res.code == 403) {
-        historyPush("user.dashboard");
-        message?.error(ctx.res.message)
+    if (ctx.res.code == 403) {
+        historyPush("notAllowed");
     }
 }
 request.use(check);
@@ -150,7 +149,7 @@ const RightTop: React.FC = () => {
                                  marginTop: 18,
                                  marginBottom: 10
                              }}>{user?.web?.nick_name || "未设置"}</div>
-                             <div>{user?.web?.phone}</div>
+                             <div>{user?.web?.phone || user?.web?.email}</div>
                          </Col>
                      </Row>
                      <ul className={menu}>

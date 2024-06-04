@@ -294,7 +294,7 @@ export default (): React.ReactNode => {
                 add.resetFields();
             }}>
                 <Form   form={add} name="control-hooks" onFinish={onAddFormFinish}  labelCol={{span: 6}} wrapperCol={{span: 16}}>
-                    <Form.Item name={"name"} label="网站名称" rules={[{required: true, message: "请输入网站名称"}]}>
+                    <Form.Item name="name" label="网站名称" rules={[{required: true, message: "请输入网站名称"}]}>
                         <Input  placeholder="请输入网站名称"/>
                     </Form.Item>
                     <Form.Item label="绑定域名">
@@ -318,7 +318,7 @@ export default (): React.ReactNode => {
                                 </Select>
                             </Form.Item>
                     </Form.Item>
-                    <Form.Item name={"type"} label="支付方式" rules={[{required: true, message: "请选择支付方式"}]}>
+                    <Form.Item name="type" label="支付方式" rules={[{required: true, message: "请选择支付方式"}]}>
                         <Select  placeholder="请选择支付方式" >
                             <Select.Option
                                 value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>

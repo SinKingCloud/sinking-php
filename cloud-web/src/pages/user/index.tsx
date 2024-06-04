@@ -107,11 +107,11 @@ const useStyles = createStyles(({css, token, responsive}): any => {
                 marginTop: "-3px",
                 text: {
                     fontSize: "10px",
-                    color: "rgb(155 155 155)",
+                    color: "rgb(122 122 122)",
                 },
                 uin: {
                     fontSize: "13px",
-                    color: "rgb(155 155 155)",
+                    color: "rgb(122 122 122)",
                 }
             },
             btn: {

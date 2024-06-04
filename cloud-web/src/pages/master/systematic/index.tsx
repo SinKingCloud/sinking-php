@@ -10,6 +10,7 @@ import WebView from "./components/web";
 import UpgradeView from "./components/upgrade";
 import SmsView from "./components/sms";
 import {createStyles} from "antd-style";
+import {Body} from "@/components";
 
 const {Item} = Menu;
 
@@ -121,6 +122,7 @@ const Settings: React.FC = () => {
         }
     };
     return (
+        <Body>
             <ProCard title={"系统设置"} headerBordered className={card}>
                 <div className={main}>
                     <div className={leftMenu}>
@@ -143,6 +145,7 @@ const Settings: React.FC = () => {
                     </div>
                 </div>
             </ProCard>
+        </Body>
     );
 };
 export default Settings;

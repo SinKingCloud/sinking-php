@@ -256,14 +256,14 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-            <Modal key={"delete"} width={370} destroyOnClose={true} forceRender={true} title="清理数据" open={isDeleteModalVisible}
-                   onOk={deleteForm.submit} okText={"确 认"} onCancel={() => {
+            <Modal key="delete" width={370} destroyOnClose={true} forceRender={true} title="清理数据" open={isDeleteModalVisible}
+                   onOk={deleteForm.submit} okText="确 认" onCancel={() => {
                 setIsDeleteModalVisible(false);
                 deleteForm.resetFields();
             }}>
                 <Form form={deleteForm} name="control-hooks" onFinish={onDeleteFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 24}} >
-                    <Form.Item name={"status"} label="订单状态" rules={[{required: true}]} initialValue={"0"}>
+                    <Form.Item name="status" label="订单状态" rules={[{required: true}]} initialValue={"0"}>
                         <Select placeholder="请选择订单状态" options={[
                             {
                                 label: '全部',

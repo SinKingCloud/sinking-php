@@ -25,7 +25,6 @@ const useStyles = createStyles(({css, responsive}): any => {
             align-items: center;
             margin-top: 16px;
             zoom: 1;
-
             &::before,
             &::after {
                 display: table;
@@ -70,7 +69,7 @@ const useStyles = createStyles(({css, responsive}): any => {
 
             a {
                 margin-left: 24px;
-                color: #000;
+                color: rgb(122,122,122);
                 font-size: 14px;
             }
         `,

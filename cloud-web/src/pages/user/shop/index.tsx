@@ -9,9 +9,9 @@ import {Body} from "@/components";
 import {useModel} from "umi";
 import {createStyles, useResponsive} from "antd-style";
 
-const useStyles = createStyles(({css, responsive}): any => {
+const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     return {
-        mainTitle:css`
+        mainTitle: css`
             background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png");
             background-repeat: no-repeat;
             background-size: cover;
@@ -19,16 +19,18 @@ const useStyles = createStyles(({css, responsive}): any => {
             text-align: center;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 height: 60px;
             }
         `,
-        topTitle:css`
+        topTitle: css`
             font-size: 30px;
             color: #cfc8bd !important;
             padding-top: 45px;
             box-sizing: border-box;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 font-size: 14px;
                 padding-top: 12px;
             }
@@ -36,15 +38,17 @@ const useStyles = createStyles(({css, responsive}): any => {
         main: {
             maxWidth: "600px",
             margin: "0 auto",
-            boxShadow: "0 50px 40px 0 #eeeeeead",
-        },
-        body:css`
+            //box-shadow: 0 50px 40px 0 #eeeeeead,
+            boxShadow: isDarkMode ? "0 5px 10px 0 rgba(95, 94, 94, 0.68)" : "0 50px 40px 0 #eeeeeead",
+        }
+        ,
+        body: css`
             margin: -100px auto 0 auto;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 margin: -15px auto 0 auto;
             }
         `,
-        cardTitle:css`
+        cardTitle: css`
             position: relative;
             background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/personPackage.5c08b148.svg");
             background-repeat: no-repeat;
@@ -52,34 +56,37 @@ const useStyles = createStyles(({css, responsive}): any => {
             height: 120px;
             border-radius: 10px 10px 0 0;
             text-align: center;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 height: 90px;
                 width: 90%;
                 margin-left: 5%;
             }
         `,
-        topTitle2:css`
+        topTitle2: css`
             font-size: 27px;
             font-weight: bolder;
             color: #af6e01;
             height: 65px;
             line-height: 75px;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 font-size: 20px;
                 height: 50px;
                 line-height: 65px;
             }
-        ` ,
+        `,
         bottomTitle: css`
             font-size: 18px;
             color: #af6e01;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 font-size: 13px;
             }
         `,
         cardBody: {
             borderRadius: "0 0 10px 10px !important",
-            padding:"12px 0"
+            padding: "12px 0"
         },
         button: css`
             margin-top: 20px;
@@ -91,10 +98,12 @@ const useStyles = createStyles(({css, responsive}): any => {
             border: 0;
             line-height: 20px;
             height: 40px;
-            .ant-btn-primary{
-                box-shadow: 0 0 0 rgba(5, 95, 255, 0.1)!important;
+
+            .ant-btn-primary {
+                box-shadow: 0 0 0 rgba(5, 95, 255, 0.1) !important;
             }
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 width: 100%;
                 margin-left: 0;
             }
@@ -132,10 +141,10 @@ const useStyles = createStyles(({css, responsive}): any => {
         right: {
             float: "right"
         },
-        describe:css`
+        describe: css`
             max-width: 80%;
             margin: 40px auto 0 auto;
-            ${responsive.md}{
+            ${responsive.md} {
                 max-width: 100%;
                 margin: 0;
             }
@@ -181,8 +190,8 @@ const useStyles = createStyles(({css, responsive}): any => {
         td: {
             flex: 8
         },
-        select:css`
-            .ant-select-selector{
+        select: css`
+            .ant-select-selector {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
             }
@@ -194,13 +203,13 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td,select
+            table, thead, tbody, tr, th, td, select
         }
     } = useStyles()
     /**
      * 初始化
      */
-    const {message,modal} = App.useApp()
+    const {message, modal} = App.useApp()
     const {mobile} = useResponsive()
     const user = useModel("user")
     const [siteConfig, setSiteConfig] = useState({});
@@ -239,44 +248,44 @@ export default (): React.ReactNode => {
             onOk() {
                 setIsModalAddWebBtnLoading(true);
                 return buySite({
-                    body:{
+                    body: {
                         ...values
                     },
-                    onSuccess:(r)=>{
-                            setIsModalAddWebVisible(false);
-                            add.resetFields();
-                            message?.success(r?.message)
-                            //支付成功
-                            if (r.code == 200 && values.type == 3) {
-                                modal.confirm({
-                                    title: '开通成功,请点击确认访问您的网站',
-                                    icon: <ExclamationCircleOutlined/>,
-                                    content: (<>您的网站域名：<Typography.Text
-                                        copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
-                                    async onOk() {
-                                        window.location.href = location.protocol + '//' + url
-                                    },
-                                });
+                    onSuccess: (r) => {
+                        setIsModalAddWebVisible(false);
+                        add.resetFields();
+                        message?.success(r?.message)
+                        //支付成功
+                        if (r.code == 200 && values.type == 3) {
+                            modal.confirm({
+                                title: '开通成功,请点击确认访问您的网站',
+                                icon: <ExclamationCircleOutlined/>,
+                                content: (<>您的网站域名：<Typography.Text
+                                    copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
+                                async onOk() {
+                                    window.location.href = location.protocol + '//' + url
+                                },
+                            });
+                        } else {
+                            setPayJumpUrl();
+                            if (mobile) {
+                                window.location.href = r.data;
                             } else {
-                                setPayJumpUrl();
-                                if (mobile) {
-                                    window.location.href = r.data;
-                                } else {
-                                    window.open(r.data);
-                                }
-                                modal.confirm({
-                                    title: '订单是否已支付成功?',
-                                    icon: <ExclamationCircleOutlined/>,
-                                    content: <>如支付成功请点击确认访问您的网站，域名：<Typography.Text
-                                        copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>,
-                                    async onOk() {
-                                        window.location.href = location.protocol + '//' + url
-                                    },
-                                });
+                                window.open(r.data);
                             }
-                        },
-                    onFail:(r)=>{
-                        if(r?.code !=200 ){
+                            modal.confirm({
+                                title: '订单是否已支付成功?',
+                                icon: <ExclamationCircleOutlined/>,
+                                content: <>如支付成功请点击确认访问您的网站，域名：<Typography.Text
+                                    copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>,
+                                async onOk() {
+                                    window.location.href = location.protocol + '//' + url
+                                },
+                            });
+                        }
+                    },
+                    onFail: (r) => {
+                        if (r?.code != 200) {
                             message?.error(r?.message || "请求失败")
                         }
                     }
@@ -288,38 +297,42 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-            <Modal key={"add_web"} width={400} destroyOnClose={true} open={isModalAddWebVisible} okButtonProps={{loading: isModalAddWebBtnLoading}}
+            <Modal key={"add_web"} width={400} destroyOnClose={true} open={isModalAddWebVisible}
+                   okButtonProps={{loading: isModalAddWebBtnLoading}}
                    forceRender={true} title="开通网站" onOk={add.submit} okText={'开通'} onCancel={() => {
                 setIsModalAddWebVisible(false);
                 add.resetFields();
             }}>
-                <Form   form={add} name="control-hooks" onFinish={onAddFormFinish}  labelCol={{span: 6}} wrapperCol={{span: 16}}>
+                <Form form={add} name="control-hooks" onFinish={onAddFormFinish} labelCol={{span: 6}}
+                      wrapperCol={{span: 16}}>
                     <Form.Item name="name" label="网站名称" rules={[{required: true, message: "请输入网站名称"}]}>
-                        <Input  placeholder="请输入网站名称"/>
+                        <Input placeholder="请输入网站名称"/>
                     </Form.Item>
                     <Form.Item label="绑定域名">
-                            <Form.Item
-                                name="prefix"
-                                noStyle
-                                rules={[{required: true, message: '请输入前缀'}]}
-                            >
-                                <Input style={{width: '45%',borderTopRightRadius: 0,
-                                    borderBottomRightRadius: 0,}} placeholder="请输入前缀"/>
-                            </Form.Item>
-                            <Form.Item
-                                name="domain"
-                                noStyle
-                                rules={[{required: true, message: '请选择后缀'}]}
-                            >
-                                <Select  placeholder="请选择后缀" style={{width: '55%'}} className={select}>
-                                    {siteConfig?.['master.domains']?.map((k: any) => {
-                                        return <Select.Option key={"domain_" + k} value={k}>.{k}</Select.Option>
-                                    })}
-                                </Select>
-                            </Form.Item>
+                        <Form.Item
+                            name="prefix"
+                            noStyle
+                            rules={[{required: true, message: '请输入前缀'}]}
+                        >
+                            <Input style={{
+                                width: '45%', borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0,
+                            }} placeholder="请输入前缀"/>
+                        </Form.Item>
+                        <Form.Item
+                            name="domain"
+                            noStyle
+                            rules={[{required: true, message: '请选择后缀'}]}
+                        >
+                            <Select placeholder="请选择后缀" style={{width: '55%'}} className={select}>
+                                {siteConfig?.['master.domains']?.map((k: any) => {
+                                    return <Select.Option key={"domain_" + k} value={k}>.{k}</Select.Option>
+                                })}
+                            </Select>
+                        </Form.Item>
                     </Form.Item>
                     <Form.Item name="type" label="支付方式" rules={[{required: true, message: "请选择支付方式"}]}>
-                        <Select  placeholder="请选择支付方式" >
+                        <Select placeholder="请选择支付方式">
                             <Select.Option
                                 value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
                             {payConfig?.['pay.qqpay.type'] && <Select.Option value={2}>QQ支付</Select.Option>}
@@ -394,7 +407,7 @@ export default (): React.ReactNode => {
                                     </div>
                                 </div>
                             </div>
-                            <Button className={button}  size={"large"} onClick={() => {
+                            <Button className={button} size={"large"} onClick={() => {
                                 add?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
                                 setIsModalAddWebVisible(true);
                             }}>

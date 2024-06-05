@@ -165,7 +165,6 @@ export function getMasterMenuItems() {
 export function getAdminMenuItems() {
     return getMenuItems(admin, '/' + adminPath);
 }
-
 /**
  * 获取菜单
  */

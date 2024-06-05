@@ -187,7 +187,7 @@ const Sider: React.FC<SiderProps> = (props) => {
                           openKeys={stateOpenKeys}
                           onOpenChange={onOpenChange}
                           onClick={(item: any) => {
-                              history?.push(item?.key);
+                              history.push(item?.key);
                               setSelectedKeys([item?.key]);
                               onMenuClick?.(item);
                           }}/>

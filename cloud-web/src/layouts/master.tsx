@@ -1,9 +1,9 @@
 import React from "react";
 import Layouts from "@/components/layouts";
-import {getUserMenuItems} from "@/utils/route";
+import {getMasterMenuItems} from "@/utils/route";
 
 export default () => {
     return (
-            <Layouts menu={getUserMenuItems()}/>
+        <Layouts menu={getMasterMenuItems()}/>
     );
 }

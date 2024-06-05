@@ -16,7 +16,7 @@ const useLayoutStyles = createStyles(({isDarkMode, token}): any => {
             zIndex: 2,
             boxShadow: "2px 0 8px 0 rgba(29,35,41,.05)",
             height: '100vh',
-            overflowY:"auto",
+            overflowY: "auto",
             position: "fixed !important",
             bottom: 0,
             ".ant-layout-header": {
@@ -48,7 +48,7 @@ const useLayoutStyles = createStyles(({isDarkMode, token}): any => {
             lineHeight: "55px !important",
             width: "100%",
             zIndex: 3,
-            boxShadow: "0 2px 8px 0 rgba(29, 35, 41, 0.05)",
+            boxShadow: "0 2px 8px 0 " + (isDarkMode ? "rgba(0, 0, 0, 0.25)" : "rgba(29, 35, 41, 0.05)"),
             position: "sticky",
             top: 0,
             userSelect: "none",

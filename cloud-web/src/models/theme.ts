@@ -9,22 +9,13 @@ const getTheme = (): any => {
             colorInfo: "rgba(7,53,237,1)",
         },
         algorithm: [theme.compactAlgorithm],
-        components: {
-            Menu: {
-                itemMarginBlock: 0,
-                itemMarginInline: 0,
-                itemBorderRadius: 0,
-                activeBarWidth: 4,
-                itemHeight: 45,
-                subMenuItemBg: "rgba(255, 255, 255, 0)",
-            }
-        }
     }
 }
 /**
  * 获取主题模式
  */
 const getMode = (): string => {
+    return "dark";
     const mode = localStorage?.getItem("theme")
     if (mode == "light" || mode == "dark") {
         return mode;

@@ -106,7 +106,7 @@ export default (): React.ReactNode => {
                             return;
                         }
                         setIsPasswordModalLoading(true);
-                        updatePassword({
+                       await updatePassword({
                             body:{
                                 type: "phone",
                                 code: values?.sms_code,
@@ -175,7 +175,7 @@ export default (): React.ReactNode => {
             }}>
                 <SmsVerify form={phoneForm} phone={phone} onFinish={async (values: any) => {
                     setIsPhoneModalLoading(true);
-                    updatePhone({
+                  await updatePhone({
                         body:{
                             ...values
                         },

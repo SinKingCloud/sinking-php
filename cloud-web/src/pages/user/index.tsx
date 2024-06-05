@@ -13,7 +13,7 @@ import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles} from "antd-style";
 import {Body} from "@/components";
 //@ts-ignore
-const useStyles = createStyles(({css, token, responsive}): any => {
+const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
     return {
         pageHeaderContent: css`
              display: flex;
@@ -35,7 +35,7 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         title: css`
             margin-top: 8px;
             font-size: 20px;
-            color: rgba(0, 0, 0, 0.85) !important;
+            color: isDarkMode ? rgba(0, 0, 0, 0.85)!important :#fff;
             line-height: 1;
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 text-align: center;
@@ -46,7 +46,7 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         content:css`
             font-size: 15px;
             line-height: 1;
-            color: rgba(0, 0, 0, 0.45);
+            color: isDarkMode ? rgba(0, 0, 0, 0.85)!important :#fff;
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
                 line-height: 20px;
             }
@@ -86,15 +86,15 @@ const useStyles = createStyles(({css, token, responsive}): any => {
                 }
             }
         `,
-        newButton: {
-            width: "100%",
-            height: "145px",
-            borderRadius: "0 !important",
-            color: "rgba(0, 0, 0, 0.45)",
-            boxShadow: "none !important",
-            border: "none !important",
-            padding: "0px !important"
-        },
+        newButton:css`
+            width: 100%;
+            height: 145px;
+            border-radius: 0 !important;
+            color: isDarkMode ? rgba(0, 0, 0, 0.85) !important: #fff;
+            box-shadow: none !important;
+            border: none !important;
+            padding: 0 !important;
+        `,
         contact: {
             padding: "15px",
             height: "100%",

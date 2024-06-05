@@ -35,10 +35,6 @@ const useStyles = createStyles(({css, token, responsive}): any => {
         main: css`
             width: 328px;
             margin: 0 auto;
-            //.ant-tabs .ant-tabs-tab{
-            //    font-size: 13px;
-            //}
-
             ${responsive.md} {
                 .ant-tabs .ant-tabs-tab {
                     font-size: 12px;
@@ -116,13 +112,18 @@ const useStyles = createStyles(({css, token, responsive}): any => {
             borderTop: "none",
             borderBottomRightRadius: "10px"
         },
+        line:css`
+            .ant-tabs-nav::before{
+                border: none !important;
+            }
+        `
     };
 });
 
 const Index: React.FC = () => {
     const {
         styles: {
-            container, content, top, header, logo, desc, border_corner, main,
+            container, content, top, header, logo, desc, border_corner, main,line,
             border_corner_left_top, border_corner_right_top, border_corner_left_bottom, border_corner_right_bottom
         }
     } = useStyles();
@@ -291,7 +292,7 @@ const Index: React.FC = () => {
                         </div>
                     </div>
                     <div className={main}>
-                        <Tabs items={items} centered style={{marginBottom: "10px"}} defaultActiveKey={type}
+                        <Tabs items={items} centered className={line} style={{marginBottom: "10px"}} defaultActiveKey={type}
                               onChange={(key: string) => {
                                   setType(key)
                                   if (key == "qrcode") {

@@ -95,7 +95,11 @@ const Settings: React.FC = () => {
     });
 
     const getMenu = () => {
-        return Object.keys(menuMap).map((item) => <Item key={item}>{menuMap[item]}</Item>);
+        return Object.keys(menuMap).map((item) => {
+            return {
+                key: item,label:menuMap[item]
+            }
+        });
     };
 
     const renderChildren = () => {
@@ -135,9 +139,8 @@ const Settings: React.FC = () => {
                                     selectKey: key as SettingsStateKeys,
                                 });
                             }}
-                        >
-                            {getMenu()}
-                        </Menu>
+                            items={getMenu()}
+                        />
                     </div>
                     <div className={right}>
                         <div className={title}>{menuMap[initConfig.selectKey]}</div>

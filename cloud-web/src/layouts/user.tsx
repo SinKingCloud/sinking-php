@@ -271,13 +271,13 @@ export default () => {
                     console.log("点击了菜单", item)
                 }}
                 collapsedLogo={() => {
-                    return <img src={(Settings?.basePath || "/") + "logo.svg"}
+                    return <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
                                 alt={Settings?.title} className={collapsedImg}/>
                 }}
                 unCollapsedLogo={() => {
                     return (
                         <div className={unCollapsed}>
-                            <img src={(Settings?.basePath || "/") + "logo.svg"}
+                            <img src={web?.info?.logo ||(Settings?.basePath || "/") + "logo.svg"}
                                  alt="沉沦云网络"/>
                             <div>{web?.info?.name || Settings?.title}</div>
                         </div>)

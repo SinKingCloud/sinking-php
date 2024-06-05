@@ -796,7 +796,7 @@ export default (): React.ReactNode => {
                 <Alert
                     message={"最大绑定:" + domainConfig['master.domain.num'] + "个,解析地址:" + domainConfig['master.domain.resolve']}
                     type="info" showIcon style={{marginBottom: "20px"}}/>
-                <Form form={domainAdd} name="control-hooks" onFinish={onDomainAddFormFinish} labelAlign="right"
+                <Form form={domainAdd} name="control-hooks1" onFinish={onDomainAddFormFinish} labelAlign="right"
                       labelCol={{span: 4}}
                       wrapperCol={{span: 20}}>
                     <Form.Item name="domain" label="域名" rules={[{
@@ -830,7 +830,7 @@ export default (): React.ReactNode => {
                        setIsModalWebVisible(false);
                        web.resetFields();
                    }}>
-                <Form form={web} name="control-hooks1" onFinish={onWebFormFinish} labelAlign="right" labelCol={{span: 4}}
+                <Form form={web} name="control-hooks2" onFinish={onWebFormFinish} labelAlign="right" labelCol={{span: 4}}
                       wrapperCol={{span: 18}}>
                     <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
@@ -868,7 +868,7 @@ export default (): React.ReactNode => {
                 setIsModalMoneyVisible(false);
                 money.resetFields();
             }}>
-                <Form form={money} name="control-hooks2" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
+                <Form form={money} name="control-hooks3" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
                     <Form.Item name="user_id" label="用户ID" hidden={true} rules={[{required: true, message: "请输入操作金额"}, {
                         pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,

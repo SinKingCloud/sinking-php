@@ -314,8 +314,7 @@ export default () => {
             <NoticeInfo id={noticeId} open={noticeVisible} onClose={hideNoticeInfoModal}/>
             <Row gutter={24}>
                 <Skeleton title={false} loading={notice2Loading} active>
-                    <Col xl={24} md={24}
-                         hidden={notice2Data?.['notice.index'] == "" || notice2Data?.['notice.index'] == null}>
+                    {notice2Data?.['notice.index'] && <Col xl={24} md={24}>
                         <Alert
                             style={{fontSize: "14px", marginTop: "8px", marginBottom: "15px"}} banner
                             type={"info"}
@@ -325,7 +324,7 @@ export default () => {
                                 </Marquee>
                             }
                         />
-                    </Col>
+                    </Col>}
                 </Skeleton>
                 <Col xl={24} md={24}>
                     <Card style={{marginBottom: "20px"}}>
@@ -346,7 +345,7 @@ export default () => {
                                 className={my}
                                 style={{marginBottom: 24}}
                                 title="我的数据"
-                                extra={<Link to="/user/index/dashboard">查看全部</Link>}
+                                extra={<Link to="/user/index">查看全部</Link>}
                                 loading={false}
                                 bodyStyle={{padding: 0}}
                             >

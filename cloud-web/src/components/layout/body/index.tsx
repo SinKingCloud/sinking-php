@@ -26,7 +26,6 @@ const useStyles = createStyles(({token}): any => {
             backgroundColor: token?.colorBgContainer,
             padding: "5px 15px 5px 15px",
             fontSize: "12px",
-            borderTop: "0.1px solid " + token?.colorFillSecondary
         },
         breadStyle: {
             color: "rgb(156, 156, 156)",

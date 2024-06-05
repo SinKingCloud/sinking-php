@@ -15,7 +15,6 @@ const getTheme = (): any => {
  * 获取主题模式
  */
 const getMode = (): string => {
-    return "dark";
     const mode = localStorage?.getItem("theme")
     if (mode == "light" || mode == "dark") {
         return mode;

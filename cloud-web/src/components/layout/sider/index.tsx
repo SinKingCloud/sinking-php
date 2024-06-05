@@ -172,6 +172,12 @@ const Sider: React.FC<SiderProps> = (props) => {
                             itemColor: token?.colorTextSecondary,
                             itemHoverColor: token?.colorTextSecondary,
                             fontSize: 13,
+                            itemMarginBlock: 0,
+                            itemMarginInline: 0,
+                            itemBorderRadius: 0,
+                            activeBarWidth: 4,
+                            itemHeight: 45,
+                            subMenuItemBg: "rgba(255, 255, 255, 0)",
                         }
                     }
                 }}>

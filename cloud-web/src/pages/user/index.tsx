@@ -14,6 +14,8 @@ import {createStyles} from "antd-style";
 import {Body} from "@/components";
 //@ts-ignore
 const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
+    const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
+    const border = isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #f6f6f6"
     return {
         pageHeaderContent: css`
              display: flex;
@@ -35,7 +37,7 @@ const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
         title: css`
             margin-top: 8px;
             font-size: 20px;
-            color: isDarkMode ? rgba(0, 0, 0, 0.85)!important :#fff;
+            color:${color};
             line-height: 1;
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 text-align: center;
@@ -46,7 +48,7 @@ const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
         content:css`
             font-size: 15px;
             line-height: 1;
-            color: isDarkMode ? rgba(0, 0, 0, 0.85)!important :#fff;
+            color: ${color};
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
                 line-height: 20px;
             }
@@ -76,13 +78,13 @@ const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
         `,
         projectGrid:css`
             width: 33.33%;
-            border: 1px solid #f6f6f6;
-            border-radius:  0 !important;
+            border: ${border};
+            border-radius: 0 !important;
             padding: 0 !important;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 width: 100%;
-                .ant-card-body{
-                    padding:0 !important;
+                .ant-card-body {
+                    padding: 0 !important;
                 }
             }
         `,
@@ -90,7 +92,7 @@ const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
             width: 100%;
             height: 145px;
             border-radius: 0 !important;
-            color: isDarkMode ? rgba(0, 0, 0, 0.85) !important: #fff;
+            color: ${color};
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;

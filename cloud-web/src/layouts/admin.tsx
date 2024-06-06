@@ -1,5 +1,5 @@
 import React from "react";
-import Layouts from "@/components/layouts";
+import Layouts from "./components/layouts";
 import {getAdminMenuItems} from "@/utils/route";
 
 export default () => {

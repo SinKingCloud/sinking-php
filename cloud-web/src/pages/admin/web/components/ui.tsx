@@ -5,6 +5,7 @@ import {getUi, setUi} from "@/service/admin/set";
 import {getUploadUrl} from "@/service/common/upload";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {createStyles} from "antd-style";
+import {useModel} from "umi";
 const useStyles = createStyles(({css})=>{
     return{
         box:css`
@@ -21,6 +22,7 @@ const UiView: React.FC = () => {
     const [index, setIndex] = useState<any>({});
     const {message} = App.useApp()
     const [form] = Form.useForm();
+    const web = useModel("web")
     /**
      * 初始化表单值
      */
@@ -100,6 +102,7 @@ const UiView: React.FC = () => {
             onSuccess: (r: any) => {
                 if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
+                    web?.refreshInfo()
                 }
             },
             onFail: (r: any) => {

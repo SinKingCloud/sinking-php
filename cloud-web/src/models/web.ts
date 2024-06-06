@@ -14,7 +14,6 @@ export default () => {
         const resp = await getWebUserInfo();
         return resp?.data || {};
     }
-
     /**
      * 刷新站点信息
      */

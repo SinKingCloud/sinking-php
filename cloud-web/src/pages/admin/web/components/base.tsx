@@ -53,6 +53,7 @@ const BaseView: React.FC = () => {
             onSuccess: (r: any) => {
                 if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
+                    web?.refreshInfo()
                 }
             },
             onFail: (r: any) => {

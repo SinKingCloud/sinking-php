@@ -7,6 +7,7 @@ use Systems\Cache;
 use Systems\Captcha;
 use app\Constant\Cache as Constant;
 use Plugins\Util\UinLogin;
+use Plugins\Util\Uin;
 
 class VerifyService extends BaseService
 {
@@ -42,10 +43,20 @@ class VerifyService extends BaseService
     }
 
     /**
+     * @param $randStr string 随机码
+     * @param $ticket string ticket
+     * @return bool
+     */
+    public function checkTencentCaptcha($randStr, $ticket)
+    {
+        return Uin::checkTicket($ticket, $randStr);
+    }
+
+    /**
      * 发送邮件验证码
      *
      * @param string $email 收件人
-     * @return void
+     * @return bool
      */
     public function sendEmailCaptcha($email)
     {
@@ -78,7 +89,6 @@ class VerifyService extends BaseService
             return false;
         }
         $code = rand(100000, 999999);
-        $web = AuthService::getInstance()->getCurrentWeb();
         $res = SmsService::getInstance()->sendCaptcha($phone, $code);
         if ($res) {
             Cache::set(Constant::CAPTCHA_NAME . $phone, $code, Constant::CAPTCHA_TIME);

@@ -52,7 +52,6 @@ export default (): React.ReactNode => {
             tip: '金额',
             hideInSearch: true,
             render: (text:any,record: any) => {
-                console.log(record)
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },

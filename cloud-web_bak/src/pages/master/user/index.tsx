@@ -550,10 +550,10 @@ export default (): React.ReactNode => {
              }}>
         <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 4}}
               wrapperCol={{span: 18}}>
-          <Form.Item name={"id"} label="ID" hidden={true}>
+          <Form.Item name="id" label="ID" hidden={true}>
             <Input placeholder="请输入ID"/>
           </Form.Item>
-          <Form.Item name={"avatar"} label="头像">
+          <Form.Item name="avatar" label="头像">
             <Upload
               name="file"
               listType="picture-card"
@@ -580,25 +580,25 @@ export default (): React.ReactNode => {
               </div>
             </Upload>
           </Form.Item>
-          <Form.Item name={"account"} label="账号">
+          <Form.Item name="account" label="账号">
             <Input placeholder="请输入用户账号"/>
           </Form.Item>
-          <Form.Item name={"phone"} label="手机号">
+          <Form.Item name="phone" label="手机号">
             <Input placeholder="请输入用户手机号"/>
           </Form.Item>
-          <Form.Item name={"email"} label="邮箱">
+          <Form.Item name="email" label="邮箱">
             <Input placeholder="请输入用户邮箱"/>
           </Form.Item>
-          <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+          <Form.Item name="status" label="状态" rules={[{required: true}]}>
             <Select placeholder="请选择用户状态">
               <Select.Option value={0}>正常</Select.Option>
               <Select.Option value={1}>禁止</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"password"} label="密码">
+          <Form.Item name="password" label="密码">
             <Input placeholder="不修改则留空"/>
           </Form.Item>
-          <Form.Item name={"nick_name"} label="昵称">
+          <Form.Item name="nick_name" label="昵称">
             <Input placeholder="请输入用户昵称"/>
           </Form.Item>
         </Form>
@@ -613,14 +613,14 @@ export default (): React.ReactNode => {
       }}>
         <Form form={add} name="control-hooks" onFinish={onAddFormFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"user_id"} label="用户ID" hidden={true}
+          <Form.Item name="user_id" label="用户ID" hidden={true}
                      rules={[{required: true, message: "请输入操作金额"}, {
                        pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
                        message: "请输入正确的用户ID"
                      }]}>
             <Input placeholder="请输入用户ID"/>
           </Form.Item>
-          <Form.Item name={"name"} label="站点名称" rules={[{required: true, message: "请输入操作金额"}]}>
+          <Form.Item name="name" label="站点名称" rules={[{required: true, message: "请输入操作金额"}]}>
             <Input placeholder="请输入站点名称"/>
           </Form.Item>
           <Form.Item label="绑定域名">
@@ -734,26 +734,26 @@ export default (): React.ReactNode => {
       }}>
         <Form form={money} name="control-hooks" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"user_id"} label="用户ID" hidden={true}
+          <Form.Item name="user_id" label="用户ID" hidden={true}
                      rules={[{required: true, message: "请输入操作金额"}, {
                        pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
                        message: "请输入正确的用户ID"
                      }]}>
             <Input placeholder="请输入用户ID"/>
           </Form.Item>
-          <Form.Item name={"type"} label="类型" rules={[{required: true, message: "请选择操作类型"}]}>
+          <Form.Item name="type" label="类型" rules={[{required: true, message: "请选择操作类型"}]}>
             <Select placeholder="请选择操作类型">
               <Select.Option value={0}>充值</Select.Option>
               <Select.Option value={1}>扣除</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"money"} label="金额" rules={[{required: true, message: "请输入操作金额"}, {
+          <Form.Item name="money" label="金额" rules={[{required: true, message: "请输入操作金额"}, {
             pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
             message: "请输入正确的金额"
           }]}>
             <Input placeholder="请输入操作金额"/>
           </Form.Item>
-          <Form.Item name={"remark"} label="备注">
+          <Form.Item name="remark" label="备注">
             <Input.TextArea placeholder="请输入用户备注(选填)"/>
           </Form.Item>
         </Form>

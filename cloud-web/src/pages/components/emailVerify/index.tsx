@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {App, Button, Col, Form,  Input, Row} from "antd";
+import {App, Button, Col, Form, Input, Row} from "antd";
 import {FormInstance} from "antd/lib/form/hooks/useForm";
 import {getCaptchaUrl} from "@/service/common/captcha";
 import {sendEmail} from "@/service/common/email";
 import Captcha, {CaptchaRef} from "../../../components/captcha";
+
 export type EmailVerifyProps = {
     onFinish: (value?: any) => Promise<boolean | void>;
     form: FormInstance<any>;
@@ -38,12 +39,13 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
     return (
         <>
             <Captcha ref={captcha}/>
-            <Form form={form} name="control-hooks" onFinish={async (values: any) => {
+            <Form form={form} onFinish={async (values: any) => {
                 await onFinish(values);
             }} labelAlign="right"
                   labelCol={{span: 6}}>
                 {topNodes}
-                <Form.Item name={"email_code"} label="邮箱验证码" rules={[{required: true, message: '请输入邮箱验证码',},]}>
+                <Form.Item name="email_code" label="邮箱验证码"
+                           rules={[{required: true, message: '请输入邮箱验证码',},]}>
                     <Row gutter={6} wrap={false}>
                         <Col flex={22}>
                             <Input placeholder="请输入邮箱验证码"/>

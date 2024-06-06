@@ -102,7 +102,6 @@ export default (): React.ReactNode => {
                     changePwdType == 'phone' &&
                     // @ts-ignore
                     <SmsVerify form={phonePawForm} phone={user?.web?.phone} onFinish={async (values:any) => {
-                        console.log(values)
                         if (values.password.length > 20 || values.password.length < 6) {
                             message?.error("密码长度必须为6-20位之间");
                             return;

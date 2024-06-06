@@ -298,29 +298,29 @@ export default (): React.ReactNode => {
           <div style={{display: !noticeLoading ? "block" : "none"}}>
             <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 2}}
                   wrapperCol={{span: 21}}>
-              <Form.Item name={"id"} label="ID" hidden={true}>
+              <Form.Item name="id" label="ID" hidden={true}>
                 <Input placeholder="请输入ID"/>
               </Form.Item>
-              <Form.Item name={"title"} label="标题" rules={[{required: true}]}>
+              <Form.Item name="title" label="标题" rules={[{required: true}]}>
                 <Input placeholder="请输入标题" style={{maxWidth: "500px"}}/>
               </Form.Item>
-              <Form.Item name={"place"} label="位置" rules={[{required: true}]}>
+              <Form.Item name="place" label="位置" rules={[{required: true}]}>
                 <Select placeholder="请输入显示位置" style={{maxWidth: "500px"}}>
                   <Select.Option value="index">系统首页</Select.Option>
                   <Select.Option value="shop">用户商城</Select.Option>
                   <Select.Option value="admin">分站后台</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item name={"sort"} label="排序" rules={[{required: true}]}>
+              <Form.Item name="sort" label="排序" rules={[{required: true}]}>
                 <InputNumber placeholder="请输入排序数值" style={{maxWidth: "500px", minWidth: "150px"}}/>
               </Form.Item>
-              <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+              <Form.Item name="status" label="状态" rules={[{required: true}]}>
                 <Select placeholder="请选择公告状态" style={{maxWidth: "500px"}}>
                   <Select.Option value={0}>显示</Select.Option>
                   <Select.Option value={1}>隐藏</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item name={"content"} label="内容" rules={[{required: true}]}>
+              <Form.Item name="content" label="内容" rules={[{required: true}]}>
                 <
                   // @ts-ignore
                   BraftEditor
@@ -379,7 +379,7 @@ export default (): React.ReactNode => {
       }}>
         <Form form={edit} name="control-hooks" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"status"} label="状态">
+          <Form.Item name="status" label="状态">
             <Select placeholder="请选择公告状态">
               <Select.Option value={0}>显示</Select.Option>
               <Select.Option value={1}>隐藏</Select.Option>

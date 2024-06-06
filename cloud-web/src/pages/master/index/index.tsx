@@ -107,7 +107,6 @@ export default (): React.ReactNode => {
     }
     // 更改日期事件
     const handleRangePickerChange = (value: any) => {
-        console.log(value)
         setRangePickerValue(value);
         getChartData(selectDateType, value);
     };

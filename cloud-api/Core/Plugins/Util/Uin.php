@@ -116,6 +116,51 @@ class Uin
         );
     }
 
+    /**
+     * @description: 判断验证码
+     * @param {*} $ticket
+     * @param {*} $randstr
+     * @return {*}
+     */
+    public static function checkTicket($ticket = "", $randstr = "")
+    {
+        $url = 'https://cgi.urlsec.qq.com/index.php?m=check&a=gw_check&callback=url_query&url=https%3A%2F%2Fwww.qq.com%2F' . rand(111111, 999999) . '&ticket=' . urlencode($ticket) . '&randstr=' . urlencode($randstr);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $httpheader = array();
+        $httpheader[] = "Accept: application/json";
+        $httpheader[] = "Accept-Language: zh-CN,zh;q=0.8";
+        $httpheader[] = "Connection: close";
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $httpheader);
+        curl_setopt($ch, CURLOPT_REFERER, 'https://urlsec.qq.com/check.html');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $ret = curl_exec($ch);
+        curl_close($ch);
+        $arr = self::jsonpDecode($ret, true);
+        if (isset($arr['reCode']) && $arr['reCode'] == -109) { //验证通过
+            return false;
+        }
+        return true;
+    }
+
+    private static function jsonpDecode($jsonp, $assoc = false)
+    {
+        $jsonp = trim($jsonp);
+        if (isset($jsonp[0]) && $jsonp[0] !== '[' && $jsonp[0] !== '{') {
+            $begin = strpos($jsonp, '(');
+            if (false !== $begin) {
+                $end = strrpos($jsonp, ')');
+                if (false !== $end) {
+                    $jsonp = substr($jsonp, $begin + 1, $end - $begin - 1);
+                }
+            }
+        }
+        return json_decode($jsonp, $assoc);
+    }
+
     private static function curl($url, $post = 0, $header = array())
     {
         $ch = curl_init();

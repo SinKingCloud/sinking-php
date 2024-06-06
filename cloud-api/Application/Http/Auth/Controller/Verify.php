@@ -14,19 +14,6 @@ use Systems\Request;
 class Verify extends Common
 {
     /**
-     * 生成验证码
-     *
-     * @return void
-     */
-    public function captcha()
-    {
-        $data = $this->validate(array(
-            array('captcha_id|验证码唯一标识', 'require|length:32'),
-        ), Request::param());
-        VerifyService::getInstance()->genCaptcha($data['captcha_id'])->show();
-    }
-
-    /**
      * 发送邮件验证码
      *
      * @return void
@@ -34,12 +21,12 @@ class Verify extends Common
     public function email()
     {
         $data = $this->validate(array(
-            array('captcha_id|验证码唯一标识', 'require|length:32'),
-            array('captcha_code|验证码', 'require|length:4|between:1000,9999'),
+            array('captcha_id|验证码唯一标识', 'require'),
+            array('captcha_code|验证码', 'require'),
             array('email|邮箱', 'require|email'),
         ), Request::param());
-        if (!VerifyService::getInstance()->checkCaptcha($data['captcha_id'], $data['captcha_code'])) {
-            return $this->error("图形验证码错误");
+        if (!VerifyService::getInstance()->checkTencentCaptcha($data['captcha_id'], $data['captcha_code'])) {
+            return $this->error("验证码验证失败");
         }
         if (VerifyService::getInstance()->sendEmailCaptcha($data['email'])) {
             return $this->success("邮件发送成功");
@@ -55,12 +42,12 @@ class Verify extends Common
     public function sms()
     {
         $data = $this->validate(array(
-            array('captcha_id|验证码唯一标识', 'require|length:32'),
-            array('captcha_code|验证码', 'require|length:4|between:1000,9999'),
+            array('captcha_id|验证码唯一标识', 'require'),
+            array('captcha_code|验证码', 'require'),
             array('phone|手机号', 'require|number|length:11'),
         ), Request::param());
-        if (!VerifyService::getInstance()->checkCaptcha($data['captcha_id'], $data['captcha_code'])) {
-            return $this->error("图形验证码错误");
+        if (!VerifyService::getInstance()->checkTencentCaptcha($data['captcha_id'], $data['captcha_code'])) {
+            return $this->error("验证码验证失败");
         }
         if (VerifyService::getInstance()->sendSmsCaptcha($data['phone'])) {
             return $this->success("短信发送成功");

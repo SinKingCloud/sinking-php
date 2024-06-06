@@ -65,14 +65,14 @@ class Login extends Common
             array('phone|手机号', 'require|number|length:11'),
             array('sms_code|验证码', 'require|length:6|between:100000,999999'),
             array('device|登陆设备', 'require|in:mobile,pc|default:mobile'),
-            array('captcha_id|验证码唯一标识', 'require|length:32'),
-            array('captcha_code|验证码', 'require|length:4|between:1000,9999'),
+            array('captcha_id|验证码唯一标识', 'require'),
+            array('captcha_code|验证码', 'require'),
         ), Request::param());
         if (ConfigService::getInstance()->get(Config::SYSTEM_REG_PHONE) != 1) {
             return $this->error("系统已关闭短信注册");
         }
-        if (!VerifyService::getInstance()->checkCaptcha($data['captcha_id'], $data['captcha_code'])) {
-            return $this->error("图形验证码错误");
+        if (!VerifyService::getInstance()->checkTencentCaptcha($data['captcha_id'], $data['captcha_code'])) {
+            return $this->error("验证码验证失败");
         }
         if (!VerifyService::getInstance()->checkCaptcha($data['phone'], $data['sms_code'], false)) {
             return $this->error("短信验证失败");
@@ -114,14 +114,14 @@ class Login extends Common
             array('email|邮箱', 'require|email'),
             array('email_code|验证码', 'require|length:6|between:100000,999999'),
             array('device|登陆设备', 'require|in:mobile,pc|default:mobile'),
-            array('captcha_id|验证码唯一标识', 'require|length:32'),
-            array('captcha_code|验证码', 'require|length:4|between:1000,9999'),
+            array('captcha_id|验证码唯一标识', 'require'),
+            array('captcha_code|验证码', 'require'),
         ), Request::param());
         if (ConfigService::getInstance()->get(Config::SYSTEM_REG_EMAIL) != 1) {
             return $this->error("系统已关闭邮箱注册");
         }
-        if (!VerifyService::getInstance()->checkCaptcha($data['captcha_id'], $data['captcha_code'])) {
-            return $this->error("图形验证码错误");
+        if (!VerifyService::getInstance()->checkTencentCaptcha($data['captcha_id'], $data['captcha_code'])) {
+            return $this->error("验证码验证失败");
         }
         if (!VerifyService::getInstance()->checkCaptcha($data['email'], $data['email_code'], false)) {
             return $this->error("邮箱验证失败");

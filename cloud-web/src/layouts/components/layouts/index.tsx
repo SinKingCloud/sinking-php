@@ -3,13 +3,14 @@ import {Layout} from "@/components";
 import {Icon} from "@/components";
 import {useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
-import { historyPush} from "@/utils/route";
+import {historyPush} from "@/utils/route";
 import {App, Avatar, Col, Popover, Row} from "antd";
 import {createStyles} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
-import {Bottom, Exit,  Main, Order, Right, Setting, System, Web} from "@/components/icon";
+import {Bottom, Exit, Main, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
+import Title from "../title";
 
 /**
  * 中间件
@@ -203,7 +204,7 @@ const RightTop: React.FC = () => {
 }
 
 export type slide = {
-    menu:any
+    menu: any
 }
 /**
  * 用户系统
@@ -263,36 +264,38 @@ const Layouts: React.FC<slide> = ({...props}) => {
     });
     const {styles: {collapsedImg, unCollapsed}} = useStyles();
     return (
-        <Layout loading={loading}
-                menus={menu}
-                footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
-                headerRight={<RightTop/>}
-                menuCollapsedWidth={60}
-                menuUnCollapsedWidth={210}
-                menuBottomBtnText={"首页"}
-                menuBottomBtnIcon={Main}
-                onMenuBottomBtnClick={()=>{
-                    historyPush("user.index")
-                }}
-                onLogoClick={() => {
-                    console.log("点击了logo")
-                }}
-                onMenuClick={(item) => {
-                    console.log("点击了菜单", item)
-                }}
-                collapsedLogo={() => {
-                    return <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                alt={Settings?.title} className={collapsedImg}/>
-                }}
-                unCollapsedLogo={() => {
-                    return (
-                        <div className={unCollapsed}>
-                            <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                 alt="沉沦云网络"/>
-                            <div>{web?.info?.name || Settings?.title}</div>
-                        </div>)
-                }}
-        />
+        <>
+            <Title/>
+            <Layout loading={loading}
+                    menus={menu}
+                    footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
+                    headerRight={<RightTop/>}
+                    menuCollapsedWidth={60}
+                    menuUnCollapsedWidth={210}
+                    menuBottomBtnText={"首页"}
+                    menuBottomBtnIcon={Main}
+                    onMenuBottomBtnClick={() => {
+                        historyPush("user.index")
+                    }}
+                    onLogoClick={() => {
+                        console.log("点击了logo")
+                    }}
+                    onMenuClick={(item) => {
+                        console.log("点击了菜单", item)
+                    }}
+                    collapsedLogo={() => {
+                        return <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                    alt={Settings?.title} className={collapsedImg}/>
+                    }}
+                    unCollapsedLogo={() => {
+                        return (
+                            <div className={unCollapsed}>
+                                <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                     alt="沉沦云网络"/>
+                                <div>{web?.info?.name || Settings?.title}</div>
+                            </div>)
+                    }}
+            /></>
     );
 }
 export default Layouts;

@@ -81,6 +81,7 @@ export default (): React.ReactNode => {
                                 onSuccess:(r:any)=>{
                                     if(r?.code == 200){
                                         message?.success(r?.message)
+                                        refresh.refreshWebUser()
                                         setIsPasswordModalVisible(false)
                                     }
                                 },
@@ -115,6 +116,7 @@ export default (): React.ReactNode => {
                             onSuccess:(r:any)=>{
                                 if(r?.code == 200){
                                     message?.success(r?.message)
+                                    refresh.refreshWebUser()
                                     setIsPasswordModalVisible(false)
                                 }
                             },
@@ -148,6 +150,7 @@ export default (): React.ReactNode => {
                         onSuccess:(r:any)=>{
                             if(r?.code == 200){
                                 message?.success(r?.message)
+                                refresh.refreshWebUser()
                                 setIsEmailModalVisible(false)
                             }
                         },
@@ -182,6 +185,7 @@ export default (): React.ReactNode => {
                         onSuccess:(r:any)=>{
                             if(r?.code == 200){
                                 message?.success(r?.message)
+                                refresh.refreshWebUser()
                                 setIsPhoneModalVisible(false)
                             }
                         },
@@ -243,6 +247,7 @@ export default (): React.ReactNode => {
                                                         onSuccess:(r:any)=>{
                                                             if(r?.code == 200){
                                                                 message?.success(r?.message)
+                                                                refresh.refreshWebUser()
                                                                 setIsUploadAvatarLoading(false);
                                                             }
                                                         },
@@ -277,6 +282,7 @@ export default (): React.ReactNode => {
                                         onSuccess:(r:any)=>{
                                             if(r?.code == 200){
                                                 message?.success(r?.message)
+                                                refresh.refreshWebUser()
                                                 setIsPasswordModalVisible(false);
                                             }
                                         },

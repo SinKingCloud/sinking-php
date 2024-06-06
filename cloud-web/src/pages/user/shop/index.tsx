@@ -38,7 +38,6 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         main: {
             maxWidth: "600px",
             margin: "0 auto",
-            //box-shadow: 0 50px 40px 0 #eeeeeead,
             boxShadow: isDarkMode ? "0 5px 10px 0 rgba(95, 94, 94, 0.68)" : "0 50px 40px 0 #eeeeeead",
         }
         ,
@@ -155,7 +154,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         table: {
             width: "800px",
             overflowX: "scroll",
-            border: "1px solid #ebebeb",
+            border: isDarkMode ?"1px solid rgb(71, 71, 71)":"1px solid #ebebeb",
             borderRadius: "15px",
             margin: "0 auto",
         },
@@ -167,7 +166,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             borderBottomColor: "rgba(205, 206, 207, 0.5)",
             alignItems: "center",
             height: "90px",
-            backgroundColor: "#e4e4e4",
+            backgroundColor: isDarkMode ? "rgb(139,137,137)" : "#e4e4e4",
             borderTopLeftRadius: "15px",
             borderTopRightRadius: "15px"
         },

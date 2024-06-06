@@ -16,7 +16,8 @@ type SettingsState = {
     mode: 'inline' | 'horizontal';
     selectKey: SettingsStateKeys;
 };
-const useStyles = createStyles(({css,responsive}):any=>{
+const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
+    const border = isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #f0f0f0"
     return{
         main:css`
             display: flex;
@@ -55,7 +56,7 @@ const useStyles = createStyles(({css,responsive}):any=>{
             flex: 1;
             padding: 8px 40px;
             margin-left: 1px;
-            border-left:1px solid #f0f0f0 ;
+            border-left:${border} ;
             ${responsive.md}{
                 padding: 10px;
                 border-left:none;
@@ -95,7 +96,6 @@ const Settings: React.FC = () => {
             }
         });
     };
-
     const renderChildren = () => {
         const {selectKey} = initConfig;
         switch (selectKey) {

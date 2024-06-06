@@ -1,13 +1,13 @@
-import {LockOutlined, MailOutlined, SafetyCertificateOutlined, UserOutlined} from '@ant-design/icons';
-import {Alert, App, Button, Checkbox, Col, Form, Image, Input, Row, Spin, Tabs, TabsProps} from 'antd';
-import React, {useEffect, useState} from 'react';
+import {LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons';
+import {Alert, App, Button, Checkbox, Col, Form, Input, Row, Spin, Tabs, TabsProps} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
 import {Body, Footer} from '@/components';
 // @ts-ignore
-import {history, useLocation, useModel} from "umi";
-import {getCaptchaUrl} from "@/service/common/captcha";
+import { useLocation, useModel} from "umi";
 import {genQrCode, loginByEmail, loginByPwd, loginBySms, qrLogin} from "@/service/user/login";
 import {setLoginToken} from "@/utils/auth";
 import {sendEmail} from "@/service/common/email";
+import Captcha,{CaptchaRef} from "@/components/captcha";
 // @ts-ignore
 import QRCode from "qrcode.react/lib";
 import {getRandStr, qqJumpUrl} from "@/utils/string";
@@ -127,7 +127,8 @@ const Index: React.FC = () => {
             border_corner_left_top, border_corner_right_top, border_corner_left_bottom, border_corner_right_bottom
         }
     } = useStyles();
-    const {message} = App.useApp()
+    const {message,modal} = App.useApp()
+    const captcha = useRef<CaptchaRef>({});
     /**
      * 登陆方式
      */
@@ -141,23 +142,11 @@ const Index: React.FC = () => {
      */
     const [form] = Form.useForm();
     /**
-     * 验证码信息
-     */
-    const [token, setToken] = useState<string>("");
-    const [captchaUrl, setCaptchaUrl] = useState<string>("");
-    /**
-     * 加载验证码
-     */
-    const changeCaptcha = () => {
-        const cap = getCaptchaUrl();
-        setToken(cap.token);
-        setCaptchaUrl(cap.url);
-        form.setFieldsValue({captcha_code: ""});
-    }
-    /**
      * 获取当前用户信息
      */
     const web = useModel("web")
+    const user = useModel("user")
+    const [loginType,setLoginType] = useState(true)
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
@@ -250,12 +239,6 @@ const Index: React.FC = () => {
         });
     }
 
-    /**
-     * 初始化数据
-     */
-    useEffect(() => {
-        changeCaptcha();
-    }, []);
     const items: TabsProps['items'] = [
         {
             key: 'account',
@@ -277,6 +260,7 @@ const Index: React.FC = () => {
     return (
         <Body breadCrumb={false}>
             <div className={container}>
+                <Captcha ref={captcha}/>
                 <div className={content}>
                     <div className={top}>
                         <div className={header}>
@@ -305,7 +289,7 @@ const Index: React.FC = () => {
                                 return;
                             }
                             values.device = isMobile;
-                            let login = loginByPwd;
+                            let login = loginByEmail;
                             if (type == "account") {
                                 if (values.account == undefined || values.account.length < 5) {
                                     message?.error("请输入正确的账户名");
@@ -315,9 +299,28 @@ const Index: React.FC = () => {
                                     message?.error("请输入正确的密码");
                                     return;
                                 }
+                                loginByPwd({
+                                    body: {
+                                        ...values
+                                    },
+                                    onSuccess: (r: any) => {
+                                        if (r?.code == 200) {
+                                            localStorage.removeItem("captcha_id");
+                                            setLoginToken(isMobile, r?.data?.token);
+                                            message?.success(r?.message);
+                                            setIsLoading(false);
+                                            historyPush("user.index");
+                                            localStorage.removeItem("redirect");
+                                        }
+                                    },
+                                    onFail: (r: any) => {
+                                        if (r?.code == 500) {
+                                            setIsLoading(false);
+                                            message?.error(r?.message || "请求失败")
+                                        }
+                                    }
+                                });
                             } else if (type == 'email') {
-                                values.captcha_id = token;
-                                login = loginByEmail;
                                 if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
                                     message?.error("请输入正确的邮箱");
                                     return;
@@ -326,12 +329,7 @@ const Index: React.FC = () => {
                                     message?.error("请输入正确的邮箱验证码");
                                     return;
                                 }
-                                if (values?.captcha_code == undefined || values?.captcha_code?.length != 4) {
-                                    message?.error("请输入图形验证码");
-                                    return;
-                                }
                             } else if (type == 'phone') {
-                                values.captcha_id = token;
                                 login = loginBySms;
                                 if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)) {
                                     message?.error("请输入正确的邮箱");
@@ -341,37 +339,40 @@ const Index: React.FC = () => {
                                     message?.error("请输入正确的邮箱验证码");
                                     return;
                                 }
-                                if (values.captcha_code == undefined || values.captcha_code?.length != 4) {
-                                    message?.error("请输入图形验证码");
-                                    return;
-                                }
                             } else {
                                 message?.error("不支持该登录方式");
                                 return;
                             }
                             setIsLoading(true);
-                            login({
-                                body: {
-                                    ...values
-                                },
-                                onSuccess: (r: any) => {
-                                    if (r?.code == 200) {
-                                        localStorage.removeItem("captcha_id");
-                                        setLoginToken(isMobile, r?.data?.token);
-                                        message?.success(r?.message);
-                                        setIsLoading(false);
-                                        historyPush("user.index");
-                                        localStorage.removeItem("redirect");
-                                    }
-                                },
-                                onFail: (r: any) => {
-                                    if (r?.code == 500) {
-                                        setIsLoading(false);
-                                        changeCaptcha();
-                                        message?.error(r?.message || "请求失败")
-                                    }
-                                }
-                            });
+                            if(type == "email" || type=="phone") {
+                                captcha?.current?.Show?.(async (res) => {
+                                    await login({
+                                        body: {
+                                            captcha_id: res?.randstr,
+                                            captcha_code: res?.ticket,
+                                            device: mobile ? "mobile" : "pc",
+                                            ...values
+                                        },
+                                        onSuccess: (r) => {
+                                            setLoginToken(isMobile, r?.data.token);
+                                            message?.success(r?.message);
+                                            historyPush("user.index")
+                                        },
+                                        onFail: (r) => {
+                                            modal.error({
+                                                title: '登录失败',
+                                                content: r?.message,
+                                                okText: "确认"
+                                            })
+                                        }
+                                    });
+                                    setIsLoading(false);
+                                }, () => {
+                                    message?.warning("请完成验证码认证");
+                                    setIsLoading(false);
+                                });
+                            }
+
                         }}>
                             {type === 'account' && (
                                 <>
@@ -412,34 +413,24 @@ const Index: React.FC = () => {
                                                                     message?.error("请输入正确的邮箱")
                                                                     return;
                                                                 }
-                                                                const captcha_code = form.getFieldValue("captcha_code");
-                                                                if (captcha_code == undefined || captcha_code.length != 4) {
-                                                                    message?.error("请输入正确的图形验证码")
-                                                                    return;
-                                                                }
-                                                                setIsEmailSendLoading(true);
-                                                                sendEmail({
-                                                                    body: {
-                                                                        email: email,
-                                                                        captcha_id: token,
-                                                                        captcha_code: captcha_code
-                                                                    },
-                                                                    onSuccess: (r: any) => {
-                                                                        if (r?.code == 200) {
-                                                                            getCode(e);
-                                                                            setIsEmailSendLoading(false)
-                                                                            message?.success(r?.message);
+                                                                captcha?.current?.Show?.(async (res) => {
+                                                                    await sendEmail({
+                                                                        body: {
+                                                                            captcha_id: res?.randstr,
+                                                                            captcha_code: res?.ticket,
+                                                                            email: email,
+                                                                        },
+                                                                        onSuccess: (r) => {
+                                                                            message?.success(r?.message)
+                                                                            getCode(e)
+                                                                        },
+                                                                        onFail: (r) => {
+                                                                            message?.error(r?.message)
                                                                         }
-                                                                    },
-                                                                    onFail: (r: any) => {
-                                                                        if (r?.code == 500) {
-                                                                            setIsEmailSendLoading(false)
-                                                                            message?.error(r.message || "请求失败")
-                                                                            form.setFieldsValue({captcha: ""});
-                                                                            changeCaptcha()
-                                                                        }
-                                                                    }
-                                                                });
+                                                                    })
+                                                                }, () => {
+                                                                    message?.warning("请完成验证码认证")
+                                                                })
                                                             }}
                                                             disabled={sendCodeDisabled}>获取验证码</Button>
                                                 </Col>
@@ -470,33 +461,23 @@ const Index: React.FC = () => {
                                                                     message?.error("请输入正确的手机号")
                                                                     return;
                                                                 }
-                                                                const captcha_code = form.getFieldValue("captcha_code");
-                                                                if (captcha_code == undefined || captcha_code.length != 4) {
-                                                                    message?.error("请输入正确的图形验证码")
-                                                                    return;
-                                                                }
-                                                                setIsSmsSendLoading(true);
-                                                                sendSms({
-                                                                    body: {
-                                                                        phone: phone,
-                                                                        captcha_id: token,
-                                                                        captcha_code: captcha_code
-                                                                    },
-                                                                    onSuccess: (r: any) => {
-                                                                        if (r?.code == 200) {
-                                                                            getCode(e);
-                                                                            setIsSmsSendLoading(false);
-                                                                            message?.success(r.message);
+                                                                captcha?.current?.Show?.(async (res) => {
+                                                                    await sendSms({
+                                                                        body: {
+                                                                            captcha_id: res?.randstr,
+                                                                            captcha_code: res?.ticket,
+                                                                            phone: phone,
+                                                                        },
+                                                                        onSuccess: (r) => {
+                                                                            message?.success(r?.message)
+                                                                            getCode(e)
+                                                                        },
+                                                                        onFail: (r) => {
+                                                                            message?.error(r?.message)
                                                                         }
-                                                                    },
-                                                                    onFail: (r: any) => {
-                                                                        if (r?.code == 500) {
-                                                                            message?.error(r.message || "请求失败")
-                                                                            setIsSmsSendLoading(false);
-                                                                            changeCaptcha();
-                                                                            form.setFieldsValue({captcha: ""});
-                                                                        }
-                                                                    }
+                                                                    })
+                                                                }, () => {
+                                                                    message?.warning("请完成验证码认证")
                                                                 })
                                                             }}
                                                             disabled={sendCodeDisabled}>获取验证码</Button>
@@ -504,31 +485,6 @@ const Index: React.FC = () => {
                                             </Row>
                                         </Form.Item>
                                     </>}
-                                    <Row>
-                                        <Col span={16}>
-                                            <Form.Item
-                                                name="captcha_code"
-                                            >
-                                                <Input
-                                                    prefix={<SafetyCertificateOutlined
-                                                        className="site-form-item-icon"/>}
-                                                    placeholder="图形验证码"
-                                                    type="number"
-                                                    size="large"
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={7} offset={1}>
-                                            <Image
-                                                height={33}
-                                                preview={false}
-                                                src={captchaUrl}
-                                                onClick={() => {
-                                                    changeCaptcha()
-                                                }}
-                                            />
-                                        </Col>
-                                    </Row>
                                 </>
                             )}
                             {type == "qrcode" && (

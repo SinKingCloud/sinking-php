@@ -18,7 +18,6 @@ const Captcha = React.forwardRef<CaptchaRef>((props, ref) => {
         const captcha = new TencentCaptcha('2046626881', (res) => {
             if (res.ret == 0) {
                 onSuccess?.(res);
-
             } else {
                 onFail?.(res);
             }

@@ -71,11 +71,11 @@ const SmsVerify: React.FC<SmsVerifyProps> = (props) => {
                                         onFail: (r) => {
                                             message?.error(r?.message)
                                             setIsEmailSendLoading(false);
-
                                         }
                                     })
                                 }, () => {
                                     message?.warning("请完成验证码认证")
+                                    setIsEmailSendLoading(false);
                                 })
                             }}>
                                 获取验证码

@@ -1,5 +1,5 @@
 import {history} from 'umi';
-import route, {user, userPath, indexPath, index,master,masterPath,admin,adminPath} from '../../config/routes'
+import route, {user, userPath,index,indexPath,master,masterPath,admin,adminPath} from '../../config/routes'
 import {Icon} from "@/components"
 import React from "react"
 /**

@@ -159,7 +159,7 @@ export default (): React.ReactNode => {
                         </Row>
                     </Card>
                 </Suspense>
-                <Suspense fallback={null}>
+                <Suspense fallback={null} >
                     <SalesCard
                         rangePickerValue={rangePickerValue}
                         salesData={chartData}

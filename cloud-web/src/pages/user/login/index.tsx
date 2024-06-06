@@ -413,6 +413,7 @@ const Index: React.FC = () => {
                                                                     message?.error("请输入正确的邮箱")
                                                                     return;
                                                                 }
+                                                                setIsEmailSendLoading(true)
                                                                 captcha?.current?.Show?.(async (res) => {
                                                                     await sendEmail({
                                                                         body: {
@@ -423,13 +424,16 @@ const Index: React.FC = () => {
                                                                         onSuccess: (r) => {
                                                                             message?.success(r?.message)
                                                                             getCode(e)
+                                                                            setIsEmailSendLoading(false)
                                                                         },
                                                                         onFail: (r) => {
                                                                             message?.error(r?.message)
+                                                                            setIsEmailSendLoading(false)
                                                                         }
                                                                     })
                                                                 }, () => {
                                                                     message?.warning("请完成验证码认证")
+                                                                    setIsEmailSendLoading(false)
                                                                 })
                                                             }}
                                                             disabled={sendCodeDisabled}>获取验证码</Button>
@@ -461,6 +465,7 @@ const Index: React.FC = () => {
                                                                     message?.error("请输入正确的手机号")
                                                                     return;
                                                                 }
+                                                                setIsSmsSendLoading(true)
                                                                 captcha?.current?.Show?.(async (res) => {
                                                                     await sendSms({
                                                                         body: {
@@ -471,6 +476,7 @@ const Index: React.FC = () => {
                                                                         onSuccess: (r) => {
                                                                             message?.success(r?.message)
                                                                             getCode(e)
+                                                                            setIsSmsSendLoading(false)
                                                                         },
                                                                         onFail: (r) => {
                                                                             message?.error(r?.message)
@@ -478,6 +484,7 @@ const Index: React.FC = () => {
                                                                     })
                                                                 }, () => {
                                                                     message?.warning("请完成验证码认证")
+                                                                    setIsSmsSendLoading(false)
                                                                 })
                                                             }}
                                                             disabled={sendCodeDisabled}>获取验证码</Button>

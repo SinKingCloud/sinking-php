@@ -41,7 +41,7 @@ export default (): React.ReactNode => {
     const [isPasswordModalLoading, setIsPasswordModalLoading] = useState(false);
     const [changePwdType, setChangePwdType] = useState('phone');
     const [passwordForm] = Form.useForm();
-
+    const [phonePawForm] = Form.useForm();
     /**
      * 修改邮箱modal
      */
@@ -60,7 +60,7 @@ export default (): React.ReactNode => {
         <Body>
             <Modal key={"editPassword"} width={430} destroyOnClose={true} forceRender={true} title="修改密码"
                    open={isPasswordModalVisible} confirmLoading={isPasswordModalLoading}
-                   onOk={passwordForm.submit} okText={"确 认"} onCancel={() => {
+                   onOk={changePwdType == 'email'? passwordForm.submit:phonePawForm.submit} okText={"确 认"} onCancel={() => {
                     setIsPasswordModalVisible(false);
                     passwordForm.resetFields();
             }}>
@@ -101,7 +101,8 @@ export default (): React.ReactNode => {
                 {
                     changePwdType == 'phone' &&
                     // @ts-ignore
-                    <SmsVerify form={passwordForm} phone={user?.web?.phone} onFinish={async (values:any) => {
+                    <SmsVerify form={phonePawForm} phone={user?.web?.phone} onFinish={async (values:any) => {
+                        console.log(values)
                         if (values.password.length > 20 || values.password.length < 6) {
                             message?.error("密码长度必须为6-20位之间");
                             return;
@@ -133,7 +134,6 @@ export default (): React.ReactNode => {
                         </Form.Item>
                     }/>
                 }
-
             </Modal>
             <Modal key="editEmail" width={430} destroyOnClose={true} forceRender={true} title="修改邮箱"
                    open={isEmailModalVisible} confirmLoading={isEmailModalLoading}
@@ -275,33 +275,32 @@ export default (): React.ReactNode => {
                             </Col>
                             <Col lg={{span: 13, offset: 1}}>
                                 <ProForm onFinish={async (values) => {
-                                    await updateInfo({
+                                 await updateInfo({
                                         body:{
                                             ...values
-                                        },
-                                        onSuccess:(r:any)=>{
-                                            if(r?.code == 200){
-                                                message?.success(r?.message)
-                                                refresh.refreshWebUser()
-                                                setIsPasswordModalVisible(false);
-                                            }
-                                        },
-                                        onFail:(r:any)=>{
-                                            if (r.code != 200) {
-                                                message?.error(r?.message || "请求失败")
-                                            }
+                                    },
+                                     onSuccess:(r:any)=>{
+                                         if(r?.code == 200){
+                                           message?.success(r?.message)
+                                             refresh.refreshWebUser()
+                                              setIsPasswordModalVisible(false);
+                                         }
+                                     },
+                                      onFail:(r:any)=>{
+                                           if (r.code != 200) {
+                                             message?.error(r?.message || "请求失败")
                                         }
-                                    })
-                                }}>
+                                    }
+                                })
+                             }}>
                                     <ProFormText width="md" label="账号" name="account" tooltip="未设置用户可修改一次"
                                                  rules={[{required: true, message: '请输入登陆账号',}]}
                                                  initialValue={user?.web?.account || "未设置"}>
-                                        <Row gutter={6} wrap={false}>
-                                            <Col flex={5}>
-                                                <Input type="text" placeholder="请输入您的登陆账号" defaultValue={user?.web?.account}
-                                                       disabled={user?.web?.account != undefined && user?.web?.account != ""}/>
+                                            <Col  style={{float:"left"}}>
+                                                <Input type="text" placeholder="请输入您的登陆账号" style={{width:"230px",marginRight:"5px"}}
+                                                       defaultValue={user?.web?.account} disabled={user?.web?.account != undefined && user?.web?.account != ""}/>
                                             </Col>
-                                            <Col flex={7}>
+                                            <Col  style={{float:"left"}}>
                                                 <Dropdown placement="bottom" arrow={true} trigger={["click"]} menu={{
                                                     items:[
                                                         {
@@ -331,37 +330,31 @@ export default (): React.ReactNode => {
                                                     <Button><LockOutlined/>修改密码</Button>
                                                 </Dropdown>
                                             </Col>
-                                        </Row>
                                     </ProFormText>
-                                    <ProFormText width="md" label="绑定手机" tooltip="账户绑定的安全手机">
-                                        <Row gutter={6} wrap={false}>
-                                            <Col flex={5}>
-
-                                                <Input type="text"// @ts-ignore
+                                    <ProFormText width="md" label="绑定手机"  tooltip="账户绑定的安全手机">
+                                            <Col style={{float:"left"}}>
+                                                <Input type="text" style={{width:"230px",marginRight:"5px"}}// @ts-ignore
                                                        value={user?.web?.phone || "未绑定"} disabled={true}/>
                                             </Col>
-                                            <Col flex={7}>
+                                            <Col style={{float:"left"}}>
                                                 <Button onClick={() => {
                                                     setIsPhoneModalVisible(true);
                                                 }}>
                                                     <SafetyOutlined/>修改手机
                                                 </Button>
                                             </Col>
-                                        </Row>
                                     </ProFormText>
-                                    <ProFormText width="md" label="绑定邮箱" tooltip="账户绑定的安全邮箱">
-                                        <Row gutter={6} wrap={false}>
-                                            <Col flex={5}>
-                                                <Input type="text" value={user?.web?.email || "未绑定"} disabled={true}/>
+                                    <ProFormText width="md" label="绑定邮箱"  tooltip="账户绑定的安全邮箱">
+                                            <Col style={{float:"left"}}>
+                                                <Input type="text" style={{width:"230px",marginRight:"5px"}} value={user?.web?.email || "未绑定"} disabled={true}/>
                                             </Col>
-                                            <Col flex={7}>
+                                            <Col style={{float:"left"}}>
                                                 <Button onClick={() => {
                                                     setIsEmailModalVisible(true);
                                                 }}>
                                                     <MailOutlined/>修改邮箱
                                                 </Button>
                                             </Col>
-                                        </Row>
                                     </ProFormText>
                                     <ProFormText
                                         width="md"
@@ -391,7 +384,7 @@ export default (): React.ReactNode => {
                                         tooltip="上次登陆时间"
                                         disabled={true}
                                     />
-                                </ProForm>
+                       </ProForm>
                             </Col>
                         </Row>
                     </ProCard>

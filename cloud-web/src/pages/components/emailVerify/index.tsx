@@ -74,6 +74,7 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
                                     })
                                 }, () => {
                                     message?.warning("请完成验证码认证")
+                                    setIsEmailSendLoading(false);
                                 })
                             }}>
                                 获取验证码

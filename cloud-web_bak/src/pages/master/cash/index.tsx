@@ -262,31 +262,31 @@ export default (): React.ReactNode => {
       }}>
         <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"id"} label="ID" hidden={true}>
+          <Form.Item name="id" label="ID" hidden={true}>
             <Input placeholder="请输入ID"/>
           </Form.Item>
-          <Form.Item name={"type"} label="提现方式" rules={[{required: true}]}>
+          <Form.Item name="type" label="提现方式" rules={[{required: true}]}>
             <Select placeholder="请选择提现方式">
               <Select.Option value={0}>支付宝</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"name"} label="提现姓名" rules={[{required: true}]}>
+          <Form.Item name="name" label="提现姓名" rules={[{required: true}]}>
             <Input placeholder="请输入提现姓名"/>
           </Form.Item>
-          <Form.Item name={"account"} label="提现账号" rules={[{required: true}]}>
+          <Form.Item name="account" label="提现账号" rules={[{required: true}]}>
             <Input placeholder="请输入提现账号"/>
           </Form.Item>
-          <Form.Item name={"money"} label="提现金额" hidden={form.getFieldValue('id') != undefined}
+          <Form.Item name="money" label="提现金额" hidden={form.getFieldValue('id') != undefined}
                      rules={[{required: true}]}>
             <InputNumber placeholder="请输入提现金额" style={{minWidth: "150px"}}/>
           </Form.Item>
-          <Form.Item name={"status"} label="提现状态" rules={[{required: true}]}>
+          <Form.Item name="status" label="提现状态" rules={[{required: true}]}>
             <Select placeholder="请选择提现状态">
               <Select.Option value={0}>正在处理</Select.Option>
               <Select.Option value={1}>处理完成</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"remark"} label="提现备注">
+          <Form.Item name="remark" label="提现备注">
             <Input.TextArea placeholder="请输入备注"/>
           </Form.Item>
         </Form>
@@ -299,13 +299,13 @@ export default (): React.ReactNode => {
       }}>
         <Form form={edit} name="control-hooks" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
               wrapperCol={{span: 16}}>
-          <Form.Item name={"status"} label="状态">
+          <Form.Item name="status" label="状态">
             <Select placeholder="请选择提现状态">
               <Select.Option value={0}>正在处理</Select.Option>
               <Select.Option value={1}>处理完成</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"remark"} label="备注">
+          <Form.Item name="remark" label="备注">
             <Input.TextArea placeholder="请输入备注"/>
           </Form.Item>
         </Form>

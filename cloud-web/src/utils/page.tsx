@@ -1,3 +1,6 @@
+import {getPayLog} from "@/service/pay/pay";
+import {message} from "antd";
+
 /**
  * table查询数据格式化
  * @param params 查询参数
@@ -26,13 +29,19 @@ export function getParams(params: any, sort: any): any {
     return Object.assign(params, getOrder(sort));
 }
 
-export async function getData(params:any,sort:any,request:any):Promise<any>{
+/**
+ * 获取分页
+ * @param params 参数
+ * @param sort 排序
+ * @param request 请求
+ */
+export async function getData(params: any, sort: any, request: any): Promise<any> {
     const fetchParams = getParams(params, sort)
     const data = await request({
-        body:{
+        body: {
             ...fetchParams
         }
-    })
+    });
     return {
         data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
         success: data.code === 200,

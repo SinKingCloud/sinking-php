@@ -3,8 +3,7 @@ import ProTable, {ProColumns} from '@ant-design/pro-table';
 import {getData, getParams} from "@/utils/page";
 import {message} from "antd";
 import {getPayLog} from "@/service/pay/pay";
-import { Body } from '@/components';
-import {getPayOrder} from "@/service/pay/order";
+import {Body} from '@/components';
 
 export default (): React.ReactNode => {
     const actionRef = useRef();
@@ -52,8 +51,7 @@ export default (): React.ReactNode => {
             dataIndex: 'money',
             tip: '金额',
             hideInSearch: true,
-            render: (text:any,record: any) => {
-                console.log(record)
+            render: (text: any, record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -85,15 +83,15 @@ export default (): React.ReactNode => {
     return (
         <Body>
             <ProTable
-                form={{layout: "vertical",autoFocusFirstInput:false}}
+                form={{layout: "vertical", autoFocusFirstInput: false}}
                 headerTitle={'消费明细'}
                 actionRef={actionRef}
                 rowKey={'id'}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                scroll={{x:true}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
+                scroll={{x: true}}
                 columns={columns}
                 request={(params, sort) => {
-                    return getData(params,sort,getPayLog)
+                    return getData(params, sort, getPayLog);
                 }}
                 search={{
                     labelWidth: "auto",

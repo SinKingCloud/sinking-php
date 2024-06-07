@@ -296,10 +296,8 @@ const Layouts: React.FC<slide> = ({...props}) => {
                         historyPush("user.index")
                     }}
                     onLogoClick={() => {
-                        console.log("点击了logo")
                     }}
                     onMenuClick={(item) => {
-                        console.log("点击了菜单", item)
                     }}
                     collapsedLogo={() => {
                         return <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}

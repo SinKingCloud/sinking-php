@@ -258,14 +258,14 @@ export default (): React.ReactNode => {
         <Form form={deleteForm} name="control-hooks" onFinish={onDeleteFinish} labelAlign="right"
               labelCol={{span: 6}}
               wrapperCol={{span: 24}}>
-          <Form.Item name={"status"} label="订单状态" rules={[{required: true}]} initialValue={"0"}>
+          <Form.Item name="status" label="订单状态" rules={[{required: true}]} initialValue={"0"}>
             <Select placeholder="请选择订单状态">
               <Select.Option value="-1">全部</Select.Option>
               <Select.Option value="0">未支付</Select.Option>
               <Select.Option value="1">已支付</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"pay_type"} label="支付方式" rules={[{required: true}]} initialValue={"-1"}>
+          <Form.Item name="pay_type" label="支付方式" rules={[{required: true}]} initialValue={"-1"}>
             <Select placeholder="请选择支付方式">
               <Select.Option value="-1">全部</Select.Option>
               <Select.Option value="0">支付宝</Select.Option>
@@ -274,7 +274,7 @@ export default (): React.ReactNode => {
               <Select.Option value="3">余额</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name={"order_type"} label="订单类型" rules={[{required: true}]} initialValue={"-1"}>
+          <Form.Item name="order_type" label="订单类型" rules={[{required: true}]} initialValue={"-1"}>
             <Select placeholder="请选择订单类型">
               <Select.Option value="-1">全部</Select.Option>
               <Select.Option value="0">余额充值</Select.Option>

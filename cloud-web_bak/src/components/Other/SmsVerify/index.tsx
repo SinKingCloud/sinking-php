@@ -61,7 +61,7 @@ const SmsVerify: React.FC<SmsVerifyProps> = (props) => {
       }} labelAlign="right"
             labelCol={{span: 6}}>
         {topNodes}
-        <Form.Item name={"sms_code"} label="短信验证码" rules={[{required: true, message: '请输入短信验证码',},]}>
+        <Form.Item name="sms_code" label="短信验证码" rules={[{required: true, message: '请输入短信验证码',},]}>
           <Row gutter={6} wrap={false}>
             <Col flex={22}>
               <Input placeholder="请输入短信验证码"/>
@@ -94,7 +94,7 @@ const SmsVerify: React.FC<SmsVerifyProps> = (props) => {
             </Col>
           </Row>
         </Form.Item>
-        <Form.Item name={"captcha_code"} label="图形验证码" hidden={isCaptchaHidden}>
+        <Form.Item name="captcha_code" label="图形验证码" hidden={isCaptchaHidden}>
           <Row gutter={6} wrap={false}>
             <Col flex={20}>
               <Input placeholder="请输入图形验证码"/>

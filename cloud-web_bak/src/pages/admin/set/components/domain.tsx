@@ -211,7 +211,7 @@ const DomainView: React.FC = () => {
         <Form form={domainAdd} name="control-hooks" onFinish={onDomainAddFormFinish} labelAlign="right"
               labelCol={{span: 4}}
               wrapperCol={{span: 20}}>
-          <Form.Item name={"domain"} label="域名" rules={[{
+          <Form.Item name="domain" label="域名" rules={[{
             required: true,
             message: "请输入域名"
           }, {
@@ -221,7 +221,7 @@ const DomainView: React.FC = () => {
           ]}>
             <Input placeholder="请输入域名"/>
           </Form.Item>
-          <Form.Item name={"status"} label="状态" rules={[{required: true}]}>
+          <Form.Item name="status" label="状态" rules={[{required: true}]}>
             <Select placeholder="请选择域名状态">
               <Select.Option value={0}>正常</Select.Option>
               <Select.Option value={1}>封禁</Select.Option>

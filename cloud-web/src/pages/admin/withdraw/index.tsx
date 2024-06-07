@@ -243,7 +243,7 @@ export default (): React.ReactNode => {
                 </div>
                 <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
-                    <Form.Item name={"id"} label="ID" hidden={true}>
+                    <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
                     <Form.Item name="type" label="提现方式" rules={[{required: true}]}>

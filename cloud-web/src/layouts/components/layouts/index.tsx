@@ -295,10 +295,6 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     onMenuBottomBtnClick={() => {
                         historyPush("user.index")
                     }}
-                    onLogoClick={() => {
-                    }}
-                    onMenuClick={(item) => {
-                    }}
                     collapsedLogo={() => {
                         return <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
                                     alt={Settings?.title} className={collapsedImg}/>

@@ -332,11 +332,11 @@ const Index: React.FC = () => {
                             } else if (type == 'phone') {
                                 login = loginBySms;
                                 if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)) {
-                                    message?.error("请输入正确的邮箱");
+                                    message?.error("请输入正确的手机号");
                                     return;
                                 }
                                 if (values.sms_code == undefined || values.sms_code?.length != 6) {
-                                    message?.error("请输入正确的邮箱验证码");
+                                    message?.error("请输入正确的手机验证码");
                                     return;
                                 }
                             } else {

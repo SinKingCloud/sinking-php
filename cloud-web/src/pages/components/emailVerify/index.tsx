@@ -1,7 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {App, Button, Col, Form, Input, Row} from "antd";
 import {FormInstance} from "antd/lib/form/hooks/useForm";
-import {getCaptchaUrl} from "@/service/common/captcha";
 import {sendEmail} from "@/service/common/email";
 import Captcha, {CaptchaRef} from "../../../components/captcha";
 
@@ -17,24 +16,7 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
     const {onFinish, form, email, bottomNodes, topNodes} = props;
     const {message} = App.useApp()
     const captcha = useRef<CaptchaRef>({});
-    const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
     const [isEmailSendLoading, setIsEmailSendLoading] = useState(false);
-    const getCode = (e: any) => {
-        let time = 60;
-        const timer = setInterval(() => {
-            setSendCodeDisabled(true);
-            e.target.innerHTML = `${time}秒后重新获取`;
-            // eslint-disable-next-line no-plusplus
-            time--;
-            if (time <= 0) {
-                getCaptchaUrl();
-                setSendCodeDisabled(false);
-                e.target.innerHTML = ' 获取验证码';
-                time = 0;
-                clearInterval(timer);
-            }
-        }, 1000);
-    };
 
     return (
         <>
@@ -51,7 +33,7 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
                             <Input placeholder="请输入邮箱验证码"/>
                         </Col>
                         <Col flex={2}>
-                            <Button disabled={sendCodeDisabled} loading={isEmailSendLoading} onClick={(e) => {
+                            <Button loading={isEmailSendLoading} onClick={(e) => {
                                 if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(email || '')) {
                                     message?.error("请输入正确的邮箱");
                                     return;
@@ -67,7 +49,6 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
                                         onSuccess: (r) => {
                                             message?.success(r?.message)
                                             setIsEmailSendLoading(false);
-                                            getCode(e)
                                         },
                                         onFail: (r) => {
                                             message?.error(r?.message)

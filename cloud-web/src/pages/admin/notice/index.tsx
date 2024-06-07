@@ -14,14 +14,13 @@ import {
     Table
 } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} from "@/service/admin/notice";
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
 import {Body} from '@/components';
-import {getOrderList} from "@/service/admin/order";
 import {NamePath} from "rc-field-form/es/interface";
 
 export default (): React.ReactNode => {

@@ -17,7 +17,7 @@ const useStyles = createStyles((): any => {
 export default () => {
     const {styles: {body}} = useStyles();
     return (
-        <ConfigProvider  locale={zhCN}>
+        <ConfigProvider locale={zhCN}>
             <App>
                 <Spin size="large" className={body}/>
             </App>

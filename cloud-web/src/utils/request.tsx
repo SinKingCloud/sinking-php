@@ -4,6 +4,7 @@ import {deleteHeader, getHeaders} from "@/utils/auth";
 import {API} from "../../typings";
 import {Modal} from "@/components/antd";
 import {historyPush} from "@/utils/route";
+import {ModalProps} from "antd";
 /**
  * request对象
  */
@@ -36,7 +37,7 @@ function errorHandle(): void {
                     WebkitBackdropFilter: "blur(10px)",
                 },
             },
-        });
+        } as ModalProps);
     }
 }
 

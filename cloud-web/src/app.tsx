@@ -1,5 +1,6 @@
 import {App} from "antd";
 import {Antd} from "@/components";
+import React from "react";
 
 /**
  * 挂载静态方法

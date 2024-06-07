@@ -1,6 +1,3 @@
-import {getPayLog} from "@/service/pay/pay";
-import {message} from "antd";
-
 /**
  * table查询数据格式化
  * @param params 查询参数

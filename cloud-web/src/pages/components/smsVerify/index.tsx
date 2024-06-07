@@ -1,7 +1,6 @@
-import React, { useRef, useState} from 'react';
-import {App, Button, Col, Form,  Input, Row} from "antd";
+import React, {useRef, useState} from 'react';
+import {App, Button, Col, Form, Input, Row} from "antd";
 import {FormInstance} from "antd/lib/form/hooks/useForm";
-import {getCaptchaUrl} from "@/service/common/captcha";
 import {sendSms} from "@/service/common/sms";
 import Captcha, {CaptchaRef} from "../../../components/captcha";
 
@@ -17,24 +16,7 @@ const SmsVerify: React.FC<SmsVerifyProps> = (props) => {
     const {onFinish, form, phone, bottomNodes, topNodes} = props;
     const {message} = App.useApp()
     const captcha = useRef<CaptchaRef>({});
-    const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
     const [isEmailSendLoading, setIsEmailSendLoading] = useState(false);
-    const getCode = (e: any) => {
-        let time = 60;
-        const timer = setInterval(() => {
-            setSendCodeDisabled(true);
-            e.target.innerHTML = `${time}秒后重新获取`;
-            // eslint-disable-next-line no-plusplus
-            time--;
-            if (time <= 0) {
-                getCaptchaUrl();
-                setSendCodeDisabled(false);
-                e.target.innerHTML = ' 获取验证码';
-                time = 0;
-                clearInterval(timer);
-            }
-        }, 1000);
-    };
     return (
         <>
             <Captcha ref={captcha}/>
@@ -49,7 +31,7 @@ const SmsVerify: React.FC<SmsVerifyProps> = (props) => {
                             <Input placeholder="请输入短信验证码"/>
                         </Col>
                         <Col flex={2}>
-                            <Button disabled={sendCodeDisabled} loading={isEmailSendLoading} onClick={(e) => {
+                            <Button loading={isEmailSendLoading} onClick={(e) => {
                                 if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(phone || '')) {
                                     message?.error("请输入正确的手机号");
                                     return;

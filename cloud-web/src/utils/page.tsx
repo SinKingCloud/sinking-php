@@ -25,3 +25,17 @@ export function getParams(params: any, sort: any): any {
     delete params.pageSize;
     return Object.assign(params, getOrder(sort));
 }
+
+export async function getData(params:any,sort:any,request:any):Promise<any>{
+    const fetchParams = getParams(params, sort)
+    const data = await request({
+        body:{
+            ...fetchParams
+        }
+    })
+    return {
+        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
+        success: data.code === 200,
+        total: data.data.total,
+    };
+}

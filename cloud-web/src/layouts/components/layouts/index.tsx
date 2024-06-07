@@ -4,10 +4,10 @@ import {Icon} from "@/components";
 import {useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
-import {App, Avatar, Col, Popover, Row} from "antd";
+import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
 import {createStyles} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
-import {Bottom, Exit, Main, Order, Right, Setting, System, Web} from "@/components/icon";
+import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
 import Title from "../title";
@@ -34,6 +34,7 @@ const RightTop: React.FC = () => {
      */
     const user = useModel("user");//用户信息
     const {message} = App.useApp()
+    const theme = useModel("theme");//主题信息
     /**
      * 样式
      */
@@ -134,10 +135,27 @@ const RightTop: React.FC = () => {
                     marginRight: "7px"
                 }
             },
+            icon: {
+                fontSize: "17px",
+                padding: "7px",
+                marginRight: "5px",
+                cursor: "pointer",
+                borderRadius: "5px",
+                transition: "background-color 0.5s ease",
+                ":hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+                }
+            },
         };
     });
-    const {styles: {img, nickname, profile, pop, content_top, ava, top_text, box, menu, menuItem}} = useStyles();
+    const {styles: {img, nickname, profile, pop, content_top, ava, top_text, box, menu, menuItem,icon}} = useStyles();
     return <>
+        <Tooltip title={theme?.getModeName(theme?.mode)}>
+            <Icon type={theme?.isDarkMode() ? Dark : (theme?.isAutoMode() ? Auto : Light)} className={icon}
+                  onClick={() => {
+                      theme?.toggle?.();
+                  }}/>
+        </Tooltip>
         <Popover className={profile} overlayInnerStyle={{padding: 0}} overlayClassName={box} autoAdjustOverflow={false}
                  placement="bottomRight"
                  content={<div style={{width: "210px"}}>

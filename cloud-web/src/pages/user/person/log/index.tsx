@@ -1,9 +1,10 @@
 import React, {useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
 import {App} from "antd";
 import { Body } from '@/components';
+import {getPayOrder} from "@/service/pay/order";
 export default (): React.ReactNode => {
     /**
      * 表单处理
@@ -111,21 +112,8 @@ export default (): React.ReactNode => {
                     rowKey={'id'}
                     //@ts-ignore
                     columns={columns}
-                    request={async (params, sort) => {
-                        const fetchParams = getParams(params, sort)
-                        const data = await getLogList({
-                            body:{
-                                ...fetchParams
-                            }
-                        });
-                        if (data?.code != 200) {
-                            message?.error(data?.message);
-                        }
-                        return {
-                            data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                            success: data.code === 200,
-                            total: data.data.total,
-                        };
+                    request={(params, sort) => {
+                        return getData(params,sort,getLogList)
                     }}
                     search={{
                         labelWidth: "auto",

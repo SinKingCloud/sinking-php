@@ -1,9 +1,10 @@
 import React, {useRef} from 'react';
 import ProTable, {ProColumns} from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {message} from "antd";
 import {getPayLog} from "@/service/pay/pay";
 import { Body } from '@/components';
+import {getPayOrder} from "@/service/pay/order";
 
 export default (): React.ReactNode => {
     const actionRef = useRef();
@@ -91,21 +92,8 @@ export default (): React.ReactNode => {
                 style={{overflowX:"auto",whiteSpace:"nowrap"}}
                 scroll={{x:true}}
                 columns={columns}
-                request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getPayLog({
-                        body:{
-                            ...fetchParams
-                        }
-                    });
-                    if (data.code != 200) {
-                        message.error(data.message);
-                    }
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                request={(params, sort) => {
+                    return getData(params,sort,getPayLog)
                 }}
                 search={{
                     labelWidth: "auto",

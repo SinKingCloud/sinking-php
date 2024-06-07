@@ -14,13 +14,14 @@ import {
     Table
 } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} from "@/service/admin/notice";
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
 import {Body} from '@/components';
+import {getOrderList} from "@/service/admin/order";
 
 export default (): React.ReactNode => {
     /**
@@ -495,18 +496,8 @@ export default (): React.ReactNode => {
                         </Space>
                     );
                 }}
-                request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getNoticeList({
-                        body: {
-                            ...fetchParams
-                        }
-                    });
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                request={ (params, sort) => {
+                    return getData(params,sort,getNoticeList)
                 }}
                 search={{
                     defaultCollapsed: true,

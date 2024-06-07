@@ -3,8 +3,9 @@ import {createDomain, deleteDomain, getDomainConfig, getDomainList, updateDomain
 import {Alert, App, Button, Dropdown, Form, Input, Menu, Modal, Select} from "antd";
 import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import ProTable from "@ant-design/pro-table";
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {useModel} from "umi";
+import {getNoticeList} from "@/service/admin/notice";
 
 const DomainView: React.FC = () => {
     const {message, modal} = App.useApp()
@@ -210,22 +211,9 @@ const DomainView: React.FC = () => {
                 rowKey={'id'}
                 // @ts-ignore
                 columns={domainColumns}
-                request={async (params, sort) => {
+                request={ (params, sort) => {
                     params.web_id = user?.web?.web_id;
-                    const fetchParams = getParams(params,sort)
-                    const data = await getDomainList({
-                        body:{
-                            ...fetchParams
-                        }
-                    });
-                    if (data.code != 200) {
-                        message?.error(data?.message);
-                    }
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                    return getData(params,sort,getDomainList)
                 }}
                 pagination={{defaultPageSize: 5}}
                 search={false}

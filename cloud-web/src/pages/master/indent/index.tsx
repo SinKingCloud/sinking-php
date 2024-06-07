@@ -1,10 +1,11 @@
 import React, {useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
 import {App, Button, DatePicker, Form, Modal, Select, Tag, Typography} from "antd";
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {deleteOrder, getOrderList} from "@/service/master/order";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 import { Body } from '@/components';
+import {getNoticeList} from "@/service/master/notice";
 export default (): React.ReactNode => {
     /**
      * 表单处理
@@ -339,18 +340,8 @@ export default (): React.ReactNode => {
                 }}
                 // @ts-ignore
                 columns={columns}
-                request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getOrderList({
-                        body:{
-                            ...fetchParams
-                        }
-                    });
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                request={(params, sort) => {
+                    return getData(params,sort,getOrderList)
                 }}
                 search={{
                     defaultCollapsed: true,

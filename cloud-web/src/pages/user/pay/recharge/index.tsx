@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {App, Avatar, Button, Col, Form, Image, Input, Modal, Row, Tooltip} from 'antd';
 import ProCard, {CheckCard} from "@ant-design/pro-card";
 import {useModel} from "umi";
-import {getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {getPayOrder} from "@/service/pay/order";
 import {
     AlipayCircleOutlined,
@@ -348,22 +348,9 @@ export default (): React.ReactNode => {
                         style={{overflowX:"auto",whiteSpace:"nowrap"}}
                         scroll={{x:true}}
                         columns={columns}
-                        request={async (params, sort) => {
+                        request={(params, sort) => {
                             params.order_type = 0;
-                            const fetchParams = getParams(params, sort)
-                            const data = await getPayOrder({
-                                body:{
-                                    ...fetchParams
-                                }
-                            });
-                            if (data?.code != 200) {
-                                message?.error(data?.message);
-                            }
-                            return {
-                                data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                                success: data.code === 200,
-                                total: data.data.total,
-                            };
+                            return getData(params,sort,getPayOrder)
                         }}
                         pagination={{defaultPageSize: 10}}
                         search={false}

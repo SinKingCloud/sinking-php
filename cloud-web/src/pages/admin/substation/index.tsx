@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {
     Alert, App,
     Avatar,
@@ -15,7 +15,7 @@ import {
     Typography,
     Upload
 } from "antd";
-import {updateUserInfo, updateUserMoney} from "@/service/admin/user";
+import {getUserList, updateUserInfo, updateUserMoney} from "@/service/admin/user";
 import {DownOutlined, ExclamationCircleOutlined, LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {getUploadUrl} from "@/service/common/upload";
 import {
@@ -765,22 +765,9 @@ export default (): React.ReactNode => {
                         options={false}
                         // @ts-ignore
                         columns={domainColumns}
-                        request={async (params, sort) => {
+                        request={ (params, sort) => {
                             params.web_id = domainWebId;
-                            const fetchParams = getParams(params, sort)
-                            const data = await getDomainList({
-                                body:{
-                                    ...fetchParams
-                                }
-                            });
-                            if (data.code != 200) {
-                                message.error(data.message);
-                            }
-                            return {
-                                data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                                success: data.code === 200,
-                                total: data.data.total,
-                            };
+                            return getData(params,sort,getDomainList)
                         }}
                         pagination={{defaultPageSize: 5}}
                         search={false}
@@ -912,21 +899,8 @@ export default (): React.ReactNode => {
                 }}
                 // @ts-ignore
                 columns={columns}
-                request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getWebList({
-                        body:{
-                            ...fetchParams
-                        }
-                    });
-                    if (data.code != 200) {
-                        message.error(data.message);
-                    }
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                request={ (params, sort) => {
+                    return getData(params,sort,getWebList)
                 }}
                 search={{
                     defaultCollapsed: true,

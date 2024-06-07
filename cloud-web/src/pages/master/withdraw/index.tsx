@@ -14,10 +14,11 @@ import {
     Typography
 } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {getCashList, updateCash} from "@/service/master/withdraw";
 import {Body} from '@/components';
+import {getNoticeList} from "@/service/master/notice";
 export default (): React.ReactNode => {
     /**
      * 表单处理
@@ -388,17 +389,7 @@ export default (): React.ReactNode => {
                     );
                 }}
                 request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getCashList({
-                        body: {
-                            ...fetchParams
-                        }
-                    });
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                    return getData(params,sort,getCashList)
                 }}
                 search={{
                     defaultCollapsed: true,

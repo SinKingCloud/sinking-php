@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {App, Avatar, Button, Dropdown, Form, Input, Modal, Select, Tag, Typography, Upload} from "antd";
 import {getUserList, updateUserInfo, updateUserMoney} from "@/service/master/user";
 import {DownOutlined, ExclamationCircleOutlined, LoadingOutlined, PlusOutlined} from "@ant-design/icons";
@@ -732,22 +732,9 @@ export default (): React.ReactNode => {
                         columns={payColumns}
                         scroll={{x:true}}
                         style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                        request={async (params, sort) => {
+                        request={(params, sort) => {
                             params.user_id = payUserId;
-                            const fetchParams = getParams(params, sort)
-                            const data = await getPayLog({
-                                body:{
-                                    ...fetchParams
-                                }
-                            });
-                            if (data.code != 200) {
-                                message?.error(data?.message);
-                            }
-                            return {
-                                data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                                success: data.code === 200,
-                                total: data.data.total,
-                            };
+                            return getData(params,sort,getPayLog)
                         }}
                         pagination={{defaultPageSize: 5}}
                         search={false}
@@ -772,22 +759,9 @@ export default (): React.ReactNode => {
                         columns={logColumns}
                         scroll={{x:true}}
                         style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                        request={async (params, sort) => {
+                        request={(params, sort) => {
                             params.user_id = logUserId;
-                            const fetchParams = getParams(params, sort)
-                            const data = await getLogList({
-                                body:{
-                                    ...fetchParams
-                                }
-                            });
-                            if (data?.code != 200) {
-                                message?.error(data?.message);
-                            }
-                            return {
-                                data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                                success: data.code === 200,
-                                total: data.data.total,
-                            };
+                            return getData(params,sort,getLogList)
                         }}
                         pagination={{defaultPageSize: 5}}
                         search={false}
@@ -841,21 +815,8 @@ export default (): React.ReactNode => {
                 columns={columns}
                 scroll={{x:true}}
                 style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getUserList({
-                        body:{
-                            ...fetchParams
-                        }
-                    });
-                    if (data?.code != 200) {
-                        message?.error(data?.message);
-                    }
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                request={(params, sort) => {
+                    return getData(params,sort,getUserList)
                 }}
                 search={{
                     defaultCollapsed: true,

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import {createStyles} from "antd-style";
 
 type totalType = () => React.ReactNode;
-const useStyles = createStyles(({css}):any => {
+const useStyles = createStyles(({css}): any => {
     return {
         chartCard: {
             position: "relative"
@@ -116,8 +116,22 @@ export type ChartCardProps = {
     style?: React.CSSProperties;
 } & CardProps;
 
-const ChartCard:React.FC<ChartCardProps>=({...props})=> {
-    const {styles:{chartCard,chartTop,chartTopMargin,avatar1,metaWrap,meta,action1,content,contentFixed,footer1,footerMargin}} = useStyles()
+const ChartCard: React.FC<ChartCardProps> = ({...props}) => {
+    const {
+        styles: {
+            chartCard,
+            chartTop,
+            chartTopMargin,
+            avatar1,
+            metaWrap,
+            meta,
+            action1,
+            content,
+            contentFixed,
+            footer1,
+            footerMargin
+        }
+    } = useStyles()
     const {
         loading = false,
         contentHeight,
@@ -129,40 +143,40 @@ const ChartCard:React.FC<ChartCardProps>=({...props})=> {
         children,
         ...rest
     } = props;
-        return (
-            <Card loading={loading} styles={{padding: '20px 24px 8px 24px'}} {...rest}>
-                <div className={chartCard}>
+    return (
+        <Card loading={loading} {...rest}>
+            <div className={chartCard}>
+                <div
+                    className={classNames(chartTop, {
+                        [chartTopMargin]: !children && !footer,
+                    })}
+                >
+                    <div className={avatar1}>{avatar}</div>
+                    <div className={metaWrap}>
+                        <div className={meta}>
+                            <span>{title}</span>
+                            <span className={action1}>{action}</span>
+                        </div>
+                        {renderTotal(total)}
+                    </div>
+                </div>
+                {children && (
+                    <div className={content} style={{height: contentHeight || 'auto'}}>
+                        <div className={contentHeight && contentFixed}>{children}</div>
+                    </div>
+                )}
+                {footer && (
                     <div
-                        className={classNames(chartTop, {
-                            [chartTopMargin]: !children && !footer,
+                        className={classNames(footer1, {
+                            [footerMargin]: !children,
                         })}
                     >
-                        <div className={avatar1}>{avatar}</div>
-                        <div className={metaWrap}>
-                            <div className={meta}>
-                                <span>{title}</span>
-                                <span className={action1}>{action}</span>
-                            </div>
-                            {renderTotal(total)}
-                        </div>
+                        {footer}
                     </div>
-                    {children && (
-                        <div className={content} style={{height: contentHeight || 'auto'}}>
-                            <div className={contentHeight && contentFixed}>{children}</div>
-                        </div>
-                    )}
-                    {footer && (
-                        <div
-                            className={classNames(footer1, {
-                                [footerMargin]: !children,
-                            })}
-                        >
-                            {footer}
-                        </div>
-                    )}
-                </div>
-            </Card>
-        )
+                )}
+            </div>
+        </Card>
+    )
 }
 
 export default ChartCard;

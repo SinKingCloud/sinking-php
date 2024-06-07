@@ -1,7 +1,6 @@
 import type {FC} from 'react';
 import {Avatar, Card, Col, Skeleton, Row, Statistic, Alert, Button, List} from 'antd';
 import {Link, useModel} from 'umi';
-// @ts-ignore
 import Marquee from 'react-fast-marquee';
 import React, {useEffect, useState} from "react";
 import ProCard from "@ant-design/pro-card";
@@ -12,8 +11,7 @@ import {getContact, getNotice} from "@/service/person/config";
 import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles} from "antd-style";
 import {Body} from "@/components";
-//@ts-ignore
-const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
+const useStyles = createStyles(({css, responsive,isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
     const border = isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #f6f6f6"
     return {

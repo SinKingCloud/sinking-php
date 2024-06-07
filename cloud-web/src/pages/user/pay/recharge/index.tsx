@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {App, Avatar, Button, Col, Form, Image, Input, Modal, Row, Tooltip} from 'antd';
+import {App, Avatar, Button, Col, Form, Image, Input, Row, TablePaginationConfig, Tooltip} from 'antd';
 import ProCard, {CheckCard} from "@ant-design/pro-card";
 import {useModel} from "umi";
 import {getData} from "@/utils/page";
@@ -352,7 +352,7 @@ export default (): React.ReactNode => {
                             params.order_type = 0;
                             return getData(params,sort,getPayOrder)
                         }}
-                        pagination={{defaultPageSize: 10}}
+                        pagination={{defaultPageSize: 10} as TablePaginationConfig}
                         search={false}
                     />
                 </Col>

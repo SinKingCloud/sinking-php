@@ -18,7 +18,6 @@ const NoticeInfo: React.FC<NoticeInfoProps> = (props) => {
     const handleCancel = () => {
         onClose?.(noticeData);
     };
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     const getNoticeData = (id:any) => {
         if ((id || 0) > 0) {
             setLoading(true);

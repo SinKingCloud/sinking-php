@@ -72,7 +72,7 @@ const EmailView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>发信设置</h3>
-                <ProForm key={"email"} form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="email.host"

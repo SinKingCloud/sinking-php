@@ -15,8 +15,9 @@ import {sendSms} from "@/service/common/sms";
 import {createStyles, useResponsive} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {historyPush} from "@/utils/route";
+import {NamePath} from "rc-field-form/es/interface";
 
-const useStyles = createStyles(({css, token, responsive}): any => {
+const useStyles = createStyles(({css, responsive}): any => {
     return {
         container: {
             display: "flex",
@@ -408,7 +409,7 @@ const Index: React.FC = () => {
                                                     <Button size={'large'}
                                                             loading={isEmailSendLoading}
                                                             onClick={(e) => {
-                                                                const email = form.getFieldValue("email");
+                                                                const email = form.getFieldValue("email" as NamePath);
                                                                 if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)) {
                                                                     message?.error("请输入正确的邮箱")
                                                                     return;
@@ -460,7 +461,7 @@ const Index: React.FC = () => {
                                                     <Button size={'large'}
                                                             loading={isSmsSendLoading}
                                                             onClick={(e) => {
-                                                                const phone = form.getFieldValue("phone");
+                                                                const phone = form.getFieldValue("phone" as NamePath);
                                                                 if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(phone)) {
                                                                     message?.error("请输入正确的手机号")
                                                                     return;

@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {
     App,
     Avatar,
@@ -10,19 +10,20 @@ import {
     Dropdown,
     Form,
     Input,
-    Modal,
-    Select,
+    Modal, ModalProps,
+    Select, TablePaginationConfig,
     Tag,
     Typography,
     Upload
 } from "antd";
-import {getUserList, updateUserInfo, updateUserMoney} from "@/service/master/user";
+import {updateUserInfo, updateUserMoney} from "@/service/master/user";
 import {DownOutlined, ExclamationCircleOutlined, LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {getUploadUrl} from "@/service/common/upload";
 import {createDomain, deleteDomain, getWebList, updateDomain, updateWebInfo} from "@/service/master/web";
 import moment from "moment";
 import {getDomainList} from "@/service/admin/web";
 import {Body} from '@/components';
+
 export default (): React.ReactNode => {
     /**
      * 表单处理
@@ -43,10 +44,10 @@ export default (): React.ReactNode => {
             icon: <ExclamationCircleOutlined/>,
             content: '删除后此域名则不可访问',
             okType: 'danger',
-            onOk:async()=> {
+            onOk: async () => {
                 const key = "deleteDomains";
                 message?.loading({content: '正在删除域名', key, duration: 60})
-               await deleteDomain({
+                await deleteDomain({
                     body: {
                         ids: ids,
                         web_id: web_id
@@ -65,7 +66,7 @@ export default (): React.ReactNode => {
                     }
                 });
             },
-        });
+        } as ModalProps);
     }
     const changeDomainStatus = (ids: [number], web_id: number, status: number) => {
         modal.confirm({
@@ -73,7 +74,7 @@ export default (): React.ReactNode => {
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响此域名的访问',
             okType: 'primary',
-            onOk:async()=> {
+            onOk: async () => {
                 const key = "changeDomainStatus";
                 message?.loading({content: '正在更改域名状态', key, duration: 60})
                 await updateDomain({
@@ -96,7 +97,7 @@ export default (): React.ReactNode => {
                     }
                 });
             },
-        });
+        } as ModalProps);
     };
     const domainColumns = [
         {
@@ -144,10 +145,10 @@ export default (): React.ReactNode => {
             dataIndex: 'Option',
             hideInSearch: true,
             editable: false,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <Dropdown menu={{
-                    items:[{
-                        key:"delete_domain",
+                    items: [{
+                        key: "delete_domain",
                         label: (
                             <a style={{fontSize: "small"}} onClick={() => {
                                 deleteDomains([record?.id], record?.web_id);
@@ -157,7 +158,7 @@ export default (): React.ReactNode => {
                         )
                     },
                         {
-                            key:"status_domain",
+                            key: "status_domain",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     changeDomainStatus([record?.id], record?.web_id, record?.status == 0 ? 1 : 0);
@@ -182,11 +183,11 @@ export default (): React.ReactNode => {
         values.web_id = domainWebId;
         setIsModalDomainAddBtnLoading(true);
         return createDomain({
-            body:{
+            body: {
                 ...values
             },
             onSuccess: (r: any) => {
-                if(r?.code == 200){
+                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalDomainAddVisible(false);
                     // @ts-ignore
@@ -194,8 +195,8 @@ export default (): React.ReactNode => {
                     domainAdd.resetFields();
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalDomainAddBtnLoading(false);
                 }
@@ -256,11 +257,11 @@ export default (): React.ReactNode => {
             values.avatar = ""
         }
         return updateUserInfo({
-            body:{
+            body: {
                 ...values
             },
             onSuccess: (r: any) => {
-                if(r?.code == 200){
+                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalVisible(false);
                     // @ts-ignore
@@ -268,8 +269,8 @@ export default (): React.ReactNode => {
                     form.resetFields();
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalBtnLoading(false);
                 }
@@ -291,11 +292,11 @@ export default (): React.ReactNode => {
             values.expire_time = moment(values.expire_time).format('YYYY-MM-DD');
         }
         return updateWebInfo({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalWebVisible(false);
                     // @ts-ignore
@@ -303,8 +304,8 @@ export default (): React.ReactNode => {
                     form.resetFields();
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalWebBtnLoading(false);
                 }
@@ -321,11 +322,11 @@ export default (): React.ReactNode => {
     const onMoneyFinish = async (values: any) => {
         setIsModalMoneyBtnLoading(true)
         return updateUserMoney({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalMoneyVisible(false);
                     // @ts-ignore
@@ -333,8 +334,8 @@ export default (): React.ReactNode => {
                     form.resetFields();
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalMoneyBtnLoading(false);
                 }
@@ -357,27 +358,25 @@ export default (): React.ReactNode => {
                 const key = "userStatus";
                 message?.loading({content: '正在更改用户状态', key, duration: 60})
                 updateUserInfo({
-                    body:{
-                        body:{
-                            ids: [user_id],
-                            status: status
-                        },
-                        onSuccess:(r:any)=>{
-                            if(r?.code == 200){
-                                message?.success({content: r?.message, key, duration: 2})
-                                // @ts-ignore
-                                actionRef?.current.reload();
-                            }
-                        },
-                        onFail:(r:any)=>{
-                            if(r?.code != 200){
-                                message?.error({content: r?.message, key, duration: 2})
-                            }
+                    body: {
+                        ids: [user_id],
+                        status: status
+                    },
+                    onSuccess: (r: any) => {
+                        if (r?.code == 200) {
+                            message?.success({content: r?.message, key, duration: 2})
+                            // @ts-ignore
+                            actionRef?.current.reload();
+                        }
+                    },
+                    onFail: (r: any) => {
+                        if (r?.code != 200) {
+                            message?.error({content: r?.message, key, duration: 2})
                         }
                     }
                 });
             },
-        });
+        } as ModalProps);
     };
 
     /**
@@ -391,31 +390,29 @@ export default (): React.ReactNode => {
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响此站点所有用户',
             okType: 'primary',
-            onOk:async()=> {
+            onOk: async () => {
                 const key = "webStatus";
                 message?.loading({content: '正在更改站点状态', key, duration: 60});
-               await updateWebInfo({
-                    body:{
-                        body:{
-                            ids: [web_id],
-                            status: status
-                        },
-                        onSuccess:(r:any)=>{
-                            if(r?.code == 200){
-                                message?.success({content: r?.message, key, duration: 2})
-                                // @ts-ignore
-                                actionRef?.current.reload();
-                            }
-                        },
-                        onFail:(r:any)=>{
-                            if(r?.code != 200){
-                                message?.error({content: r?.message, key, duration: 2})
-                            }
+                await updateWebInfo({
+                    body: {
+                        ids: [web_id],
+                        status: status
+                    },
+                    onSuccess: (r: any) => {
+                        if (r?.code == 200) {
+                            message?.success({content: r?.message, key, duration: 2})
+                            // @ts-ignore
+                            actionRef?.current.reload();
+                        }
+                    },
+                    onFail: (r: any) => {
+                        if (r?.code != 200) {
+                            message?.error({content: r?.message, key, duration: 2})
                         }
                     }
                 });
             },
-        });
+        } as ModalProps);
     };
 
     /**
@@ -433,7 +430,7 @@ export default (): React.ReactNode => {
             title: '头像',
             tip: '用户状态和头像',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Badge dot color={record?.user?.status == 0 ? 'green' : 'red'}>
                         <Avatar src={record?.user?.avatar}
@@ -475,7 +472,7 @@ export default (): React.ReactNode => {
             dataIndex: 'info',
             tip: '网站信息',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>名称:{record?.name}</Tag>
                     <br/>
@@ -488,7 +485,7 @@ export default (): React.ReactNode => {
             dataIndex: 'p_info',
             tip: '上级信息',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>名称:{record?.web?.name || '总站'}(ID:<Typography.Text
                         copyable>{record?.web?.id || 1}</Typography.Text>)</Tag>
@@ -502,7 +499,7 @@ export default (): React.ReactNode => {
             dataIndex: 'time',
             tip: '相关日期',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>开通时间:{record?.create_time}</Tag>
                     <br/>
@@ -578,7 +575,7 @@ export default (): React.ReactNode => {
             dataIndex: 'Option',
             hideInSearch: true,
             editable: false,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <Dropdown menu={{
                     items: [
                         {
@@ -676,7 +673,7 @@ export default (): React.ReactNode => {
                        form.resetFields();
                    }}>
                 <Form form={form} name="control-hooks1" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 4}}
-                      wrapperCol={{span: 18}} >
+                      wrapperCol={{span: 18}}>
                     <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
@@ -748,27 +745,28 @@ export default (): React.ReactNode => {
                         actionRef={domainActionRef}
                         formRef={domainRef}
                         rowKey={'id'}
-                        scroll={{x:true}}
+                        scroll={{x: true}}
                         options={false}
-                        style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                        style={{overflowX: "auto", whiteSpace: "nowrap"}}
                         // @ts-ignore
                         columns={domainColumns}
-                        request={ (params, sort) => {
+                        request={(params, sort) => {
                             params.web_id = domainWebId;
-                            return getData(params,sort,getDomainList)
+                            return getData(params, sort, getDomainList)
                         }}
-                        pagination={{defaultPageSize: 5}}
+                        pagination={{defaultPageSize: 5} as TablePaginationConfig}
                         search={false}
                     />
                 )}
             </Modal>
-            <Modal key="domain_add" width={350} destroyOnClose={true} forceRender={true} title="添加" open={isModalDomainAddVisible}
+            <Modal key="domain_add" width={350} destroyOnClose={true} forceRender={true} title="添加"
+                   open={isModalDomainAddVisible}
                    onOk={domainAdd.submit} okButtonProps={{loading: isModalDomainAddBtnLoading}} okText="确 认"
                    onCancel={() => {
                        setIsModalDomainAddVisible(false);
                    }}>
                 <Form form={domainAdd} name="control-hooks2" onFinish={onDomainAddFormFinish} labelAlign="right"
-                      labelCol={{span: 4}} wrapperCol={{span: 20}} >
+                      labelCol={{span: 4}} wrapperCol={{span: 20}}>
                     <Form.Item name="domain" label="域名" rules={[{
                         required: true,
                         message: "请输入域名"
@@ -798,8 +796,9 @@ export default (): React.ReactNode => {
                        setIsModalWebVisible(false);
                        web.resetFields();
                    }}>
-                <Form form={web} name="control-hooks3" onFinish={onWebFormFinish} labelAlign="right" labelCol={{span: 4}}
-                      wrapperCol={{span: 18}} >
+                <Form form={web} name="control-hooks3" onFinish={onWebFormFinish} labelAlign="right"
+                      labelCol={{span: 4}}
+                      wrapperCol={{span: 18}}>
                     <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
@@ -815,7 +814,8 @@ export default (): React.ReactNode => {
                     <Form.Item name="description" label="描述" rules={[{required: true, message: "请输入描述"}]}>
                         <Input.TextArea placeholder="请输入描述"/>
                     </Form.Item>
-                    <Form.Item name="expire_time" label="到期时间" rules={[{required: true, message: "请选择到期时间"}]}>
+                    <Form.Item name="expire_time" label="到期时间"
+                               rules={[{required: true, message: "请选择到期时间"}]}>
                         <
                             // @ts-ignore
                             DatePicker format='YYYY-MM-DD' placeholder="请选择到期时间"/>
@@ -839,7 +839,8 @@ export default (): React.ReactNode => {
                 setIsModalMoneyVisible(false);
                 money.resetFields();
             }}>
-                <Form form={money} name="control-hooks4" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
+                <Form form={money} name="control-hooks4" onFinish={onMoneyFinish} labelAlign="right"
+                      labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
                     <Form.Item name="user_id" label="用户ID" hidden={true}
                                rules={[{required: true, message: "请输入操作金额"}, {
@@ -875,11 +876,11 @@ export default (): React.ReactNode => {
                 actionRef={actionRef}
                 formRef={ref}
                 rowKey={'id'}
-                scroll={{x:true}}
+                scroll={{x: true}}
                 // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
-                    return getData(params,sort,getWebList)
+                    return getData(params, sort, getWebList)
                 }}
                 search={{
                     defaultCollapsed: true,

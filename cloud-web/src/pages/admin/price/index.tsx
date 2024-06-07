@@ -5,8 +5,6 @@ import SiteView from "./components/site";
 import {createStyles} from "antd-style";
 import {Body} from "@/components";
 
-const {Item} = Menu;
-
 type SettingsStateKeys = 'site';
 type SettingsState = {
     mode: 'inline' | 'horizontal';
@@ -20,17 +18,20 @@ const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
             width: 100%;
             height: 100%;
             padding-bottom: 16px;
-            .ant-menu-light.ant-menu-inline .ant-menu-item::after{
+
+            .ant-menu-light.ant-menu-inline .ant-menu-item::after {
                 top: 19%;
                 right: 6px;
                 border-top-left-radius: 15px;
                 border-bottom-left-radius: 15px;
                 height: 60%;
             }
-            .ant-menu-light.ant-menu-root.ant-menu-inline{
+
+            .ant-menu-light.ant-menu-root.ant-menu-inline {
                 border-right: none;
             }
-            ${responsive.md}{
+
+            ${responsive.md} {
                 flex-direction: column;
             }
         `,

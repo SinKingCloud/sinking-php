@@ -73,7 +73,7 @@ const SmsView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>阿里云设置</h3>
-                <ProForm key={"sms.aliyun"} form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="sms.aliyun.key"
@@ -92,7 +92,7 @@ const SmsView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>验证码模版</h3>
-                <ProForm key={"sms.captcha"} form={form1} onFinish={onFinish} className={box}>
+                <ProForm form={form1} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="sms.captcha.sign"
@@ -119,7 +119,7 @@ const SmsView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"} className={box} onFinish={async (values: any) => {
+                <ProForm className={box} onFinish={async (values: any) => {
                     await testSms({
                         body:{
                             ...values

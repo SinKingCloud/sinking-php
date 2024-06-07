@@ -5,8 +5,6 @@ import SiteView from "./components";
 import {createStyles} from "antd-style";
 import {Body} from "@/components";
 
-const {Item} = Menu;
-
 type SettingsStateKeys = 'site';
 type SettingsState = {
     mode: 'inline' | 'horizontal';

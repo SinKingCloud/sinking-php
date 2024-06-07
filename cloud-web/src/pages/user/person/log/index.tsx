@@ -1,16 +1,14 @@
 import React, {useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
-import {App} from "antd";
-import { Body } from '@/components';
-import {getPayOrder} from "@/service/pay/order";
+import {Body} from '@/components';
+
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
     const actionRef = useRef();
-    const {message} = App.useApp()
 
     /**
      * table表格渲染
@@ -103,22 +101,21 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-                <ProTable
-                    form={{layout: "vertical",autoFocusFirstInput:false}}
-                    headerTitle={'操作日志'}
-                    actionRef={actionRef}
-                    style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                    scroll={{x:true}}
-                    rowKey={'id'}
-                    //@ts-ignore
-                    columns={columns}
-                    request={(params, sort) => {
-                        return getData(params,sort,getLogList)
-                    }}
-                    search={{
-                        labelWidth: "auto",
-                    }}
-                />
+            <ProTable
+                form={{layout: "vertical", autoFocusFirstInput: false}}
+                headerTitle={'操作日志'}
+                actionRef={actionRef}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
+                scroll={{x: true}}
+                rowKey={'id'}
+                columns={columns}
+                request={(params, sort) => {
+                    return getData(params, sort, getLogList)
+                }}
+                search={{
+                    labelWidth: "auto",
+                }}
+            />
         </Body>
     );
 };

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ProCard from "@ant-design/pro-card";
-import {App, Button, Form, Image, Input, Modal, Select, Typography} from "antd";
+import {App, Button, Form, Image, Input, Modal, ModalProps, Select, Typography} from "antd";
 import {ExclamationCircleOutlined, WechatOutlined} from "@ant-design/icons";
 import {buySite, getSite} from "@/service/shop/site";
 import {getPayConfig} from "@/service/pay/pay";
@@ -43,6 +43,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         ,
         body: css`
             margin: -100px auto 0 auto;
+
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 margin: -15px auto 0 auto;
             }
@@ -143,6 +144,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         describe: css`
             max-width: 80%;
             margin: 40px auto 0 auto;
+
             ${responsive.md} {
                 max-width: 100%;
                 margin: 0;
@@ -154,7 +156,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         table: {
             width: "800px",
             overflowX: "scroll",
-            border: isDarkMode ?"1px solid rgb(71, 71, 71)":"1px solid #ebebeb",
+            border: isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #ebebeb",
             borderRadius: "15px",
             margin: "0 auto",
         },
@@ -216,16 +218,12 @@ export default (): React.ReactNode => {
     useEffect(() => {
         getSite({
             onSuccess: (r) => {
-                if (r?.code == 200) {
-                    setSiteConfig(r?.data);
-                    getPayConfig({
-                        onSuccess: (r2) => {
-                            if (r2?.code == 200) {
-                                setPayConfig(r2?.data);
-                            }
-                        }
-                    });
-                }
+                setSiteConfig(r?.data);
+            }
+        });
+        getPayConfig({
+            onSuccess: (r2) => {
+                setPayConfig(r2?.data);
             }
         });
     }, []);
@@ -290,7 +288,7 @@ export default (): React.ReactNode => {
                     }
                 });
             },
-        });
+        } as ModalProps);
 
     }
 

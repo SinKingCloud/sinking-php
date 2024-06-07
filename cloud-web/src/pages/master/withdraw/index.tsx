@@ -14,11 +14,11 @@ import {
     Typography
 } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {getCashList, updateCash} from "@/service/master/withdraw";
 import {Body} from '@/components';
-import {getNoticeList} from "@/service/master/notice";
+import {NamePath} from "rc-field-form/es/interface";
 export default (): React.ReactNode => {
     /**
      * 表单处理
@@ -275,7 +275,7 @@ export default (): React.ReactNode => {
     ];
     const [title,setTitle] = useState<any>()
     useEffect(()=>{
-        setTitle(form.getFieldValue("id"))
+        setTitle(form.getFieldValue("id" as NamePath))
     },[])
     return (
         <Body>

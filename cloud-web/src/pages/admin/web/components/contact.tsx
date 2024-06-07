@@ -68,7 +68,7 @@ const ContactView: React.FC = () => {
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key="contact" form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="contact.one"

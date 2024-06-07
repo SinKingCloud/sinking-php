@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {App, Button, Form, Input, Modal, Spin} from "antd";
+import {App, Button, Form, Input, ModalProps, Spin} from "antd";
 import ProForm, {ProFormText, ProFormTextArea} from "@ant-design/pro-form";
 import {getWeb, setWeb} from "@/service/admin/set";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
@@ -7,17 +7,18 @@ import {getMy} from "@/service/admin/price";
 import {buySite} from "@/service/admin/web";
 import {useModel} from "umi";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
     }
 })
 const BaseView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
     const {message, modal} = App.useApp()
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +95,7 @@ const BaseView: React.FC = () => {
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key="base" form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="name"
@@ -150,15 +151,15 @@ const BaseView: React.FC = () => {
                                                 message.destroy(key)
                                             }
                                         },
-                                        onFail:(r:any)=>{
-                                            if(r?.code != 200){
+                                        onFail: (r: any) => {
+                                            if (r?.code != 200) {
                                                 message?.error(r?.message || "续期失败")
                                                 message.destroy(key)
                                             }
                                         }
                                     });
                                 },
-                            });
+                            } as ModalProps);
                         }}>续期</Button>
                     </ProFormText>
                 </ProForm>

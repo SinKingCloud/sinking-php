@@ -7,7 +7,7 @@ import {
     Form,
     Input,
     InputNumber,
-    Modal,
+    Modal, ModalProps,
     Select,
     Space,
     Spin,
@@ -22,6 +22,7 @@ import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
 import {Body} from '@/components';
 import {getOrderList} from "@/service/admin/order";
+import {NamePath} from "rc-field-form/es/interface";
 
 export default (): React.ReactNode => {
     /**
@@ -143,7 +144,7 @@ export default (): React.ReactNode => {
                     }
                 })
             },
-        });
+        } as ModalProps);
     }
 
     /**
@@ -328,9 +329,9 @@ export default (): React.ReactNode => {
         });
     }
     const [title, setTitle] = useState<any>()
-    useEffect(()=>{
-        setTitle(form.getFieldValue("id"))
-    },[])
+    useEffect(() => {
+        setTitle(form.getFieldValue("id" as NamePath))
+    }, [])
     return (
         <Body>
             <Drawer key={"form"} destroyOnClose={true} forceRender={true} width={"100%"}
@@ -496,8 +497,8 @@ export default (): React.ReactNode => {
                         </Space>
                     );
                 }}
-                request={ (params, sort) => {
-                    return getData(params,sort,getNoticeList)
+                request={(params, sort) => {
+                    return getData(params, sort, getNoticeList)
                 }}
                 search={{
                     defaultCollapsed: true,

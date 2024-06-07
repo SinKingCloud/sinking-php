@@ -1,11 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createDomain, deleteDomain, getDomainConfig, getDomainList, updateDomain} from "@/service/admin/web";
-import {Alert, App, Button, Dropdown, Form, Input, Menu, Modal, Select} from "antd";
+import {Alert, App, Button, Dropdown, Form, Input, Menu, Modal, ModalProps, Select} from "antd";
 import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import ProTable from "@ant-design/pro-table";
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {useModel} from "umi";
-import {getNoticeList} from "@/service/admin/notice";
 
 const DomainView: React.FC = () => {
     const {message, modal} = App.useApp()
@@ -23,7 +22,7 @@ const DomainView: React.FC = () => {
             }
         });
     }, []);
-    const domainActionRef = useRef();
+    const domainActionRef = useRef<any>();
     const domainRef = useRef();
     const deleteDomains = (ids: [number], web_id: number) => {
         modal.confirm({
@@ -42,7 +41,6 @@ const DomainView: React.FC = () => {
                         if (r?.code == 200) {
                             message?.success(r?.message)
                             message?.destroy(key)
-                            // @ts-ignore
                             domainActionRef?.current?.reload();
                         }
                     },
@@ -54,7 +52,7 @@ const DomainView: React.FC = () => {
                     }
                 });
             },
-        });
+        } as ModalProps);
     }
     const changeDomainStatus = (ids: [number], web_id: number, status: number) => {
         modal.confirm({
@@ -62,7 +60,7 @@ const DomainView: React.FC = () => {
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响此域名的访问',
             okType: 'primary',
-            onOk:async()=> {
+            onOk: async () => {
                 const key = "changeDomainStatus";
                 message?.loading({content: '正在更改域名状态', key, duration: 60})
                 await updateDomain({
@@ -85,7 +83,7 @@ const DomainView: React.FC = () => {
                     }
                 });
             },
-        });
+        } as ModalProps);
     };
     const domainColumns = [
         {
@@ -135,9 +133,9 @@ const DomainView: React.FC = () => {
             editable: false,
             render: (text: string, record: any) => {
                 return <Dropdown menu={{
-                    items:[
+                    items: [
                         {
-                            key:"delete_domain",
+                            key: "delete_domain",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     if (record?.type == 0) {
@@ -151,7 +149,7 @@ const DomainView: React.FC = () => {
                             )
                         },
                         {
-                            key:"status_domain",
+                            key: "status_domain",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     if (record?.type == 0) {
@@ -165,7 +163,7 @@ const DomainView: React.FC = () => {
                             )
                         }
                     ]
-                }}  trigger={['click']} placement="bottom" arrow={true}>
+                }} trigger={['click']} placement="bottom" arrow={true}>
                     <Button size={"small"}
                             onClick={e => e.preventDefault()}>操
                         作 <DownOutlined/></Button>
@@ -180,18 +178,18 @@ const DomainView: React.FC = () => {
         values.web_id = user?.web?.web_id;
         setIsModalDomainAddBtnLoading(true);
         await createDomain({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
+            onSuccess: (r: any) => {
                 message?.success(r?.message)
                 setIsModalDomainAddVisible(false);
                 domainAdd.resetFields();
                 // @ts-ignore
                 domainActionRef.current.reload();
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     message?.error(r?.message)
                     setIsModalDomainAddBtnLoading(false);
                 }
@@ -207,13 +205,13 @@ const DomainView: React.FC = () => {
                 actionRef={domainActionRef}
                 formRef={domainRef}
                 scroll={{x: true}}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 rowKey={'id'}
                 // @ts-ignore
                 columns={domainColumns}
-                request={ (params, sort) => {
+                request={(params, sort) => {
                     params.web_id = user?.web?.web_id;
-                    return getData(params,sort,getDomainList)
+                    return getData(params, sort, getDomainList)
                 }}
                 pagination={{defaultPageSize: 5}}
                 search={false}
@@ -254,7 +252,7 @@ const DomainView: React.FC = () => {
                         }, {
                             value: 1,
                             label: "封禁"
-                        }]} />
+                        }]}/>
                     </Form.Item>
                 </Form>
             </Modal>

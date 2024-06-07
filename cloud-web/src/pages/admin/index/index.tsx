@@ -299,8 +299,8 @@ export default (): React.ReactNode => {
                                     style: {
                                         fill: 'rgb(122,122,122)',
                                     },
-                                    line:{
-                                        stroke:"rgb(122,122,122)"
+                                    line: {
+                                        stroke: "rgb(122,122,122)"
                                     },
                                     formatter: (text, item) => {
                                         let name = item._origin.type;

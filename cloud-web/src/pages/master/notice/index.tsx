@@ -1,14 +1,29 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {App, Button, Drawer, Dropdown, Form, Input, InputNumber, Modal, Select, Space, Spin, Table} from 'antd';
+import {
+    App,
+    Button,
+    Drawer,
+    Dropdown,
+    Form,
+    Input,
+    InputNumber,
+    Modal,
+    ModalProps,
+    Select,
+    Space,
+    Spin,
+    Table
+} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} from "@/service/master/notice";
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
 import {Body} from '@/components';
-import {getWebList} from "@/service/master/web";
+import {NamePath} from "rc-field-form/es/interface";
+
 export default (): React.ReactNode => {
     const {message, modal} = App.useApp()
     /**
@@ -130,7 +145,7 @@ export default (): React.ReactNode => {
                     }
                 })
             },
-        });
+        } as ModalProps);
     }
     /**
      * table表格渲染
@@ -291,10 +306,10 @@ export default (): React.ReactNode => {
      * @param id 公告ID
      */
     const [noticeLoading, setNoticeLoading] = useState(false);
-    const showNoticeInfo = async (id: number) => {
+    const showNoticeInfo = (id: number) => {
         setNoticeLoading(true);
         setIsModalVisible(true);
-        await getNoticeInfo({
+        getNoticeInfo({
             body: {
                 id: id
             },
@@ -314,9 +329,9 @@ export default (): React.ReactNode => {
         });
     }
     const [title, setTitle] = useState<any>()
-    useEffect(()=>{
-        setTitle(form.getFieldValue("id"))
-    },[])
+    useEffect(() => {
+        setTitle(form.getFieldValue("id" as NamePath));
+    }, [])
     return (
         <Body>
             <Drawer key="form" destroyOnClose={true} forceRender={true}
@@ -329,7 +344,7 @@ export default (): React.ReactNode => {
                 <Spin spinning={noticeLoading}>
                     <div style={{display: !noticeLoading ? "block" : "none"}}>
                         <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right"
-                              labelCol={{span: 2}} wrapperCol={{span: 21}} >
+                              labelCol={{span: 2}} wrapperCol={{span: 21}}>
                             <Form.Item name="id" label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
                             </Form.Item>
@@ -410,12 +425,14 @@ export default (): React.ReactNode => {
 
             </Drawer>
 
-            <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑" open={isModalEditVisible}
+            <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑"
+                   open={isModalEditVisible}
                    onOk={edit.submit} okText={"确 认"} onCancel={() => {
                 setIsModalEditVisible(false);
                 edit.resetFields();
             }}>
-                <Form form={edit} name="control-hooks1" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 5}} wrapperCol={{span: 18}}>
+                <Form form={edit} name="control-hooks1" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 5}}
+                      wrapperCol={{span: 18}}>
                     <Form.Item name="status" label="状态" colon
                                rules={[{required: true, message: "请选择修改的状态"}]}>
                         <Select placeholder="请选择公告状态" options={[{
@@ -470,7 +487,7 @@ export default (): React.ReactNode => {
                     );
                 }}
                 request={(params, sort) => {
-                    return getData(params,sort,getNoticeList)
+                    return getData(params, sort, getNoticeList)
                 }}
                 search={{
                     defaultCollapsed: true,

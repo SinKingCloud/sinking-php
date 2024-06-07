@@ -3,6 +3,7 @@ import {Column} from '@ant-design/charts';
 import type {DatePickerProps} from 'antd';
 import numeral from 'numeral';
 import {createStyles} from "antd-style";
+
 const {RangePicker} = DatePicker;
 export type SalesProps = {
     rangePickerValue: any;
@@ -70,7 +71,7 @@ const useStyles = createStyles(({css, responsive}): any => {
 
             a {
                 margin-left: 24px;
-                color: rgb(122,122,122);
+                color: rgb(122, 122, 122);
                 font-size: 14px;
             }
         `,
@@ -150,153 +151,153 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
         }
     } = useStyles()
     return (
-        <Card loading={loading} bordered={false} styles={{padding: 0}}>
-                <Tabs items={[
-                    {
-                        label: '用户量',
-                        key:"sales",
-                        children:(
-                            <Row>
-                                <Col xl={16} lg={12} md={12} sm={24} xs={24}>
-                                    <div className={salesBar}>
-                                        <Column
-                                            height={300}
-                                            forceFit
-                                            data={(salesData?.data || []) as any}
-                                            xField="date"
-                                            yField="user_num"
-                                            xAxis={{
-                                                visible: true,
-                                                title: {
-                                                    visible: false,
-                                                },
-                                            }}
-                                            yAxis={{
-                                                visible: true,
-                                                title: {
-                                                    visible: false,
-                                                },
-                                            }}
-                                            meta={{
-                                                user_num: {
-                                                    alias: '用户量',
-                                                },
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                                    <div className={salesRank}>
-                                        <h4 className={rankingTitle}>网站用户量排名</h4>
-                                        <ul className={rankingList}>
-                                            {(salesData?.topUser?.length || 0) > 0 && <ul className={rankingList}>
-                                                {salesData?.topUser?.map((item: any, i: number) => (
-                                                    <li key={"topUser_" + i}>
+        <Card loading={loading} bordered={false}>
+            <Tabs items={[
+                {
+                    label: '用户量',
+                    key: "sales",
+                    children: (
+                        <Row>
+                            <Col xl={16} lg={12} md={12} sm={24} xs={24}>
+                                <div className={salesBar}>
+                                    <Column
+                                        height={300}
+                                        forceFit
+                                        data={(salesData?.data || []) as any}
+                                        xField="date"
+                                        yField="user_num"
+                                        xAxis={{
+                                            visible: true,
+                                            title: {
+                                                visible: false,
+                                            },
+                                        }}
+                                        yAxis={{
+                                            visible: true,
+                                            title: {
+                                                visible: false,
+                                            },
+                                        }}
+                                        meta={{
+                                            user_num: {
+                                                alias: '用户量',
+                                            },
+                                        }}
+                                    />
+                                </div>
+                            </Col>
+                            <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+                                <div className={salesRank}>
+                                    <h4 className={rankingTitle}>网站用户量排名</h4>
+                                    <ul className={rankingList}>
+                                        {(salesData?.topUser?.length || 0) > 0 && <ul className={rankingList}>
+                                            {salesData?.topUser?.map((item: any, i: number) => (
+                                                <li key={"topUser_" + i}>
                                           <span className={`${rankingItemNumber} ${i < 3 ? active : ''}`}>
                                                     {i + 1}
                                           </span>
-                                                        <span className={rankingItemTitle} title={item?.web?.name}>
+                                                    <span className={rankingItemTitle} title={item?.web?.name}>
                                                     {item?.web?.name}
                                             </span>
-                                                        <span style={{float: "right"}}>
+                                                    <span style={{float: "right"}}>
                                                     {numeral(item?.user_num).format('0,0')}
                                           </span>
-                                                    </li>
-                                                ))}
-                                            </ul>}
-                                            {(salesData?.topUser?.length || 0) <= 0 &&
-                                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>}
-                                        </ul>
-                                    </div>
-                                </Col>
-                            </Row>
-                        )
-                    },
-                    {
-                        label: '订单量',
-                        key:"views",
-                        children: (
-                            <Row>
-                                <Col xl={16} lg={12} md={12} sm={24} xs={24}>
-                                    <div className={salesBar}>
-                                        <Column
-                                            height={300}
-                                            forceFit
-                                            data={(salesData?.data || []) as any}
-                                            xField="date"
-                                            yField="order_succ_num"
-                                            xAxis={{
-                                                visible: true,
-                                                title: {
-                                                    visible: false,
-                                                },
-                                            }}
-                                            yAxis={{
-                                                visible: true,
-                                                title: {
-                                                    visible: false,
-                                                },
-                                            }}
-                                            meta={{
-                                                order_succ_num: {
-                                                    alias: '订单量',
-                                                },
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                                    <div className={salesRank}>
-                                        <h4 className={rankingTitle}>网站订单量排名</h4>
-                                        {(salesData?.topOrder?.length || 0) > 0 && <ul className={rankingList}>
-                                            {salesData?.topOrder?.map((item: any, i: number) => (
-                                                <li key={"topOrder_" + i}>
-                      <span className={`${rankingItemNumber} ${i < 3 ? active : ''}`}>
-                        {i + 1}
-                      </span>
-                                                    <span className={rankingItemTitle} title={item?.web?.name}>
-                        {item?.web?.name}
-                      </span>
-                                                    <span
-                                                        style={{float: "right"}}>{numeral(item?.order_succ_num).format('0,0')}</span>
                                                 </li>
                                             ))}
                                         </ul>}
-                                        {(salesData?.topOrder?.length || 0) <= 0 &&
+                                        {(salesData?.topUser?.length || 0) <= 0 &&
                                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>}
-                                    </div>
-                                </Col>
-                            </Row>
-                        )
-                    }
-                ]}
-                    tabBarExtraContent={
-                        <div className={salesExtraWrap}>
-                            <div className={salesExtra}>
-                                <a className={dateType == 1 ? currentDate : ''} onClick={() => selectDate(1)}>
-                                    按天
-                                </a>
-                                <a className={dateType == 2 ? currentDate : ''} onClick={() => selectDate(2)}>
-                                    按周
-                                </a>
-                                <a className={dateType == 3 ? currentDate : ''} onClick={() => selectDate(3)}>
-                                    按月
-                                </a>
-                                <a className={dateType == 4 ? currentDate : ''} onClick={() => selectDate(4)}>
-                                    按年
-                                </a>
-                            </div>
-                            <RangePicker
-                                size={"large"}
-                                value={rangePickerValue}
-                                onChange={handleRangePickerChange}
-                                style={{width: 256}}
-                            />
-                        </div>
-                    }
-                    size="large"
-                    tabBarStyle={{marginBottom: 24}}
-                />
+                                    </ul>
+                                </div>
+                            </Col>
+                        </Row>
+                    )
+                },
+                {
+                    label: '订单量',
+                    key: "views",
+                    children: (
+                        <Row>
+                            <Col xl={16} lg={12} md={12} sm={24} xs={24}>
+                                <div className={salesBar}>
+                                    <Column
+                                        height={300}
+                                        forceFit
+                                        data={(salesData?.data || []) as any}
+                                        xField="date"
+                                        yField="order_succ_num"
+                                        xAxis={{
+                                            visible: true,
+                                            title: {
+                                                visible: false,
+                                            },
+                                        }}
+                                        yAxis={{
+                                            visible: true,
+                                            title: {
+                                                visible: false,
+                                            },
+                                        }}
+                                        meta={{
+                                            order_succ_num: {
+                                                alias: '订单量',
+                                            },
+                                        }}
+                                    />
+                                </div>
+                            </Col>
+                            <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+                                <div className={salesRank}>
+                                    <h4 className={rankingTitle}>网站订单量排名</h4>
+                                    {(salesData?.topOrder?.length || 0) > 0 && <ul className={rankingList}>
+                                        {salesData?.topOrder?.map((item: any, i: number) => (
+                                            <li key={"topOrder_" + i}>
+                      <span className={`${rankingItemNumber} ${i < 3 ? active : ''}`}>
+                        {i + 1}
+                      </span>
+                                                <span className={rankingItemTitle} title={item?.web?.name}>
+                        {item?.web?.name}
+                      </span>
+                                                <span
+                                                    style={{float: "right"}}>{numeral(item?.order_succ_num).format('0,0')}</span>
+                                            </li>
+                                        ))}
+                                    </ul>}
+                                    {(salesData?.topOrder?.length || 0) <= 0 &&
+                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>}
+                                </div>
+                            </Col>
+                        </Row>
+                    )
+                }
+            ]}
+                  tabBarExtraContent={
+                      <div className={salesExtraWrap}>
+                          <div className={salesExtra}>
+                              <a className={dateType == 1 ? currentDate : ''} onClick={() => selectDate(1)}>
+                                  按天
+                              </a>
+                              <a className={dateType == 2 ? currentDate : ''} onClick={() => selectDate(2)}>
+                                  按周
+                              </a>
+                              <a className={dateType == 3 ? currentDate : ''} onClick={() => selectDate(3)}>
+                                  按月
+                              </a>
+                              <a className={dateType == 4 ? currentDate : ''} onClick={() => selectDate(4)}>
+                                  按年
+                              </a>
+                          </div>
+                          <RangePicker
+                              size={"large"}
+                              value={rangePickerValue}
+                              onChange={handleRangePickerChange}
+                              style={{width: 256}}
+                          />
+                      </div>
+                  }
+                  size="large"
+                  tabBarStyle={{marginBottom: 24}}
+            />
         </Card>
     );
 }

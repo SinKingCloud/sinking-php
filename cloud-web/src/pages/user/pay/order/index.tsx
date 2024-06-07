@@ -1,17 +1,14 @@
 import React, {useRef} from 'react';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {getPayOrder} from "@/service/pay/order";
 import { Body } from '@/components';
-import {App} from "antd";
 import ProTable from "@ant-design/pro-table";
-import {getPayLog} from "@/service/pay/pay";
 
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
     const actionRef = useRef();
-    const {message} = App.useApp()
     /**
      * table表格渲染
      */

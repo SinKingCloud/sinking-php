@@ -78,7 +78,7 @@ const PayView: React.FC = () => {
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>通道设置</h3>
-                <ProForm key={"pay"} form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.min.money"
@@ -134,7 +134,7 @@ const PayView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>易支付通道A</h3>
-                <ProForm key={"epay1"} form={epay1} onFinish={onFinish} className={box}>
+                <ProForm form={epay1} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.epay1.url"
@@ -161,7 +161,7 @@ const PayView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>易支付通道B</h3>
-                <ProForm key={"epay2"} form={epay2} onFinish={onFinish} className={box}>
+                <ProForm form={epay2} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.epay2.url"
@@ -188,7 +188,7 @@ const PayView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>易支付通道C</h3>
-                <ProForm key={"epay3"} form={epay3} onFinish={onFinish} className={box}>
+                <ProForm form={epay3} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="pay.epay3.url"

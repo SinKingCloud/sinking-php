@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, App, Button, Dropdown, Form, Input, InputNumber, Modal, Select, Tag, Typography} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {createCash, getCashConfig, getCashList, updateCash} from "@/service/admin/cash";
 import {Body} from "@/components";
-import {getNoticeList} from "@/service/admin/notice";
+import {NamePath} from "rc-field-form/es/interface";
 
 export default (): React.ReactNode => {
     /**
@@ -227,7 +227,7 @@ export default (): React.ReactNode => {
     ];
     const [title, setTitle] = useState<any>()
     useEffect(()=>{
-        setTitle(form.getFieldValue("id"))
+        setTitle(form.getFieldValue("id" as NamePath))
     },[])
     return (
         <Body>
@@ -292,7 +292,7 @@ export default (): React.ReactNode => {
                 toolBarRender={() => [
                     <Button key="primary" type="primary" onClick={() => {
                         if (cashConfig['cash.open'] != 1) {
-                            message?.warn("系统未开启提现功能")
+                            message?.warning("系统未开启提现功能");
                         } else {
                             setIsModalVisible(true)
                         }

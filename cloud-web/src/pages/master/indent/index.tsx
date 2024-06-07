@@ -1,18 +1,18 @@
 import React, {useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {App, Button, DatePicker, Form, Modal, Select, Tag, Typography} from "antd";
-import {getData, getParams} from "@/utils/page";
+import {App, Button, DatePicker, Form, Modal, ModalProps, Select, Tag, Typography} from "antd";
+import {getData} from "@/utils/page";
 import {deleteOrder, getOrderList} from "@/service/master/order";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
-import { Body } from '@/components';
-import {getNoticeList} from "@/service/master/notice";
+import {Body} from '@/components';
+
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
     const actionRef = useRef();
     const ref = useRef();
-    const {message,modal} = App.useApp()
+    const {message, modal} = App.useApp()
     /**
      * table表格渲染
      */
@@ -57,7 +57,7 @@ export default (): React.ReactNode => {
             render: (text: string, record: any) => {
                 return <>
                     <Tag>昵称:{record?.user?.nick_name}(ID:<Typography.Text
-                        copyable>{record?.user?.id || 0}</Typography.Text>)</Tag>
+                        copyable>{record?.user?.id}</Typography.Text>)</Tag>
                     <br/>
                     <Tag>邮箱:<Typography.Text copyable>{record?.user?.email}</Typography.Text></Tag>
                 </>;
@@ -225,45 +225,47 @@ export default (): React.ReactNode => {
             icon: <ExclamationCircleOutlined/>,
             content: '删除后该数据不可恢复',
             okType: 'danger',
-            onOk:async()=> {
+            onOk: async () => {
                 const rangeTimeValue = values['range-time-picker'];
-                message?.loading({content:"正在删除数据",duration:60000,key:"delete"})
+                message?.loading({content: "正在删除数据", duration: 60000, key: "delete"})
                 await deleteOrder({
-                    body:{
+                    body: {
                         create_time_start: rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
                         create_time_end: rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
                         status: values['status'] >= 0 ? values['status'] : "",
                         pay_type: values['pay_type'] >= 0 ? values['pay_type'] : "",
-                        prder_type: values['prder_type'] >= 0 ? values['prder_type'] : "",
+                        order_type: values['order_type'] >= 0 ? values['order_type'] : "",
                     },
-                    onSuccess:(r:any)=>{
-                        if(r?.code == 200){
+                    onSuccess: (r: any) => {
+                        if (r?.code == 200) {
                             message?.success(r?.message)
                             message?.destroy("delete")
                             // @ts-ignore
                             actionRef.current.reloadAndRest()
                         }
                     },
-                    onFail:(r:any)=>{
-                        if(r?.code != 200){
+                    onFail: (r: any) => {
+                        if (r?.code != 200) {
                             message?.error(r?.message || "请求失败")
                         }
                     }
                 })
                 deleteForm.resetFields();
             },
-        });
+        } as ModalProps);
     }
 
     return (
         <Body>
-            <Modal key="delete" width={370} destroyOnClose={true} forceRender={true} title="清理数据" open={isDeleteModalVisible}
+            <Modal key="delete" width={370} destroyOnClose={true} forceRender={true} title="清理数据"
+                   open={isDeleteModalVisible}
                    onOk={deleteForm.submit} okText="确 认" onCancel={() => {
                 setIsDeleteModalVisible(false);
                 deleteForm.resetFields();
             }}>
-                <Form form={deleteForm} name="control-hooks" onFinish={onDeleteFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 24}} >
+                <Form form={deleteForm} name="control-hooks" onFinish={onDeleteFinish} labelAlign="right"
+                      labelCol={{span: 6}}
+                      wrapperCol={{span: 24}}>
                     <Form.Item name="status" label="订单状态" rules={[{required: true}]} initialValue={"0"}>
                         <Select placeholder="请选择订单状态" options={[
                             {
@@ -278,7 +280,7 @@ export default (): React.ReactNode => {
                                 label: '已支付',
                                 value: '1',
                             }
-                        ]} />
+                        ]}/>
                     </Form.Item>
                     <Form.Item name="pay_type" label="支付方式" rules={[{required: true}]} initialValue={"-1"}>
                         <Select placeholder="请选择支付方式" options={[
@@ -302,7 +304,7 @@ export default (): React.ReactNode => {
                                 label: '余额',
                                 value: '3',
                             }
-                        ]} />
+                        ]}/>
                     </Form.Item>
                     <Form.Item name="order_type" label="订单类型" rules={[{required: true}]} initialValue={"-1"}>
                         <Select placeholder="请选择订单类型" options={[
@@ -318,7 +320,7 @@ export default (): React.ReactNode => {
                                 label: '在线下单',
                                 value: '1',
                             },
-                        ]} />
+                        ]}/>
                     </Form.Item>
                     <Form.Item name="range-time-picker" label="时间范围" rules={[{required: true}]}>
                         <DatePicker.RangePicker showTime format="YYYY-MM-DD HH:mm:ss"/>
@@ -326,12 +328,12 @@ export default (): React.ReactNode => {
                 </Form>
             </Modal>
             <ProTable
-                form={{layout: "vertical",autoFocusFirstInput:false}}
+                form={{layout: "vertical", autoFocusFirstInput: false}}
                 headerTitle={'订单记录'}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 rowKey={'id'}
                 options={{
                     density: true,
@@ -341,7 +343,7 @@ export default (): React.ReactNode => {
                 // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
-                    return getData(params,sort,getOrderList)
+                    return getData(params, sort, getOrderList)
                 }}
                 search={{
                     defaultCollapsed: true,

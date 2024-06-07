@@ -1,19 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {App, Form,  Spin} from "antd";
+import {App, Form, Spin} from "antd";
 import ProForm, {ProFormText} from "@ant-design/pro-form";
 import {getMy, getWeb, setWeb} from "@/service/admin/price";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
     }
 })
 const SiteView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
 
     const [isLoading, setIsLoading] = useState(false);
     const [myPrice, setMyPrice] = useState({});
@@ -24,14 +25,14 @@ const SiteView: React.FC = () => {
     const getConfigs = async () => {
         setIsLoading(true);
         return await getWeb({
-            onSuccess:(r:any)=>{
+            onSuccess: (r: any) => {
                 setIsLoading(false)
-                if(r?.code == 200){
+                if (r?.code == 200) {
                     form.setFieldsValue(r?.data)
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code !=200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     r?.error(r?.message || "请求失败")
                 }
             }
@@ -44,14 +45,14 @@ const SiteView: React.FC = () => {
     const getMyPrice = async () => {
         setIsLoading(true);
         return await getMy({
-            onSuccess:(r:any)=>{
+            onSuccess: (r: any) => {
                 setIsLoading(false)
-                if(r?.code == 200){
+                if (r?.code == 200) {
                     setMyPrice(r?.data)
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code !=200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     r?.error(r?.message || "请求失败")
                 }
             }
@@ -64,16 +65,16 @@ const SiteView: React.FC = () => {
      */
     const onFinish = async (values: any) => {
         await setWeb({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
                 }
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
+            onFail: (r: any) => {
+                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
                 }
             }
@@ -84,14 +85,14 @@ const SiteView: React.FC = () => {
      */
     // @ts-ignore
     useEffect(() => {
-       getConfigs()
-        getMyPrice()
+        getConfigs();
+        getMyPrice();
     }, []);
 
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key={"form"} form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormText
                         width="md"
                         name="site.price"

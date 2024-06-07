@@ -9,8 +9,6 @@ import UiView from "./components/ui";
 import {Body} from "@/components";
 import {createStyles} from "antd-style";
 
-const {Item} = Menu;
-
 type SettingsStateKeys = 'base' | 'ui' | 'contact' | 'notice' | 'domain';
 type SettingsState = {
     mode: 'inline' | 'horizontal';
@@ -68,11 +66,6 @@ const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
             font-size: 25px;
             line-height: 28px;
         `,
-        card:css`
-            .ant-pro-card-body{
-                padding: 24px;
-            }
-        `,
     }
 })
 const Settings: React.FC = () => {
@@ -83,7 +76,7 @@ const Settings: React.FC = () => {
         notice: '通知设置',
         domain: '域名设置',
     };
-    const {styles:{main,leftMenu,right,title,card}} = useStyles()
+    const {styles:{main,leftMenu,right,title}} = useStyles()
     const [initConfig, setInitConfig] = useState<SettingsState>({
         mode: 'inline',
         selectKey: 'base',

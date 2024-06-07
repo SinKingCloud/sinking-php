@@ -6,10 +6,11 @@ import {getUploadUrl} from "@/service/common/upload";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {createStyles} from "antd-style";
 import {useModel} from "umi";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
@@ -17,7 +18,7 @@ const useStyles = createStyles(({css})=>{
 })
 
 const UiView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const [index, setIndex] = useState<any>({});
     const {message} = App.useApp()
@@ -123,7 +124,7 @@ const UiView: React.FC = () => {
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
-                <ProForm key="ui" form={form} onFinish={onFinish} className={box}>
+                <ProForm form={form} onFinish={onFinish} className={box}>
                     <ProFormSelect
                         name="ui.index"
                         label="首页模板"

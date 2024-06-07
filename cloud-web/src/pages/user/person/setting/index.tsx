@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ProCard from "@ant-design/pro-card";
 import {
     Alert, App,
@@ -16,22 +16,22 @@ import {
     Upload
 } from "antd";
 import ProForm, {ProFormText} from "@ant-design/pro-form";
-import { LockOutlined, MailOutlined, SafetyOutlined, UploadOutlined} from "@ant-design/icons";
+import {LockOutlined, MailOutlined, SafetyOutlined, UploadOutlined} from "@ant-design/icons";
 import {updateInfo, updatePassword, updateEmail, updatePhone} from "@/service/person/update";
 import {getUploadUrl} from "@/service/common/upload";
 import SmsVerify from "@/pages/components/smsVerify";
-import { Body } from '@/components';
+import {Body} from '@/components';
 import {useModel} from "umi";
 import EmailVerify from "@/pages/components/emailVerify";
 
 export default (): React.ReactNode => {
-    const user= useModel('user');
+    const user = useModel('user');
     const refresh = useModel("user")
-    useEffect(()=>{
-        if(!user.web){
+    useEffect(() => {
+        if (!user.web) {
             refresh.refreshWebUser()
         }
-    },[user])
+    }, [user])
     const {message} = App.useApp()
     const [isUploadAvatarLoading, setIsUploadAvatarLoading] = useState(false);
     /**
@@ -60,67 +60,33 @@ export default (): React.ReactNode => {
         <Body>
             <Modal key={"editPassword"} width={430} destroyOnClose={true} forceRender={true} title="修改密码"
                    open={isPasswordModalVisible} confirmLoading={isPasswordModalLoading}
-                   onOk={changePwdType == 'email'? passwordForm.submit:phonePawForm.submit} okText={"确 认"} onCancel={() => {
-                    setIsPasswordModalVisible(false);
-                    passwordForm.resetFields();
-            }}>
+                   onOk={changePwdType == 'email' ? passwordForm.submit : phonePawForm.submit} okText={"确 认"}
+                   onCancel={() => {
+                       setIsPasswordModalVisible(false);
+                       passwordForm.resetFields();
+                   }}>
                 {
                     changePwdType == 'email' &&
-                    <EmailVerify form={passwordForm} email={user?.web?.email} onFinish={async (values:any) => {
+                    <EmailVerify form={passwordForm} email={user?.web?.email} onFinish={async (values: any) => {
                         if (values.password.length > 20 || values.password.length < 6) {
                             message?.error("密码长度必须为6-20位之间");
                             return;
                         }
                         setIsPasswordModalLoading(true);
-                           await updatePassword({
-                                body:{
-                                    type: "email",
-                                    code: values?.email_code,
-                                    password: values?.password
-                                },
-                                onSuccess:(r:any)=>{
-                                    if(r?.code == 200){
-                                        message?.success(r?.message)
-                                        refresh.refreshWebUser()
-                                        setIsPasswordModalVisible(false)
-                                    }
-                                },
-                                onFail:(r:any)=>{
-                                    if (r.code != 200) {
-                                        message?.error(r?.message || "请求失败")
-                                        setIsPasswordModalLoading(false)
-                                    }
-                                }
-                            });
-                    }} bottomNodes={
-                        <Form.Item name="password" label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
-                            <Input placeholder="请输入新密码"/>
-                        </Form.Item>
-                    }/>
-                }
-                {
-                    changePwdType == 'phone' &&
-                    // @ts-ignore
-                    <SmsVerify form={phonePawForm} phone={user?.web?.phone} onFinish={async (values:any) => {
-                        if (values.password.length > 20 || values.password.length < 6) {
-                            message?.error("密码长度必须为6-20位之间");
-                            return;
-                        }
-                        setIsPasswordModalLoading(true);
-                       await updatePassword({
-                            body:{
-                                type: "phone",
-                                code: values?.sms_code,
+                        await updatePassword({
+                            body: {
+                                type: "email",
+                                code: values?.email_code,
                                 password: values?.password
                             },
-                            onSuccess:(r:any)=>{
-                                if(r?.code == 200){
+                            onSuccess: (r: any) => {
+                                if (r?.code == 200) {
                                     message?.success(r?.message)
                                     refresh.refreshWebUser()
                                     setIsPasswordModalVisible(false)
                                 }
                             },
-                            onFail:(r:any)=>{
+                            onFail: (r: any) => {
                                 if (r.code != 200) {
                                     message?.error(r?.message || "请求失败")
                                     setIsPasswordModalLoading(false)
@@ -128,7 +94,44 @@ export default (): React.ReactNode => {
                             }
                         });
                     }} bottomNodes={
-                        <Form.Item name="password" label="账户新密码" rules={[{required: true, message: '请输入新密码',}]}>
+                        <Form.Item name="password" label="账户新密码"
+                                   rules={[{required: true, message: '请输入新密码',}]}>
+                            <Input placeholder="请输入新密码"/>
+                        </Form.Item>
+                    }/>
+                }
+                {
+                    changePwdType == 'phone' &&
+                    // @ts-ignore
+                    <SmsVerify form={phonePawForm} phone={user?.web?.phone} onFinish={async (values: any) => {
+                        if (values.password.length > 20 || values.password.length < 6) {
+                            message?.error("密码长度必须为6-20位之间");
+                            return;
+                        }
+                        setIsPasswordModalLoading(true);
+                        await updatePassword({
+                            body: {
+                                type: "phone",
+                                code: values?.sms_code,
+                                password: values?.password
+                            },
+                            onSuccess: (r: any) => {
+                                if (r?.code == 200) {
+                                    message?.success(r?.message)
+                                    refresh.refreshWebUser()
+                                    setIsPasswordModalVisible(false)
+                                }
+                            },
+                            onFail: (r: any) => {
+                                if (r.code != 200) {
+                                    message?.error(r?.message || "请求失败")
+                                    setIsPasswordModalLoading(false)
+                                }
+                            }
+                        });
+                    }} bottomNodes={
+                        <Form.Item name="password" label="账户新密码"
+                                   rules={[{required: true, message: '请输入新密码',}]}>
                             <Input placeholder="请输入新密码"/>
                         </Form.Item>
                     }/>
@@ -140,20 +143,20 @@ export default (): React.ReactNode => {
                 setIsEmailModalVisible(false);
                 emailForm.resetFields();
             }}>
-                <EmailVerify form={emailForm} email={email} onFinish={async (values:any) => {
+                <EmailVerify form={emailForm} email={email} onFinish={async (values: any) => {
                     setIsEmailModalLoading(true);
-                   await updateEmail({
-                        body:{
+                    await updateEmail({
+                        body: {
                             ...values
                         },
-                        onSuccess:(r:any)=>{
-                            if(r?.code == 200){
+                        onSuccess: (r: any) => {
+                            if (r?.code == 200) {
                                 message?.success(r?.message)
                                 refresh.refreshWebUser()
                                 setIsEmailModalVisible(false)
                             }
                         },
-                        onFail:(r:any)=>{
+                        onFail: (r: any) => {
                             if (r.code != 200) {
                                 message?.error(r?.message || "请求失败")
                                 setIsEmailModalLoading(false)
@@ -172,23 +175,23 @@ export default (): React.ReactNode => {
             <Modal key={"editPhone"} width={430} destroyOnClose={true} forceRender={true} title="修改手机"
                    open={isPhoneModalVisible} confirmLoading={isPhoneModalLoading}
                    onOk={phoneForm.submit} okText={"确 认"} onCancel={() => {
-                    setIsPhoneModalVisible(false);
-                    phoneForm.resetFields();
+                setIsPhoneModalVisible(false);
+                phoneForm.resetFields();
             }}>
                 <SmsVerify form={phoneForm} phone={phone} onFinish={async (values: any) => {
                     setIsPhoneModalLoading(true);
-                  await updatePhone({
-                        body:{
+                    await updatePhone({
+                        body: {
                             ...values
                         },
-                        onSuccess:(r:any)=>{
-                            if(r?.code == 200){
+                        onSuccess: (r: any) => {
+                            if (r?.code == 200) {
                                 message?.success(r?.message)
                                 refresh.refreshWebUser()
                                 setIsPhoneModalVisible(false)
                             }
                         },
-                        onFail:(r:any)=>{
+                        onFail: (r: any) => {
                             if (r.code != 200) {
                                 message?.error(r?.message || "请求失败")
                                 setIsPhoneModalLoading(false);
@@ -215,42 +218,44 @@ export default (): React.ReactNode => {
                                             style={{width: "150px", height: "150px"}}
                                             src={user?.web?.avatar || "https://aliyun_id_photo_bucket.oss.aliyuncs.com/default_handsome.jpg"}/>
                                     }/>
-                                    <Alert message={user?.web?.nick_name} style={{fontWeight: "bolder", fontSize: "20px"}} type="info"/>
+                                    <Alert message={user?.web?.nick_name}
+                                           style={{fontWeight: "bolder", fontSize: "20px"}} type="info"/>
                                     <div>
                                         <Tag color="cyan">ID:{user?.web?.id}</Tag>
                                         <Tag color="purple">余额:{parseFloat(user?.web?.money || 0).toFixed(2)}</Tag>
                                     </div>
                                     <div>
-                                        <Upload name="file" showUploadList={false} action={getUploadUrl()} beforeUpload={(file: any) => {
-                                            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-                                            if (!isJpgOrPng) {
-                                                message?.error('请上传图片格式文件');
-                                                return false;
-                                            }
-                                            const isLt2M = file.size / 1024 / 1024 < 2;
-                                            if (!isLt2M) {
-                                                message?.error('图片不能大于2MB');
-                                                return false;
-                                            }
-                                            return isJpgOrPng && isLt2M;
-                                        }} onChange={(info: any) => {
+                                        <Upload name="file" showUploadList={false} action={getUploadUrl()}
+                                                beforeUpload={(file: any) => {
+                                                    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+                                                    if (!isJpgOrPng) {
+                                                        message?.error('请上传图片格式文件');
+                                                        return false;
+                                                    }
+                                                    const isLt2M = file.size / 1024 / 1024 < 2;
+                                                    if (!isLt2M) {
+                                                        message?.error('图片不能大于2MB');
+                                                        return false;
+                                                    }
+                                                    return isJpgOrPng && isLt2M;
+                                                }} onChange={async (info: any) => {
                                             if (info.file.status == "uploading") {
                                                 setIsUploadAvatarLoading(true);
                                             } else if (info.file.status === 'done') {
                                                 const url = info.file.response.data;
                                                 if (url != undefined && url != "") {
-                                                    updateInfo({
-                                                        body:{
+                                                    await updateInfo({
+                                                        body: {
                                                             avatar: url
                                                         },
-                                                        onSuccess:(r:any)=>{
-                                                            if(r?.code == 200){
+                                                        onSuccess: (r: any) => {
+                                                            if (r?.code == 200) {
                                                                 message?.success(r?.message)
                                                                 refresh.refreshWebUser()
                                                                 setIsUploadAvatarLoading(false);
                                                             }
                                                         },
-                                                        onFail:(r:any)=>{
+                                                        onFail: (r: any) => {
                                                             if (r.code != 200) {
                                                                 message?.error(r?.message || "请求失败")
                                                                 setIsUploadAvatarLoading(false);
@@ -274,86 +279,89 @@ export default (): React.ReactNode => {
                             </Col>
                             <Col lg={{span: 13, offset: 1}}>
                                 <ProForm onFinish={async (values) => {
-                                 await updateInfo({
-                                        body:{
+                                    await updateInfo({
+                                        body: {
                                             ...values
-                                    },
-                                     onSuccess:(r:any)=>{
-                                         if(r?.code == 200){
-                                           message?.success(r?.message)
-                                             refresh.refreshWebUser()
-                                              setIsPasswordModalVisible(false);
-                                         }
-                                     },
-                                      onFail:(r:any)=>{
-                                           if (r.code != 200) {
-                                             message?.error(r?.message || "请求失败")
+                                        },
+                                        onSuccess: (r: any) => {
+                                            if (r?.code == 200) {
+                                                message?.success(r?.message)
+                                                refresh.refreshWebUser()
+                                                setIsPasswordModalVisible(false);
+                                            }
+                                        },
+                                        onFail: (r: any) => {
+                                            if (r.code != 200) {
+                                                message?.error(r?.message || "请求失败")
+                                            }
                                         }
-                                    }
-                                })
-                             }}>
+                                    })
+                                }}>
                                     <ProFormText width="md" label="账号" name="account" tooltip="未设置用户可修改一次"
                                                  rules={[{required: true, message: '请输入登陆账号',}]}
                                                  initialValue={user?.web?.account || "未设置"}>
-                                            <Col  style={{float:"left"}}>
-                                                <Input type="text" placeholder="请输入您的登陆账号" style={{width:"230px",marginRight:"5px"}}
-                                                       defaultValue={user?.web?.account} disabled={user?.web?.account != undefined && user?.web?.account != ""}/>
-                                            </Col>
-                                            <Col  style={{float:"left"}}>
-                                                <Dropdown placement="bottom" arrow={true} trigger={["click"]} menu={{
-                                                    items:[
-                                                        {
-                                                            key:"editByEmail",
-                                                            label: (
-                                                                <a style={{fontSize: "small"}} onClick={() => {
-                                                                    setChangePwdType('email');
-                                                                    setIsPasswordModalVisible(true);
-                                                                }}>
-                                                                    通过邮箱验证
-                                                                </a>
-                                                            )
-                                                        },
-                                                        {
-                                                            key:"editByPhone",
-                                                            label: (
-                                                                <a style={{fontSize: "small"}} onClick={() => {
-                                                                    setChangePwdType('phone');
-                                                                    setIsPasswordModalVisible(true);
-                                                                }}>
-                                                                    通过手机验证
-                                                                </a>
-                                                            )
-                                                        }
-                                                    ]
-                                                }}>
-                                                    <Button><LockOutlined/>修改密码</Button>
-                                                </Dropdown>
-                                            </Col>
+                                        <Col style={{float: "left"}}>
+                                            <Input type="text" placeholder="请输入您的登陆账号"
+                                                   style={{width: "230px", marginRight: "5px"}}
+                                                   defaultValue={user?.web?.account}
+                                                   disabled={user?.web?.account != undefined && user?.web?.account != ""}/>
+                                        </Col>
+                                        <Col style={{float: "left"}}>
+                                            <Dropdown placement="bottom" arrow={true} trigger={["click"]} menu={{
+                                                items: [
+                                                    {
+                                                        key: "editByEmail",
+                                                        label: (
+                                                            <a style={{fontSize: "small"}} onClick={() => {
+                                                                setChangePwdType('email');
+                                                                setIsPasswordModalVisible(true);
+                                                            }}>
+                                                                通过邮箱验证
+                                                            </a>
+                                                        )
+                                                    },
+                                                    {
+                                                        key: "editByPhone",
+                                                        label: (
+                                                            <a style={{fontSize: "small"}} onClick={() => {
+                                                                setChangePwdType('phone');
+                                                                setIsPasswordModalVisible(true);
+                                                            }}>
+                                                                通过手机验证
+                                                            </a>
+                                                        )
+                                                    }
+                                                ]
+                                            }}>
+                                                <Button><LockOutlined/>修改密码</Button>
+                                            </Dropdown>
+                                        </Col>
                                     </ProFormText>
-                                    <ProFormText width="md" label="绑定手机"  tooltip="账户绑定的安全手机">
-                                            <Col style={{float:"left"}}>
-                                                <Input type="text" style={{width:"230px",marginRight:"5px"}}// @ts-ignore
-                                                       value={user?.web?.phone || "未绑定"} disabled={true}/>
-                                            </Col>
-                                            <Col style={{float:"left"}}>
-                                                <Button onClick={() => {
-                                                    setIsPhoneModalVisible(true);
-                                                }}>
-                                                    <SafetyOutlined/>修改手机
-                                                </Button>
-                                            </Col>
+                                    <ProFormText width="md" label="绑定手机" tooltip="账户绑定的安全手机">
+                                        <Col style={{float: "left"}}>
+                                            <Input type="text" style={{width: "230px", marginRight: "5px"}}// @ts-ignore
+                                                   value={user?.web?.phone || "未绑定"} disabled={true}/>
+                                        </Col>
+                                        <Col style={{float: "left"}}>
+                                            <Button onClick={() => {
+                                                setIsPhoneModalVisible(true);
+                                            }}>
+                                                <SafetyOutlined/>修改手机
+                                            </Button>
+                                        </Col>
                                     </ProFormText>
-                                    <ProFormText width="md" label="绑定邮箱"  tooltip="账户绑定的安全邮箱">
-                                            <Col style={{float:"left"}}>
-                                                <Input type="text" style={{width:"230px",marginRight:"5px"}} value={user?.web?.email || "未绑定"} disabled={true}/>
-                                            </Col>
-                                            <Col style={{float:"left"}}>
-                                                <Button onClick={() => {
-                                                    setIsEmailModalVisible(true);
-                                                }}>
-                                                    <MailOutlined/>修改邮箱
-                                                </Button>
-                                            </Col>
+                                    <ProFormText width="md" label="绑定邮箱" tooltip="账户绑定的安全邮箱">
+                                        <Col style={{float: "left"}}>
+                                            <Input type="text" style={{width: "230px", marginRight: "5px"}}
+                                                   value={user?.web?.email || "未绑定"} disabled={true}/>
+                                        </Col>
+                                        <Col style={{float: "left"}}>
+                                            <Button onClick={() => {
+                                                setIsEmailModalVisible(true);
+                                            }}>
+                                                <MailOutlined/>修改邮箱
+                                            </Button>
+                                        </Col>
                                     </ProFormText>
                                     <ProFormText
                                         width="md"
@@ -383,7 +391,7 @@ export default (): React.ReactNode => {
                                         tooltip="上次登陆时间"
                                         disabled={true}
                                     />
-                       </ProForm>
+                                </ProForm>
                             </Col>
                         </Row>
                     </ProCard>

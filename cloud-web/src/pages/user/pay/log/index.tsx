@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 import ProTable, {ProColumns} from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
-import {message} from "antd";
+import {getData} from "@/utils/page";
 import {getPayLog} from "@/service/pay/pay";
 import {Body} from '@/components';
 

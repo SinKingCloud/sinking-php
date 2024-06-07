@@ -1,7 +1,21 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
-import {App, Avatar, Button, Dropdown, Form, Input, Modal, Select, Tag, Typography, Upload} from "antd";
+import {getData} from "@/utils/page";
+import {
+    App,
+    Avatar,
+    Button,
+    Dropdown,
+    Form,
+    Input,
+    Modal,
+    ModalProps,
+    Select,
+    TablePaginationConfig,
+    Tag,
+    Typography,
+    Upload
+} from "antd";
 import {getUserList, updateUserInfo, updateUserMoney} from "@/service/master/user";
 import {DownOutlined, ExclamationCircleOutlined, LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {getUploadUrl} from "@/service/common/upload";
@@ -9,22 +23,23 @@ import {createWeb} from "@/service/master/web";
 import {getDomainConfig} from "@/service/admin/web";
 import {getPayLog} from "@/service/master/pay";
 import {getLogList} from "@/service/master/log";
-import { Body } from '@/components';
+import {Body} from '@/components';
+
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
     const actionRef = useRef();
     const ref = useRef();
-    const {message,modal} = App.useApp()
+    const {message, modal} = App.useApp()
     /**
      * 支持的设置
      */
     const [domainConfig, setDomainConfig] = useState({});
     useEffect(() => {
         getDomainConfig({
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     setDomainConfig(r?.data);
                 }
             }
@@ -86,11 +101,11 @@ export default (): React.ReactNode => {
             values.avatar = ""
         }
         return updateUserInfo({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     setIsModalVisible(false);
                     message?.success(r?.message)
                     // @ts-ignore
@@ -98,7 +113,7 @@ export default (): React.ReactNode => {
                     form.resetFields();
                 }
             },
-            onFail:(r:any)=>{
+            onFail: (r: any) => {
                 if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalBtnLoading(false);
@@ -116,11 +131,11 @@ export default (): React.ReactNode => {
     const onAddFormFinish = async (values: any) => {
         setIsModalAddWebBtnLoading(true);
         return createWeb({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     setIsModalAddWebVisible(false);
                     message?.success(r?.message)
                     // @ts-ignore
@@ -128,7 +143,7 @@ export default (): React.ReactNode => {
                     add.resetFields();
                 }
             },
-            onFail:(r:any)=>{
+            onFail: (r: any) => {
                 if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
                 }
@@ -184,7 +199,7 @@ export default (): React.ReactNode => {
             dataIndex: 'money',
             tip: '金额',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -208,11 +223,11 @@ export default (): React.ReactNode => {
     const onMoneyFinish = async (values: any) => {
         setIsModalMoneyBtnLoading(true)
         return updateUserMoney({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalMoneyBtnLoading(false);
                     setIsModalMoneyVisible(false);
@@ -223,7 +238,7 @@ export default (): React.ReactNode => {
                     form.resetFields();
                 }
             },
-            onFail:(r:any)=>{
+            onFail: (r: any) => {
                 if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalMoneyBtnLoading(false);
@@ -322,14 +337,14 @@ export default (): React.ReactNode => {
                             actionRef?.current.reload();
                         }
                     },
-                    onFail:(r:any)=>{
+                    onFail: (r: any) => {
                         if (r.code != 200) {
                             message?.error({content: r?.message, key, duration: 2})
                         }
                     }
                 });
             },
-        });
+        } as ModalProps);
     };
 
     /**
@@ -346,9 +361,9 @@ export default (): React.ReactNode => {
         {
             title: '头像',
             tip: '用户头像',
-            align:"center",
+            align: "center",
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Avatar src={record?.avatar}
                             style={{backgroundColor: "green"}}>{record?.nick_name || record?.account}</Avatar>
@@ -360,7 +375,7 @@ export default (): React.ReactNode => {
             tip: '用户信息',
             dataIndex: 'user_info',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>昵称:<Typography.Text copyable>{record?.nick_name || "未设置"}</Typography.Text></Tag>
                     <br/>
@@ -393,7 +408,7 @@ export default (): React.ReactNode => {
             dataIndex: 'account_info',
             tip: '账户身份',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>邮箱:<Typography.Text copyable>{record?.email || "未设置"}</Typography.Text></Tag>
                     <br/>
@@ -423,7 +438,7 @@ export default (): React.ReactNode => {
             dataIndex: 'login_info',
             tip: '登录信息',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>时间:<Typography.Text copyable>{record?.login_time || "未登录"}</Typography.Text></Tag>
                     <br/>
@@ -436,7 +451,7 @@ export default (): React.ReactNode => {
             dataIndex: 'user_time',
             tip: '用户相关日期',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <>
                     <Tag>注册时间:<Typography.Text copyable>{record?.create_time || "未登录"}</Typography.Text></Tag>
                     <br/>
@@ -510,9 +525,9 @@ export default (): React.ReactNode => {
             dataIndex: 'Option',
             hideInSearch: true,
             editable: false,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return <Dropdown menu={{
-                    items:[
+                    items: [
                         {
                             key: "edit_modal",
                             label: (
@@ -534,7 +549,7 @@ export default (): React.ReactNode => {
                             )
                         },
                         {
-                            key:"money_modal",
+                            key: "money_modal",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     money?.setFieldsValue({user_id: record?.id, type: 0});
@@ -545,7 +560,7 @@ export default (): React.ReactNode => {
                             )
                         },
                         {
-                            key:"add_modal",
+                            key: "add_modal",
                             label: (
                                 <a style={{fontSize: "small"}} hidden={record?.is_admin} onClick={() => {
                                     add?.setFieldsValue({
@@ -559,18 +574,18 @@ export default (): React.ReactNode => {
                             )
                         },
                         {
-                            key:"pay",
+                            key: "pay",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
-                                setPayUserId(record?.id || 0)
-                                setIsModalPayVisible(true);
-                            }}>
-                                明 细
-                            </a>
+                                    setPayUserId(record?.id || 0)
+                                    setIsModalPayVisible(true);
+                                }}>
+                                    明 细
+                                </a>
                             )
                         },
                         {
-                            key:"log",
+                            key: "log",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     setLogUserId(record?.id || 0)
@@ -581,7 +596,7 @@ export default (): React.ReactNode => {
                             )
                         },
                         {
-                            key:"status",
+                            key: "status",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     changeUserStatus(record?.id, record?.status == 0 ? 1 : 0);
@@ -603,7 +618,8 @@ export default (): React.ReactNode => {
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} forceRender={true} title={"编 辑"}
-                   open={isModalVisible} onOk={form.submit} okButtonProps={{loading: isModalBtnLoading}} okText={"确 认"}
+                   open={isModalVisible} onOk={form.submit} okButtonProps={{loading: isModalBtnLoading}}
+                   okText={"确 认"}
                    onCancel={() => {
                        // @ts-ignore
                        setUploadFileList([]);
@@ -653,12 +669,12 @@ export default (): React.ReactNode => {
                     </Form.Item>
                     <Form.Item name="status" label="状态" rules={[{required: true}]}>
                         <Select placeholder="请选择用户状态" options={[{
-                            value:0,
-                            label:"正常"
+                            value: 0,
+                            label: "正常"
                         }, {
-                            value:1,
-                            label:"禁止"
-                        }]} />
+                            value: 1,
+                            label: "禁止"
+                        }]}/>
                     </Form.Item>
                     <Form.Item name="password" label="密码">
                         <Input placeholder="不修改则留空"/>
@@ -672,11 +688,12 @@ export default (): React.ReactNode => {
             <Modal key={"add_web"} width={400} destroyOnClose={true} okButtonProps={{loading: isModalAddWebBtnLoading}}
                    forceRender={true} title="开通网站" open={isModalAddWebVisible}
                    onOk={add.submit} okText={"确认"} onCancel={() => {
-                        setIsModalAddWebVisible(false);
-                        add.resetFields();
+                setIsModalAddWebVisible(false);
+                add.resetFields();
             }}>
-                <Form form={add} name="control-hooks2" onFinish={onAddFormFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 16}} >
+                <Form form={add} name="control-hooks2" onFinish={onAddFormFinish} labelAlign="right"
+                      labelCol={{span: 6}}
+                      wrapperCol={{span: 16}}>
                     <Form.Item name="user_id" label="用户ID" hidden={true}
                                rules={[{required: true, message: "请输入操作金额"}, {
                                    pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
@@ -688,24 +705,24 @@ export default (): React.ReactNode => {
                         <Input placeholder="请输入站点名称"/>
                     </Form.Item>
                     <Form.Item label="绑定域名">
-                            <Form.Item
-                                name="prefix"
-                                noStyle
-                                rules={[{required: true, message: '请输入前缀'}]}
-                            >
-                                <Input style={{width: '45%'}} placeholder="请输入前缀"/>
-                            </Form.Item>
-                            <Form.Item
-                                name="domain"
-                                noStyle
-                                rules={[{required: true, message: '请选择后缀'}]}
-                            >
-                                <Select placeholder="请选择后缀" style={{width: '55%'}}>
-                                    {domainConfig['master.domains']?.map((k: any) => {
-                                        return <Select.Option key={"domain_" + k} value={k}>.{k}</Select.Option>
-                                    })}
-                                </Select>
-                            </Form.Item>
+                        <Form.Item
+                            name="prefix"
+                            noStyle
+                            rules={[{required: true, message: '请输入前缀'}]}
+                        >
+                            <Input style={{width: '45%'}} placeholder="请输入前缀"/>
+                        </Form.Item>
+                        <Form.Item
+                            name="domain"
+                            noStyle
+                            rules={[{required: true, message: '请选择后缀'}]}
+                        >
+                            <Select placeholder="请选择后缀" style={{width: '55%'}}>
+                                {domainConfig['master.domains']?.map((k: any) => {
+                                    return <Select.Option key={"domain_" + k} value={k}>.{k}</Select.Option>
+                                })}
+                            </Select>
+                        </Form.Item>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -730,13 +747,13 @@ export default (): React.ReactNode => {
                         rowKey={'id'}
                         // @ts-ignore
                         columns={payColumns}
-                        scroll={{x:true}}
-                        style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                        scroll={{x: true}}
+                        style={{overflowX: "auto", whiteSpace: "nowrap"}}
                         request={(params, sort) => {
                             params.user_id = payUserId;
-                            return getData(params,sort,getPayLog)
+                            return getData(params, sort, getPayLog)
                         }}
-                        pagination={{defaultPageSize: 5}}
+                        pagination={{defaultPageSize: 5} as TablePaginationConfig}
                         search={false}
                     />
                 )}
@@ -746,7 +763,7 @@ export default (): React.ReactNode => {
                    footer={null}
                    onCancel={() => {
                        setIsModalLogVisible(false);
-                   }}  width={700}>
+                   }} width={700}>
                 {isModalLogVisible && (
                     <ProTable
                         form={{layout: "vertical"}}
@@ -757,13 +774,13 @@ export default (): React.ReactNode => {
                         rowKey={'id'}
                         // @ts-ignore
                         columns={logColumns}
-                        scroll={{x:true}}
-                        style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                        scroll={{x: true}}
+                        style={{overflowX: "auto", whiteSpace: "nowrap"}}
                         request={(params, sort) => {
                             params.user_id = logUserId;
-                            return getData(params,sort,getLogList)
+                            return getData(params, sort, getLogList)
                         }}
-                        pagination={{defaultPageSize: 5}}
+                        pagination={{defaultPageSize: 5} as TablePaginationConfig}
                         search={false}
                     />
                 )}
@@ -775,7 +792,8 @@ export default (): React.ReactNode => {
                 setIsModalMoneyVisible(false);
                 money.resetFields();
             }}>
-                <Form form={money} name="control-hooks3" onFinish={onMoneyFinish} labelAlign="right" labelCol={{span: 6}}
+                <Form form={money} name="control-hooks3" onFinish={onMoneyFinish} labelAlign="right"
+                      labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
                     <Form.Item name="user_id" label="用户ID" hidden={true}
                                rules={[{required: true, message: "请输入操作金额"}, {
@@ -788,10 +806,10 @@ export default (): React.ReactNode => {
                         <Select placeholder="请选择操作类型" options={[{
                             value: 0,
                             label: "充值"
-                        },{
-                            value:1,
-                            label:"扣除"
-                        }]} />
+                        }, {
+                            value: 1,
+                            label: "扣除"
+                        }]}/>
                     </Form.Item>
                     <Form.Item name="money" label="金额" rules={[{required: true, message: "请输入操作金额"}, {
                         pattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
@@ -813,10 +831,10 @@ export default (): React.ReactNode => {
                 rowKey={'id'}
                 // @ts-ignore
                 columns={columns}
-                scroll={{x:true}}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                scroll={{x: true}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 request={(params, sort) => {
-                    return getData(params,sort,getUserList)
+                    return getData(params, sort, getUserList)
                 }}
                 search={{
                     defaultCollapsed: true,

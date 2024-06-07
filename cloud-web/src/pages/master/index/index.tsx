@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import PageLoading from "@/pages/components/dashboard/pageLoading";
 import IntroduceRow from "./components/introduceRow";
 import {getChart, getCount, getToDo, getTopWeb} from "@/service/master";
@@ -6,15 +6,16 @@ import SalesCard from "./components/salesCard";
 import dayjs from "dayjs";
 import {Card, Col, Row} from "antd";
 import {Body} from "@/components";
+
 const Info: React.FC<{
     title: React.ReactNode;
     value: React.ReactNode;
     bordered?: boolean;
 }> = ({title, value, bordered}) => (
-    <div style={{position: "relative",textAlign: "center"}}>
+    <div style={{position: "relative", textAlign: "center"}}>
         <span style={{display: "inline-block", marginBottom: "4px", lineHeight: "22px"}}>{title}</span>
         <p style={{margin: 0, fontSize: "24px", lineHeight: "32px"}}>{value}</p>
-        {bordered && <em style={{position: "absolute", top: 0, right: 0, width:"1px", height: "56px"}}/>}
+        {bordered && <em style={{position: "absolute", top: 0, right: 0, width: "1px", height: "56px"}}/>}
     </div>
 );
 export default (): React.ReactNode => {
@@ -26,9 +27,9 @@ export default (): React.ReactNode => {
     const getGenCount = () => {
         setCountLoading(true);
         getCount({
-            onSuccess:(r:any)=>{
+            onSuccess: (r: any) => {
                 setCountLoading(false)
-                if(r?.code == 200){
+                if (r?.code == 200) {
                     setCountData(r?.data);
                 }
             }
@@ -39,7 +40,7 @@ export default (): React.ReactNode => {
      */
     const [chartLoading, setChartLoading] = useState(true);
     const [chartData, setChartData] = useState<any>({});
-    const [rangePickerValue, setRangePickerValue] = useState<any>( [
+    const [rangePickerValue, setRangePickerValue] = useState<any>([
         dayjs().add(-30, 'days'),
         dayjs(),
     ]);
@@ -62,42 +63,42 @@ export default (): React.ReactNode => {
         const end_date = dayjs(rangeDate[1]).format('YYYY-MM-DD');
         setChartLoading(true);
         await getChart({
-            body:{
+            body: {
                 type: type,
                 start_date: start_date,
                 end_date: end_date
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     temp.data = r?.data;
                 }
             }
         });
 
         await getTopWeb({
-            body:{
+            body: {
                 type: type,
                 order_by: 'user_num',
                 start_date: start_date,
                 end_date: end_date,
                 limit: 7
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     temp.topUser = r?.data;
                 }
             }
         })
         await getTopWeb({
-            body:{
+            body: {
                 type: type,
                 order_by: 'order_succ_num',
                 start_date: start_date,
                 end_date: end_date,
                 limit: 7
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     temp.topOrder = r?.data;
                 }
             }
@@ -124,8 +125,8 @@ export default (): React.ReactNode => {
     const getToDoData = () => {
         setToDoLoading(true);
         getToDo({
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
+            onSuccess: (r: any) => {
+                if (r?.code == 200) {
                     setToDoData(r?.data);
                     setToDoLoading(false);
                 }
@@ -143,31 +144,32 @@ export default (): React.ReactNode => {
     }, []);
     return (
         <Body>
-                <Suspense fallback={<PageLoading/>}>
-                    <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
-                </Suspense>
-                <Suspense fallback={<PageLoading/>}>
-                    <Card bordered={false} loading={toDoLoading} style={{marginBottom: "20px"}}>
-                        <Row>
-                            <Col sm={12} md={12} xs={12}>
-                                <Info title="我的待办" value={(toDoData?.cash || 0) > 0 ? toDoData?.cash + '个提现' : '暂无'} bordered/>
-                            </Col>
-                            <Col sm={12} md={12} xs={12}>
-                                <Info title="程序版本 " value={toDoData?.version?.name || "latest"}/>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Suspense>
-                <Suspense fallback={null} >
-                    <SalesCard
-                        rangePickerValue={rangePickerValue}
-                        salesData={chartData}
-                        dateType={selectDateType}
-                        handleRangePickerChange={handleRangePickerChange}
-                        loading={chartLoading}
-                        selectDate={selectDate}
-                    />
-                </Suspense>
+            <Suspense fallback={<PageLoading/>}>
+                <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
+            </Suspense>
+            <Suspense fallback={<PageLoading/>}>
+                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "20px"}}>
+                    <Row>
+                        <Col sm={12} md={12} xs={12}>
+                            <Info title="我的待办"
+                                  value={(toDoData?.cash || 0) > 0 ? toDoData?.cash + '个提现' : '暂无'} bordered/>
+                        </Col>
+                        <Col sm={12} md={12} xs={12}>
+                            <Info title="程序版本 " value={toDoData?.version?.name || "latest"}/>
+                        </Col>
+                    </Row>
+                </Card>
+            </Suspense>
+            <Suspense fallback={null}>
+                <SalesCard
+                    rangePickerValue={rangePickerValue}
+                    salesData={chartData}
+                    dateType={selectDateType}
+                    handleRangePickerChange={handleRangePickerChange}
+                    loading={chartLoading}
+                    selectDate={selectDate}
+                />
+            </Suspense>
         </Body>
     );
 };

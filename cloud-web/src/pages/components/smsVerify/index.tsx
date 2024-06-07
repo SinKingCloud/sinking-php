@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useRef, useState} from 'react';
 import {App, Button, Col, Form,  Input, Row} from "antd";
 import {FormInstance} from "antd/lib/form/hooks/useForm";
 import {getCaptchaUrl} from "@/service/common/captcha";
@@ -7,7 +7,7 @@ import Captcha, {CaptchaRef} from "../../../components/captcha";
 
 export type SmsVerifyProps = {
     onFinish: (value?: any) => Promise<boolean | void>;
-    form: FormInstance<any>;
+    form: FormInstance;
     phone?: string;
     topNodes?: React.ReactNode;
     bottomNodes?: React.ReactNode;

@@ -12,8 +12,6 @@ import SmsView from "./components/sms";
 import {createStyles} from "antd-style";
 import {Body} from "@/components";
 
-const {Item} = Menu;
-
 type SettingsStateKeys = 'base' | 'email' | 'sms' | 'pay' | 'cash' | 'web' | 'cloud' | 'upgrade';
 type SettingsState = {
     mode: 'inline' | 'horizontal';

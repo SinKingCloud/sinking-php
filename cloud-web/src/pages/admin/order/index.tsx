@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import {Tag, Typography} from "antd";
 import {getData, getParams} from "@/utils/page";
 import {getOrderList} from "@/service/admin/order";
-import { Body } from '@/components';
+import {Body} from '@/components';
 import {getWebList} from "@/service/admin/web";
 
 export default (): React.ReactNode => {
@@ -51,7 +51,7 @@ export default (): React.ReactNode => {
             render: (text: string, record: any) => {
                 return <>
                     <Tag>昵称:{record?.user?.nick_name}(ID:<Typography.Text
-                        copyable>{record?.user?.id || 0}</Typography.Text>)</Tag>
+                        copyable>{record?.user?.id}</Typography.Text>)</Tag>
                     <br/>
                     <Tag>邮箱:<Typography.Text copyable>{record?.user?.email}</Typography.Text></Tag>
                 </>;
@@ -198,12 +198,12 @@ export default (): React.ReactNode => {
         <Body>
             <ProTable
                 defaultSize={"small"}
-                form={{layout: "vertical",autoFocusFirstInput:false}}
+                form={{layout: "vertical", autoFocusFirstInput: false}}
                 headerTitle={'订单记录'}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 rowKey={'id'}
                 options={{
                     density: true,
@@ -211,8 +211,8 @@ export default (): React.ReactNode => {
                     setting: true,
                 }}
                 columns={columns}
-                request={ (params, sort) => {
-                    return getData(params,sort,getOrderList)
+                request={(params, sort) => {
+                    return getData(params, sort, getOrderList)
                 }}
                 search={{
                     defaultCollapsed: true,

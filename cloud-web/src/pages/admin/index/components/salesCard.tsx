@@ -149,8 +149,7 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
         }
     } = useStyles()
     return (
-        //@ts-ignore
-        <Card loading={loading} bordered={false} styles={{padding: 0}}>
+        <Card loading={loading} bordered={false}>
             <Tabs items={[
                 {
                     label: '用户量',

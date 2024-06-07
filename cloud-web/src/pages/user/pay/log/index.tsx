@@ -90,7 +90,7 @@ export default (): React.ReactNode => {
                 style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 scroll={{x: true}}
                 columns={columns}
-                request={async (params, sort) => {
+                request={(params, sort) => {
                     return getData(params, sort, getPayLog);
                 }}
                 search={{

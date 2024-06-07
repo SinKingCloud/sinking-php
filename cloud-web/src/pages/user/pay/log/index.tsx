@@ -1,9 +1,9 @@
 import React, {useRef} from 'react';
 import ProTable, {ProColumns} from '@ant-design/pro-table';
-import {getParams} from "@/utils/page";
+import {getData, getParams} from "@/utils/page";
 import {message} from "antd";
 import {getPayLog} from "@/service/pay/pay";
-import { Body } from '@/components';
+import {Body} from '@/components';
 
 export default (): React.ReactNode => {
     const actionRef = useRef();
@@ -51,7 +51,7 @@ export default (): React.ReactNode => {
             dataIndex: 'money',
             tip: '金额',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -83,28 +83,15 @@ export default (): React.ReactNode => {
     return (
         <Body>
             <ProTable
-                form={{layout: "vertical",autoFocusFirstInput:false}}
+                form={{layout: "vertical", autoFocusFirstInput: false}}
                 headerTitle={'消费明细'}
                 actionRef={actionRef}
                 rowKey={'id'}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                scroll={{x:true}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
+                scroll={{x: true}}
                 columns={columns}
                 request={async (params, sort) => {
-                    const fetchParams = getParams(params, sort)
-                    const data = await getPayLog({
-                        body:{
-                            ...fetchParams
-                        }
-                    });
-                    if (data.code != 200) {
-                        message.error(data.message);
-                    }
-                    return {
-                        data: data.data.list === undefined || data.data.list === null || data.data.list.length <= 0 ? [] : data.data.list,
-                        success: data.code === 200,
-                        total: data.data.total,
-                    };
+                    return getData(params, sort, getPayLog);
                 }}
                 search={{
                     labelWidth: "auto",

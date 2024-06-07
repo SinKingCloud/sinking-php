@@ -209,7 +209,6 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
-                // @ts-ignore
                 columns={columns}
                 request={async (params, sort) => {
                     const fetchParams = getParams(params,sort)

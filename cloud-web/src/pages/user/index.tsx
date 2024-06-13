@@ -11,43 +11,47 @@ import {getContact, getNotice} from "@/service/person/config";
 import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles} from "antd-style";
 import {Body} from "@/components";
-const useStyles = createStyles(({css, responsive,isDarkMode}): any => {
+
+const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
     const border = isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #f6f6f6"
     return {
         pageHeaderContent: css`
-             display: flex;
-             align-items: center;
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
         `,
         avatar: css`
             height: 65px;
             width: 65px;
             margin-right: 15px;
             flex-shrink: 0;
+
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 margin-bottom: 10px;
             }
         `,
-        box:css`
+        box: css`
             height: 65px;
         `,
         title: css`
             margin-top: 8px;
             font-size: 20px;
-            color:${color};
+            color: ${color};
             line-height: 1;
+
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 text-align: center;
                 margin-top: 0;
                 line-height: 1;
             }
         `,
-        content:css`
+        content: css`
             font-size: 15px;
             line-height: 1;
             color: ${color};
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 line-height: 20px;
             }
         `,
@@ -55,38 +59,43 @@ const useStyles = createStyles(({css, responsive,isDarkMode}): any => {
             display: flex;
             align-items: center;
         `,
-        money:css`
+        money: css`
             margin-bottom: 4px;
             color: rgba(0, 0, 0, 0.45);
             font-size: 14px;
             padding: 0 30px;
             box-sizing: border-box;
-            display:flex;
-            align-items:center;
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm}{
+            display: flex;
+            align-items: center;
+
+            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 padding: 0 30px;
                 box-sizing: border-box;
-                .ant-statistic-title{
+
+                .ant-statistic-title {
                     font-size: 14px;
                 }
-                .ant-statistic-content{
+
+                .ant-statistic-content {
                     font-size: 22px !important;
                 }
             }
         `,
-        projectGrid:css`
+        projectGrid: css`
             width: 33.33%;
             border: ${border};
             border-radius: 0 !important;
             padding: 0 !important;
+
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 width: 100%;
+
                 .ant-card-body {
                     padding: 0 !important;
                 }
             }
         `,
-        newButton:css`
+        newButton: css`
             width: 100%;
             height: 145px;
             border-radius: 0 !important;
@@ -123,8 +132,8 @@ const useStyles = createStyles(({css, responsive,isDarkMode}): any => {
             }
         },
         avatar2: css`
-                margin-right: 15px;
-            `,
+            margin-right: 15px;
+        `,
         inner: {
             display: "flex",
             justifyContent: "space-between"
@@ -133,27 +142,30 @@ const useStyles = createStyles(({css, responsive,isDarkMode}): any => {
             width: 100%;
             display: flex;
             align-items: center;
+
             ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
                 display: flex;
                 flex-direction: column;
-                .ant-col-16{
+
+                .ant-col-16 {
                     max-width: 100%;
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center
                 }
-                .ant-col-8{
+
+                .ant-col-8 {
                     max-width: 100%;
                 }
             }
         `,
-        my:css`
-            .ant-pro-card-header{
+        my: css`
+            .ant-pro-card-header {
                 margin-bottom: 5px;
             }
         `,
-        card:css`
-            .ant-card-body{
+        card: css`
+            .ant-card-body {
                 padding: 0 !important;
             }
         `
@@ -163,7 +175,7 @@ const PageHeaderContent: FC = () => {
     const {
         styles: {box, avatar, title, content}
     } = useStyles();
-    const user = useModel("user")
+    const user = useModel("user");
     const loading = user && Object.keys(user).length;
     if (!loading) {
         return <Skeleton avatar paragraph={{rows: 1}} active/>;
@@ -187,14 +199,15 @@ const PageHeaderContent: FC = () => {
 };
 const ExtraContent: FC = () => {
     const user = useModel("user")
-    const {styles: { money}} = useStyles();
+    const {styles: {money}} = useStyles();
     return (
         <>
             <div className={money}>
                 <Statistic title="余额" prefix={"￥"} value={parseFloat(user?.web?.money || 0).toFixed(2)}/>
             </div>
             <div className={money}>
-                <Statistic title="身份" value={user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}/>
+                <Statistic title="身份"
+                           value={user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}/>
             </div>
         </>
     )
@@ -265,11 +278,12 @@ export default () => {
         setNotice2Loading(true);
         getNotice({
             onSuccess: (r: any) => {
-                setNotice2Loading(false);
                 if (r?.code == 200) {
                     setNotice2Data(r?.data);
                 }
             }
+        }).finally(() => {
+            setNotice2Loading(false);
         })
     };
     /**
@@ -351,7 +365,7 @@ export default () => {
                             >
                                 <Card.Grid className={projectGrid} style={{padding: "0px"}}>
                                     <Card className={card} bordered={false}>
-                                        <Button  className={newButton}>
+                                        <Button className={newButton}>
                                             <PlusOutlined/> 立即添加
                                         </Button>
                                     </Card>

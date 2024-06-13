@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {getData} from "@/utils/page";
 import {getPayOrder} from "@/service/pay/order";
-import { Body } from '@/components';
+import {Body, Title} from '@/components';
 import ProTable from "@ant-design/pro-table";
 
 export default (): React.ReactNode => {
@@ -12,7 +12,7 @@ export default (): React.ReactNode => {
     /**
      * table表格渲染
      */
-    const column= [
+    const column = [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -61,7 +61,7 @@ export default (): React.ReactNode => {
             dataIndex: 'money',
             tip: '订单金额',
             hideInSearch: true,
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -148,17 +148,17 @@ export default (): React.ReactNode => {
         },
     ];
     return (
-        <Body >
+        <Body>
             <ProTable
-                form={{layout: "vertical",autoFocusFirstInput:false}}
-                headerTitle={'订单记录'}
+                form={{layout: "vertical", autoFocusFirstInput: false}}
+                headerTitle={<Title>订单记录</Title>}
                 actionRef={actionRef}
                 rowKey={'id'}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                scroll={{x:true}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
+                scroll={{x: true}}
                 columns={column}
                 request={(params, sort) => {
-                    return getData(params,sort,getPayOrder)
+                    return getData(params, sort, getPayOrder)
                 }}
                 search={{
                     labelWidth: 'auto',

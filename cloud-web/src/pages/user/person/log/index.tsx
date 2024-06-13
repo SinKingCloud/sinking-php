@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
 import {getData} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
-import {Body} from '@/components';
+import {Body, Title} from '@/components';
 
 export default (): React.ReactNode => {
     /**
@@ -103,7 +103,7 @@ export default (): React.ReactNode => {
         <Body>
             <ProTable
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'操作日志'}
+                headerTitle={<Title>操作日志</Title>}
                 actionRef={actionRef}
                 style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 scroll={{x: true}}

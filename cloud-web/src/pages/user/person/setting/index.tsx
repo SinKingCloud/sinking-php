@@ -3,7 +3,7 @@ import ProCard from "@ant-design/pro-card";
 import {
     Alert, App,
     Avatar,
-    Button,
+    Button, Card,
     Col,
     Dropdown,
     Form,
@@ -20,7 +20,7 @@ import {LockOutlined, MailOutlined, SafetyOutlined, UploadOutlined} from "@ant-d
 import {updateInfo, updatePassword, updateEmail, updatePhone} from "@/service/person/update";
 import {getUploadUrl} from "@/service/common/upload";
 import SmsVerify from "@/pages/components/smsVerify";
-import {Body} from '@/components';
+import {Body, Title} from '@/components';
 import {useModel} from "umi";
 import EmailVerify from "@/pages/components/emailVerify";
 
@@ -58,7 +58,8 @@ export default (): React.ReactNode => {
     const [phoneForm] = Form.useForm();
     return (
         <Body>
-            <Modal key={"editPassword"} width={430} destroyOnClose={true} forceRender={true} title="修改密码"
+            <Modal key={"editPassword"} width={430} destroyOnClose={true} forceRender={true}
+                   title={<Title>修改密码</Title>}
                    open={isPasswordModalVisible} confirmLoading={isPasswordModalLoading}
                    onOk={changePwdType == 'email' ? passwordForm.submit : phonePawForm.submit} okText={"确 认"}
                    onCancel={() => {
@@ -137,7 +138,7 @@ export default (): React.ReactNode => {
                     }/>
                 }
             </Modal>
-            <Modal key="editEmail" width={430} destroyOnClose={true} forceRender={true} title="修改邮箱"
+            <Modal key="editEmail" width={430} destroyOnClose={true} forceRender={true} title={<Title>修改邮箱</Title>}
                    open={isEmailModalVisible} confirmLoading={isEmailModalLoading}
                    onOk={emailForm.submit} okText="确 认" onCancel={() => {
                 setIsEmailModalVisible(false);
@@ -172,7 +173,8 @@ export default (): React.ReactNode => {
                     </Form.Item>
                 }/>
             </Modal>
-            <Modal key={"editPhone"} width={430} destroyOnClose={true} forceRender={true} title="修改手机"
+            <Modal key={"editPhone"} width={430} destroyOnClose={true} forceRender={true}
+                   title={<Title>修改手机</Title>}
                    open={isPhoneModalVisible} confirmLoading={isPhoneModalLoading}
                    onOk={phoneForm.submit} okText={"确 认"} onCancel={() => {
                 setIsPhoneModalVisible(false);
@@ -209,7 +211,7 @@ export default (): React.ReactNode => {
             </Modal>
             <Row>
                 <Col xs={{span: 24, offset: 0}} lg={{span: 14, offset: 5}}>
-                    <ProCard title="账户设置" headerBordered>
+                    <Card title={<Title>账户设置</Title>} bordered>
                         <Row>
                             <Col lg={{span: 7, offset: 0}} style={{textAlign: "center", margin: "0px auto 20px auto"}}>
                                 <Space direction="vertical" size={"small"}>
@@ -394,7 +396,7 @@ export default (): React.ReactNode => {
                                 </ProForm>
                             </Col>
                         </Row>
-                    </ProCard>
+                    </Card>
                 </Col>
             </Row>
         </Body>

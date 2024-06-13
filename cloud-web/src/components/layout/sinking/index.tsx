@@ -126,6 +126,63 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         onMenuBtnClick?.(status);
     }
 
+    const layout1 = () => {
+        return (<Layout>
+            <Layout.Sider className={sider} trigger={null} collapsible collapsed={collapsed}
+                          width={menuUnCollapsedWidth} collapsedWidth={menuCollapsedWidth}
+                          hidden={mobile}>
+                {(mobile &&
+                        <Drawer placement={"left"} closable={false} open={open} width={menuUnCollapsedWidth}
+                                classNames={{body: drawMenu}}
+                                onClose={() => {
+                                    setOpen(false)
+                                }}>
+                            <Sider collapsed={collapsed}
+                                   unCollapsedLogo={unCollapsedLogo}
+                                   menuBottomBtnIcon={menuBottomBtnIcon}
+                                   menuBottomBtnText={menuBottomBtnText}
+                                   onMenuBottomBtnClick={onMenuBottomBtnClick}
+                                   menus={menus}
+                                   onLogoClick={onLogoClick} collapsedLogo={collapsedLogo}
+                                   onMenuClick={(item) => {
+                                       setOpen(false);
+                                       onMenuClick?.(item);
+                                   }}/>
+                        </Drawer>)
+                    ||
+                    <Sider collapsed={collapsed}
+                           onLogoClick={onLogoClick}
+                           collapsedLogo={collapsedLogo}
+                           unCollapsedLogo={unCollapsedLogo}
+                           menuBottomBtnIcon={menuBottomBtnIcon}
+                           menuBottomBtnText={menuBottomBtnText}
+                           onMenuBottomBtnClick={onMenuBottomBtnClick}
+                           menus={menus}
+                           onMenuClick={(item) => {
+                               onMenuClick?.(item);
+                           }}/>}
+            </Layout.Sider>
+            <Layout className={body}
+                    style={{marginLeft: mobile ? 0 : (collapsed ? menuCollapsedWidth + "px" : menuUnCollapsedWidth + "px")}}>
+                <Layout.Header className={header}>
+                    <Button type="text" size={"large"}
+                            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+                            onClick={menuBtnOnClick} className={menuBtn}/>
+                    <Header left={headerLeft} right={headerRight}/>
+                </Layout.Header>
+                <Layout.Content className={content}>
+                    <Outlet/>
+                </Layout.Content>
+                {props?.footer && <Layout.Footer className={footer}>
+                    <Footer> {props?.footer}</Footer>
+                </Layout.Footer>}
+            </Layout>
+        </Layout>);
+    }
+    const layout2 = () => {
+        return (<></>);
+    }
+
     return (<ConfigProvider locale={zhCN}>
         <App>
             {(loading && <Loading/>) || <Layout>

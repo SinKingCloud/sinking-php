@@ -10,7 +10,7 @@ import {ago} from "@/utils/time";
 import {getContact, getNotice} from "@/service/person/config";
 import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles} from "antd-style";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
@@ -358,7 +358,7 @@ export default () => {
                             <ProCard
                                 className={my}
                                 style={{marginBottom: 24}}
-                                title="我的数据"
+                                title={<Title>我的数据</Title>}
                                 extra={<Link to="/user/index">查看全部</Link>}
                                 loading={false}
                                 bodyStyle={{padding: 0}}
@@ -447,7 +447,7 @@ export default () => {
                     <ProCard
                         style={{marginBottom: 24}}
                         className={notice}
-                        title="系统公告"
+                        title={<Title>系统公告</Title>}
                         loading={noticeLoading}
                         bodyStyle={{padding: "0 20px 0 20px"}}
                     >

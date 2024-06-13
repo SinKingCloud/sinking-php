@@ -5,7 +5,7 @@ import {ExclamationCircleOutlined, WechatOutlined} from "@ant-design/icons";
 import {buySite, getSite} from "@/service/shop/site";
 import {getPayConfig} from "@/service/pay/pay";
 import {setPayJumpUrl} from "@/utils/pay";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 import {useModel} from "umi";
 import {createStyles, useResponsive} from "antd-style";
 
@@ -302,7 +302,7 @@ export default (): React.ReactNode => {
         <Body loading={loading}>
             <Modal key={"add_web"} width={400} destroyOnClose={true} open={isModalAddWebVisible}
                    okButtonProps={{loading: isModalAddWebBtnLoading}}
-                   forceRender={true} title="开通网站" onOk={add.submit} okText={'开通'} onCancel={() => {
+                   forceRender={true} title={<Title>开通网站</Title>} onOk={add.submit} okText={'开通'} onCancel={() => {
                 setIsModalAddWebVisible(false);
                 add.resetFields();
             }}>

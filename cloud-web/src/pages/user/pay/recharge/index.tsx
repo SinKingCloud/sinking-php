@@ -13,12 +13,13 @@ import {
 } from "@ant-design/icons";
 import {getPayConfig, recharge} from "@/service/pay/pay";
 import {setPayJumpUrl} from "@/utils/pay";
-import {Body} from '@/components';
+import {Body, Title} from '@/components';
 import {createStyles, useResponsive} from "antd-style";
 import ProTable, {ProColumns} from "@ant-design/pro-table";
-const useStyles = createStyles(({css})=>{
+
+const useStyles = createStyles(({css}) => {
     return {
-        border:css`
+        border: css`
             .ant-pro-checkcard-checked:after {
                 border: 6px solid #0735ed;
                 border-block-end: 6px solid transparent;
@@ -29,8 +30,8 @@ const useStyles = createStyles(({css})=>{
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{border}} = useStyles()
-    const {message,modal} = App.useApp()
+    const {styles: {border}} = useStyles()
+    const {message, modal} = App.useApp()
     const {mobile} = useResponsive()
     const user = useModel("user")
     const [loading, setLoading] = useState(false);
@@ -72,7 +73,7 @@ export default (): React.ReactNode => {
             title: '充值金额',
             dataIndex: 'money',
             tip: '充值金额',
-            render: (text:any,record: any) => {
+            render: (text: any, record: any) => {
                 return parseFloat(record?.money || 0).toFixed(2) + "元";
             }
         },
@@ -141,7 +142,7 @@ export default (): React.ReactNode => {
                     </Row>
                     <Row>
                         <Col xs={{span: 24}} lg={{span: 24}}>
-                            <ProCard bordered title="账户充值" loading={loading} >
+                            <ProCard bordered title={<Title>账户充值</Title>} loading={loading}>
                                 <Form
                                     form={form}
                                     labelCol={{span: 12}}
@@ -264,18 +265,18 @@ export default (): React.ReactNode => {
                                                     boxSizing: "border-box"
                                                 }}
                                             />
-                                            {!moneyInput &&  <Input placeholder={"金额"}
-                                                                    onChange={(e) => {
-                                                                        setMoney(e.target.value);
-                                                                        form.setFieldsValue({money: e.target.value});
-                                                                    }}
-                                                                    style={{
-                                                                        height: "41.5px",
-                                                                        width: "68px",
-                                                                        margin: "0px",
-                                                                        borderRadius: "7px",
-                                                                        textAlign: "center"
-                                                                    }}/>}
+                                            {!moneyInput && <Input placeholder={"金额"}
+                                                                   onChange={(e) => {
+                                                                       setMoney(e.target.value);
+                                                                       form.setFieldsValue({money: e.target.value});
+                                                                   }}
+                                                                   style={{
+                                                                       height: "41.5px",
+                                                                       width: "68px",
+                                                                       margin: "0px",
+                                                                       borderRadius: "7px",
+                                                                       textAlign: "center"
+                                                                   }}/>}
 
                                         </CheckCard.Group>
                                     </Form.Item>
@@ -289,7 +290,8 @@ export default (): React.ReactNode => {
                                             <Row gutter={10} wrap={true} style={{margin: "10px 0px 0px 0px"}}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>
                                                     <CheckCard
-                                                        title={(<><AlipayCircleOutlined style={{marginRight:"5px"}}/> 支付宝</>)}
+                                                        title={(<><AlipayCircleOutlined
+                                                            style={{marginRight: "5px"}}/> 支付宝</>)}
                                                         value="0"
                                                         size={"small"}
                                                         style={{
@@ -299,24 +301,25 @@ export default (): React.ReactNode => {
                                                         }}
                                                     />
                                                     <CheckCard
-                                                        title={(<><WechatOutlined style={{marginRight:"5px"}}/> 微信</>)}
+                                                        title={(<><WechatOutlined
+                                                            style={{marginRight: "5px"}}/> 微信</>)}
                                                         value="1"
                                                         size={"small"}
                                                         style={{
                                                             maxWidth: "70px",
                                                             borderRadius: "10px",
-                                                            paddingLeft:"6px",
+                                                            paddingLeft: "6px",
                                                             display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />
                                                     <CheckCard
-                                                        title={(<><QqOutlined style={{marginRight:"5px"}}/> QQ</>)}
+                                                        title={(<><QqOutlined style={{marginRight: "5px"}}/> QQ</>)}
                                                         value="2"
                                                         size={"small"}
                                                         style={{
                                                             maxWidth: "70px",
                                                             borderRadius: "10px",
-                                                            paddingLeft:"6px",
+                                                            paddingLeft: "6px",
                                                             display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />
@@ -343,14 +346,14 @@ export default (): React.ReactNode => {
                     <ProTable
                         actionRef={ref}
                         form={{layout: "vertical", autoFocusFirstInput: false}}
-                        headerTitle={'充值记录'}
+                        headerTitle={<Title>充值记录</Title>}
                         rowKey={'id'}
-                        style={{overflowX:"auto",whiteSpace:"nowrap"}}
-                        scroll={{x:true}}
+                        style={{overflowX: "auto", whiteSpace: "nowrap"}}
+                        scroll={{x: true}}
                         columns={columns}
                         request={(params, sort) => {
                             params.order_type = 0;
-                            return getData(params,sort,getPayOrder)
+                            return getData(params, sort, getPayOrder)
                         }}
                         pagination={{defaultPageSize: 10} as TablePaginationConfig}
                         search={false}

@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import ProTable, {ProColumns} from '@ant-design/pro-table';
 import {getData} from "@/utils/page";
 import {getPayLog} from "@/service/pay/pay";
-import {Body} from '@/components';
+import {Body, Title} from '@/components';
 
 export default (): React.ReactNode => {
     const actionRef = useRef();
@@ -83,7 +83,7 @@ export default (): React.ReactNode => {
         <Body>
             <ProTable
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'消费明细'}
+                headerTitle={<Title>消费明细</Title>}
                 actionRef={actionRef}
                 rowKey={'id'}
                 style={{overflowX: "auto", whiteSpace: "nowrap"}}

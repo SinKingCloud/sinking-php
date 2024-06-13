@@ -215,17 +215,23 @@ export default (): React.ReactNode => {
     const user = useModel("user")
     const [siteConfig, setSiteConfig] = useState({});
     const [payConfig, setPayConfig] = useState({});
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
+        setLoading(true);
         getSite({
             onSuccess: (r) => {
                 setSiteConfig(r?.data);
             }
+        }).finally(() => {
+            getPayConfig({
+                onSuccess: (r2) => {
+                    setPayConfig(r2?.data);
+                }
+            }).finally(() => {
+                setLoading(false);
+            });
         });
-        getPayConfig({
-            onSuccess: (r2) => {
-                setPayConfig(r2?.data);
-            }
-        });
+
     }, []);
     /**
      * 开通网站表单
@@ -293,7 +299,7 @@ export default (): React.ReactNode => {
     }
 
     return (
-        <Body>
+        <Body loading={loading}>
             <Modal key={"add_web"} width={400} destroyOnClose={true} open={isModalAddWebVisible}
                    okButtonProps={{loading: isModalAddWebBtnLoading}}
                    forceRender={true} title="开通网站" onOk={add.submit} okText={'开通'} onCancel={() => {

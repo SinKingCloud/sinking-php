@@ -154,16 +154,16 @@ export default (): React.ReactNode => {
                             if (r?.code == 200) {
                                 message?.success(r?.message)
                                 refresh.refreshWebUser()
-                                setIsEmailModalVisible(false)
                             }
                         },
                         onFail: (r: any) => {
                             if (r.code != 200) {
                                 message?.error(r?.message || "请求失败")
-                                setIsEmailModalLoading(false)
                             }
+                        }, onFinally: () => {
+                            setIsEmailModalLoading(false)
                         }
-                    })
+                    });
                 }} topNodes={
                     <Form.Item name="email" label="新安全邮箱"
                                rules={[{required: true, message: '请输入需要新绑定的安全邮箱',}]}>

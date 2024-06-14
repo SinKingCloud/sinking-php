@@ -302,11 +302,12 @@ export default (): React.ReactNode => {
         <Body loading={loading}>
             <Modal key={"add_web"} width={400} destroyOnClose={true} open={isModalAddWebVisible}
                    okButtonProps={{loading: isModalAddWebBtnLoading}}
-                   forceRender={true} title={<Title>开通网站</Title>} onOk={add.submit} okText={'开通'} onCancel={() => {
-                setIsModalAddWebVisible(false);
-                add.resetFields();
-            }}>
-                <Form form={add} name="control-hooks" onFinish={onAddFormFinish} labelCol={{span: 6}}
+                   forceRender={true} title={<Title>开通网站</Title>} onOk={add.submit} okText={'开通'}
+                   onCancel={() => {
+                       setIsModalAddWebVisible(false);
+                       add.resetFields();
+                   }}>
+                <Form form={add} onFinish={onAddFormFinish} labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
                     <Form.Item name="name" label="网站名称" rules={[{required: true, message: "请输入网站名称"}]}>
                         <Input placeholder="请输入网站名称"/>

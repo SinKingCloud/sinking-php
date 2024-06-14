@@ -21,13 +21,23 @@ import {getUploadUrl} from "@/service/common/upload";
 import {getPayLog} from "@/service/admin/pay";
 import {getLogList} from "@/service/admin/log";
 import {useModel} from "umi";
-import {Body} from "@/components";
-
+import {Body, Title} from "@/components";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
+    const {styles:{modals}} = useStyles()
     /**
      * 表单处理
      */
-    const actionRef = useRef();
+    const actionRef = useRef<any>();
     const ref = useRef();
     const user = useModel("user")
     const {message, modal} = App.useApp()
@@ -90,19 +100,16 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setIsModalVisible(false);
                     message?.success(r?.message)
-                    // @ts-ignore
                     actionRef.current.reload()
                     form.resetFields();
-                }
             },
             onFail: (r: any) => {
-                if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setIsModalBtnLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setIsModalBtnLoading(false);
             }
         });
     }
@@ -112,7 +119,7 @@ export default (): React.ReactNode => {
      */
     const [isModalPayVisible, setIsModalPayVisible] = useState(false);//编辑弹窗
     const [payUserId, setPayUserId] = useState(0);//编辑弹窗
-    const payActionRef = useRef();
+    const payActionRef = useRef<any>();
     const payRef = useRef();
     const payColumns = [
         {
@@ -182,19 +189,16 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalMoneyVisible(false);
                     form.resetFields();
-                    //@ts-ignore
                     actionRef.current.reload()
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setIsModalMoneyBtnLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setIsModalMoneyBtnLoading(false);
             }
         });
     }
@@ -204,7 +208,7 @@ export default (): React.ReactNode => {
      */
     const [isModalLogVisible, setIsModalLogVisible] = useState(false);//编辑弹窗
     const [logUserId, setLogUserId] = useState(0);//编辑弹窗
-    const logActionRef = useRef();
+    const logActionRef = useRef<any>();
     const logRef = useRef();
     const logColumns = [
         {
@@ -283,18 +287,14 @@ export default (): React.ReactNode => {
                         status: status
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
                             message?.success(r?.message)
-                            message?.destroy(key);
-                            // @ts-ignore
                             actionRef?.current?.reload();
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message)
-                            message?.destroy(key);
-                        }
+                    },
+                    onFinally:()=>{
+                        message?.destroy(key);
                     }
                 });
             },
@@ -548,7 +548,7 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-            <Modal key={"form"} destroyOnClose={true} forceRender={true} title={"编 辑"}
+            <Modal key={"form"} destroyOnClose={true} forceRender={true} title={<Title>编 辑</Title>} className={modals}
                    open={isModalVisible} onOk={form.submit} okButtonProps={{loading: isModalBtnLoading}}
                    okText={"确 认"}
                    onCancel={() => {
@@ -610,7 +610,7 @@ export default (): React.ReactNode => {
                 </Form>
             </Modal>
 
-            <Modal key="pay" destroyOnClose={true} forceRender={true} title="余额明细" open={isModalPayVisible}
+            <Modal key="pay" destroyOnClose={true} forceRender={true} title={<Title>余额明细</Title>} className={modals} open={isModalPayVisible}
                    onOk={() => {
                        money?.setFieldsValue({user_id: payUserId, type: 0});
                        setIsModalMoneyVisible(true);
@@ -640,7 +640,7 @@ export default (): React.ReactNode => {
                 )}
             </Modal>
 
-            <Modal key="log" destroyOnClose={true} forceRender={true} title="操作日志" open={isModalLogVisible}
+            <Modal key="log" destroyOnClose={true} forceRender={true} title={<Title>操作日志</Title>} className={modals} open={isModalLogVisible}
                    footer={null}
                    onCancel={() => {
                        setIsModalLogVisible(false);
@@ -669,7 +669,7 @@ export default (): React.ReactNode => {
             </Modal>
 
             <Modal key="money" width={350} destroyOnClose={true} okButtonProps={{loading: isModalMoneyBtnLoading}}
-                   forceRender={true} title="用户加款"
+                   forceRender={true} title={<Title>用户加款</Title>} className={modals}
                    open={isModalMoneyVisible}
                    onOk={money.submit} okText="确 认" onCancel={() => {
                 setIsModalMoneyVisible(false);
@@ -706,7 +706,7 @@ export default (): React.ReactNode => {
             <ProTable
                 defaultSize={"small"}
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'用户列表'}
+                headerTitle={<Title>用户列表</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}
@@ -717,6 +717,7 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
+                // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
                     return getData(params, sort, getUserList)

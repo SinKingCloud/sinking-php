@@ -31,19 +31,17 @@ const UiView: React.FC = () => {
         setIsLoading(true);
         return await getUi({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     form.setFieldsValue(r?.data)
                     setIndex(r?.data?.["index.templates"]);
                     if (r?.data?.["ui.logo"] != undefined && r?.data?.["ui.logo"] != "") {
                         setUploadFileList([{uid: '-1', name: 'image.png', status: 'done', url: r?.data?.["ui.logo"]}]);
                     }
-                    setIsLoading(false)
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -101,15 +99,11 @@ const UiView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
                     web?.refreshInfo()
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }

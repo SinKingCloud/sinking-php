@@ -11,6 +11,11 @@ import {createStyles, useResponsive} from "antd-style";
 
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     return {
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `,
         mainTitle: css`
             background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png");
             background-repeat: no-repeat;
@@ -156,7 +161,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         table: {
             width: "800px",
             overflowX: "scroll",
-            border: isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #ebebeb",
+            border: isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #ebebeb",
             borderRadius: "15px",
             margin: "0 auto",
         },
@@ -204,7 +209,7 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td, select
+            table, thead, tbody, tr, th, td, select,modals
         }
     } = useStyles()
     /**
@@ -255,7 +260,6 @@ export default (): React.ReactNode => {
                         ...values
                     },
                     onSuccess: (r) => {
-                        setIsModalAddWebVisible(false);
                         add.resetFields();
                         message?.success(r?.message)
                         //支付成功
@@ -288,20 +292,19 @@ export default (): React.ReactNode => {
                         }
                     },
                     onFail: (r) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message || "请求失败")
-                        }
+                    },
+                    onFinally:()=>{
+                        setIsModalAddWebVisible(false);
                     }
                 });
             },
         } as ModalProps);
-
     }
-
     return (
         <Body loading={loading}>
             <Modal key={"add_web"} width={400} destroyOnClose={true} open={isModalAddWebVisible}
-                   okButtonProps={{loading: isModalAddWebBtnLoading}}
+                   okButtonProps={{loading: isModalAddWebBtnLoading}} className={modals}
                    forceRender={true} title={<Title>开通网站</Title>} onOk={add.submit} okText={'开通'}
                    onCancel={() => {
                        setIsModalAddWebVisible(false);

@@ -4,10 +4,20 @@ import ProTable from '@ant-design/pro-table';
 import {getData} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {createCash, getCashConfig, getCashList, updateCash} from "@/service/admin/cash";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 import {NamePath} from "rc-field-form/es/interface";
-
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
+    const {styles:{modals}} = useStyles()
     /**
      * 初始化
      */
@@ -16,9 +26,7 @@ export default (): React.ReactNode => {
     useEffect(() => {
         getCashConfig({
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
                     setCashConfig(r?.data);
-                }
             }
         })
     }, []);
@@ -26,7 +34,7 @@ export default (): React.ReactNode => {
     /**
      * 表单处理
      */
-    const actionRef = useRef();
+    const actionRef = useRef<any>();
     const ref = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -50,18 +58,13 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
                     message?.success(r?.message)
                     setIsModalVisible(false)
-                    // @ts-ignore
                     actionRef.current.reload()
                     form.resetFields();
-                }
             },
            onFail:(r:any)=>{
-                if(r?.code != 200){
                     message?.error(r?.message || "请求失败")
-                }
            }
         })
     }
@@ -232,7 +235,7 @@ export default (): React.ReactNode => {
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} forceRender={true} width={400}
-                   title={title == undefined ? "申请提现" : "编辑提现"}
+                   title={<Title>{title == undefined ? "申请提现" : "编辑提现"}</Title>} className={modals}
                    open={isModalVisible} onOk={form.submit} okText={"确 认"} onCancel={() => {
                 setIsModalVisible(false);
                 form.resetFields();
@@ -271,7 +274,7 @@ export default (): React.ReactNode => {
                 columns={columns}
                 defaultSize={"small"}
                 form={{layout: "vertical",autoFocusFirstInput:false}}
-                headerTitle={'提现列表'}
+                headerTitle={<Title>提现列表</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 style={{overflowX:"auto",whiteSpace:"nowrap"}}

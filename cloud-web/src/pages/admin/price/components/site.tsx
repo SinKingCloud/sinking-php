@@ -26,15 +26,13 @@ const SiteView: React.FC = () => {
         setIsLoading(true);
         return await getWeb({
             onSuccess: (r: any) => {
-                setIsLoading(false)
-                if (r?.code == 200) {
                     form.setFieldsValue(r?.data)
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     r?.error(r?.message || "请求失败")
-                }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -46,15 +44,13 @@ const SiteView: React.FC = () => {
         setIsLoading(true);
         return await getMy({
             onSuccess: (r: any) => {
-                setIsLoading(false)
-                if (r?.code == 200) {
                     setMyPrice(r?.data)
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     r?.error(r?.message || "请求失败")
-                }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -69,14 +65,10 @@ const SiteView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         })
     }

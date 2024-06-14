@@ -39,10 +39,10 @@ export default (): React.ReactNode => {
         setCountLoading(true);
         getCount({
             onSuccess: (r: any) => {
-                setCountLoading(false)
-                if (r?.code == 200) {
                     setCountData(r?.data);
-                }
+            },
+            onFinally:()=>{
+                setCountLoading(false)
             }
         });
     };
@@ -137,10 +137,10 @@ export default (): React.ReactNode => {
         setToDoLoading(true);
         getToDo({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setToDoData(r?.data);
-                    setToDoLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setToDoLoading(false);
             }
         });
     };
@@ -207,10 +207,10 @@ export default (): React.ReactNode => {
                 type: "p"
             },
             onSuccess: (r: any) => {
+                setNotice2Data(r?.data);
+            },
+            onFinally:()=>{
                 setNotice2Loading(false);
-                if (r?.code == 200) {
-                    setNotice2Data(r?.data);
-                }
             }
         })
     };
@@ -246,7 +246,7 @@ export default (): React.ReactNode => {
                 <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
-                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "20px"}}>
+                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "10px"}}>
                     <Row>
                         <Col sm={12} md={12} xs={12}>
                             <Info title="我的待办"
@@ -260,7 +260,7 @@ export default (): React.ReactNode => {
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
                 <Row gutter={24}>
-                    <Col sm={12} md={12} xs={24} style={{marginBottom: "20px"}}>
+                    <Col sm={12} md={12} xs={24} style={{marginBottom: "10px"}}>
                         <ProCard headerBordered title="金额占比" loading={countLoading}>
                             <Donut
                                 forceFit

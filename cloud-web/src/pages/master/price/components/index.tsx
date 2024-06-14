@@ -29,19 +29,19 @@ const SiteView: React.FC = () => {
                 key: "site"
             },
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
-                    setIsLoading(false)
                     let temp:any = {};
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
                     });
                      form.setFieldsValue(temp)
-                }
             },
             onFail:(r:any)=>{
                 if(r?.code != 200){
                     return {}
                 }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -54,14 +54,10 @@ const SiteView: React.FC = () => {
                 ...values
             },
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
                     message?.success(r?.message || "修改成功")
-                }
             },
             onFail:(r:any)=>{
-                if(r?.code != 200){
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }

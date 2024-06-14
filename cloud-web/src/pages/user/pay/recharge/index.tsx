@@ -205,8 +205,9 @@ export default (): React.ReactNode => {
                                                 value="10"
                                                 style={{
                                                     borderRadius: "7px",
-                                                    padding: "2px 12px",
-                                                    width: "auto",
+                                                    paddingLeft:"9px",
+                                                    height: "36px",
+                                                    width: "60px",
                                                     boxSizing: "border-box"
                                                 }}
                                             />
@@ -216,8 +217,9 @@ export default (): React.ReactNode => {
                                                 value="50"
                                                 style={{
                                                     borderRadius: "7px",
-                                                    padding: "2px 12px",
-                                                    width: "auto",
+                                                    paddingLeft:"9px",
+                                                    height: "36px",
+                                                    width: "60px",
                                                     boxSizing: "border-box"
                                                 }}
                                             />
@@ -227,8 +229,9 @@ export default (): React.ReactNode => {
                                                 value="100"
                                                 style={{
                                                     borderRadius: "7px",
-                                                    padding: "2px 12px",
-                                                    width: "auto",
+                                                    paddingLeft:"6px",
+                                                    height: "36px",
+                                                    width: "60px",
                                                     boxSizing: "border-box"
                                                 }}
                                             />
@@ -238,8 +241,9 @@ export default (): React.ReactNode => {
                                                 value="500"
                                                 style={{
                                                     borderRadius: "7px",
-                                                    padding: "2px 12px",
-                                                    width: "auto",
+                                                    height: "36px",
+                                                    paddingLeft:"6px",
+                                                    width: "60px",
                                                     boxSizing: "border-box"
                                                 }}
                                             />
@@ -248,9 +252,10 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value="1000"
                                                 style={{
+                                                    height: "36px",
                                                     borderRadius: "7px",
-                                                    padding: "2px 12px",
-                                                    width: "auto",
+                                                    paddingLeft:"3px",
+                                                    width: "60px",
                                                     boxSizing: "border-box"
                                                 }}
                                             />
@@ -259,9 +264,10 @@ export default (): React.ReactNode => {
                                                 size={"small"}
                                                 value=""
                                                 style={{
+                                                    height: "36px",
                                                     borderRadius: "7px",
-                                                    padding: "2px 12px",
-                                                    width: "auto",
+                                                    paddingLeft:"4px",
+                                                    width: "60px",
                                                     boxSizing: "border-box"
                                                 }}
                                             />
@@ -271,8 +277,8 @@ export default (): React.ReactNode => {
                                                                        form.setFieldsValue({money: e.target.value});
                                                                    }}
                                                                    style={{
-                                                                       height: "41.5px",
-                                                                       width: "68px",
+                                                                       height: "36px",
+                                                                       width: "60px",
                                                                        margin: "0px",
                                                                        borderRadius: "7px",
                                                                        textAlign: "center"
@@ -287,7 +293,7 @@ export default (): React.ReactNode => {
                                         initialValue={"0"}
                                     >
                                         <CheckCard.Group className={border}>
-                                            <Row gutter={10} wrap={true} style={{margin: "10px 0px 0px 0px"}}>
+                                            <Row gutter={10} wrap={true} style={{marginLeft: "22%"}}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>
                                                     <CheckCard
                                                         title={(<><AlipayCircleOutlined

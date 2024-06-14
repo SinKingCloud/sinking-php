@@ -17,7 +17,22 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
     const {message} = App.useApp()
     const captcha = useRef<CaptchaRef>({});
     const [isEmailSendLoading, setIsEmailSendLoading] = useState(false);
-
+    const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
+    const getCode = (e: any) => {
+        let time = 90;
+        const timer = setInterval(() => {
+            setSendCodeDisabled(true);
+            e.target.innerHTML = `${time}秒后重新获取`;
+            // eslint-disable-next-line no-plusplus
+            time--;
+            if (time <= 0) {
+                setSendCodeDisabled(false);
+                e.target.innerHTML = ' 获取验证码';
+                time = 0;
+                clearInterval(timer);
+            }
+        }, 1000);
+    };
     return (
         <>
             <Captcha ref={captcha}/>
@@ -48,10 +63,12 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
                                         },
                                         onSuccess: (r) => {
                                             message?.success(r?.message)
-                                            setIsEmailSendLoading(false);
+                                            getCode(e)
                                         },
                                         onFail: (r) => {
                                             message?.error(r?.message)
+                                        },
+                                        onFinally: () => {
                                             setIsEmailSendLoading(false);
                                         }
                                     })
@@ -59,7 +76,7 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
                                     message?.warning("请完成验证码认证")
                                     setIsEmailSendLoading(false);
                                 })
-                            }}>
+                            }} disabled={sendCodeDisabled}>
                                 获取验证码
                             </Button>
                         </Col>

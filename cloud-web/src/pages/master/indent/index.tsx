@@ -4,14 +4,24 @@ import {App, Button, DatePicker, Form, Modal, ModalProps, Select, Tag, Typograph
 import {getData} from "@/utils/page";
 import {deleteOrder, getOrderList} from "@/service/master/order";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
-import {Body} from '@/components';
-
+import {Body, Title} from '@/components';
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
-    const actionRef = useRef();
-    const ref = useRef();
+    const {styles:{modals}} = useStyles()
+    const actionRef = useRef<any>();
+    const ref = useRef<any>();
     const {message, modal} = App.useApp()
     /**
      * table表格渲染
@@ -237,17 +247,14 @@ export default (): React.ReactNode => {
                         order_type: values['order_type'] >= 0 ? values['order_type'] : "",
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
                             message?.success(r?.message)
-                            message?.destroy("delete")
-                            // @ts-ignore
                             actionRef.current.reloadAndRest()
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message || "请求失败")
-                        }
+                    },
+                    onFinally:()=>{
+                        message?.destroy("delete")
                     }
                 })
                 deleteForm.resetFields();
@@ -257,8 +264,8 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-            <Modal key="delete" width={370} destroyOnClose={true} forceRender={true} title="清理数据"
-                   open={isDeleteModalVisible}
+            <Modal key="delete" width={370} destroyOnClose={true} forceRender={true} title={<Title>清理数据</Title>}
+                   open={isDeleteModalVisible} className={modals}
                    onOk={deleteForm.submit} okText="确 认" onCancel={() => {
                 setIsDeleteModalVisible(false);
                 deleteForm.resetFields();
@@ -329,7 +336,7 @@ export default (): React.ReactNode => {
             </Modal>
             <ProTable
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'订单记录'}
+                headerTitle={<Title>订单记录</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}

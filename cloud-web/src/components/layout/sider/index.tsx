@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {ConfigProvider, Menu, theme, Layout} from 'antd';
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {Icon} from "@/components";
-
 const useStyles = createStyles(({token}): any => {
     return {
         left: {
@@ -86,6 +85,7 @@ export type SiderProps = {
     menuBottomBtnIcon?: string;//底部按钮图标
     menuBottomBtnText?: string;//底部按钮文字
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
+    mode?:"inline" | "horizontal"
 };
 
 const Sider: React.FC<SiderProps> = (props) => {
@@ -99,6 +99,7 @@ const Sider: React.FC<SiderProps> = (props) => {
         menuBottomBtnIcon = null,
         menuBottomBtnText = null,
         onMenuBottomBtnClick,
+        mode = "inline",
     } = props;
     const {mobile} = useResponsive();
     const systemTheme = useTheme();
@@ -118,7 +119,6 @@ const Sider: React.FC<SiderProps> = (props) => {
     useEffect(() => {
         initSelectMenu();
     }, [location]);
-
     /**
      * 只展开一个子集
      */
@@ -150,7 +150,6 @@ const Sider: React.FC<SiderProps> = (props) => {
             setStateOpenKeys(openKeys);
         }
     }
-
     const {token} = theme?.useToken();
     return (
         <Layout className={left}>
@@ -182,7 +181,7 @@ const Sider: React.FC<SiderProps> = (props) => {
                     }
                 }}>
                     <Menu selectedKeys={selectedKeys}
-                          mode="inline"
+                          mode={mode}
                           items={menus} className={menu}
                           openKeys={stateOpenKeys}
                           onOpenChange={onOpenChange}

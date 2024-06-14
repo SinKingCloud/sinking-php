@@ -23,13 +23,23 @@ import {createWeb} from "@/service/master/web";
 import {getDomainConfig} from "@/service/admin/web";
 import {getPayLog} from "@/service/master/pay";
 import {getLogList} from "@/service/master/log";
-import {Body} from '@/components';
-
+import {Body, Title} from '@/components';
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
+    const {styles:{modals}} = useStyles()
     /**
      * 表单处理
      */
-    const actionRef = useRef();
+    const actionRef = useRef<any>();
     const ref = useRef();
     const {message, modal} = App.useApp()
     /**
@@ -39,9 +49,7 @@ export default (): React.ReactNode => {
     useEffect(() => {
         getDomainConfig({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setDomainConfig(r?.data);
-                }
             }
         });
     }, []);
@@ -105,19 +113,16 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setIsModalVisible(false);
                     message?.success(r?.message)
-                    // @ts-ignore
                     actionRef.current.reload()
                     form.resetFields();
-                }
             },
             onFail: (r: any) => {
-                if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setIsModalBtnLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setIsModalBtnLoading(false);
             }
         });
     }
@@ -135,18 +140,13 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setIsModalAddWebVisible(false);
                     message?.success(r?.message)
-                    // @ts-ignore
                     actionRef.current.reload()
                     add.resetFields();
-                }
             },
             onFail: (r: any) => {
-                if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }
@@ -156,7 +156,7 @@ export default (): React.ReactNode => {
      */
     const [isModalPayVisible, setIsModalPayVisible] = useState(false);//编辑弹窗
     const [payUserId, setPayUserId] = useState(0);//编辑弹窗
-    const payActionRef = useRef();
+    const payActionRef = useRef<any>();
     const payRef = useRef();
     const payColumns = [
         {
@@ -227,22 +227,17 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message)
-                    setIsModalMoneyBtnLoading(false);
                     setIsModalMoneyVisible(false);
-                    // @ts-ignore
                     actionRef.current.reload();
-                    // @ts-ignore
                     payActionRef.current.reload();
                     form.resetFields();
-                }
             },
             onFail: (r: any) => {
-                if (r.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setIsModalMoneyBtnLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setIsModalMoneyBtnLoading(false);
             }
         });
     }
@@ -252,7 +247,7 @@ export default (): React.ReactNode => {
      */
     const [isModalLogVisible, setIsModalLogVisible] = useState(false);//编辑弹窗
     const [logUserId, setLogUserId] = useState(0);//编辑弹窗
-    const logActionRef = useRef();
+    const logActionRef = useRef<any>();
     const logRef = useRef();
     const logColumns = [
         {
@@ -324,23 +319,21 @@ export default (): React.ReactNode => {
             okType: 'primary',
             onOk() {
                 const key = "userStatus";
-                message.loading({content: '正在更改用户状态', key, duration: 60}).then();
+                message?.loading({content: '正在更改用户状态', key, duration: 60})
                 updateUserInfo({
                     body: {
                         ids: [user_id],
                         status: status
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
-                            message?.success({content: r?.message, key, duration: 2})
-                            // @ts-ignore
+                            message?.success( r?.message)
                             actionRef?.current.reload();
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r.code != 200) {
-                            message?.error({content: r?.message, key, duration: 2})
-                        }
+                            message?.error(r?.message)
+                    },
+                    onFinally:()=>{
+                        message?.destroy(key)
                     }
                 });
             },
@@ -617,7 +610,7 @@ export default (): React.ReactNode => {
 
     return (
         <Body>
-            <Modal key={"form"} destroyOnClose={true} forceRender={true} title={"编 辑"}
+            <Modal key={"form"} destroyOnClose={true} forceRender={true} title={<Title>编 辑</Title>} className={modals}
                    open={isModalVisible} onOk={form.submit} okButtonProps={{loading: isModalBtnLoading}}
                    okText={"确 认"}
                    onCancel={() => {
@@ -686,7 +679,7 @@ export default (): React.ReactNode => {
             </Modal>
 
             <Modal key={"add_web"} width={400} destroyOnClose={true} okButtonProps={{loading: isModalAddWebBtnLoading}}
-                   forceRender={true} title="开通网站" open={isModalAddWebVisible}
+                   forceRender={true} title={<Title>开通网站</Title>} className={modals} open={isModalAddWebVisible}
                    onOk={add.submit} okText={"确认"} onCancel={() => {
                 setIsModalAddWebVisible(false);
                 add.resetFields();
@@ -728,7 +721,7 @@ export default (): React.ReactNode => {
             </Modal>
 
             <Modal key={"pay"} destroyOnClose={true} forceRender={true}
-                   title={"余额明细"}
+                   title={<Title>余额明细</Title>} className={modals}
                    open={isModalPayVisible} onOk={() => {
                 money?.setFieldsValue({user_id: payUserId, type: 0});
                 setIsModalMoneyVisible(true);
@@ -759,8 +752,8 @@ export default (): React.ReactNode => {
                 )}
             </Modal>
 
-            <Modal key={"log"} destroyOnClose={true} forceRender={true} title={"操作日志"} open={isModalLogVisible}
-                   footer={null}
+            <Modal key={"log"} destroyOnClose={true} forceRender={true} title={<Title>操作日志</Title>}
+                   className={modals} open={isModalLogVisible} footer={null}
                    onCancel={() => {
                        setIsModalLogVisible(false);
                    }} width={700}>
@@ -787,7 +780,7 @@ export default (): React.ReactNode => {
             </Modal>
 
             <Modal key={"money"} width={350} destroyOnClose={true} okButtonProps={{loading: isModalMoneyBtnLoading}}
-                   forceRender={true} title="用户加款" open={isModalMoneyVisible}
+                   forceRender={true} title={<Title>用户加款</Title>} className={modals} open={isModalMoneyVisible}
                    onOk={money.submit} okText={"确 认"} onCancel={() => {
                 setIsModalMoneyVisible(false);
                 money.resetFields();
@@ -825,7 +818,7 @@ export default (): React.ReactNode => {
 
             <ProTable
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'用户列表'}
+                headerTitle={<Title>用户列表</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 rowKey={'id'}

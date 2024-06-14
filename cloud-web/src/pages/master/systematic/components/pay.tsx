@@ -32,7 +32,6 @@ const PayView: React.FC = () => {
                 key: "pay"
             },
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
                     let temp:any = {};
                     r?.data?.list.forEach((k: any) => {
                        return temp[k?.key] = k?.value;
@@ -41,8 +40,9 @@ const PayView: React.FC = () => {
                     epay1?.setFieldsValue(temp);
                     epay2?.setFieldsValue(temp);
                     epay3?.setFieldsValue(temp);
-                    setIsLoading(false)
-                }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -56,14 +56,10 @@ const PayView: React.FC = () => {
                 ...values
             },
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
                     message?.success(r?.message || "修改成功")
-                }
             },
             onFail:(r:any)=>{
-                if(r?.code != 200){
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }

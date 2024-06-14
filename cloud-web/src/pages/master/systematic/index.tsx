@@ -18,7 +18,7 @@ type SettingsState = {
     selectKey: SettingsStateKeys;
 };
 const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
-    const border = isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #f0f0f0"
+    const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f0f0f0"
     return{
         main:css`
             display: flex;

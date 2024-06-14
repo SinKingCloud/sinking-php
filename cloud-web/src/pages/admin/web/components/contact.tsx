@@ -24,15 +24,13 @@ const ContactView: React.FC = () => {
         setIsLoading(true);
         return await getContact({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     form.setFieldsValue(r?.data)
-                    setIsLoading(false)
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -46,14 +44,10 @@ const ContactView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }

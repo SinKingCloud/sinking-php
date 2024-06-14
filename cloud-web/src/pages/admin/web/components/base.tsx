@@ -30,15 +30,13 @@ const BaseView: React.FC = () => {
         setIsLoading(true);
         return await getWeb({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     form.setFieldsValue(r?.data)
-                    setIsLoading(false)
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
+            },
+            onFinally:()=>{
+                setIsLoading(false)
             }
         });
     }
@@ -52,15 +50,11 @@ const BaseView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message || "修改成功")
                     web?.refreshInfo()
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }
@@ -72,14 +66,10 @@ const BaseView: React.FC = () => {
     const getMyPrice = async () => {
         await getMy({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setMyPrice(r?.data || {});
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         });
     }
@@ -146,16 +136,13 @@ const BaseView: React.FC = () => {
                                     await buySite({
                                         body: {},
                                         onSuccess: (r: any) => {
-                                            if (r?.code == 200) {
                                                 message?.success(r?.message)
-                                                message.destroy(key)
-                                            }
                                         },
                                         onFail: (r: any) => {
-                                            if (r?.code != 200) {
                                                 message?.error(r?.message || "续期失败")
-                                                message.destroy(key)
-                                            }
+                                        },
+                                        onFinally:()=>{
+                                            message.destroy(key)
                                         }
                                     });
                                 },

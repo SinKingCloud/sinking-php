@@ -14,7 +14,7 @@ import {Body, Title} from "@/components";
 
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
-    const border = isDarkMode ? "1px solid rgb(71, 71, 71)" : "1px solid #f6f6f6"
+    const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f6f6f6"
     return {
         pageHeaderContent: css`
             display: flex;
@@ -278,12 +278,11 @@ export default () => {
         setNotice2Loading(true);
         getNotice({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setNotice2Data(r?.data);
-                }
+            },
+            onFinally:()=>{
+                setNotice2Loading(false);
             }
-        }).finally(() => {
-            setNotice2Loading(false);
         })
     };
     /**
@@ -295,10 +294,10 @@ export default () => {
         setContactLoading(true);
         getContact({
             onSuccess: (r: any) => {
-                setContactLoading(false);
-                if (r?.code == 200) {
                     setContactData(r?.data);
-                }
+            },
+            onFinally:()=>{
+                setContactLoading(false);
             }
         })
     };

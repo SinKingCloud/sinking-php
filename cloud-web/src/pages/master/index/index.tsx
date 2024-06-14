@@ -28,10 +28,10 @@ export default (): React.ReactNode => {
         setCountLoading(true);
         getCount({
             onSuccess: (r: any) => {
-                setCountLoading(false)
-                if (r?.code == 200) {
                     setCountData(r?.data);
-                }
+            },
+            onFinally:()=>{
+                setCountLoading(false)
             }
         });
     };
@@ -69,9 +69,11 @@ export default (): React.ReactNode => {
                 end_date: end_date
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     temp.data = r?.data;
-                }
+            },
+            onFinally:()=>{
+                setChartData(temp);
+                setChartLoading(false);
             }
         });
 
@@ -84,9 +86,11 @@ export default (): React.ReactNode => {
                 limit: 7
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     temp.topUser = r?.data;
-                }
+            },
+            onFinally:()=>{
+                setChartData(temp);
+                setChartLoading(false);
             }
         })
         await getTopWeb({
@@ -98,13 +102,13 @@ export default (): React.ReactNode => {
                 limit: 7
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     temp.topOrder = r?.data;
-                }
+            },
+            onFinally:()=>{
+                setChartData(temp);
+                setChartLoading(false);
             }
         })
-        setChartData(temp);
-        setChartLoading(false);
     }
     // 更改日期事件
     const handleRangePickerChange = (value: any) => {
@@ -126,10 +130,10 @@ export default (): React.ReactNode => {
         setToDoLoading(true);
         getToDo({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     setToDoData(r?.data);
-                    setToDoLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setToDoLoading(false);
             }
         });
     };
@@ -148,7 +152,7 @@ export default (): React.ReactNode => {
                 <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
-                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "20px"}}>
+                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "10px"}}>
                     <Row>
                         <Col sm={12} md={12} xs={12}>
                             <Info title="我的待办"

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import ProCard from "@ant-design/pro-card";
 import {
     Alert, App,
     Avatar,
@@ -23,8 +22,18 @@ import SmsVerify from "@/pages/components/smsVerify";
 import {Body, Title} from '@/components';
 import {useModel} from "umi";
 import EmailVerify from "@/pages/components/emailVerify";
-
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modal:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
+    const {styles:{modal}} = useStyles()
     const user = useModel('user');
     useEffect(() => {
         if (!user.web) {
@@ -57,8 +66,8 @@ export default (): React.ReactNode => {
     const [phoneForm] = Form.useForm();
     return (
         <Body>
-            <Modal key={"editPassword"} width={430} destroyOnClose={true} forceRender={true}
-                   title={<Title>修改密码</Title>}
+            <Modal key={"editPassword"} width={350} destroyOnClose={true} forceRender={true}
+                   title={<Title>修改密码</Title>} className={modal}
                    open={isPasswordModalVisible} confirmLoading={isPasswordModalLoading}
                    onOk={changePwdType == 'email' ? passwordForm.submit : phonePawForm.submit} okText={"确 认"}
                    onCancel={() => {
@@ -137,8 +146,8 @@ export default (): React.ReactNode => {
                     }/>
                 }
             </Modal>
-            <Modal key="editEmail" width={430} destroyOnClose={true} forceRender={true} title={<Title>修改邮箱</Title>}
-                   open={isEmailModalVisible} confirmLoading={isEmailModalLoading}
+            <Modal key="editEmail" width={350} destroyOnClose={true} forceRender={true} title={<Title>修改邮箱</Title>}
+                   open={isEmailModalVisible} confirmLoading={isEmailModalLoading} className={modal}
                    onOk={emailForm.submit} okText="确 认" onCancel={() => {
                 setIsEmailModalVisible(false);
                 emailForm.resetFields();
@@ -172,8 +181,8 @@ export default (): React.ReactNode => {
                     </Form.Item>
                 }/>
             </Modal>
-            <Modal key={"editPhone"} width={430} destroyOnClose={true} forceRender={true}
-                   title={<Title>修改手机</Title>}
+            <Modal key={"editPhone"} width={350} destroyOnClose={true} forceRender={true}
+                   title={<Title>修改手机</Title>} className={modal}
                    open={isPhoneModalVisible} confirmLoading={isPhoneModalLoading}
                    onOk={phoneForm.submit} okText={"确 认"} onCancel={() => {
                 setIsPhoneModalVisible(false);

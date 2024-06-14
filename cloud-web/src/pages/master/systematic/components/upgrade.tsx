@@ -13,16 +13,14 @@ const UpgradeView: React.FC = () => {
         setIsLoading(true);
          await getUpgradeList({
             onSuccess:(r:any)=>{
-                if(r?.code == 200){
                     setVersionInfo(r?.data)
-                    setIsLoading(false)
-                }
             },
             onFail:(r:any)=>{
-                if(r?.code != 200){
                     setVersionInfo({})
-                }
-        }
+            },
+             onFinally:()=>{
+                 setIsLoading(false)
+             }
         });
     }
     /**

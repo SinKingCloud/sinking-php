@@ -5,8 +5,19 @@ import {DownOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 import ProTable from "@ant-design/pro-table";
 import {getData} from "@/utils/page";
 import {useModel} from "umi";
-
+import {Title} from "@/components";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 const DomainView: React.FC = () => {
+    const {styles:{modals}} = useStyles()
     const {message, modal} = App.useApp()
     const user = useModel("user")
     /**
@@ -16,8 +27,6 @@ const DomainView: React.FC = () => {
     useEffect(() => {
         getDomainConfig({
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
-                }
                 setDomainConfig(r?.data);
             }
         });
@@ -38,17 +47,14 @@ const DomainView: React.FC = () => {
                         ids: ids, web_id: web_id
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
                             message?.success(r?.message)
-                            message?.destroy(key)
                             domainActionRef?.current?.reload();
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message)
-                            message?.destroy(key)
-                        }
+                    },
+                    onFinally:()=>{
+                        message?.destroy(key)
                     }
                 });
             },
@@ -68,18 +74,14 @@ const DomainView: React.FC = () => {
                         web_id: web_id, ids: ids, status: status
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
                             message?.success(r?.message)
-                            message?.destroy(key)
-                            // @ts-ignore
                             domainActionRef?.current?.reload();
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message)
-                            message?.destroy(key)
-                        }
+                    },
+                    onFinally:()=>{
+                        message?.destroy(key)
                     }
                 });
             },
@@ -139,7 +141,7 @@ const DomainView: React.FC = () => {
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     if (record?.type == 0) {
-                                        message.error("系统域名不可操作");
+                                        message?.error("系统域名不可操作");
                                         return;
                                     }
                                     deleteDomains([record?.id], record?.web_id);
@@ -185,14 +187,13 @@ const DomainView: React.FC = () => {
                 message?.success(r?.message)
                 setIsModalDomainAddVisible(false);
                 domainAdd.resetFields();
-                // @ts-ignore
                 domainActionRef.current.reload();
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message)
-                    setIsModalDomainAddBtnLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setIsModalDomainAddBtnLoading(false);
             }
         });
     }
@@ -201,7 +202,7 @@ const DomainView: React.FC = () => {
             <ProTable
                 defaultSize={"small"}
                 form={{layout: "vertical"}}
-                headerTitle={'额度:' + domainConfig['master.domain.num'] + '个'}
+                headerTitle={<Title>{'额度:' + domainConfig['master.domain.num'] + '个'}</Title>}
                 actionRef={domainActionRef}
                 formRef={domainRef}
                 scroll={{x: true}}
@@ -223,8 +224,8 @@ const DomainView: React.FC = () => {
                     </Button>,
                 ]}
             />
-            <Modal key="domain_add" width={350} destroyOnClose={true} forceRender={true} title="添加"
-                   open={isModalDomainAddVisible} onOk={domainAdd.submit}
+            <Modal key="domain_add" width={350} destroyOnClose={true} forceRender={true} title={<Title>添加</Title>}
+                   open={isModalDomainAddVisible} onOk={domainAdd.submit} className={modals}
                    okButtonProps={{loading: isModalDomainAddBtnLoading}} okText="确 认"
                    onCancel={() => {
                        setIsModalDomainAddVisible(false);

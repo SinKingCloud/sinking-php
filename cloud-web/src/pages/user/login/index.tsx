@@ -184,26 +184,22 @@ const Index: React.FC = () => {
         if (localStorage.getItem("captcha_id") != id || location.pathname != "/user/login") {
             return;
         }
+        setQrcodeLoading(true);
         qrLogin({
             body: {
                 captcha_id: id,
                 device: isMobile
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
-                    setQrcodeLoading(true);
                     localStorage.removeItem("captcha_id");
                     setQrcodeMessage("验证成功,正在登陆");
                     setLoginToken(isMobile, r?.data?.token);
                     historyPush("user.index");
                     localStorage.removeItem("redirect");
                     setQrcode("");
-                    setQrcodeLoading(false);
                     message?.success(r?.message || "登陆成功,正在跳转");
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     if (r?.data?.code == -1) {
                         getQrCode();
                     } else if (r?.data?.code == 0) {
@@ -211,7 +207,9 @@ const Index: React.FC = () => {
                             queryQrCodeStatus(id);
                         }, 1000)
                     }
-                }
+            },
+            onFinally:()=>{
+                setQrcodeLoading(false);
             }
         })
     }
@@ -224,18 +222,16 @@ const Index: React.FC = () => {
                 captcha_id: tempToken,
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     localStorage.setItem("captcha_id", tempToken);
-                    setQrcodeLoading(false);
                     setQrcode(r?.data);
                     setQrcodeMessage("请扫描二维码");
                     queryQrCodeStatus(tempToken);
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     setQrcodeMessage(r?.message || "获取二维码失败");
-                }
+            },
+            onFinally:()=>{
+                setQrcodeLoading(false);
             }
         });
     }
@@ -305,20 +301,17 @@ const Index: React.FC = () => {
                                         ...values
                                     },
                                     onSuccess: (r: any) => {
-                                        if (r?.code == 200) {
                                             localStorage.removeItem("captcha_id");
                                             setLoginToken(isMobile, r?.data?.token);
                                             message?.success(r?.message);
-                                            setIsLoading(false);
                                             historyPush("user.index");
                                             localStorage.removeItem("redirect");
-                                        }
                                     },
                                     onFail: (r: any) => {
-                                        if (r?.code == 500) {
-                                            setIsLoading(false);
                                             message?.error(r?.message || "请求失败")
-                                        }
+                                    },
+                                    onFinally:()=>{
+                                        setIsLoading(false);
                                     }
                                 });
                             } else if (type == 'email') {
@@ -365,15 +358,16 @@ const Index: React.FC = () => {
                                                 content: r?.message,
                                                 okText: "确认"
                                             })
+                                        },
+                                        onFinally:()=>{
+                                            setIsLoading(false)
                                         }
                                     });
-                                    setIsLoading(false);
                                 }, () => {
                                     message?.warning("请完成验证码认证");
                                     setIsLoading(false);
                                 });
                             }
-
                         }}>
                             {type === 'account' && (
                                 <>
@@ -425,10 +419,11 @@ const Index: React.FC = () => {
                                                                         onSuccess: (r) => {
                                                                             message?.success(r?.message)
                                                                             getCode(e)
-                                                                            setIsEmailSendLoading(false)
                                                                         },
                                                                         onFail: (r) => {
                                                                             message?.error(r?.message)
+                                                                        },
+                                                                        onFinally: () => {
                                                                             setIsEmailSendLoading(false)
                                                                         }
                                                                     })
@@ -477,10 +472,12 @@ const Index: React.FC = () => {
                                                                         onSuccess: (r) => {
                                                                             message?.success(r?.message)
                                                                             getCode(e)
-                                                                            setIsSmsSendLoading(false)
                                                                         },
                                                                         onFail: (r) => {
                                                                             message?.error(r?.message)
+                                                                        },
+                                                                        onFinally: () => {
+                                                                            setIsSmsSendLoading(false)
                                                                         }
                                                                     })
                                                                 }, () => {

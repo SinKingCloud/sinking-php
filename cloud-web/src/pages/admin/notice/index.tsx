@@ -20,14 +20,14 @@ import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} 
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
-import {Body} from '@/components';
+import {Body, Title} from '@/components';
 import {NamePath} from "rc-field-form/es/interface";
 
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
-    const actionRef = useRef();
+    const actionRef = useRef<any>();
     const ref = useRef();
     const {message, modal} = App.useApp()
     const [selectedRowsState, setSelectedRows] = useState([]);
@@ -59,18 +59,13 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalVisible(false)
                     form.resetFields();
-                    //@ts-ignore
                     actionRef.current.reload()
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
             }
         })
     }
@@ -92,21 +87,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalEditVisible(false);
-                    // @ts-ignore
                     actionRef.current.reload()
-                    // @ts-ignore
                     actionRef.current.clearSelected();
                     edit.resetFields();
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
                     setIsModalEditVisible(false)
-                }
             }
         })
     }
@@ -128,18 +117,14 @@ export default (): React.ReactNode => {
                         ids: ids
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
                             message?.success(r?.message)
-                            message.destroy("notice")
-                            //@ts-ignore
                             actionRef.current.reloadAndRest()
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message || "请求失败")
-                            message.destroy("notice")
-                        }
+                    },
+                    onFinally:()=>{
+                        message.destroy("notice")
                     }
                 })
             },
@@ -269,7 +254,6 @@ export default (): React.ReactNode => {
                             key: "edit",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
-                                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
                                     showNoticeInfo(record?.id)
                                 }}>
                                     编 辑
@@ -280,7 +264,6 @@ export default (): React.ReactNode => {
                             key: "delete",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
-                                    // @ts-ignore
                                     deleteSubmit([record.id])
                                 }}>
                                     删 除
@@ -313,17 +296,14 @@ export default (): React.ReactNode => {
                 id: id
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     r.data.content = BraftEditor.createEditorState(r?.data?.content);
                     form.setFieldsValue(r?.data);
-                    setNoticeLoading(false);
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setNoticeLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setNoticeLoading(false);
             }
         });
     }
@@ -334,7 +314,7 @@ export default (): React.ReactNode => {
     return (
         <Body>
             <Drawer key={"form"} destroyOnClose={true} forceRender={true} width={"100%"}
-                    title={title == undefined ? "新 建" : "编 辑"}
+                    title= {<Title>{title == undefined ? "新 建" : "编 辑"}</Title>}
                     open={isModalVisible} onClose={() => {
                 setIsModalVisible(false);
                 form.resetFields();
@@ -383,9 +363,7 @@ export default (): React.ReactNode => {
                                 ]} style={{maxWidth: "500px"}}/>
                             </Form.Item>
                             <Form.Item name="content" label="内容" rules={[{required: true}]}>
-                                <
-                                    // @ts-ignore
-                                    BraftEditor
+                                <BraftEditor
                                     onChange={(editorState: any) => {
                                         setEditValue(editorState.toHTML());
                                     }}
@@ -413,7 +391,6 @@ export default (): React.ReactNode => {
                                     }}
                                     className="my-editor"
                                     style={{border: "1px solid #d1d1d1", borderRadius: "5px"}}
-                                    // @ts-ignore
                                     placeholder="请输入通知内容"
                                 />
                             </Form.Item>
@@ -461,7 +438,7 @@ export default (): React.ReactNode => {
                 columns={columns}
                 defaultSize="small"
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'通知列表'}
+                headerTitle={<Title>通知列表</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}

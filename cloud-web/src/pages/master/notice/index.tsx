@@ -21,15 +21,25 @@ import {createNotice, deleteNotice, getNoticeInfo, getNoticeList, updateNotice} 
 import BraftEditor from "braft-editor";
 import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
-import {Body} from '@/components';
+import {Body, Title} from '@/components';
 import {NamePath} from "rc-field-form/es/interface";
-
+import {createStyles} from "antd-style";
+const useStyles = createStyles(({css})=>{
+    return{
+        modals:css`
+            .ant-modal-title{
+                margin-bottom: 15px;
+            }
+        `
+    }
+})
 export default (): React.ReactNode => {
     const {message, modal} = App.useApp()
+    const {styles:{modals}} = useStyles()
     /**
      * 表单处理
      */
-    const actionRef = useRef();
+    const actionRef = useRef<any>();
     const ref = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalEditVisible, setIsModalEditVisible] = useState(false);
@@ -59,18 +69,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message)
-                    setIsModalVisible(false)
                     form.resetFields();
-                    //@ts-ignore
                     actionRef.current.reload()
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                }
+            },
+            onFinally:()=>{
+                setIsModalVisible(false)
             }
         })
     }
@@ -93,21 +100,17 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     message?.success(r?.message)
-                    setIsModalEditVisible(false);
-                    // @ts-ignore
                     actionRef.current.reload()
-                    // @ts-ignore
                     actionRef.current.clearSelected();
                     edit.resetFields();
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setIsModalEditVisible(false)
-                }
+
+            },
+            onFinally:()=>{
+                setIsModalEditVisible(false)
             }
         })
 
@@ -130,18 +133,14 @@ export default (): React.ReactNode => {
                         ids: ids
                     },
                     onSuccess: (r: any) => {
-                        if (r?.code == 200) {
                             message?.success(r?.message)
-                            message.destroy("notice")
-                            //@ts-ignore
                             actionRef.current.reloadAndRest()
-                        }
                     },
                     onFail: (r: any) => {
-                        if (r?.code != 200) {
                             message?.error(r?.message || "请求失败")
-                            message.destroy("notice")
-                        }
+                    },
+                    onFinally:()=>{
+                        message.destroy("notice")
                     }
                 })
             },
@@ -270,7 +269,6 @@ export default (): React.ReactNode => {
                             key: "edit",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
-                                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
                                     showNoticeInfo(record?.id)
                                 }}>
                                     编 辑
@@ -281,7 +279,6 @@ export default (): React.ReactNode => {
                             key: "delete",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
-                                    // @ts-ignore
                                     deleteSubmit([record.id])
                                 }}>
                                     删 除
@@ -314,17 +311,14 @@ export default (): React.ReactNode => {
                 id: id
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
                     r.data.content = BraftEditor.createEditorState(r?.data?.content);
                     form.setFieldsValue(r?.data);
-                    setNoticeLoading(false);
-                }
             },
             onFail: (r: any) => {
-                if (r?.code != 200) {
                     message?.error(r?.message || "请求失败")
-                    setNoticeLoading(false);
-                }
+            },
+            onFinally:()=>{
+                setNoticeLoading(false);
             }
         });
     }
@@ -425,8 +419,8 @@ export default (): React.ReactNode => {
 
             </Drawer>
 
-            <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title="批量编辑"
-                   open={isModalEditVisible}
+            <Modal key={"edit"} width={350} destroyOnClose={true} forceRender={true} title={<Title>批量编辑</Title>}
+                   open={isModalEditVisible} className={modals}
                    onOk={edit.submit} okText={"确 认"} onCancel={() => {
                 setIsModalEditVisible(false);
                 edit.resetFields();
@@ -451,7 +445,7 @@ export default (): React.ReactNode => {
                 // @ts-ignore
                 columns={columns}
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'通知列表'}
+                headerTitle={<Title>通知列表</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}

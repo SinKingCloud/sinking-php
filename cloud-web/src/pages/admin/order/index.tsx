@@ -1,16 +1,14 @@
 import React, {useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
 import {Tag, Typography} from "antd";
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {getOrderList} from "@/service/admin/order";
-import {Body} from '@/components';
-import {getWebList} from "@/service/admin/web";
-
+import {Body, Title} from '@/components';
 export default (): React.ReactNode => {
     /**
      * 表单处理
      */
-    const actionRef = useRef();
+    const actionRef = useRef<any>();
     const ref = useRef();
 
     /**
@@ -199,7 +197,7 @@ export default (): React.ReactNode => {
             <ProTable
                 defaultSize={"small"}
                 form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={'订单记录'}
+                headerTitle={<Title>订单记录</Title>}
                 actionRef={actionRef}
                 formRef={ref}
                 scroll={{x: true}}
@@ -210,6 +208,7 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
+                // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
                     return getData(params, sort, getOrderList)

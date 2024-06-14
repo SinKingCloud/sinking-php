@@ -11,6 +11,7 @@ export const user = [
         hideInMenu: false,
         component: "@/pages/user/index",
     },
+
     {
         path: "shop",
         title: "在线商城",

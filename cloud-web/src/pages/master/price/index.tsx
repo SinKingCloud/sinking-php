@@ -3,7 +3,7 @@ import {Menu} from 'antd';
 import ProCard from "@ant-design/pro-card";
 import SiteView from "./components";
 import {createStyles} from "antd-style";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 
 type SettingsStateKeys = 'site';
 type SettingsState = {
@@ -97,7 +97,7 @@ const Settings: React.FC = () => {
     };
     return (
         <Body>
-            <ProCard title={"价格设置"} headerBordered className={card}>
+            <ProCard title={<Title>价格设置</Title>} headerBordered className={card}>
                 <div className={main}>
                     <div className={leftMenu}>
                         <Menu

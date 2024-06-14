@@ -10,7 +10,7 @@ import WebView from "./components/web";
 import UpgradeView from "./components/upgrade";
 import SmsView from "./components/sms";
 import {createStyles} from "antd-style";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 
 type SettingsStateKeys = 'base' | 'email' | 'sms' | 'pay' | 'cash' | 'web' | 'cloud' | 'upgrade';
 type SettingsState = {
@@ -126,7 +126,7 @@ const Settings: React.FC = () => {
     };
     return (
         <Body>
-            <ProCard title={"系统设置"} headerBordered className={card}>
+            <ProCard title={<Title>系统设置</Title>} headerBordered className={card}>
                 <div className={main}>
                     <div className={leftMenu}>
                         <Menu

@@ -6,7 +6,7 @@ import DomainView from "./components/domain";
 import ContactView from "./components/contact";
 import NoticeView from "./components/notice";
 import UiView from "./components/ui";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 import {createStyles} from "antd-style";
 
 type SettingsStateKeys = 'base' | 'ui' | 'contact' | 'notice' | 'domain';
@@ -109,7 +109,7 @@ const Settings: React.FC = () => {
 
     return (
         <Body>
-            <ProCard title={"网站设置"} headerBordered>
+            <ProCard title={<Title>网站设置</Title>} headerBordered>
                 <div className={main}>
                     <div className={leftMenu}>
                         <Menu

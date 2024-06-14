@@ -11,6 +11,7 @@ import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, We
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
 import Title from "../title";
+
 /**
  * 中间件
  * @param ctx context
@@ -37,7 +38,7 @@ const RightTop: React.FC = () => {
     /**
      * 样式
      */
-    const useStyles = createStyles(({css, token,responsive}): any => {
+    const useStyles = createStyles(({css, token, responsive}): any => {
         return {
             img: {
                 marginBottom: "5px",
@@ -51,6 +52,7 @@ const RightTop: React.FC = () => {
             profile: css`
                 margin-left: 10px;
                 margin-right: 20px;
+
                 .anticon {
                     margin-left: 2px;
                     font-size: 10px;
@@ -67,6 +69,7 @@ const RightTop: React.FC = () => {
                 .ant-popover-inner {
                     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .15) !important;
                 }
+
                 .ant-popover-arrow:before {
                     background-color: rgba(85, 126, 253, 1) !important;
                 }
@@ -145,7 +148,7 @@ const RightTop: React.FC = () => {
             },
         };
     });
-    const {styles: {img, nickname, profile, pop, content_top, ava, top_text, box, menu, menuItem,icon}} = useStyles();
+    const {styles: {img, nickname, profile, pop, content_top, ava, top_text, box, menu, menuItem, icon}} = useStyles();
     return <>
         <Tooltip title={theme?.getModeName(theme?.mode)}>
             <Icon type={theme?.isDarkMode() ? Dark : (theme?.isAutoMode() ? Auto : Light)} className={icon}
@@ -283,7 +286,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
             <Title/>
             <Layout loading={loading}
                     menus={menu}
-                    mode={"horizontal"}
+                    layout={"horizontal"}
                     footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                     headerRight={<RightTop/>}
                     menuCollapsedWidth={60}
@@ -305,7 +308,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                                 <div>{web?.info?.name || Settings?.title}</div>
                             </div>)
                     }}
-             /></>
+            /></>
     );
 }
 export default Layouts;

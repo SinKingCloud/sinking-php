@@ -11,8 +11,8 @@ import {createStyles, useResponsive} from "antd-style";
 
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     return {
-        modals:css`
-            .ant-modal-title{
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `,
@@ -209,7 +209,7 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td, select,modals
+            table, thead, tbody, tr, th, td, select, modals
         }
     } = useStyles()
     /**
@@ -292,9 +292,9 @@ export default (): React.ReactNode => {
                         }
                     },
                     onFail: (r) => {
-                            message?.error(r?.message || "请求失败")
+                        message?.error(r?.message || "请求失败")
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         setIsModalAddWebVisible(false);
                     }
                 });

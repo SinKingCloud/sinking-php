@@ -18,14 +18,14 @@ const NoticeInfo: React.FC<NoticeInfoProps> = (props) => {
     const handleCancel = () => {
         onClose?.(noticeData);
     };
-    const getNoticeData = (id:any) => {
+    const getNoticeData = (id: any) => {
         if ((id || 0) > 0) {
             setLoading(true);
             getNoticeInfo({
-                body:{
+                body: {
                     id: id
                 },
-                onSuccess: (r:any) => {
+                onSuccess: (r: any) => {
                     if (r?.code == 200) {
                         setNoticeData(r?.data);
                     }
@@ -40,7 +40,7 @@ const NoticeInfo: React.FC<NoticeInfoProps> = (props) => {
     }
     return (
         <>
-            <Modal  footer={null} width={550} onCancel={handleCancel} open={open}>
+            <Modal footer={null} width={550} onCancel={handleCancel} open={open}>
                 <Spin spinning={loading}>
                     <Skeleton title={false} loading={loading} active>
                         <div style={{margin: "10px"}}>
@@ -55,7 +55,8 @@ const NoticeInfo: React.FC<NoticeInfoProps> = (props) => {
                                 <ClockCircleOutlined/> {ago(noticeData?.create_time || '0000-00-00 00:00:00')}&nbsp;&nbsp;&nbsp;
                                 <EyeOutlined/> {noticeData?.look_num || 0}次
                             </div>
-                            <div style={{margin: "10px 0"}} dangerouslySetInnerHTML={{__html: noticeData?.content || ""}}/>
+                            <div style={{margin: "10px 0", overflow: "auto"}}
+                                 dangerouslySetInnerHTML={{__html: noticeData?.content || ""}}/>
                         </div>
                     </Skeleton>
                 </Spin>

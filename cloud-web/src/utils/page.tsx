@@ -10,9 +10,9 @@ export function getParams(params: any, sort: any): any {
                 order_by_field: key
             };
             if (obj[key] == "ascend") {
-                temp.order_by_type = "asc"
+                temp.order_by_type = "asc";
             } else {
-                temp.order_by_type = "desc"
+                temp.order_by_type = "desc";
             }
             return temp;
         }

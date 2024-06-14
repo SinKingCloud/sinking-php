@@ -3,17 +3,18 @@ import React, {useEffect, useState} from 'react';
 import {getConfigList, testEmail, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
     }
 })
 const EmailView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
     const [form] = Form.useForm();
@@ -23,19 +24,19 @@ const EmailView: React.FC = () => {
     const getConfigs = async () => {
         setIsLoading(true);
         return await getConfigList({
-            body:{
+            body: {
                 page_size: 1000,
                 key: "email"
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
-                    let temp:any = {};
-                    r?.data?.list.forEach((k: any) => {
-                       return temp[k?.key] = k?.value;
-                    });
-                    form.setFieldsValue(temp)
-                    setIsLoading(false)
-                }
+            onSuccess: (r: any) => {
+                let temp: any = {};
+                r?.data?.list.forEach((k: any) => {
+                    return temp[k?.key] = k?.value;
+                });
+                form.setFieldsValue(temp);
+            },
+            onFinally: () => {
+                setIsLoading(false);
             }
         });
     }
@@ -46,18 +47,15 @@ const EmailView: React.FC = () => {
      */
     const onFinish = async (values: any) => {
         await updateConfigs({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
-                    message?.success(r?.message || "修改成功")
-                }
+            onSuccess: (r: any) => {
+                message?.success(r?.message || "修改成功")
+
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
-                    message?.error(r?.message || "请求失败")
-                }
+            onFail: (r: any) => {
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -107,18 +105,18 @@ const EmailView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"} className={box}  onFinish={async (values: any) => {
+                <ProForm key={"form"} className={box} onFinish={async (values: any) => {
                     await testEmail({
-                        body:{
+                        body: {
                             ...values
                         },
-                        onSuccess:(r:any)=>{
-                            if(r?.code == 200){
+                        onSuccess: (r: any) => {
+                            if (r?.code == 200) {
                                 message?.success(r?.message || "修改成功")
                             }
                         },
-                        onFail:(r:any)=>{
-                            if(r?.code != 200){
+                        onFail: (r: any) => {
+                            if (r?.code != 200) {
                                 message?.error(r?.message || "请求失败")
                             }
                         }

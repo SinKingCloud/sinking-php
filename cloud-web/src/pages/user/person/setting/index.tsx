@@ -26,10 +26,9 @@ import EmailVerify from "@/pages/components/emailVerify";
 
 export default (): React.ReactNode => {
     const user = useModel('user');
-    const refresh = useModel("user")
     useEffect(() => {
         if (!user.web) {
-            refresh.refreshWebUser()
+            user.refreshWebUser();
         }
     }, [user])
     const {message} = App.useApp()

@@ -3,17 +3,18 @@ import {getConfigList, testCloud, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormText} from "@ant-design/pro-form";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
     }
 })
 const CloudView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
     const [form] = Form.useForm();
@@ -24,19 +25,19 @@ const CloudView: React.FC = () => {
     const getConfigs = async () => {
         setIsLoading(true);
         return await getConfigList({
-            body:{
+            body: {
                 page_size: 1000,
                 key: "cloud"
             },
-            onSuccess:(r:any)=>{
-                if(r?.code == 200){
-                    let temp:any = {};
-                    r?.data?.list.forEach((k: any) => {
-                       return temp[k?.key] = k?.value;
-                    });
-                    form.setFieldsValue(temp)
-                    setIsLoading(false)
-                }
+            onSuccess: (r: any) => {
+                let temp: any = {};
+                r?.data?.list.forEach((k: any) => {
+                    return temp[k?.key] = k?.value;
+                });
+                form.setFieldsValue(temp);
+            },
+            onFinally: () => {
+                setIsLoading(false);
             }
         });
     }
@@ -46,33 +47,25 @@ const CloudView: React.FC = () => {
      */
     const onFinish = async (values: any) => {
         await testCloud({
-            body:{
+            body: {
                 id: values['cloud.id'],
                 key: values['cloud.key']
             },
-            onSuccess:async (r:any)=>{
-                if(r?.code == 200){
-                    await updateConfigs({
-                        body:{
-                            ...values
-                        },
-                        onSuccess:(r2:any)=>{
-                            if(r2?.code == 200){
-                                message?.success(r2?.message || "修改成功")
-                            }
-                        },
-                        onFail:(r2:any)=>{
-                            if(r2?.code != 200){
-                                message?.error(r2?.message || "请求失败")
-                            }
-                        }
-                    })
-                }
-        },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
-                    message?.error(r?.message || "请求失败")
-                }
+            onSuccess: async (r: any) => {
+                await updateConfigs({
+                    body: {
+                        ...values
+                    },
+                    onSuccess: (r2: any) => {
+                        message?.success(r2?.message || "修改成功")
+                    },
+                    onFail: (r2: any) => {
+                        message?.error(r2?.message || "请求失败")
+                    }
+                })
+            },
+            onFail: (r: any) => {
+                message?.error(r?.message || "请求失败")
             }
         })
     }

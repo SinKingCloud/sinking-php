@@ -36,7 +36,7 @@ export default (): React.ReactNode => {
      */
     const [isModalDomainVisible, setIsModalDomainVisible] = useState(false);//编辑弹窗
     const [domainWebId, setDomainWebId] = useState(0);//编辑弹窗
-    const domainActionRef = useRef();
+    const domainActionRef = useRef<any>();
     const domainRef = useRef();
     const deleteDomains = (ids: [number], web_id: number) => {
         modal.confirm({
@@ -55,7 +55,6 @@ export default (): React.ReactNode => {
                     onSuccess: (r: any) => {
                         if (r?.code == 200) {
                             message?.success({content: r?.message, key, duration: 2})
-                            // @ts-ignore
                             domainActionRef?.current?.reload();
                         }
                     },
@@ -190,7 +189,6 @@ export default (): React.ReactNode => {
                 if (r?.code == 200) {
                     message?.success(r?.message)
                     setIsModalDomainAddVisible(false);
-                    // @ts-ignore
                     domainActionRef.current.reload();
                     domainAdd.resetFields();
                 }
@@ -249,9 +247,7 @@ export default (): React.ReactNode => {
         setIsModalBtnLoading(true);
         values.ids = [values.id];
         delete values.id;
-        // @ts-ignore
         if (uploadFileList?.length > 0) {
-            // @ts-ignore
             values.avatar = uploadFileList[0]?.url || ""
         } else {
             values.avatar = ""

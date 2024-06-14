@@ -253,7 +253,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
     /**
      * 样式信息
      */
-    const useStyles = createStyles((): any => {
+    const useStyles = createStyles(({css}): any => {
         return {
             collapsedImg: {
                 width: "35px",
@@ -274,7 +274,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     lineHeight: "30px",
                     whiteSpace: "nowrap",
                 }
-            }
+            },
         };
     });
     const {styles: {collapsedImg, unCollapsed}} = useStyles();

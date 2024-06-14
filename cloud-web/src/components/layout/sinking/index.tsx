@@ -13,7 +13,7 @@ import {history} from "@@/core/history";
 import {useLocation, useModel, useSelectedRoutes} from "@@/exports";
 import Settings from "@/../config/defaultSettings"
 
-const useLayoutStyles = createStyles(({isDarkMode, token}): any => {
+const useLayoutStyles = createStyles(({isDarkMode, token,css,responsive}): any => {
     return {
         sider: {
             zIndex: 2,
@@ -57,13 +57,17 @@ const useLayoutStyles = createStyles(({isDarkMode, token}): any => {
             userSelect: "none",
             background: token?.colorBgContainer + " !important"
         },
-        content: {
-            minHeight: "calc(100vh - 117px)",
-            maxWidth: "100%",
-            height: "100%",
-            overflow: "auto",
-            transform: "translateY(-1px)",
-        },
+        content: css`
+            min-height: calc(100vh - 117px);
+            width: 80%;
+            margin-left:10%;
+            height: 100%;
+            overflow: auto;
+            ${responsive.md || responsive.lg || responsive.xl || responsive.xxl}{
+                width: 100%;
+                margin-left: 0;
+            }
+        `,
         footer: {
             textAlign: 'center',
             transform: "translateY(-1px)",
@@ -86,7 +90,7 @@ const useLayoutStyles = createStyles(({isDarkMode, token}): any => {
                 lineHeight: "55px",
                 whiteSpace: "nowrap",
             }
-        }
+        },
     };
 });
 
@@ -106,7 +110,7 @@ export type LayoutProps = {
     menuBottomBtnIcon?: string;//底部按钮图标
     menuBottomBtnText?: string;//底部按钮文字
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
-    mode?:"inline" | "horizontal"
+    mode?:"inline" | "horizontal",
 };
 
 const SinKing: React.FC<LayoutProps> = (props) => {
@@ -132,7 +136,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
      */
     const [collapsed, setCollapsed] = useState(false);
     const [open, setOpen] = useState(false);
-    const {styles: {sider, header, content, footer, body, drawMenu, menuBtn,unCollapsed}} = useLayoutStyles();
+    const {styles: {sider,main, header, content, footer, body, drawMenu, menuBtn,unCollapsed}} = useLayoutStyles();
     const {mobile} = useResponsive();
     const menuBtnOnClick = () => {
         let status: boolean;
@@ -222,7 +226,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
     const LayoutHeader = ()=>{
         return (<ConfigProvider locale={zhCN}>
             <App>
-                {(loading && <Loading/>) || <Layout>
+                {(loading && <Loading/>) || <Layout >
                     <Layout.Header className={header}>
                         {mobile && <Button type="text" size={"large"}
                                            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
@@ -250,9 +254,9 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                                                      alt="沉沦云网络"/>
                                                 <div>{web?.info?.name || Settings?.title}</div>
                                             </Col>
-                                            <Col span={18} push={2}>
+                                            <Col span={17}>
                                                 <Menu mode={mode} selectedKeys={selectedKeys}
-                                                      style={{marginLeft: "180px", fontSize: "13px"}}
+                                                      style={{marginLeft: "190px", fontSize: "13px"}}
                                                       items={menus} onClick={(item: any) => {
                                                     history.push(item?.key);
                                                 }}/>

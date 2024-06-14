@@ -9,15 +9,11 @@ import 'dayjs/locale/zh-cn';
 import {Animation, Theme} from "@/components";
 import {Animate} from "@/components/animation";
 
-const useStyles = createStyles(({css,token,responsive}): any => {
+const useStyles = createStyles(({token,css,responsive}): any => {
     return {
-        body:css`
-            padding: 10px;
-            width: 80%;
-            margin-left:10%;
-            ${responsive.mobile}{
-                width: 100%;
-                margin-left: 0;
+        body: css`
+            ${responsive.md || responsive.lg || responsive.xl || responsive.xxl}{
+                padding: 10px
             }
         `,
         load: {

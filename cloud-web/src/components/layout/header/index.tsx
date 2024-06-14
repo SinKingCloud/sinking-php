@@ -5,17 +5,16 @@ const useStyles = createStyles(({responsive,css}): any => {
         right: css`
             float: right;
             z-index: 2;
-            width:12%;
-            ${responsive.mobile} {
-                width:100%;
+            ${responsive.md || responsive.lg || responsive.xl || responsive.xxl} {
+                width:182px;
                 position: fixed;
-                right: -205px;
+                right: 0;
             }
         `,
         left:css`
             float: left;
             z-index: 2;
-            width:88%;
+            width:82%;
         `
     };
 });

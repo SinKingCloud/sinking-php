@@ -5,9 +5,12 @@ const useStyles = createStyles(({responsive,css}): any => {
         right: css`
             float: right;
             z-index: 2;
+            top: 0;
+            position: fixed;
+            right: 0;
+            // width: 181px;
             ${responsive.md || responsive.lg || responsive.xl || responsive.xxl} {
-                width:182px;
-                position: fixed;
+                top: 0;
                 right: 0;
             }
         `,

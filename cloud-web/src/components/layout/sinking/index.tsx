@@ -59,22 +59,32 @@ const useLayoutStyles = createStyles(({isDarkMode, token,css,responsive}): any =
         },
         content: css`
             min-height: calc(100vh - 117px);
-            width: 80%;
-            margin-left:10%;
+            width: 100%;
             height: 100%;
-            overflow: auto;
-            ${responsive.md || responsive.lg || responsive.xl || responsive.xxl}{
-                width: 100%;
-                margin-left: 0;
+            > div > div > div:first-of-type {
+                width: 80%;
+                margin-left: 10%;
+            }
+            ${responsive.xs || responsive.sm || responsive.md}{
+                > div > div > div:first-of-type {
+                    width: 100%;
+                    margin-left: 0;
+                }
             }
         `,
+        content1:{
+            minHeight: "calc(100vh - 117px)",
+            width: "100% !important",
+            height: "100%",
+        },
         footer: {
             textAlign: 'center',
             transform: "translateY(-1px)",
         },
         unCollapsed: {
             height:"55px",
-            marginLeft:"15px",
+            width:"220px",
+            marginLeft:"8px",
             overflow: "hidden",
             position: "absolute",
             display: "inline-flex",
@@ -136,7 +146,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
      */
     const [collapsed, setCollapsed] = useState(false);
     const [open, setOpen] = useState(false);
-    const {styles: {sider,main, header, content, footer, body, drawMenu, menuBtn,unCollapsed}} = useLayoutStyles();
+    const {styles: {sider,content1, header, content, footer, body, drawMenu, menuBtn,unCollapsed}} = useLayoutStyles();
     const {mobile} = useResponsive();
     const menuBtnOnClick = () => {
         let status: boolean;
@@ -212,7 +222,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                                     onClick={menuBtnOnClick} className={menuBtn}/>
                             <Header left={headerLeft} right={headerRight}/>
                         </Layout.Header>
-                        <Layout.Content className={content}>
+                        <Layout.Content className={content1}>
                             <Outlet/>
                         </Layout.Content>
                         {props?.footer && <Layout.Footer className={footer}>
@@ -248,20 +258,18 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                                                    }}/>
                                         </Drawer>)
                                     ||
-                                        <Row>
-                                            <Col className={unCollapsed} span={6}>
-                                                <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                                     alt="沉沦云网络"/>
-                                                <div>{web?.info?.name || Settings?.title}</div>
-                                            </Col>
-                                            <Col span={17}>
-                                                <Menu mode={mode} selectedKeys={selectedKeys}
-                                                      style={{marginLeft: "190px", fontSize: "13px"}}
-                                                      items={menus} onClick={(item: any) => {
-                                                    history.push(item?.key);
-                                                }}/>
-                                            </Col>
-                                        </Row>
+                                    <>
+                                        <div className={unCollapsed}>
+                                            <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                                 alt="沉沦云网络"/>
+                                            <div>{web?.info?.name || Settings?.title}</div>
+                                        </div>
+                                        <Menu mode={mode} selectedKeys={selectedKeys}
+                                              style={{marginLeft: "180px", fontSize: "13px"}}
+                                              items={menus} onClick={(item: any) => {
+                                            history.push(item?.key);
+                                        }}/>
+                                    </>
                                 }
                             </>
                         } right={headerRight}/>

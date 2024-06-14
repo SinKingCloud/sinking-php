@@ -12,9 +12,7 @@ import {Animate} from "@/components/animation";
 const useStyles = createStyles(({token,css,responsive}): any => {
     return {
         body: css`
-            ${responsive.md || responsive.lg || responsive.xl || responsive.xxl}{
-                padding: 10px
-            }
+            padding: 10px;
         `,
         load: {
             margin: "0 auto",

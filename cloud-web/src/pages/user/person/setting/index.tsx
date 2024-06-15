@@ -312,7 +312,7 @@ export default (): React.ReactNode => {
                                                  initialValue={user?.web?.account || "未设置"}>
                                         <Col style={{float: "left"}}>
                                             <Input type="text" placeholder="请输入您的登陆账号"
-                                                   style={{width: "230px", marginRight: "5px"}}
+                                                   style={{width: "225px", marginRight: "5px"}}
                                                    defaultValue={user?.web?.account}
                                                    disabled={user?.web?.account != undefined && user?.web?.account != ""}/>
                                         </Col>
@@ -349,7 +349,7 @@ export default (): React.ReactNode => {
                                     </ProFormText>
                                     <ProFormText width="md" label="绑定手机" tooltip="账户绑定的安全手机">
                                         <Col style={{float: "left"}}>
-                                            <Input type="text" style={{width: "230px", marginRight: "5px"}}// @ts-ignore
+                                            <Input type="text" style={{width: "225px", marginRight: "5px"}}// @ts-ignore
                                                    value={user?.web?.phone || "未绑定"} disabled={true}/>
                                         </Col>
                                         <Col style={{float: "left"}}>
@@ -362,7 +362,7 @@ export default (): React.ReactNode => {
                                     </ProFormText>
                                     <ProFormText width="md" label="绑定邮箱" tooltip="账户绑定的安全邮箱">
                                         <Col style={{float: "left"}}>
-                                            <Input type="text" style={{width: "230px", marginRight: "5px"}}
+                                            <Input type="text" style={{width: "225px", marginRight: "5px"}}
                                                    value={user?.web?.email || "未绑定"} disabled={true}/>
                                         </Col>
                                         <Col style={{float: "left"}}>

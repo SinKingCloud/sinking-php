@@ -152,7 +152,7 @@ export default (): React.ReactNode => {
                 <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
-                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "10px"}}>
+                <Card bordered={false} loading={toDoLoading} >
                     <Row>
                         <Col sm={12} md={12} xs={12}>
                             <Info title="我的待办"

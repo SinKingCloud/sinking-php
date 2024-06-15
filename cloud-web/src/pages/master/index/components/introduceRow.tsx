@@ -14,7 +14,7 @@ const topColResponsiveProps = {
     style: {marginBottom: 24},
 };
 const IntroduceRow = ({loading, countData, visitData}: { loading: boolean; countData: any; visitData: any[] }) => (
-    <Row gutter={24} style={{marginBottom:"-12px"}}>
+    <Row gutter={24} style={{marginBottom:"-23px"}}>
         <Col {...topColResponsiveProps}>
             <ChartCard
                 style={{fontSize: "14px"}}

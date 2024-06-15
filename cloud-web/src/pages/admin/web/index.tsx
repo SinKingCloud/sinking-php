@@ -66,6 +66,11 @@ const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
             font-size: 25px;
             line-height: 28px;
         `,
+        menu:css`
+            .ant-menu-title-content {
+                color: #4b4b4b
+            }
+        `
     }
 })
 const Settings: React.FC = () => {
@@ -76,7 +81,7 @@ const Settings: React.FC = () => {
         notice: '通知设置',
         domain: '域名设置',
     };
-    const {styles:{main,leftMenu,right,title}} = useStyles()
+    const {styles:{main,leftMenu,right,title,menu}} = useStyles()
     const [initConfig, setInitConfig] = useState<SettingsState>({
         mode: 'inline',
         selectKey: 'base',
@@ -113,6 +118,7 @@ const Settings: React.FC = () => {
                 <div className={main}>
                     <div className={leftMenu}>
                         <Menu
+                            className={menu}
                             mode={initConfig.mode}
                             selectedKeys={[initConfig.selectKey]}
                             onClick={({key}) => {

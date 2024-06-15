@@ -246,7 +246,7 @@ export default (): React.ReactNode => {
                 <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
-                <Card bordered={false} loading={toDoLoading} style={{marginBottom: "10px"}}>
+                <Card bordered={false} loading={toDoLoading}>
                     <Row>
                         <Col sm={12} md={12} xs={12}>
                             <Info title="我的待办"
@@ -260,7 +260,7 @@ export default (): React.ReactNode => {
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
                 <Row gutter={24}>
-                    <Col sm={12} md={12} xs={24} style={{marginBottom: "10px"}}>
+                    <Col sm={12} md={12} xs={24} >
                         <ProCard headerBordered title="金额占比" loading={countLoading}>
                             <Donut
                                 forceFit

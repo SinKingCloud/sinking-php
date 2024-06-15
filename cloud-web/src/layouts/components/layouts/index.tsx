@@ -11,6 +11,7 @@ import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, We
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
 import Title from "../title";
+import defaultSettings from "../../../../config/defaultSettings";
 
 /**
  * 中间件
@@ -39,6 +40,7 @@ const RightTop: React.FC = () => {
      * 样式
      */
     const useStyles = createStyles(({css, token, responsive}): any => {
+        const base = ((defaultSettings?.basePath || "/") + "images/bg_blue.png" )
         return {
             img: {
                 marginBottom: "5px",
@@ -74,20 +76,20 @@ const RightTop: React.FC = () => {
                     background-color: rgba(85, 126, 253, 1) !important;
                 }
             `,
-            content_top: {
-                height: "70px",
-                width: "100%",
-                backgroundColor: token?.colorPrimaryBorderHover,
-                borderBottom: "1px solid gray",
-                overflow: "hidden",
-                backgroundImage: "url(https://www.xiaoke.cn/xk/static/bg_blue.a89f3e00.png)",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "100% 100%",
-                backgroundPosition: "center",
-                borderTopLeftRadius: "5px",
-                borderTopRightRadius: "5px",
-                lineHeight: "70px"
-            },
+            content_top:css`
+                height: 70px;
+                width: 100%;
+                //background-color: "token?.colorPrimaryBorderHover";
+                border-bottom: 1px solid gray;
+                overflow:hidden;
+                background-image: url(${base});
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                background-position: center;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                line-height: 70px;
+            `,
             ava: {
                 height: "40px",
                 width: "40px",
@@ -172,11 +174,11 @@ const RightTop: React.FC = () => {
                      </Row>
                      <ul className={menu}>
                          <li className={menuItem} onClick={() => historyPush("user.setting")}>
-                             <div><Icon type={Setting} style={{fontSize: 14}}/>账号设置</div>
+                             <div><Icon type={Setting} style={{fontSize: 14}}/>账号管理</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={() => historyPush("user.log2")}>
-                             <div><Icon type={Order} style={{fontSize: 14}}/>操作设置</div>
+                             <div><Icon type={Order} style={{fontSize: 14}}/>操作日志</div>
                              <Icon type={Right}></Icon>
                          </li>
                          {user?.web?.is_master && <li className={menuItem} onClick={() => historyPush("master.index")}>
@@ -270,7 +272,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     float: "left"
                 },
                 ">div": {
-                    color: "#0051eb",
+                    color: "#dad9d9",
                     fontSize: "25px",
                     marginLeft: "5px", fontWeight: "bolder",
                     float: "left",
@@ -286,7 +288,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
             <Title/>
             <Layout loading={loading}
                     menus={menu}
-                    layout={"horizontal"}
+                    layout={"inline"}
                     footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                     headerRight={<RightTop/>}
                     menuCollapsedWidth={60}

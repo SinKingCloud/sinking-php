@@ -8,8 +8,11 @@ import {setPayJumpUrl} from "@/utils/pay";
 import {Body, Title} from "@/components";
 import {useModel} from "umi";
 import {createStyles, useResponsive} from "antd-style";
+import defaultSettings from "../../../../config/defaultSettings";
 
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
+    const base = ((defaultSettings?.basePath || "/") + "images/buy-bg.png" )
+    const base1 = ((defaultSettings?.basePath || "/") + "images/personPackage.svg" )
     return {
         modals: css`
             .ant-modal-title {
@@ -17,7 +20,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             }
         `,
         mainTitle: css`
-            background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/buy-bg.21d92425.png");
+            background-image: url(${base});
             background-repeat: no-repeat;
             background-size: cover;
             height: 250px;
@@ -25,7 +28,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
 
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+            ${responsive.md} {
                 height: 60px;
             }
         `,
@@ -35,7 +38,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             padding-top: 45px;
             box-sizing: border-box;
 
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+            ${responsive.md} {
                 font-size: 14px;
                 padding-top: 12px;
             }
@@ -49,13 +52,13 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         body: css`
             margin: -100px auto 0 auto;
 
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+            ${responsive.md} {
                 margin: -15px auto 0 auto;
             }
         `,
         cardTitle: css`
             position: relative;
-            background-image: url("https://cdn2.weimob.com/static/saas-xk-pc-web-stc/sell-crm/online/xk/static/personPackage.5c08b148.svg");
+            background-image: url(${base1});
             background-repeat: no-repeat;
             background-size: cover;
             height: 120px;

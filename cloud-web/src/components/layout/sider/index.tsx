@@ -8,7 +8,7 @@ const useStyles = createStyles(({token}): any => {
     return {
         left: {
             position: "relative",
-            background: token?.colorBgContainer,
+            background: "rgb(4,21,39)",
             height: "100%",
         },
         menu: {
@@ -19,6 +19,7 @@ const useStyles = createStyles(({token}): any => {
             marginBottom: "50px",
             fontWeight: "bolder",
             userSelect: "none",
+            background:"rgb(4,21,39)",
             ":focus-visible": {
                 outline: "none !important"
             },
@@ -34,6 +35,12 @@ const useStyles = createStyles(({token}): any => {
             },
             ".ant-menu-item,.ant-menu-submenu-title": {
                 transition: "border-color 0.3s,background 0.3s !important"
+            },
+            ".ant-menu-title-content":{
+                color:"#fff"
+            },
+            ".ant-menu-item-selected":{
+                backgroundColor:"#040317"
             }
         },
         menuTop: {
@@ -48,20 +55,20 @@ const useStyles = createStyles(({token}): any => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            background: token?.colorBgContainer + " !important",
+            background: "rgb(4,21,39) !important",
         },
         menuBottom: {
-            background: token?.colorBgContainer,
+            background: "rgb(4,21,39)",
             userSelect: "none",
             padding: "0px !important",
             borderRadius: "0px",
             height: "50px",
             textAlign: "center",
             lineHeight: "50px !important",
-            borderTop: "0.5px solid " + token?.colorBorder + " !important",
+            // borderTop: "0.5px solid " + token?.colorBorder + " !important",
             fontWeight: "bolder",
             fontSize: 14,
-            color: token?.colorTextSecondary,
+            color: "#fff",
             cursor: "pointer",
             overflow: "hidden",
             position: "absolute",

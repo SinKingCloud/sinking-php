@@ -45,7 +45,6 @@ const UiView: React.FC = () => {
             }
         });
     }
-
     /**
      * 图片上传
      */
@@ -127,6 +126,22 @@ const UiView: React.FC = () => {
                         tooltip="网站首页的模板"
                         placeholder="请选择网站首页模板"
                         rules={[{required: true, message: '请选择网站首页模板'}]}
+                    />
+                    <ProFormSelect
+                        name="ui.layout"
+                        label="网站布局"
+                        width="md"
+                        tooltip="网站的整体布局"
+                        placeholder="请选择网站布局"
+                        rules={[{required: true, message: '请选择网站布局'}]}
+                    />
+                    <ProFormSelect
+                        name="ui.theme"
+                        label="菜单主题"
+                        width="md"
+                        tooltip="网站的主题颜色"
+                        placeholder="请选择菜单主题"
+                        rules={[{required: true, message: '请选择菜单主题'}]}
                     />
                     <ProFormText name="ui.logo" label="网站LOGO" tooltip="网站的显示LOGO">
                         <Upload

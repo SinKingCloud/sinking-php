@@ -191,7 +191,7 @@ class Cache
             if (Dir::createFile($path)) {
                 $file = $path . $key;
                 if (File::exists($file)) {
-                    return mb_substr(File::init($file)->read(), 13);
+                    return substr(File::init($file)->read(), 13);
                 } else {
                     return false;
                 }

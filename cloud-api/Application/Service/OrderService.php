@@ -491,7 +491,7 @@ class OrderService extends BaseService
     public function getPayUrl($order_info = array(), $type = 'epay1', $pay_type = 'alipay')
     {
         //易支付
-        if (mb_substr($type, 0, 4) == 'epay') {
+        if (substr($type, 0, 4) == 'epay') {
             $config = ConfigService::getInstance();
             $pay_config = array(
                 'apiurl' => $config->get('pay.' . $type . '.url'),

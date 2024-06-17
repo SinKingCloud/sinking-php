@@ -126,8 +126,8 @@ class Route
 	{
 		$path = $_SERVER['REQUEST_URI'];
 		if ($path != "/") {
-			if (mb_substr($path, 0, 10) == '/index.php') {
-				return mb_substr($path, 10);
+			if (substr($path, 0, 10) == '/index.php') {
+				return substr($path, 10);
 			}
 		}
 		return $path;

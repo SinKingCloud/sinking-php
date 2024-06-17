@@ -33,7 +33,7 @@ class Db
     //数据库名
     protected $_sql = false;
     //最后一条sql语句
-    protected $_table = '';
+    protected $_table_name = '';
     protected $_join = '';
     protected $_where = '';
     protected $_order = '';
@@ -52,6 +52,7 @@ class Db
     //状态，0表示查询条件干净，1表示查询条件污染
     protected static $_trans = 0;
     //事务指令数
+
     /**
      * 初始化类
      * @param array $conf 数据库配置
@@ -80,8 +81,10 @@ class Db
         }
     }
 
-    /*
+    /**
      * 静态化Db
+     * @param $config array 配置文件
+     * @return self|null
      */
     public static function getInstance($config = null)
     {
@@ -100,15 +103,64 @@ class Db
         return self::$instance;
     }
 
+    /**
+     * 静态方法反射
+     * @param $fun string 函数名
+     * @param $arg array 参数
+     * @return false|mixed
+     */
     public static function __callStatic($fun, $arg)
+    {
+        $fun = '_' . $fun;
+        if (self::$instance == null) {
+            self::getInstance();
+        }
+        if (method_exists(self::$instance, $fun)) {
+            return call_user_func_array(array(self::$instance, $fun), $arg);
+        }
+        return false;
+    }
+
+    /**
+     *  执行sql语句
+     * @param $sql string sql语句
+     * @param $prepare_var array 预处理变量
+     * @return int|mixed
+     */
+    public static function query($sql = '', $prepare_var = array())
     {
         if (self::$instance == null) {
             self::getInstance();
         }
-        $temp =  explode('_', $fun);
-        $fun = $temp[1];
-        return call_user_func_array(array(self::$instance, $fun), $arg);
+        return self::getInstance()->_query($sql, $prepare_var);
     }
+
+    /**
+     * 获取表名（无前缀,反射）
+     * @param string $tbName 操作的数据表名
+     * @return array 结果集
+     */
+    public static function setTable($tbName = '', $callback = array())
+    {
+        if (self::$instance == null) {
+            self::getInstance();
+        }
+        return self::getInstance()->table($tbName, $callback);
+    }
+
+    /**
+     * 获取表名（有前缀,反射）
+     * @param string $tbName 操作的数据表名
+     * @return array 结果集
+     */
+    public static function setName($tbName = '', $callback = array())
+    {
+        if (self::$instance == null) {
+            self::getInstance();
+        }
+        return self::getInstance()->table(self::getInstance()->_prefix . $tbName, $callback);
+    }
+
 
     /**
      * 连接数据库的方法
@@ -130,11 +182,12 @@ class Db
             Errors::show($e);
         }
     }
-    /** 
+
+    /**
      * 字段和表名添加 `符号
-     * 保证指令中使用关键字不出错 针对mysql 
-     * @param string $value 
-     * @return string 
+     * 保证指令中使用关键字不出错 针对mysql
+     * @param string $value
+     * @return string
      */
     protected function _addChar($value)
     {
@@ -148,10 +201,11 @@ class Db
         }
         return $value;
     }
-    /** 
-     * 取得数据表的字段信息 
+
+    /**
+     * 取得数据表的字段信息
      * @param string $tbName 表名
-     * @return array 
+     * @return array
      */
     protected function _tbFields($tbName)
     {
@@ -165,24 +219,26 @@ class Db
         }
         return $ret;
     }
+
     /**
      * 触发事件
      */
     private function trigger_handle($handle_name = '', $where = array(), $data = array())
     {
-        if (isset(self::$handle[$this->_table][$handle_name]) && is_callable(self::$handle[$this->_table][$handle_name])) {
-            $fun = self::$handle[$this->_table][$handle_name];
+        if (isset(self::$handle[$this->_table_name][$handle_name]) && is_callable(self::$handle[$this->_table_name][$handle_name])) {
+            $fun = self::$handle[$this->_table_name][$handle_name];
             if ($handle_name == 'createBefore' || $handle_name == 'createAfter' || $handle_name == 'selectDataFormat') {
                 return $fun($data);
             }
             return $fun($where, $data);
         }
     }
-    /** 
+
+    /**
      * 过滤并格式化数据表字段
-     * @param string $tbName 数据表名 
-     * @param array $data POST提交数据 
-     * @return array $newdata 
+     * @param string $tbName 数据表名
+     * @param array $data POST提交数据
+     * @return array $newdata
      */
     protected function _dataFormat($tbName, $data)
     {
@@ -214,10 +270,11 @@ class Db
         }
         return $ret;
     }
+
     /**
      * 记录日志
      */
-    private function log($result)
+    protected function log($result)
     {
         $conf = $this->config['logger']['sql'];
         if (!$conf['open']) {
@@ -229,17 +286,17 @@ class Db
         File::CreateFile($file_name, "<?php exit;?>\n", false);
         File::init($file_name)->write("时间:" . date("Y-m-d H:i:s") . " 执行耗时:" . number_format($time, 3) . "ms 执行sql:" . $sql . " 执行结果:" . Util::jsonEncode($result) . "\n");
     }
+
     /**
      * 执行查询 主要针对 SELECT, SHOW 等指令
-     * @param string $sql sql指令 
-     * @return mixed 
+     * @param string $sql sql指令
+     * @return mixed
      */
     protected function _doQuery($sql = '', $prepare = false)
     {
         $this->_sql = $sql;
         $this->_start_time = microtime();
         if ($prepare) {
-            //exit(var_dump($this->_prepare_var,$this->_prepare_sql));
             $pdostmt = self::$_dbh->prepare($this->_prepare_sql);
             $pdostmt->execute($this->_prepare_var);
         } else {
@@ -251,18 +308,17 @@ class Db
         $this->log($result);
         return $result;
     }
-    /** 
+
+    /**
      * 执行语句 针对 INSERT, UPDATE 以及DELETE,exec结果返回受影响的行数
-     * @param string $sql sql指令 
-     * @return integer 
+     * @param string $sql sql指令
+     * @return integer
      */
     protected function _doExec($sql = '', $prepare = false)
     {
         $this->_sql = $sql;
         $this->_start_time = microtime();
         if ($prepare) {
-            //var_dump($this->_prepare_var, $this->_prepare_sql);
-            //exit(var_dump($this->_prepare_var,$this->_prepare_sql));
             $pdostmt = self::$_dbh->prepare($this->_prepare_sql);
             $pdostmt->execute($this->_prepare_var);
         } else {
@@ -270,35 +326,44 @@ class Db
             $pdostmt->execute();
         }
         $result = $pdostmt->rowCount();
-        //$result = self::$_dbh->exec($this->_sql);
         $this->_end_time = microtime();
         $this->log($result);
         return $result;
     }
-    /** 
-     * 执行sql语句，自动判断进行查询或者执行操作 
-     * @param string $sql SQL指令 
-     * @return mixed 
+
+    /**
+     * 执行sql语句，自动判断进行查询或者执行操作
+     * @param string $sql SQL指令
+     * @return mixed
      */
-    public function query($sql = '')
+    protected function _query($sql = '', $prepare_var = array())
     {
-        $sql = str_replace("{DB_prefix}", $this->_prefix, $sql);
+        $sql = str_replace('${prefix}', $this->_prefix, $sql);
+        var_dump($sql);
+        $prepare = false;
+        if ($prepare_var && count($prepare_var) > 0) {
+            $this->_prepare_var = $prepare_var;
+            $prepare = true;
+            $this->_prepare_sql = $sql;
+        }
+
         $queryIps = 'INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|LOAD DATA|SELECT .* INTO|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK';
         if (preg_match('/^\\s*"?(' . $queryIps . ')\\s+/i', $sql)) {
-            return $this->_doExec($sql);
+            return $this->_doExec($sql, $prepare);
         } else {
-            //查询操作
-            return $this->_doQuery($sql);
+            return $this->_doQuery($sql, $prepare);
         }
     }
-    /** 
-     * 获取最近一次查询的sql语句 
-     * @return String 执行的SQL 
+
+    /**
+     * 获取最近一次查询的sql语句
+     * @return String 执行的SQL
      */
     public function getLastSql()
     {
         return $this->_sql;
     }
+
     /**
      * 插入方法
      * @param array $data 字段-值的一维数组
@@ -311,7 +376,7 @@ class Db
         if ($temp) {
             $data = $temp;
         }
-        $data = $this->_dataFormat($this->_table, $data);
+        $data = $this->_dataFormat($this->_table_name, $data);
         $temp_data = $data;
         if (!$data) {
             return;
@@ -323,14 +388,15 @@ class Db
             $temp[] = ':' . $tmp_key;
             $this->_prepare_var[':' . $tmp_key] = $tem_value;
         }
-        $this->_prepare_sql = "insert into " . $this->_table . "(" . implode(',', array_keys($data)) . ") values(" . implode(',', $temp) . ")";
-        $sql = "insert into " . $this->_table . "(" . implode(',', array_keys($data)) . ") values(" . implode(',', array_values($data)) . ")";
+        $this->_prepare_sql = "insert into " . $this->_table_name . "(" . implode(',', array_keys($data)) . ") values(" . implode(',', $temp) . ")";
+        $sql = "insert into " . $this->_table_name . "(" . implode(',', array_keys($data)) . ") values(" . implode(',', array_values($data)) . ")";
         $res = $this->_doExec($sql, true);
         $this->_clear = 1;
         $this->_clear();
         $this->trigger_handle('createAfter', $this->_where_options, $data);
         return $res;
     }
+
     /**
      * 删除方法
      * @return int 受影响的行数
@@ -342,14 +408,15 @@ class Db
             return false;
         }
         $this->trigger_handle('deleteBefore', $this->_where_options);
-        $this->_prepare_sql = "delete from " . $this->_table . " " . $this->_perpare_where;
-        $sql = "delete from " . $this->_table . " " . $this->_where;
+        $this->_prepare_sql = "delete from " . $this->_table_name . " " . $this->_perpare_where;
+        $sql = "delete from " . $this->_table_name . " " . $this->_where;
         $res = $this->_doExec($sql, true);
         $this->_clear = 1;
         $this->_clear();
         $this->trigger_handle('deleteAfter', $this->_where_options);
         return $res;
     }
+
     /**
      * 更新函数
      * @param array $data 参数数组
@@ -365,7 +432,7 @@ class Db
         if ($temp) {
             $data = $temp;
         }
-        $data = $this->_dataFormat($this->_table, $data);
+        $data = $this->_dataFormat($this->_table_name, $data);
         $temp_data = $data;
         if (!$data) {
             return;
@@ -388,14 +455,15 @@ class Db
         foreach ($data as $k => $v) {
             $valArr[] = $k . '=' . $v;
         }
-        $this->_prepare_sql = "update " . trim($this->_table) . " set " . trim(implode(',', $temp)) . " " . trim($this->_perpare_where);
-        $sql = "update " . trim($this->_table) . " set " . trim(implode(',', $valArr)) . " " . trim($this->_where);
+        $this->_prepare_sql = "update " . trim($this->_table_name) . " set " . trim(implode(',', $temp)) . " " . trim($this->_perpare_where);
+        $sql = "update " . trim($this->_table_name) . " set " . trim(implode(',', $valArr)) . " " . trim($this->_where);
         $res = $this->_doExec($sql, true);
         $this->_clear = 1;
         $this->_clear();
         $this->trigger_handle('updateAfter', $this->_where_options, $data);
         return $res;
     }
+
     public function auto($data = array())
     {
         //安全考虑,阻止全表更新
@@ -408,7 +476,7 @@ class Db
             if ($temp) {
                 $data = $temp;
             }
-            $data = $this->_dataFormat($this->_table, $data);
+            $data = $this->_dataFormat($this->_table_name, $data);
             $temp = array();
             foreach ($data as $k => $v) {
                 $s = substr($v, 0, 1);
@@ -424,13 +492,14 @@ class Db
         } else {
             return false;
         }
-        $this->_prepare_sql = "update " . trim($this->_table) . " set " . trim($str) . " " . trim($this->_perpare_where);
-        $sql = "update " . trim($this->_table) . " set " . trim($str) . " " . trim($this->_where);
+        $this->_prepare_sql = "update " . trim($this->_table_name) . " set " . trim($str) . " " . trim($this->_perpare_where);
+        $sql = "update " . trim($this->_table_name) . " set " . trim($str) . " " . trim($this->_where);
         $res = $this->_doExec($sql, true);
         $this->_clear = 1;
         $this->_clear();
         return $res;
     }
+
     /**
      * 获取表名（无前缀）
      * @param string $tbName 操作的数据表名
@@ -438,12 +507,13 @@ class Db
      */
     public function table($tbName = '', $callback = array())
     {
-        $this->_table = $tbName;
-        if ($callback && !isset(self::$handle[$this->_table])) {
-            self::$handle[$this->_table] = $callback;
+        $this->_table_name = $tbName;
+        if ($callback && !isset(self::$handle[$this->_table_name])) {
+            self::$handle[$this->_table_name] = $callback;
         }
         return $this;
     }
+
     /**
      * 获取表名（有前缀）
      * @param string $tbName 操作的数据表名
@@ -451,12 +521,13 @@ class Db
      */
     public function name($tbName = '', $callback = array())
     {
-        $this->_table = $this->_prefix . $tbName;
-        if ($callback && !isset(self::$handle[$this->_table])) {
-            self::$handle[$this->_table] = $callback;
+        $this->_table_name = $this->_prefix . $tbName;
+        if ($callback && !isset(self::$handle[$this->_table_name])) {
+            self::$handle[$this->_table_name] = $callback;
         }
         return $this;
     }
+
     /**
      * 联查函数
      */
@@ -478,15 +549,15 @@ class Db
         }
         return $this;
     }
+
     /**
      * 查询函数
      * @return array 结果集
      */
     public function select()
     {
-        $sql = "select " . trim($this->_field) . " from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
-        //echo $sql.'</br>';
-        $this->_prepare_sql = "select " . trim($this->_field) . " from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_perpare_where) . " " . trim($this->_order) . " " . trim($this->_limit);
+        $sql = "select " . trim($this->_field) . " from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
+        $this->_prepare_sql = "select " . trim($this->_field) . " from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_perpare_where) . " " . trim($this->_order) . " " . trim($this->_limit);
         $arr = $this->_doQuery(trim($sql), true);
         $this->_clear = 1;
         $this->_clear();
@@ -498,14 +569,15 @@ class Db
         }
         return $arr;
     }
+
     /**
      * 查询函数(单条记录)
      * @return array 记录信息
      */
     public function find()
     {
-        $sql = "select " . trim($this->_field) . " from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " limit 1";
-        $this->_prepare_sql = "select " . trim($this->_field) . " from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_perpare_where) . " " . trim($this->_order) . " limit 1";
+        $sql = "select " . trim($this->_field) . " from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " limit 1";
+        $this->_prepare_sql = "select " . trim($this->_field) . " from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_perpare_where) . " " . trim($this->_order) . " limit 1";
         $arr = $this->_doQuery(trim($sql), true);
         $this->_clear = 1;
         $this->_clear();
@@ -518,6 +590,7 @@ class Db
         }
         return null;
     }
+
     /**
      * @param mixed $option 组合条件的二维数组，例：$option['field1'] = array(1,'=>','or')
      * @return $this
@@ -588,6 +661,7 @@ class Db
         }
         return $this;
     }
+
     /**
      * 设置排序
      * @param mixed $option 排序条件数组 例:array('sort'=>'desc')
@@ -610,6 +684,7 @@ class Db
         }
         return $this;
     }
+
     /**
      * 设置查询行数及页数
      * @param int $page pageSize不为空时为页数，否则为行数
@@ -630,6 +705,7 @@ class Db
         }
         return $this;
     }
+
     /**
      * 设置分页查询行数及页数
      */
@@ -644,8 +720,8 @@ class Db
             $pageval = intval(($page - 1) * $pageSize);
             $this->_limit = "limit " . $pageval . "," . $pageSize;
         }
-        $sql = "select " . trim($this->_field) . " from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
-        $sql2 = trim("SELECT COUNT(*) as `num` FROM " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order));
+        $sql = "select " . trim($this->_field) . " from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
+        $sql2 = trim("SELECT COUNT(*) as `num` FROM " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order));
         $this->_clear = 1;
         $this->_clear();
         $total = $this->_doQuery($sql2);
@@ -664,6 +740,7 @@ class Db
         $this->_clear();
         return $return;
     }
+
     /**
      * 统计数量
      */
@@ -673,13 +750,14 @@ class Db
             $this->_clear();
         }
         if ($field != '*') $field = '`' . $field . '`';
-        $sql = "select COUNT(" . $field . ") as `num` from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
+        $sql = "select COUNT(" . $field . ") as `num` from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
         $d = $this->_doQuery($sql);
         $num = $d[0]['num'];
         $this->_clear = 1;
         $this->_clear();
         return $num;
     }
+
     /**
      * 求和
      */
@@ -688,13 +766,14 @@ class Db
         if ($this->_clear > 0) {
             $this->_clear();
         }
-        $sql = "select SUM(`" . $field . "`) as `num` from " . trim($this->_table) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
+        $sql = "select SUM(`" . $field . "`) as `num` from " . trim($this->_table_name) . " " . trim($this->_join) . " " . trim($this->_where) . " " . trim($this->_order) . " " . trim($this->_limit);
         $d = $this->_doQuery($sql);
         $num = $d[0]['num'];
         $this->_clear = 1;
         $this->_clear();
         return $num;
     }
+
     /**
      * 设置查询字段
      * @param mixed $field 字段数组
@@ -712,6 +791,7 @@ class Db
         $this->_field = implode(',', $nField);
         return $this;
     }
+
     /**
      * 清理标记函数
      */
@@ -727,6 +807,7 @@ class Db
         $this->_perpare_where = '';
         $this->_clear = 0;
     }
+
     /**
      * 手动清理标记
      * @return $this
@@ -736,9 +817,10 @@ class Db
         $this->_clear();
         return $this;
     }
+
     /**
-     * 启动事务 
-     * @return void 
+     * 启动事务
+     * @return void
      */
     public function startTrans()
     {
@@ -747,11 +829,11 @@ class Db
             self::$_dbh->beginTransaction();
         }
         self::$_trans++;
-        return;
     }
-    /** 
-     * 用于非自动提交状态下面的查询提交 
-     * @return boolen 
+
+    /**
+     * 用于非自动提交状态下面的查询提交
+     * @return boolen
      */
     public function commit()
     {
@@ -762,9 +844,10 @@ class Db
         }
         return $result;
     }
-    /** 
-     * 事务回滚 
-     * @return boolen 
+
+    /**
+     * 事务回滚
+     * @return boolen
      */
     public function rollback()
     {
@@ -775,6 +858,7 @@ class Db
         }
         return $result;
     }
+
     /**
      * 关闭连接
      * PHP 在脚本结束时会自动关闭连接。

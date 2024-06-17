@@ -14,6 +14,8 @@ class Errors
 {
     public static $configs = null;
 
+    private static $show = null;
+
     public static function show($message, $url = null, $time = 3)
     {
         header("Content-Type:text/html");
@@ -26,8 +28,14 @@ class Errors
         self::shows($message);
     }
 
+    public static function isShow()
+    {
+        return self::$show;
+    }
+
     private static function shows($error)
     {
+        self::$show = true;
         if (!self::$configs['default_debug']) {
             $error = '<h2>框架运行错误</h2>';
         }

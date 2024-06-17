@@ -20,19 +20,24 @@ class App
     protected $action;
     protected $app_path;
     protected $value;
+
     /**
      * 运行
-     * @return Object 框架核心
+     * @return false|null
      */
     public static function start()
     {
         $app = new self();
         $app->init();
+        if (Errors::isShow()) {
+            return false;
+        }
         if (PHP_SAPI == 'cli') {
             return $app->command();
         }
         return $app->http();
     }
+
     /**
      * 异常捕获
      */
@@ -57,6 +62,7 @@ class App
             Errors::show($th);
         }
     }
+
     /**
      * 构造参数
      */
@@ -77,10 +83,11 @@ class App
             $this->value = Route::GetValue();
             $this->loadFile();
             return $this;
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             Errors::show($th);
         }
     }
+
     /**
      * 自动加载
      * @param String $class 类名
@@ -100,6 +107,7 @@ class App
         }
         unset($dir);
     }
+
     /**
      * 方法注册
      */
@@ -113,6 +121,7 @@ class App
         }
         spl_autoload_register('self::autoload');
     }
+
     /**
      * 框架运行(http)
      */
@@ -151,7 +160,7 @@ class App
             } else {
                 Errors::show("方法不存在</br>" . $this->action);
             }
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             self::errorHandle($th, $this->value);
         }
     }
@@ -161,16 +170,20 @@ class App
      */
     private function command()
     {
-        $param = getopt('c:p:');
-        $commands = $this->config['command'];
-        if (!isset($commands[$param['c']])) {
-            echo "the command is not found.\n";
-            return;
+        try {
+            $param = getopt('c:p:');
+            $commands = $this->config['command'];
+            if (!isset($commands[$param['c']])) {
+                echo "the command is not found.\n";
+                return;
+            }
+            $class = $commands[$param['c']];
+            $p = isset($param['p']) ? $param['p'] : array();
+            $obj = new $class($p);
+            $obj->execute();
+        } catch (Exception $th) {
+            self::errorHandle($th, $this->value);
         }
-        $class = $commands[$param['c']];
-        $p = isset($param['p']) ? $param['p'] : array();
-        $obj = new $class($p);
-        $obj->execute();
     }
 
     /**

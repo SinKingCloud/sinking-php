@@ -26,18 +26,27 @@ const useStyles = createStyles(({css}) => {
                 border-inline-start: 6px solid transparent;
                 border-start-end-radius: 6px;
             }
-        `
+        `,
+        chard: {
+            ".ant-pro-checkcard-content": {
+                paddingInline: "7px !important",
+                paddingBlock: "6px !important",
+            },
+            ".ant-pro-checkcard-header-left":{
+                marginLeft:"4px !important"
+            }
+        }
     }
 })
 export default (): React.ReactNode => {
-    const {styles: {border}} = useStyles()
+    const {styles: {border, chard}} = useStyles()
     const {message, modal} = App.useApp()
     const {mobile} = useResponsive()
     const user = useModel("user")
     const [loading, setLoading] = useState(false);
     const [payConfig, setPayConfig] = useState({});
     useEffect(() => {
-        setLoading(true);
+        setLoading(true)
         getPayConfig().then((r: any) => {
             if (r?.code == 200) {
                 setPayConfig(r?.data);
@@ -50,7 +59,7 @@ export default (): React.ReactNode => {
     const [refreshIcon, setRefreshIcon] = useState(false);
     const [money, setMoney] = useState("");
     const [form] = Form.useForm();
-    const ref = useRef();
+    const ref = useRef<any>();
     /**
      * table表格渲染
      */
@@ -159,7 +168,6 @@ export default (): React.ReactNode => {
                                             },
                                             onSuccess: (r: any) => {
                                                 if (r?.code == 200) {
-                                                    // @ts-ignore
                                                     ref?.current?.reload();
                                                     setPayJumpUrl();
                                                     if (mobile) {
@@ -172,7 +180,6 @@ export default (): React.ReactNode => {
                                                         icon: <ExclamationCircleOutlined/>,
                                                         content: '如支付成功请点击确认或点击刷新按钮刷新余额',
                                                         async onOk() {
-                                                            // @ts-ignore
                                                             ref?.current?.reload();
                                                         },
                                                     });
@@ -203,72 +210,67 @@ export default (): React.ReactNode => {
                                                 title="10元"
                                                 size={"small"}
                                                 value="10"
+                                                className={chard}
                                                 style={{
                                                     borderRadius: "7px",
-                                                    paddingLeft:"9px",
-                                                    height: "36px",
-                                                    width: "60px",
-                                                    boxSizing: "border-box"
+                                                    maxWidth: "51px",
+                                                    boxSizing: "border-box",
                                                 }}
                                             />
                                             <CheckCard
                                                 title="50元"
                                                 size={"small"}
                                                 value="50"
+                                                className={chard}
                                                 style={{
                                                     borderRadius: "7px",
-                                                    paddingLeft:"9px",
-                                                    height: "36px",
-                                                    width: "60px",
-                                                    boxSizing: "border-box"
+                                                    maxWidth: "53px",
+                                                    boxSizing: "border-box",
                                                 }}
                                             />
                                             <CheckCard
                                                 title="100元"
                                                 size={"small"}
                                                 value="100"
+                                                className={chard}
                                                 style={{
                                                     borderRadius: "7px",
-                                                    paddingLeft:"6px",
-                                                    height: "36px",
-                                                    width: "60px",
-                                                    boxSizing: "border-box"
+                                                    maxWidth: "58px",
+                                                    boxSizing: "border-box",
                                                 }}
                                             />
                                             <CheckCard
                                                 title="500元"
                                                 size={"small"}
                                                 value="500"
+                                                className={chard}
                                                 style={{
                                                     borderRadius: "7px",
-                                                    height: "36px",
-                                                    paddingLeft:"6px",
-                                                    width: "60px",
-                                                    boxSizing: "border-box"
+                                                    maxWidth: "60px",
+                                                    boxSizing: "border-box",
                                                 }}
                                             />
                                             <CheckCard
                                                 title="1000元"
                                                 size={"small"}
                                                 value="1000"
+                                                className={chard}
                                                 style={{
-                                                    height: "36px",
                                                     borderRadius: "7px",
-                                                    paddingLeft:"3px",
-                                                    width: "60px",
-                                                    boxSizing: "border-box"
+                                                    textAlign:"center",
+                                                    maxWidth: "65px",
+                                                    boxSizing: "border-box",
                                                 }}
                                             />
                                             <CheckCard
                                                 title="自定义"
                                                 size={"small"}
                                                 value=""
+                                                className={chard}
                                                 style={{
-                                                    height: "36px",
                                                     borderRadius: "7px",
-                                                    paddingLeft:"4px",
-                                                    width: "60px",
-                                                    boxSizing: "border-box"
+                                                    maxWidth: "64px",
+                                                    boxSizing: "border-box",
                                                 }}
                                             />
                                             {!moneyInput && <Input placeholder={"金额"}
@@ -277,10 +279,11 @@ export default (): React.ReactNode => {
                                                                        form.setFieldsValue({money: e.target.value});
                                                                    }}
                                                                    style={{
-                                                                       height: "36px",
-                                                                       width: "60px",
+                                                                       maxWidth: "60px",
                                                                        margin: "0px",
                                                                        borderRadius: "7px",
+                                                                       paddingBlock:"6px",
+                                                                       letterSpacing:"1px",
                                                                        textAlign: "center"
                                                                    }}/>}
 
@@ -292,40 +295,41 @@ export default (): React.ReactNode => {
                                         rules={[{required: true, message: '请选择充值方式'}]}
                                         initialValue={"0"}
                                     >
-                                        <CheckCard.Group className={border}>
-                                            <Row gutter={10} wrap={true} style={{marginLeft: "22%"}}>
+                                        <CheckCard.Group className={border} >
+                                            <Row gutter={10} wrap={true}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>
                                                     <CheckCard
                                                         title={(<><AlipayCircleOutlined
-                                                            style={{marginRight: "5px"}}/> 支付宝</>)}
+                                                            style={{marginRight: "3px"}}/> 支付宝</>)}
                                                         value="0"
                                                         size={"small"}
+                                                        className={chard}
                                                         style={{
-                                                            maxWidth: "70px",
+                                                            maxWidth: "80px",
                                                             borderRadius: "10px",
                                                             display: payConfig['pay.alipay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />
                                                     <CheckCard
                                                         title={(<><WechatOutlined
-                                                            style={{marginRight: "5px"}}/> 微信</>)}
+                                                            style={{marginRight: "3px"}}/> 微信</>)}
                                                         value="1"
                                                         size={"small"}
+                                                        className={chard}
                                                         style={{
-                                                            maxWidth: "70px",
+                                                            maxWidth: "84px",
                                                             borderRadius: "10px",
-                                                            paddingLeft: "6px",
                                                             display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />
                                                     <CheckCard
-                                                        title={(<><QqOutlined style={{marginRight: "5px"}}/> QQ</>)}
+                                                        title={(<><QqOutlined style={{marginRight: "3px"}}/> QQ</>)}
                                                         value="2"
                                                         size={"small"}
+                                                        className={chard}
                                                         style={{
-                                                            maxWidth: "70px",
+                                                            maxWidth: "84px",
                                                             borderRadius: "10px",
-                                                            paddingLeft: "6px",
                                                             display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
                                                         }}
                                                     />

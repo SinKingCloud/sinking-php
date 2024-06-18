@@ -6,7 +6,6 @@ import {getUploadUrl} from "@/service/common/upload";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {createStyles} from "antd-style";
 import {useModel} from "umi";
-
 const useStyles = createStyles(({css}) => {
     return {
         box: css`
@@ -16,14 +15,16 @@ const useStyles = createStyles(({css}) => {
         `
     }
 })
-
 const UiView: React.FC = () => {
     const {styles: {box}} = useStyles()
+    const theme = useModel("theme")
+    // const ref =
     const [isLoading, setIsLoading] = useState(false);
     const [index, setIndex] = useState<any>({});
     const {message} = App.useApp()
     const [form] = Form.useForm();
     const web = useModel("web")
+    const [loading,setLoading] = useState<any>(false)
     /**
      * 初始化表单值
      */
@@ -127,18 +128,66 @@ const UiView: React.FC = () => {
                         placeholder="请选择网站首页模板"
                         rules={[{required: true, message: '请选择网站首页模板'}]}
                     />
-                    <ProFormSelect
-                        name="ui.layout"
-                        label="网站布局"
-                        width="md"
-                        tooltip="网站的整体布局"
-                        placeholder="请选择网站布局"
-                        rules={[{required: true, message: '请选择网站布局'}]}
-                    />
+                    <Spin spinning={loading} tip="加载布局中">
+                        <ProFormSelect
+                            name="ui.layout"
+                            label="网站布局"
+                            width="md"
+                            options={[
+                                {
+                                    value: 'top',
+                                    label: '上下布局',
+                                },
+                                {
+                                    value: 'left',
+                                    label: '左右布局',
+                                }
+                            ]}
+                            onChange={(value)=>{
+                                setLoading(true)
+                                setUi({
+                                    body:{
+                                        "ui.layout":value
+                                    },
+                                    onSuccess:()=>{
+                                        web?.refreshInfo()
+                                    },
+                                    onFinally:()=>{
+                                        setLoading(false)
+                                    }
+                                })
+                            }}
+                            tooltip="网站的整体布局"
+                            placeholder="请选择网站布局"
+                            rules={[{required: true, message: '请选择网站布局'}]}
+                        />
+                    </Spin>
+
                     <ProFormSelect
                         name="ui.theme"
                         label="菜单主题"
                         width="md"
+                        options={[
+                            {
+                                value: 'light',
+                                label: '亮色模式',
+                            },
+                            {
+                                value: 'dark',
+                                label: '暗色模式',
+                            }
+                        ]}
+                        // onChange={(value)=>{
+                        //     setUi({
+                        //         body:{
+                        //             "ui.theme":value
+                        //         },
+                        //         onSuccess:()=>{
+                        //             theme?.toggle2?.();
+                        //             web?.refreshInfo()
+                        //         },
+                        //     })
+                        // }}
                         tooltip="网站的主题颜色"
                         placeholder="请选择菜单主题"
                         rules={[{required: true, message: '请选择菜单主题'}]}

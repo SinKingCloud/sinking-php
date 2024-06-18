@@ -4,11 +4,12 @@ import {ConfigProvider, Menu, theme, Layout} from 'antd';
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {Icon} from "@/components";
 
-const useStyles = createStyles(({token}): any => {
+const useStyles = createStyles(({isDarkMode}): any => {
+    const bak = isDarkMode ? "rgb(20,20,20)" : "rgb(4,21,39)";
     return {
         left: {
             position: "relative",
-            background: "rgb(4,21,39)",
+            background:`${bak}`,
             height: "100%",
         },
         menu: {
@@ -19,7 +20,7 @@ const useStyles = createStyles(({token}): any => {
             marginBottom: "50px",
             fontWeight: "bolder",
             userSelect: "none",
-            background:"rgb(4,21,39)",
+            background:`${bak}`,
             ":focus-visible": {
                 outline: "none !important"
             },
@@ -37,7 +38,7 @@ const useStyles = createStyles(({token}): any => {
                 transition: "border-color 0.3s,background 0.3s !important"
             },
             ".ant-menu-title-content":{
-                color:"#fff"
+                color:"#dad9d9"
             },
             ".ant-menu-item-selected":{
                 backgroundColor:"#040317"
@@ -55,20 +56,20 @@ const useStyles = createStyles(({token}): any => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            background: "rgb(4,21,39) !important",
+            background: `${bak} !important`
         },
         menuBottom: {
-            background: "rgb(4,21,39)",
+            background:`${bak}`,
             userSelect: "none",
             padding: "0px !important",
             borderRadius: "0px",
             height: "50px",
             textAlign: "center",
             lineHeight: "50px !important",
-            // borderTop: "0.5px solid " + token?.colorBorder + " !important",
+            borderTop: "1px solid rgba(122,122,122)",
             fontWeight: "bolder",
             fontSize: 14,
-            color: "#fff",
+            color: "#dad9d9",
             cursor: "pointer",
             overflow: "hidden",
             position: "absolute",

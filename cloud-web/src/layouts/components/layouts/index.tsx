@@ -40,7 +40,7 @@ const RightTop: React.FC = () => {
      * 样式
      */
     const useStyles = createStyles(({css, token, responsive}): any => {
-        const base = ((defaultSettings?.basePath || "/") + "images/bg_blue.png" )
+        const base = ((defaultSettings?.basePath || "/") + "images/bg_blue.png")
         return {
             img: {
                 marginBottom: "5px",
@@ -76,12 +76,12 @@ const RightTop: React.FC = () => {
                     background-color: rgba(85, 126, 253, 1) !important;
                 }
             `,
-            content_top:css`
+            content_top: css`
                 height: 70px;
                 width: 100%;
                 //background-color: "token?.colorPrimaryBorderHover";
                 border-bottom: 1px solid gray;
-                overflow:hidden;
+                overflow: hidden;
                 background-image: url(${base});
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
@@ -224,34 +224,34 @@ const RightTop: React.FC = () => {
 }
 
 export type slide = {
-    menu: any
+    menu?: any,
 }
 /**
  * 用户系统
  */
 const Layouts: React.FC<slide> = ({...props}) => {
-    const {menu} = props
     /**
-     * 全局信息
-     */
-    const user = useModel("user");//用户信息
-    const web = useModel("web");
-    /**
-     * 初始化用户信息
-     */
-    const [loading, setLoading] = useState(false)
-    const initUser = () => {
-        setLoading(true);
-        if (getLoginToken() == "") {
-            historyPush("user.login");
-            return;
-        }
-        user?.getWebUser()?.then((u: any) => {
-            user?.setWeb(u);
-        })?.finally(() => {
-            setLoading(false);
-        });
-    }
+         * 初始化用户信息
+         */
+    const {menu} = props,
+        /**
+         * 全局信息
+         */
+        user = useModel("user"),
+        web = useModel("web"),
+        [loading, setLoading] = useState(false),
+        initUser = () => {
+            setLoading(true);
+            if (getLoginToken() == "") {
+                historyPush("user.login");
+                return;
+            }
+            user?.getWebUser()?.then((u: any) => {
+                user?.setWeb(u);
+            })?.finally(() => {
+                setLoading(false);
+            });
+        };
     useEffect(() => {
         initUser();
     }, []);
@@ -272,7 +272,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     float: "left"
                 },
                 ">div": {
-                    color: "#dad9d9",
+                    color: "#1677FF",
                     fontSize: "25px",
                     marginLeft: "5px", fontWeight: "bolder",
                     float: "left",
@@ -288,7 +288,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
             <Title/>
             <Layout loading={loading}
                     menus={menu}
-                    layout={"inline"}
+                    layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
                     footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                     headerRight={<RightTop/>}
                     menuCollapsedWidth={60}
@@ -310,7 +310,8 @@ const Layouts: React.FC<slide> = ({...props}) => {
                                 <div>{web?.info?.name || Settings?.title}</div>
                             </div>)
                     }}
-            /></>
+            />
+        </>
     );
 }
 export default Layouts;

@@ -11,6 +11,7 @@ import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 
 const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any => {
+    const bak = isDarkMode ? "rgb(22,24,36)" : "rgb(4,21,39)";
     return {
         sider: {
             zIndex: 2,
@@ -54,16 +55,26 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             userSelect: "none",
             background: token?.colorBgContainer + " !important"
         },
+        header1: {
+            padding: 0,
+            height: "55px",
+            lineHeight: "55px !important",
+            width: "100%",
+            zIndex: 3,
+            boxShadow: "0 2px 8px 0 " + (isDarkMode ? "rgba(0, 0, 0, 0.25)" : "rgba(29, 35, 41, 0.05)"),
+            position: "sticky",
+            top: 0,
+            userSelect: "none",
+            background: `${bak}`
+        },
         content: css`
             min-height: calc(100vh - 117px);
             width: 100%;
             height: 100%;
-
             > div > div > div:first-of-type {
                 width: 80%;
                 margin-left: 10%;
             }
-
             ${responsive.md} {
                 > div > div > div:first-of-type {
                     width: 100%;
@@ -78,11 +89,22 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
         },
         footer: {
             textAlign: 'center',
-            transform: "translateY(-1px)",
         },
         flow: {
             display: "flex",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            ".ant-menu":{
+                background:`${bak}`,
+            },
+            " .ant-menu-submenu-title":{
+                color:"#dad9d9"
+            },
+            ".ant-menu-item":{
+                color:"#dad9d9"
+            },
+            ".ant-menu-item-selected":{
+                color:"#0335cd"
+            },
         },
         logo: {
             display: "inline-flex",
@@ -90,27 +112,28 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             alignItems: "center",
             width: "220px",
             height: "55px",
-        }
+        },
     };
 });
 
 export type LayoutProps = {
-    loading?: boolean;//是否显示加载
-    menuCollapsedWidth?: Number;//菜单关闭时宽度
-    menuUnCollapsedWidth?: Number;//菜单开启时宽度
-    menus?: any;//菜单列表
-    onMenuClick?: (item: any) => void;//点击菜单回调
-    onMenuBtnClick?: (state: boolean) => void;//菜单按钮点击
-    footer?: any;//底部内容
-    headerRight?: any;//顶部右侧内容
-    headerLeft?: any;//顶部左侧内容
-    onLogoClick?: () => void;//点击logo回调
-    collapsedLogo?: (isLight: boolean) => any;//折叠时logo
-    unCollapsedLogo?: (isLight: boolean) => any;//展开时logo
-    menuBottomBtnIcon?: string;//底部按钮图标
-    menuBottomBtnText?: string;//底部按钮文字
-    onMenuBottomBtnClick?: () => void;//点击底部按钮回调
+    loading?: boolean,
+    menuCollapsedWidth?: Number,
+    menuUnCollapsedWidth?: Number,
+    menus?: any,
+    onMenuClick?: (item: any) => void,
+    onMenuBtnClick?: (state: boolean) => void,
+    footer?: any,
+    headerRight?: any,
+    headerLeft?: any,
+    onLogoClick?: () => void,
+    collapsedLogo?: (isLight: boolean) => any,
+    unCollapsedLogo?: (isLight: boolean) => any,
+    menuBottomBtnIcon?: string,
+    menuBottomBtnText?: string,
+    onMenuBottomBtnClick?: () => void,
     layout?: string,
+    mode?: string,
 };
 
 const SinKing: React.FC<LayoutProps> = (props) => {
@@ -148,7 +171,8 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             drawMenu,
             menuBtn,
             flow,
-            logo
+            logo,
+            header1
         }
     } = useLayoutStyles();
     const {mobile, md} = useResponsive();
@@ -166,7 +190,6 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         }
         onMenuBtnClick?.(status);
     }
-
     /**
      * 获取菜单
      * @param mode 布局模式
@@ -185,7 +208,6 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                           onMenuClick?.(item);
                       }}/>;
     }
-
     /**
      * 移动端抽屉
      */
@@ -224,12 +246,11 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             </Layout.Footer>}
         </Layout>
     </Layout>;
-
     /**
      * 上下模式
      */
     const LayoutFlow = <Layout>
-        <Layout.Header className={header}>
+        <Layout.Header className={header1}>
             {!md && <Header left={<div>
                 <Button type="text" size={"large"} icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                         onClick={menuBtnOnClick} className={menuBtn}/>
@@ -260,6 +281,5 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             </App>
         </ConfigProvider>
     );
-
 }
 export default SinKing;

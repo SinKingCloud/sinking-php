@@ -184,7 +184,6 @@ const Index: React.FC = () => {
         if (localStorage.getItem("captcha_id") != id || location.pathname != "/user/login") {
             return;
         }
-        setQrcodeLoading(true);
         qrLogin({
             body: {
                 captcha_id: id,
@@ -208,9 +207,6 @@ const Index: React.FC = () => {
                         }, 1000)
                     }
             },
-            onFinally:()=>{
-                setQrcodeLoading(false);
-            }
         })
     }
     const getQrCode = () => {

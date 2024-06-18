@@ -101,7 +101,7 @@ class BaseController extends Controller
      *
      * @param string $message 消息
      * @param array $data 内容
-     * @return void
+     * @return array 响应数据
      */
     public function success($message = 'success', $data = array())
     {
@@ -118,7 +118,7 @@ class BaseController extends Controller
      *
      * @param string $message 消息
      * @param array $data 内容
-     * @return void
+     * @return array 响应数据
      */
     public function error($message = 'error', $data = array())
     {
@@ -135,7 +135,7 @@ class BaseController extends Controller
      *
      * @param array $rules 规则验证
      * @param array $data 验证数据
-     * @return void
+     * @return array 响应数据
      */
     protected function validate($rules = array(), $data = array())
     {

@@ -161,6 +161,42 @@ class Db
         return self::getInstance()->table(self::getInstance()->_prefix . $tbName, $callback);
     }
 
+    /**
+     * 开启事务
+     * @return void
+     */
+    public static function transStart()
+    {
+        if (self::$instance == null) {
+            self::getInstance();
+        }
+        self::getInstance()->startTrans();
+    }
+
+    /**
+     * 回滚事务
+     * @return void
+     */
+    public static function transRollback()
+    {
+        if (self::$instance == null) {
+            self::getInstance();
+        }
+        self::getInstance()->rollback();
+    }
+
+    /**
+     * 提交事务
+     * @return void
+     */
+    public static function transCommit()
+    {
+        if (self::$instance == null) {
+            self::getInstance();
+        }
+        self::getInstance()->commit();
+    }
+
 
     /**
      * 连接数据库的方法

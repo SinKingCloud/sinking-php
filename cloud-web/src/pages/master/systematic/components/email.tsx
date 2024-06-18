@@ -105,7 +105,7 @@ const EmailView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
-                <ProForm key={"form"} className={box} onFinish={async (values: any) => {
+                <ProForm className={box} onFinish={async (values: any) => {
                     await testEmail({
                         body: {
                             ...values

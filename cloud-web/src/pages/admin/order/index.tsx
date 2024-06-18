@@ -208,7 +208,6 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
-                // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
                     return getData(params, sort, getOrderList)

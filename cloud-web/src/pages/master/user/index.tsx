@@ -25,17 +25,18 @@ import {getPayLog} from "@/service/master/pay";
 import {getLogList} from "@/service/master/log";
 import {Body, Title} from '@/components';
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     /**
      * 表单处理
      */
@@ -49,7 +50,7 @@ export default (): React.ReactNode => {
     useEffect(() => {
         getDomainConfig({
             onSuccess: (r: any) => {
-                    setDomainConfig(r?.data);
+                setDomainConfig(r?.data);
             }
         });
     }, []);
@@ -113,15 +114,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    setIsModalVisible(false);
-                    message?.success(r?.message)
-                    actionRef.current.reload()
-                    form.resetFields();
+                setIsModalVisible(false);
+                message?.success(r?.message)
+                actionRef.current.reload()
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalBtnLoading(false);
             }
         });
@@ -140,13 +141,13 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    setIsModalAddWebVisible(false);
-                    message?.success(r?.message)
-                    actionRef.current.reload()
-                    add.resetFields();
+                setIsModalAddWebVisible(false);
+                message?.success(r?.message)
+                actionRef.current.reload()
+                add.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -227,16 +228,16 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalMoneyVisible(false);
-                    actionRef.current.reload();
-                    payActionRef.current.reload();
-                    form.resetFields();
+                message?.success(r?.message)
+                setIsModalMoneyVisible(false);
+                actionRef.current.reload();
+                payActionRef.current.reload();
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalMoneyBtnLoading(false);
             }
         });
@@ -326,13 +327,13 @@ export default (): React.ReactNode => {
                         status: status
                     },
                     onSuccess: (r: any) => {
-                            message?.success( r?.message)
-                            actionRef?.current.reload();
+                        message?.success(r?.message)
+                        actionRef?.current.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message)
+                        message?.error(r?.message)
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key)
                     }
                 });

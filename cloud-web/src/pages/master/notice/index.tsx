@@ -24,10 +24,11 @@ import {uploadFile} from "@/service/common/upload";
 import {Body, Title} from '@/components';
 import {NamePath} from "rc-field-form/es/interface";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
@@ -35,7 +36,7 @@ const useStyles = createStyles(({css})=>{
 })
 export default (): React.ReactNode => {
     const {message, modal} = App.useApp()
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     /**
      * 表单处理
      */
@@ -69,14 +70,14 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    form.resetFields();
-                    actionRef.current.reload()
+                message?.success(r?.message)
+                form.resetFields();
+                actionRef.current.reload()
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalVisible(false)
             }
         })
@@ -100,16 +101,16 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    actionRef.current.reload()
-                    actionRef.current.clearSelected();
-                    edit.resetFields();
+                message?.success(r?.message)
+                actionRef.current.reload()
+                actionRef.current.clearSelected();
+                edit.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
 
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalEditVisible(false)
             }
         })
@@ -133,13 +134,13 @@ export default (): React.ReactNode => {
                         ids: ids
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            actionRef.current.reloadAndRest()
+                        message?.success(r?.message)
+                        actionRef.current.reloadAndRest()
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message || "请求失败")
+                        message?.error(r?.message || "请求失败")
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message.destroy("notice")
                     }
                 })
@@ -311,13 +312,13 @@ export default (): React.ReactNode => {
                 id: id
             },
             onSuccess: (r: any) => {
-                    r.data.content = BraftEditor.createEditorState(r?.data?.content);
-                    form.setFieldsValue(r?.data);
+                r.data.content = BraftEditor.createEditorState(r?.data?.content);
+                form.setFieldsValue(r?.data);
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setNoticeLoading(false);
             }
         });

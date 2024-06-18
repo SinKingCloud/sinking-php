@@ -28,9 +28,9 @@ export default (): React.ReactNode => {
         setCountLoading(true);
         getCount({
             onSuccess: (r: any) => {
-                    setCountData(r?.data);
+                setCountData(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setCountLoading(false)
             }
         });
@@ -69,9 +69,9 @@ export default (): React.ReactNode => {
                 end_date: end_date
             },
             onSuccess: (r: any) => {
-                    temp.data = r?.data;
+                temp.data = r?.data;
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setChartData(temp);
                 setChartLoading(false);
             }
@@ -86,9 +86,9 @@ export default (): React.ReactNode => {
                 limit: 7
             },
             onSuccess: (r: any) => {
-                    temp.topUser = r?.data;
+                temp.topUser = r?.data;
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setChartData(temp);
                 setChartLoading(false);
             }
@@ -102,9 +102,9 @@ export default (): React.ReactNode => {
                 limit: 7
             },
             onSuccess: (r: any) => {
-                    temp.topOrder = r?.data;
+                temp.topOrder = r?.data;
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setChartData(temp);
                 setChartLoading(false);
             }
@@ -130,9 +130,9 @@ export default (): React.ReactNode => {
         setToDoLoading(true);
         getToDo({
             onSuccess: (r: any) => {
-                    setToDoData(r?.data);
+                setToDoData(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setToDoLoading(false);
             }
         });
@@ -152,7 +152,7 @@ export default (): React.ReactNode => {
                 <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
-                <Card bordered={false} loading={toDoLoading} >
+                <Card bordered={false} loading={toDoLoading}>
                     <Row>
                         <Col sm={12} md={12} xs={12}>
                             <Info title="我的待办"

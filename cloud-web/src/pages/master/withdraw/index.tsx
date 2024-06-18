@@ -20,17 +20,18 @@ import {getCashList, updateCash} from "@/service/master/withdraw";
 import {Body, Title} from '@/components';
 import {NamePath} from "rc-field-form/es/interface";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     /**
      * 表单处理
      */
@@ -59,13 +60,13 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalVisible(false)
-                    actionRef.current.reload()
-                    form.resetFields();
+                message?.success(r?.message)
+                setIsModalVisible(false)
+                actionRef.current.reload()
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         })
     }
@@ -84,14 +85,14 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalEditVisible(false)
-                    actionRef.current.reload()
-                    actionRef.current.clearSelected();
-                    edit.resetFields();
+                message?.success(r?.message)
+                setIsModalEditVisible(false)
+                actionRef.current.reload()
+                actionRef.current.clearSelected();
+                edit.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         })
     }
@@ -273,20 +274,20 @@ export default (): React.ReactNode => {
             }
         },
     ];
-    const [title,setTitle] = useState<any>()
-    useEffect(()=>{
-        setTitle(form.getFieldValue("id" as NamePath))
-    },[])
+    const [title, setTitle] = useState<any>()
+    useEffect(() => {
+        setTitle(form.getFieldValue("id" as NamePath) == undefined ? "申请提现" : "编辑提现")
+    }, [isModalVisible]);
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} width={400} forceRender={true}
-                   title={<Title>{title == undefined ? "申请提现" : "编辑提现"}</Title>} className={modals}
+                   title={<Title>{title}</Title>} className={modals}
                    open={isModalVisible} onOk={form.submit} okText={"确 认"} onCancel={() => {
-                        setIsModalVisible(false);
-                        form.resetFields();
+                setIsModalVisible(false);
+                form.resetFields();
             }}>
                 <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 16}} >
+                      wrapperCol={{span: 16}}>
                     <Form.Item name="id" label="ID" rules={[{required: true}]}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
@@ -333,7 +334,7 @@ export default (): React.ReactNode => {
                 edit.resetFields();
             }}>
                 <Form form={edit} name="control-hooks1" onFinish={onEditFinish} labelAlign="right" labelCol={{span: 6}}
-                      wrapperCol={{span: 16}} >
+                      wrapperCol={{span: 16}}>
                     <Form.Item name="status" label="状态">
                         <Select placeholder="请选择提现状态" options={[
                             {
@@ -389,7 +390,7 @@ export default (): React.ReactNode => {
                     );
                 }}
                 request={async (params, sort) => {
-                    return getData(params,sort,getCashList)
+                    return getData(params, sort, getCashList)
                 }}
                 search={{
                     defaultCollapsed: true,

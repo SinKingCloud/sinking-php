@@ -30,12 +30,12 @@ const BaseView: React.FC = () => {
         setIsLoading(true);
         return await getWeb({
             onSuccess: (r: any) => {
-                    form.setFieldsValue(r?.data)
+                form.setFieldsValue(r?.data)
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsLoading(false)
             }
         });
@@ -50,11 +50,11 @@ const BaseView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message || "修改成功")
-                    web?.refreshInfo()
+                message?.success(r?.message || "修改成功")
+                web?.refreshInfo()
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -66,10 +66,10 @@ const BaseView: React.FC = () => {
     const getMyPrice = async () => {
         await getMy({
             onSuccess: (r: any) => {
-                    setMyPrice(r?.data || {});
+                setMyPrice(r?.data || {});
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -136,12 +136,12 @@ const BaseView: React.FC = () => {
                                     await buySite({
                                         body: {},
                                         onSuccess: (r: any) => {
-                                                message?.success(r?.message)
+                                            message?.success(r?.message)
                                         },
                                         onFail: (r: any) => {
-                                                message?.error(r?.message || "续期失败")
+                                            message?.error(r?.message || "续期失败")
                                         },
-                                        onFinally:()=>{
+                                        onFinally: () => {
                                             message.destroy(key)
                                         }
                                     });

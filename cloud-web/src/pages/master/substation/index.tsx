@@ -662,7 +662,7 @@ export default (): React.ReactNode => {
                        setIsModalVisible(false);
                        form.resetFields();
                    }}>
-                <Form form={form} name="control-hooks1" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 4}}
+                <Form form={form} onFinish={onFormFinish} labelAlign="right" labelCol={{span: 4}}
                       wrapperCol={{span: 18}}>
                     <Form.Item name="id" label="ID" hidden={true}>
                         <Input placeholder="请输入ID"/>
@@ -868,7 +868,6 @@ export default (): React.ReactNode => {
                 formRef={ref}
                 rowKey={'id'}
                 scroll={{x: true}}
-                // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
                     return getData(params, sort, getWebList)

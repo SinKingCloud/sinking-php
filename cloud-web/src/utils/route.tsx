@@ -86,8 +86,8 @@ function getMenuItems(routes: any, parentPath = '/') {
                 menuItem.key = `${route.path}`;
             }
         }
-        if (route.routes) {
-            const children = getMenuItems(route.routes, menuItem.key);
+        if (route?.routes) {
+            const children = getMenuItems(route?.routes, menuItem.key);
             if (children.length > 0) {
                 menuItem.children = children;
             }
@@ -111,18 +111,18 @@ export function getParentList(data: any[], name: string): any[] {
     let parents: any[] = [];
     function findParent(data: any, name: string): boolean {
         if (data?.children && data?.children?.length > 0) {
-            if (data.name === name) {
+            if (data?.name === name) {
                 parents.push(data);
                 return true;
             }
         } else {
             for (const item of data) {
-                if (item.name === name) {
+                if (item?.name === name) {
                     parents.push(item);
                     return true;
                 }
-                if (item.children) {
-                    if (findParent(item.children, name)) {
+                if (item?.children) {
+                    if (findParent(item?.children, name)) {
                         parents.push(item);
                         return true;
                     }

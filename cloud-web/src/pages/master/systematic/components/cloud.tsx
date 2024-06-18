@@ -51,7 +51,7 @@ const CloudView: React.FC = () => {
                 id: values['cloud.id'],
                 key: values['cloud.key']
             },
-            onSuccess: async (r: any) => {
+            onSuccess: async () => {
                 await updateConfigs({
                     body: {
                         ...values

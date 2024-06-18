@@ -7,17 +7,18 @@ import {getData} from "@/utils/page";
 import {useModel} from "umi";
 import {Title} from "@/components";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 const DomainView: React.FC = () => {
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     const {message, modal} = App.useApp()
     const user = useModel("user")
     /**
@@ -47,13 +48,13 @@ const DomainView: React.FC = () => {
                         ids: ids, web_id: web_id
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            domainActionRef?.current?.reload();
+                        message?.success(r?.message)
+                        domainActionRef?.current?.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message)
+                        message?.error(r?.message)
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key)
                     }
                 });
@@ -74,13 +75,13 @@ const DomainView: React.FC = () => {
                         web_id: web_id, ids: ids, status: status
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            domainActionRef?.current?.reload();
+                        message?.success(r?.message)
+                        domainActionRef?.current?.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message)
+                        message?.error(r?.message)
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key)
                     }
                 });
@@ -190,9 +191,9 @@ const DomainView: React.FC = () => {
                 domainActionRef.current.reload();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message)
+                message?.error(r?.message)
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalDomainAddBtnLoading(false);
             }
         });

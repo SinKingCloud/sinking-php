@@ -1,19 +1,20 @@
-import ProForm, { ProFormText} from '@ant-design/pro-form';
+import ProForm, {ProFormText} from '@ant-design/pro-form';
 import React, {useEffect, useState} from 'react';
 import {getConfigList, testSms, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
     }
 })
 const SmsView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
     const [form] = Form.useForm();
@@ -24,19 +25,19 @@ const SmsView: React.FC = () => {
     const getConfigs = async () => {
         setIsLoading(true);
         return await getConfigList({
-            body:{
+            body: {
                 page_size: 1000,
                 key: "sms"
             },
-            onSuccess:(r:any)=>{
-                    let temp:any = {};
-                    r?.data?.list.forEach((k: any) => {
-                       return temp[k?.key] = k?.value;
-                    });
-                    form?.setFieldsValue(temp);
-                    form1?.setFieldsValue(temp);
+            onSuccess: (r: any) => {
+                let temp: any = {};
+                r?.data?.list.forEach((k: any) => {
+                    return temp[k?.key] = k?.value;
+                });
+                form?.setFieldsValue(temp);
+                form1?.setFieldsValue(temp);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsLoading(false)
             }
         });
@@ -47,14 +48,14 @@ const SmsView: React.FC = () => {
      */
     const onFinish = async (values: any) => {
         await updateConfigs({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                    message?.success(r?.message || "修改成功")
+            onSuccess: (r: any) => {
+                message?.success(r?.message || "修改成功")
             },
-            onFail:(r:any)=>{
-                    message?.error(r?.message || "请求失败")
+            onFail: (r: any) => {
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -117,16 +118,16 @@ const SmsView: React.FC = () => {
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>测试发信</h3>
                 <ProForm className={box} onFinish={async (values: any) => {
                     await testSms({
-                        body:{
+                        body: {
                             ...values
                         },
-                        onSuccess:(r:any)=>{
-                            if(r?.code == 200){
+                        onSuccess: (r: any) => {
+                            if (r?.code == 200) {
                                 message?.success(r?.message || "修改成功")
                             }
                         },
-                        onFail:(r:any)=>{
-                            if(r?.code != 200){
+                        onFail: (r: any) => {
+                            if (r?.code != 200) {
                                 message?.error(r?.message || "请求失败")
                             }
                         }

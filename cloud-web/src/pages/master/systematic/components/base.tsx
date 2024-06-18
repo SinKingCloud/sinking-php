@@ -117,7 +117,7 @@ const BaseView: React.FC = () => {
                     />
                 </ProForm>
                 <h3 style={{fontWeight: "bold", marginTop: "30px", color: "#5d5d5d"}}>注册设置</h3>
-                <ProForm key={"reg"} form={form1} onFinish={onFinish} className={box}>
+                <ProForm form={form1} onFinish={onFinish} className={box}>
                     <ProFormSelect
                         name="master.reg.email"
                         label="邮箱注册"

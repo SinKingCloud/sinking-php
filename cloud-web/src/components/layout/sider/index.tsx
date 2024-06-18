@@ -48,6 +48,7 @@ const useStyles = createStyles(({token}): any => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            background: token?.colorBgContainer + " !important",
         },
         menuBottom: {
             background: token?.colorBgContainer,
@@ -79,6 +80,7 @@ const useStyles = createStyles(({token}): any => {
             borderBottom: "none !important",
         },
         darkColor: {
+            background: "#001529 !important",
             backgroundColor: "#001529 !important",
         },
         darkBorderTop: {
@@ -141,10 +143,10 @@ const Sider: React.FC<SiderProps> = (props) => {
         const key: Record<string, number> = {};
         const func = (items2: any, level = 1) => {
             items2.forEach((item: any) => {
-                if (item.key) {
+                if (item?.key) {
                     key[item.key] = level;
                 }
-                if (item.children) {
+                if (item?.children) {
                     return func(item.children, level + 1);
                 }
             });

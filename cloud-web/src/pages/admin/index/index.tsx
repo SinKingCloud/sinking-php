@@ -39,9 +39,9 @@ export default (): React.ReactNode => {
         setCountLoading(true);
         getCount({
             onSuccess: (r: any) => {
-                    setCountData(r?.data);
+                setCountData(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setCountLoading(false)
             }
         });
@@ -80,9 +80,7 @@ export default (): React.ReactNode => {
                 end_date: end_date
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
-                    temp.data = r?.data;
-                }
+                temp.data = r?.data;
             }
         });
 
@@ -95,9 +93,7 @@ export default (): React.ReactNode => {
                 limit: 7
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
-                    temp.topUser = r?.data;
-                }
+                temp.topUser = r?.data;
             }
         })
         await getTopWeb({
@@ -109,9 +105,7 @@ export default (): React.ReactNode => {
                 limit: 7
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
-                    temp.topOrder = r?.data;
-                }
+                temp.topOrder = r?.data;
             }
         })
         setChartData(temp);
@@ -137,9 +131,9 @@ export default (): React.ReactNode => {
         setToDoLoading(true);
         getToDo({
             onSuccess: (r: any) => {
-                    setToDoData(r?.data);
+                setToDoData(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setToDoLoading(false);
             }
         });
@@ -171,11 +165,9 @@ export default (): React.ReactNode => {
                 page: 1, page_size: 3, web_id: 'system', place: "admin"
             },
             onSuccess: (r: any) => {
-                if (r?.code == 200) {
-                    r?.data?.list?.map((k: any) => {
-                        temp?.push(k);
-                    });
-                }
+                r?.data?.list?.map((k: any) => {
+                    temp?.push(k);
+                });
             }
         });
         if (!user?.web?.is_master) {
@@ -184,11 +176,9 @@ export default (): React.ReactNode => {
                     page: 1, page_size: 5, web_id: 'parent', place: "admin"
                 },
                 onSuccess: (r: any) => {
-                    if (r?.code == 200) {
-                        r?.data?.list?.map((k: any) => {
-                            temp?.push(k);
-                        });
-                    }
+                    r?.data?.list?.map((k: any) => {
+                        temp?.push(k);
+                    });
                 }
             });
         }
@@ -209,7 +199,7 @@ export default (): React.ReactNode => {
             onSuccess: (r: any) => {
                 setNotice2Data(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setNotice2Loading(false);
             }
         })
@@ -260,7 +250,7 @@ export default (): React.ReactNode => {
             </Suspense>
             <Suspense fallback={<PageLoading/>}>
                 <Row gutter={24}>
-                    <Col sm={12} md={12} xs={24} >
+                    <Col sm={12} md={12} xs={24}>
                         <ProCard headerBordered title="金额占比" loading={countLoading}>
                             <Donut
                                 forceFit

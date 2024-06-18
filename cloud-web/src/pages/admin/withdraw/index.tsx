@@ -7,17 +7,18 @@ import {createCash, getCashConfig, getCashList, updateCash} from "@/service/admi
 import {Body, Title} from "@/components";
 import {NamePath} from "rc-field-form/es/interface";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     /**
      * 初始化
      */
@@ -25,8 +26,8 @@ export default (): React.ReactNode => {
     const [cashConfig, setCashConfig] = useState({});
     useEffect(() => {
         getCashConfig({
-            onSuccess:(r:any)=>{
-                    setCashConfig(r?.data);
+            onSuccess: (r: any) => {
+                setCashConfig(r?.data);
             }
         })
     }, []);
@@ -53,19 +54,19 @@ export default (): React.ReactNode => {
             values.ids = [values.id];
             delete values.id;
         }
-       await api({
-            body:{
+        await api({
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                    message?.success(r?.message)
-                    setIsModalVisible(false)
-                    actionRef.current.reload()
-                    form.resetFields();
+            onSuccess: (r: any) => {
+                message?.success(r?.message)
+                setIsModalVisible(false)
+                actionRef.current.reload()
+                form.resetFields();
             },
-           onFail:(r:any)=>{
-                    message?.error(r?.message || "请求失败")
-           }
+            onFail: (r: any) => {
+                message?.error(r?.message || "请求失败")
+            }
         })
     }
 
@@ -204,9 +205,9 @@ export default (): React.ReactNode => {
             editable: false,
             render: (text: string, record: any) => {
                 return <Dropdown menu={{
-                    items:[
+                    items: [
                         {
-                            key:"edit",
+                            key: "edit",
                             label: (
                                 <a style={{fontSize: "small"}} onClick={() => {
                                     if (record?.status != 0) {
@@ -221,7 +222,7 @@ export default (): React.ReactNode => {
                             )
                         }
                     ]
-                }}  trigger={['click']} placement="bottom" arrow={true}>
+                }} trigger={['click']} placement="bottom" arrow={true}>
                     <Button size="small" onClick={e => e.preventDefault()}>操
                         作 <DownOutlined/></Button>
                 </Dropdown>;
@@ -229,9 +230,9 @@ export default (): React.ReactNode => {
         },
     ];
     const [title, setTitle] = useState<any>()
-    useEffect(()=>{
+    useEffect(() => {
         setTitle(form.getFieldValue("id" as NamePath))
-    },[])
+    }, [])
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} forceRender={true} width={400}
@@ -241,8 +242,9 @@ export default (): React.ReactNode => {
                 form.resetFields();
             }}>
                 <div hidden={title != undefined}>
-                    <Alert message={"提现费率:" + cashConfig['cash.deduct'] + "%,单笔最低:" + cashConfig['cash.min.money'] + "元"}
-                           type="info" showIcon style={{marginBottom: "20px"}}/>
+                    <Alert
+                        message={"提现费率:" + cashConfig['cash.deduct'] + "%,单笔最低:" + cashConfig['cash.min.money'] + "元"}
+                        type="info" showIcon style={{marginBottom: "20px"}}/>
                 </div>
                 <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
@@ -255,7 +257,7 @@ export default (): React.ReactNode => {
                                 value: 0,
                                 label: "支付宝",
                             }
-                        ]} />
+                        ]}/>
                     </Form.Item>
                     <Form.Item name="name" label="提现姓名" rules={[{required: true}]}>
                         <Input placeholder="请输入提现姓名"/>
@@ -273,11 +275,11 @@ export default (): React.ReactNode => {
                 // @ts-ignore
                 columns={columns}
                 defaultSize={"small"}
-                form={{layout: "vertical",autoFocusFirstInput:false}}
+                form={{layout: "vertical", autoFocusFirstInput: false}}
                 headerTitle={<Title>提现列表</Title>}
                 actionRef={actionRef}
                 formRef={ref}
-                style={{overflowX:"auto",whiteSpace:"nowrap"}}
+                style={{overflowX: "auto", whiteSpace: "nowrap"}}
                 scroll={{x: true}}
                 rowKey={'id'}
                 options={{
@@ -285,8 +287,8 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
-                request={ (params, sort) => {
-                    return getData(params,sort,getCashList)
+                request={(params, sort) => {
+                    return getData(params, sort, getCashList)
                 }}
                 search={{
                     defaultCollapsed: true,

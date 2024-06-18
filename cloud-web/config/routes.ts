@@ -11,7 +11,13 @@ export const user = [
         hideInMenu: false,
         component: "@/pages/user/index",
     },
-
+    {
+        path: "result",
+        title: "支付结果",
+        name: "user.result",
+        hideInMenu: true,
+        component: "@/pages/user/result",
+    },
     {
         path: "shop",
         title: "在线商城",
@@ -97,7 +103,7 @@ export const master = [
         component: "@/pages/master/user",
         title: "用户管理",
         name: "master.user",
-        icon:"icon-user",
+        icon: "icon-user",
         hideInMenu: false,
     },
     {
@@ -105,7 +111,7 @@ export const master = [
         component: "@/pages/master/substation",
         title: "分站管理",
         name: "master.substation",
-        icon:"icon-substation",
+        icon: "icon-substation",
         hideInMenu: false,
     },
     {
@@ -113,7 +119,7 @@ export const master = [
         component: "@/pages/master/notice",
         title: "公告管理",
         name: "master.notice",
-        icon:"icon-notice",
+        icon: "icon-notice",
         hideInMenu: false,
     },
     {
@@ -121,7 +127,7 @@ export const master = [
         component: "@/pages/master/indent",
         title: "订单管理",
         name: "master.indent",
-        icon:"icon-indent",
+        icon: "icon-indent",
         hideInMenu: false,
     },
     {
@@ -129,7 +135,7 @@ export const master = [
         component: "@/pages/master/withdraw",
         title: "提现管理",
         name: "master.withdraw",
-        icon:"icon-withdraw",
+        icon: "icon-withdraw",
         hideInMenu: false,
     },
     {
@@ -137,7 +143,7 @@ export const master = [
         component: "@/pages/master/price",
         title: "价格设置",
         name: "master.price",
-        icon:"icon-price",
+        icon: "icon-price",
         hideInMenu: false,
     },
     {
@@ -145,7 +151,7 @@ export const master = [
         component: "@/pages/master/systematic",
         title: "系统设置",
         name: "master.systematic",
-        icon:"icon-set",
+        icon: "icon-set",
         hideInMenu: false,
     },
 ]
@@ -164,7 +170,7 @@ export const admin = [
         component: "@/pages/admin/user",
         title: "用户管理",
         name: "admin.user",
-        icon:"icon-user",
+        icon: "icon-user",
         hideInMenu: false,
     },
     {
@@ -172,7 +178,7 @@ export const admin = [
         component: "@/pages/admin/substation",
         title: "分站管理",
         name: "admin.substation",
-        icon:"icon-substation",
+        icon: "icon-substation",
         hideInMenu: false,
     },
     {
@@ -180,7 +186,7 @@ export const admin = [
         component: "@/pages/admin/notice",
         title: "公告管理",
         name: "admin.notice",
-        icon:"icon-notice",
+        icon: "icon-notice",
         hideInMenu: false,
     },
     {
@@ -188,7 +194,7 @@ export const admin = [
         component: "@/pages/admin/order",
         title: "订单管理",
         name: "admin.order",
-        icon:"icon-indent",
+        icon: "icon-indent",
         hideInMenu: false,
     },
     {
@@ -196,7 +202,7 @@ export const admin = [
         component: "@/pages/admin/withdraw",
         title: "提现管理",
         name: "admin.withdraw",
-        icon:"icon-withdraw",
+        icon: "icon-withdraw",
         hideInMenu: false,
     },
     {
@@ -204,7 +210,7 @@ export const admin = [
         component: "@/pages/admin/price",
         title: "价格设置",
         name: "admin.price",
-        icon:"icon-price",
+        icon: "icon-price",
         hideInMenu: false,
     },
     {
@@ -212,7 +218,7 @@ export const admin = [
         component: "@/pages/admin/web",
         title: "网站设置",
         name: "admin.web",
-        icon:"icon-set",
+        icon: "icon-set",
         hideInMenu: false,
     },
 ]

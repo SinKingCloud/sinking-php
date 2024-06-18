@@ -6,7 +6,7 @@ cloud-api 后端项目
 cloud-web 前端项目
 
 cloud-api环境说明
-php版本:54-81
+php版本:53-83
 mysql版本:55-80
 
 cloud-web环境说明

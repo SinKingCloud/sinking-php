@@ -5,7 +5,7 @@ import {getChart, getCount, getToDo, getTopWeb} from "@/service/admin";
 import SalesCard from "./components/salesCard";
 import dayjs from "dayjs";
 import {Alert, Card, Col, List, Row, Skeleton} from "antd";
-import {Body} from "@/components";
+import {Body, Title} from "@/components";
 import NoticeInfo from "@/pages/components/noticeInfo";
 import Marquee from "react-fast-marquee";
 import {getNoticeList} from "@/service/person/notice";
@@ -251,7 +251,7 @@ export default (): React.ReactNode => {
             <Suspense fallback={<PageLoading/>}>
                 <Row gutter={24}>
                     <Col sm={12} md={12} xs={24}>
-                        <ProCard headerBordered title="金额占比" loading={countLoading}>
+                        <ProCard headerBordered title={<Title>金额占比</Title>} loading={countLoading}>
                             <Donut
                                 forceFit
                                 height={340}
@@ -323,7 +323,7 @@ export default (): React.ReactNode => {
                         </ProCard>
                     </Col>
                     <Col sm={12} md={12} xs={24} style={{marginBottom: "20px"}}>
-                        <ProCard headerBordered title="系统公告" loading={noticeLoading}
+                        <ProCard headerBordered title={<Title>系统公告</Title>} loading={noticeLoading}
                                  bodyStyle={{padding: "0 20px 0 20px"}}>
                             <List
                                 loading={noticeLoading}

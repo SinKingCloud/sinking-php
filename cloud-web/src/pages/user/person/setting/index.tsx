@@ -23,17 +23,18 @@ import {Body, Title} from '@/components';
 import {useModel} from "umi";
 import EmailVerify from "@/pages/components/emailVerify";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modal:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modal: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{modal}} = useStyles()
+    const {styles: {modal}} = useStyles()
     const user = useModel('user');
     useEffect(() => {
         if (!user.web) {
@@ -66,7 +67,7 @@ export default (): React.ReactNode => {
     const [phoneForm] = Form.useForm();
     return (
         <Body>
-            <Modal key={"editPassword"} width={350} destroyOnClose={true} forceRender={true}
+            <Modal key={"editPassword"} width={340} destroyOnClose={true} forceRender={true}
                    title={<Title>修改密码</Title>} className={modal}
                    open={isPasswordModalVisible} confirmLoading={isPasswordModalLoading}
                    onOk={changePwdType == 'email' ? passwordForm.submit : phonePawForm.submit} okText={"确 认"}
@@ -91,7 +92,7 @@ export default (): React.ReactNode => {
                             onSuccess: (r: any) => {
                                 if (r?.code == 200) {
                                     message?.success(r?.message)
-                                    refresh.refreshWebUser()
+                                    user?.refresh?.refreshWebUser()
                                     setIsPasswordModalVisible(false)
                                 }
                             },
@@ -127,7 +128,7 @@ export default (): React.ReactNode => {
                             onSuccess: (r: any) => {
                                 if (r?.code == 200) {
                                     message?.success(r?.message)
-                                    refresh.refreshWebUser()
+                                    user?.refresh?.refreshWebUser()
                                     setIsPasswordModalVisible(false)
                                 }
                             },
@@ -146,7 +147,7 @@ export default (): React.ReactNode => {
                     }/>
                 }
             </Modal>
-            <Modal key="editEmail" width={350} destroyOnClose={true} forceRender={true} title={<Title>修改邮箱</Title>}
+            <Modal key="editEmail" width={340} destroyOnClose={true} forceRender={true} title={<Title>修改邮箱</Title>}
                    open={isEmailModalVisible} confirmLoading={isEmailModalLoading} className={modal}
                    onOk={emailForm.submit} okText="确 认" onCancel={() => {
                 setIsEmailModalVisible(false);
@@ -159,17 +160,13 @@ export default (): React.ReactNode => {
                             ...values
                         },
                         onSuccess: (r: any) => {
-                            if (r?.code == 200) {
-                                message?.success(r?.message)
-                                refresh.refreshWebUser()
-                            }
+                            message?.success(r?.message)
+                            user?.refresh?.refreshWebUser()
                         },
                         onFail: (r: any) => {
-                            if (r.code != 200) {
-                                message?.error(r?.message || "请求失败")
-                            }
+                            message?.error(r?.message || "请求失败");
                         }, onFinally: () => {
-                            setIsEmailModalLoading(false)
+                            setIsEmailModalLoading(false);
                         }
                     });
                 }} topNodes={
@@ -181,7 +178,7 @@ export default (): React.ReactNode => {
                     </Form.Item>
                 }/>
             </Modal>
-            <Modal key={"editPhone"} width={350} destroyOnClose={true} forceRender={true}
+            <Modal key={"editPhone"} width={340} destroyOnClose={true} forceRender={true}
                    title={<Title>修改手机</Title>} className={modal}
                    open={isPhoneModalVisible} confirmLoading={isPhoneModalLoading}
                    onOk={phoneForm.submit} okText={"确 认"} onCancel={() => {
@@ -195,17 +192,14 @@ export default (): React.ReactNode => {
                             ...values
                         },
                         onSuccess: (r: any) => {
-                            if (r?.code == 200) {
-                                message?.success(r?.message)
-                                refresh.refreshWebUser()
-                                setIsPhoneModalVisible(false)
-                            }
+                            message?.success(r?.message)
+                            user?.refresh?.refreshWebUser()
                         },
                         onFail: (r: any) => {
-                            if (r.code != 200) {
-                                message?.error(r?.message || "请求失败")
-                                setIsPhoneModalLoading(false);
-                            }
+                            message?.error(r?.message || "请求失败")
+                        },
+                        onFinally: () => {
+                            setIsPhoneModalLoading(false);
                         }
                     })
                 }} topNodes={
@@ -261,7 +255,7 @@ export default (): React.ReactNode => {
                                                         onSuccess: (r: any) => {
                                                             if (r?.code == 200) {
                                                                 message?.success(r?.message)
-                                                                refresh.refreshWebUser()
+                                                                user?.refresh?.refreshWebUser()
                                                                 setIsUploadAvatarLoading(false);
                                                             }
                                                         },
@@ -296,7 +290,7 @@ export default (): React.ReactNode => {
                                         onSuccess: (r: any) => {
                                             if (r?.code == 200) {
                                                 message?.success(r?.message)
-                                                refresh.refreshWebUser()
+                                                user?.refresh?.refreshWebUser()
                                                 setIsPasswordModalVisible(false);
                                             }
                                         },

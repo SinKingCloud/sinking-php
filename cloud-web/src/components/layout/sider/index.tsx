@@ -1,15 +1,14 @@
 import {useLocation, history, useSelectedRoutes} from 'umi';
 import React, {useEffect, useState} from 'react';
-import {ConfigProvider, Menu, theme, Layout} from 'antd';
+import {ConfigProvider, Menu, Layout} from 'antd';
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {Icon} from "@/components";
 
-const useStyles = createStyles(({isDarkMode}): any => {
-    const bak = isDarkMode ? "rgb(20,20,20)" : "rgb(4,21,39)";
+const useStyles = createStyles(({token}): any => {
     return {
         left: {
             position: "relative",
-            background:`${bak}`,
+            background: token?.colorBgContainer,
             height: "100%",
         },
         menu: {
@@ -20,7 +19,6 @@ const useStyles = createStyles(({isDarkMode}): any => {
             marginBottom: "50px",
             fontWeight: "bolder",
             userSelect: "none",
-            background:`${bak}`,
             ":focus-visible": {
                 outline: "none !important"
             },
@@ -36,12 +34,6 @@ const useStyles = createStyles(({isDarkMode}): any => {
             },
             ".ant-menu-item,.ant-menu-submenu-title": {
                 transition: "border-color 0.3s,background 0.3s !important"
-            },
-            ".ant-menu-title-content":{
-                color:"#dad9d9"
-            },
-            ".ant-menu-item-selected":{
-                backgroundColor:"#040317"
             }
         },
         menuTop: {
@@ -56,20 +48,19 @@ const useStyles = createStyles(({isDarkMode}): any => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            background: `${bak} !important`
         },
         menuBottom: {
-            background:`${bak}`,
+            background: token?.colorBgContainer,
             userSelect: "none",
             padding: "0px !important",
             borderRadius: "0px",
             height: "50px",
             textAlign: "center",
             lineHeight: "50px !important",
-            borderTop: "1px solid rgba(122,122,122)",
+            borderTop: "0.5px solid " + token?.colorBorder + " !important",
             fontWeight: "bolder",
             fontSize: 14,
-            color: "#dad9d9",
+            color: token?.colorTextSecondary,
             cursor: "pointer",
             overflow: "hidden",
             position: "absolute",
@@ -86,6 +77,13 @@ const useStyles = createStyles(({isDarkMode}): any => {
             flex: "auto",
             height: "55px",
             borderBottom: "none !important",
+        },
+        darkColor: {
+            backgroundColor: "#001529 !important",
+        },
+        darkBorderTop: {
+            borderTop: '0.5px solid #202020 !important',
+            color: "white"
         }
     };
 });
@@ -100,7 +98,8 @@ export type SiderProps = {
     menuBottomBtnIcon?: string;//底部按钮图标
     menuBottomBtnText?: string;//底部按钮文字
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
-    layout?: string,
+    layout?: string;//布局
+    theme?: string;//主题
 };
 
 const Sider: React.FC<SiderProps> = (props) => {
@@ -115,10 +114,11 @@ const Sider: React.FC<SiderProps> = (props) => {
         menuBottomBtnText = null,
         onMenuBottomBtnClick,
         layout = "inline",
+        theme = "light"
     } = props;
     const {mobile} = useResponsive();
     const systemTheme = useTheme();
-    const {styles: {left, menu, menuTop, menuBottom, menu2}} = useStyles();
+    const {styles: {left, menu, menuTop, menuBottom, menu2, darkColor, darkBorderTop}} = useStyles();
     const [selectedKeys, setSelectedKeys] = useState<any>([]);
     const location = useLocation();
     const match = useSelectedRoutes();
@@ -165,55 +165,74 @@ const Sider: React.FC<SiderProps> = (props) => {
             setStateOpenKeys(openKeys);
         }
     }
-    const {token} = theme?.useToken();
+    const token = useTheme();
+    /**
+     * 获取菜单主题
+     */
+    const getTheme = () => {
+        if (token?.isDarkMode) {
+            return "light";
+        }
+        return theme == "dark" ? theme : "light";
+    }
+    const getColor = () => {
+        return !token?.isDarkMode && getTheme() == "dark" ? ' ' + darkColor : '';
+    }
+    const getBorderColor = () => {
+        return !token?.isDarkMode && getTheme() == "dark" ? ' ' + darkBorderTop : '';
+    }
     return (
         <>
-            {(layout == "inline" && <Layout className={left}>
-                <Layout.Header className={menuTop} onClick={() => {
-                    onLogoClick?.();
-                }}>
-                    {(mobile || (!mobile && !collapsed)) &&
-                        unCollapsedLogo?.(!systemTheme?.isDarkMode)
-                    }
-                    {!mobile && collapsed &&
-                        collapsedLogo?.(systemTheme?.isDarkMode)
-                    }
-                </Layout.Header>
-                <Layout.Content>
-                    <ConfigProvider theme={{
-                        components: {
-                            Menu: {
-                                itemSelectedColor: token?.colorPrimaryText,
-                                itemColor: token?.colorTextSecondary,
-                                itemHoverColor: token?.colorTextSecondary,
-                                fontSize: 13,
-                                itemMarginBlock: 0,
-                                itemMarginInline: 0,
-                                itemBorderRadius: 0,
-                                activeBarWidth: 4,
-                                itemHeight: 45,
-                                subMenuItemBg: "rgba(255, 255, 255, 0)",
-                            }
+            {(layout == "inline" &&
+                <Layout className={left + getColor()}>
+                    <Layout.Header className={menuTop + getColor()}
+                                   onClick={() => {
+                                       onLogoClick?.();
+                                   }}>
+                        {(mobile || (!mobile && !collapsed)) &&
+                            unCollapsedLogo?.(!systemTheme?.isDarkMode)
                         }
-                    }}>
-                        <Menu selectedKeys={selectedKeys}
-                              mode={"inline"}
-                              items={menus} className={menu}
-                              openKeys={stateOpenKeys}
-                              onOpenChange={onOpenChange}
-                              onClick={(item: any) => {
-                                  history.push(item?.key);
-                                  setSelectedKeys([item?.key]);
-                                  onMenuClick?.(item);
-                              }}/>
-                    </ConfigProvider>
-                </Layout.Content>
-                {(menuBottomBtnIcon || menuBottomBtnText) &&
-                    <Layout.Footer className={menuBottom} onClick={onMenuBottomBtnClick}>
-                        {menuBottomBtnIcon && <Icon type={menuBottomBtnIcon}/>}
-                        {(mobile || (!mobile && !collapsed)) && menuBottomBtnText}
-                    </Layout.Footer>}
-            </Layout>) || <ConfigProvider theme={{
+                        {!mobile && collapsed &&
+                            collapsedLogo?.(systemTheme?.isDarkMode)
+                        }
+                    </Layout.Header>
+                    <Layout.Content className={getColor()}>
+                        <ConfigProvider theme={{
+                            components: {
+                                Menu: {
+                                    itemSelectedColor: token?.colorPrimaryText,
+                                    itemColor: token?.colorTextSecondary,
+                                    itemHoverColor: token?.colorTextSecondary,
+                                    fontSize: 13,
+                                    itemMarginBlock: 0,
+                                    itemMarginInline: 0,
+                                    itemBorderRadius: 0,
+                                    activeBarWidth: 4,
+                                    itemHeight: 45,
+                                    subMenuItemBg: "rgba(255, 255, 255, 0)",
+                                }
+                            }
+                        }}>
+                            <Menu selectedKeys={selectedKeys}
+                                  theme={getTheme()}
+                                  mode={"inline"}
+                                  items={menus} className={menu}
+                                  openKeys={stateOpenKeys}
+                                  onOpenChange={onOpenChange}
+                                  onClick={(item: any) => {
+                                      history.push(item?.key);
+                                      setSelectedKeys([item?.key]);
+                                      onMenuClick?.(item);
+                                  }}/>
+                        </ConfigProvider>
+                    </Layout.Content>
+                    {(menuBottomBtnIcon || menuBottomBtnText) &&
+                        <Layout.Footer className={menuBottom + getColor() + getBorderColor()}
+                                       onClick={onMenuBottomBtnClick}>
+                            {menuBottomBtnIcon && <Icon type={menuBottomBtnIcon}/>}
+                            {(mobile || (!mobile && !collapsed)) && menuBottomBtnText}
+                        </Layout.Footer>}
+                </Layout>) || <ConfigProvider theme={{
                 components: {
                     Menu: {
                         horizontalItemSelectedColor: token?.colorPrimaryText,
@@ -228,7 +247,7 @@ const Sider: React.FC<SiderProps> = (props) => {
                         subMenuItemBg: "rgba(255, 255, 255, 0)",
                     }
                 }
-            }}><Menu mode={"horizontal"} selectedKeys={selectedKeys}
+            }}><Menu theme={getTheme()} mode={"horizontal"} selectedKeys={selectedKeys}
                      items={menus} className={menu2} onClick={(item: any) => {
                 history.push(item?.key);
             }}/></ConfigProvider>}

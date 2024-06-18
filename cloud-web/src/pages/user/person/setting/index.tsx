@@ -286,7 +286,7 @@ export default (): React.ReactNode => {
                                     <ProFormItem label="账号" name="account" tooltip="未设置用户可修改一次"
                                                  rules={[{required: true, message: '请输入登陆账号',}]}
                                                  initialValue={user?.web?.account || "未设置"}>
-                                        <Row gutter={5}>
+                                        <Row gutter={5} wrap={false}>
                                             <Col flex={8}>
                                                 <Input type="text" placeholder="请输入您的登陆账号"
                                                        defaultValue={user?.web?.account}

@@ -136,10 +136,11 @@ const BaseView: React.FC = () => {
                                     await buySite({
                                         body: {},
                                         onSuccess: (r: any) => {
-                                            message?.success(r?.message)
+                                            message?.success(r?.message);
+                                            web?.refreshInfo();
                                         },
                                         onFail: (r: any) => {
-                                            message?.error(r?.message || "续期失败")
+                                            message?.error(r?.message || "续期失败");
                                         },
                                         onFinally: () => {
                                             message.destroy(key)

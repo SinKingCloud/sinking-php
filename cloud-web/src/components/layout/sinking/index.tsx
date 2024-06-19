@@ -6,7 +6,7 @@ import React, {useState} from "react";
 import {Outlet} from "umi";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import Loading from "@/loading"
-import {App, Button, ConfigProvider, Drawer, Layout} from "antd";
+import {App, Button, ConfigProvider, Drawer, Layout, Watermark} from "antd";
 import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 
@@ -115,6 +115,7 @@ export type LayoutProps = {
     onMenuBottomBtnClick?: () => void;//点击底部按钮回调
     layout?: string;//布局
     menuTheme?: string;//菜单主题
+    waterMark?: any;//水印
 };
 
 const SinKing: React.FC<LayoutProps> = (props) => {
@@ -135,6 +136,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         onMenuBottomBtnClick,
         layout = 'inline',
         menuTheme = "light",
+        waterMark = undefined
     } = props;
     const systemTheme = useTheme();
     /*
@@ -179,6 +181,15 @@ const SinKing: React.FC<LayoutProps> = (props) => {
     const getColor = () => {
         const mode = systemTheme?.isDarkMode ? "light" : (menuTheme == "dark" ? menuTheme : "light");
         return !systemTheme?.isDarkMode && mode == "dark" ? ' ' + darkColor : '';
+    }
+
+    /**
+     * 获取水印字体
+     */
+    const getWaterMaskFont = () => {
+        return {
+            color: systemTheme?.isDarkMode ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.07)"
+        };
     }
 
     /**
@@ -234,6 +245,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             </Layout.Header>
             <Layout.Content className={content1}>
                 <Outlet/>
+
             </Layout.Content>
             {props?.footer && <Layout.Footer className={footer}>
                 <Footer> {props?.footer}</Footer>
@@ -272,7 +284,9 @@ const SinKing: React.FC<LayoutProps> = (props) => {
     return (
         <ConfigProvider locale={zhCN}>
             <App>
-                {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
+                <Watermark gap={[200, 200]} font={getWaterMaskFont()} content={waterMark}>
+                    {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
+                </Watermark>
             </App>
         </ConfigProvider>
     );

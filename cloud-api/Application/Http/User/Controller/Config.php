@@ -61,9 +61,9 @@ class Config extends Common
         $web = AuthService::getInstance()->getCurrentWeb();
         $set = SettingService::getInstance();
         return $this->success('获取成功', array(
-            Constant::WEB_NITICE_INDEX => $set->getWeb($web[$type], Constant::WEB_NITICE_INDEX),
-            Constant::WEB_NITICE_SHOP => $set->getWeb($web[$type], Constant::WEB_NITICE_SHOP),
-            Constant::WEB_NITICE_ADMIN => $set->getWeb($web[$type], Constant::WEB_NITICE_ADMIN),
+            Constant::WEB_NOTICE_INDEX => $set->getWeb($web[$type], Constant::WEB_NOTICE_INDEX),
+            Constant::WEB_NOTICE_SHOP => $set->getWeb($web[$type], Constant::WEB_NOTICE_SHOP),
+            Constant::WEB_NOTICE_ADMIN => $set->getWeb($web[$type], Constant::WEB_NOTICE_ADMIN),
         ));
     }
 

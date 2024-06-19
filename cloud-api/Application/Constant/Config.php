@@ -79,13 +79,14 @@ class Config
     const WEB_CONTACT_THREE = 'contact.three'; //客服3
     const WEB_CONTACT_FOUR = 'contact.four'; //客服4
     #滚动公告设置
-    const WEB_NITICE_INDEX = 'notice.index'; //首页滚动公告
-    const WEB_NITICE_SHOP = 'notice.shop'; //商城页滚动公告
-    const WEB_NITICE_ADMIN = 'notice.admin'; //分站后台滚动公告
+    const WEB_NOTICE_INDEX = 'notice.index'; //首页滚动公告
+    const WEB_NOTICE_SHOP = 'notice.shop'; //商城页滚动公告
+    const WEB_NOTICE_ADMIN = 'notice.admin'; //分站后台滚动公告
     #界面设置
     const WEB_UI_INDEX = 'ui.index'; //首页模板设置
     const WEB_UI_LAYOUT = 'ui.layout'; //网站布局(上下:top/左右:left)
     const WEB_UI_LOGO = 'ui.logo'; //网站logo设置
     const WEB_UI_WATERMARK = 'ui.watermark'; //网站水印设置
-    const WEB_UI_THEME = 'ui.theme'; //网站主题设置
+    const WEB_UI_THEME = 'ui.theme'; //菜单主题设置
+    const WEB_UI_COMPACT = 'ui.compact'; //紧凑模式设置
 }

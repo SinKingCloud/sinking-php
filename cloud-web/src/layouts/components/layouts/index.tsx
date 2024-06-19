@@ -287,6 +287,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
         <>
             <Title/>
             <Layout loading={loading}
+                    waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
                     menus={menu}
                     layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
                     menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}

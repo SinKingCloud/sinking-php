@@ -126,7 +126,18 @@ const UiView: React.FC = () => {
                         placeholder="请选择网站首页模板"
                         rules={[{required: true, message: '请选择网站首页模板'}]}
                     />
-
+                    <ProFormSelect
+                        name="ui.compact"
+                        label="紧凑模式"
+                        width="md"
+                        valueEnum={{
+                            1: '开启',
+                            0: '关闭',
+                        }}
+                        tooltip="网站界面紧凑模式"
+                        placeholder="请选择紧凑模式是否开启"
+                        rules={[{required: true, message: '请选择紧凑模式是否开启'}]}
+                    />
                     <ProFormSelect
                         name="ui.layout"
                         label="网站布局"
@@ -145,7 +156,6 @@ const UiView: React.FC = () => {
                         placeholder="请选择网站布局"
                         rules={[{required: true, message: '请选择网站布局'}]}
                     />
-
                     <ProFormSelect
                         name="ui.theme"
                         label="菜单主题"
@@ -163,6 +173,18 @@ const UiView: React.FC = () => {
                         tooltip="网站的主题颜色"
                         placeholder="请选择菜单主题"
                         rules={[{required: true, message: '请选择菜单主题'}]}
+                    />
+                    <ProFormSelect
+                        name="ui.watermark"
+                        label="界面水印"
+                        valueEnum={{
+                            1: '开启',
+                            0: '关闭',
+                        }}
+                        width="md"
+                        tooltip="系统界面是否显示用户昵称水印"
+                        placeholder="请选择是否打开界面水印"
+                        rules={[{required: true, message: '请选择是否打开界面水印'}]}
                     />
                     <ProFormText name="ui.logo" label="网站LOGO" tooltip="网站的显示LOGO">
                         <Upload

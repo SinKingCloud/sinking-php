@@ -1,17 +1,19 @@
 import {useEffect, useState} from "react";
 import {API} from "@/../typings";
-import {getWebUserInfo} from "@/service/web/info";
+import {getWebInfo} from "@/service/web/info";
 import defaultSettings from "../../config/defaultSettings";
+import {useModel} from "umi";
 
 export default () => {
     const [info, setInfo] = useState<API.WebInfo>({
         ...defaultSettings as API.WebInfo
     });
+    const theme = useModel("theme");
     /**
      * 获取站点信息
      */
     const getInfo = async () => {
-        const resp = await getWebUserInfo();
+        const resp = await getWebInfo();
         return resp?.data || {};
     }
     /**
@@ -20,6 +22,11 @@ export default () => {
     const refreshInfo = () => {
         getInfo().then((d) => {
             setInfo(d);
+            if (d?.compact) {
+                theme?.setCompactTheme();
+            } else {
+                theme?.setDefaultTheme();
+            }
         });
     }
 

@@ -49,7 +49,7 @@ class Config extends Common
     /**
      * 获取客服信息
      *
-     * @return void
+     * @return array
      */
     public function getContact()
     {
@@ -66,23 +66,23 @@ class Config extends Common
     /**
      * 获取通知信息
      *
-     * @return void
+     * @return array
      */
     public function getNotice()
     {
         $web = AuthService::getInstance()->getCurrentWeb();
         $set = SettingService::getInstance();
         return $this->success('获取成功', array(
-            Constant::WEB_NITICE_INDEX => $set->getWeb($web['id'], Constant::WEB_NITICE_INDEX),
-            Constant::WEB_NITICE_SHOP => $set->getWeb($web['id'], Constant::WEB_NITICE_SHOP),
-            Constant::WEB_NITICE_ADMIN => $set->getWeb($web['id'], Constant::WEB_NITICE_ADMIN),
+            Constant::WEB_NOTICE_INDEX => $set->getWeb($web['id'], Constant::WEB_NOTICE_INDEX),
+            Constant::WEB_NOTICE_SHOP => $set->getWeb($web['id'], Constant::WEB_NOTICE_SHOP),
+            Constant::WEB_NOTICE_ADMIN => $set->getWeb($web['id'], Constant::WEB_NOTICE_ADMIN),
         ));
     }
 
     /**
      * 获取UI设置
      *
-     * @return void
+     * @return array
      */
     public function getUi()
     {
@@ -92,6 +92,7 @@ class Config extends Common
         $mark = $set->getWeb($web['id'], Constant::WEB_UI_WATERMARK);
         $layout = $set->getWeb($web['id'], Constant::WEB_UI_LAYOUT);
         $theme = $set->getWeb($web['id'], Constant::WEB_UI_THEME);
+        $compact = $set->getWeb($web['id'], Constant::WEB_UI_COMPACT);
         $arr = explode(",", Web::INDEX_TEMPLATE);
         $temps = array();
         foreach ($arr as $key) {
@@ -102,11 +103,12 @@ class Config extends Common
         }
         return $this->success('获取成功', array(
             'index.templates' => $temps,
-            Constant::WEB_UI_INDEX => $index ? $index : 'index',
+            Constant::WEB_UI_INDEX => $index ?: 'index',
             Constant::WEB_UI_LOGO => $set->getWeb($web['id'], Constant::WEB_UI_LOGO),
             Constant::WEB_UI_WATERMARK => $mark == 1 ? "1" : "0",
             Constant::WEB_UI_LAYOUT => $layout == "left" ? "left" : "top",
             Constant::WEB_UI_THEME => $theme == 'dark' ? 'dark' : 'light',
+            Constant::WEB_UI_COMPACT => $compact == 1 ? "1" : "0",
         ));
     }
 
@@ -129,6 +131,7 @@ class Config extends Common
             array(Constant::WEB_UI_INDEX . '|首页模板', 'require|in:' . implode(",", $temps) . '|default:index'),
             array(Constant::WEB_UI_LOGO . '|系统LOGO', 'require|default:-1'),
             array(Constant::WEB_UI_WATERMARK . '|网站水印', 'require|in:0,1,-1|default:-1'),
+            array(Constant::WEB_UI_COMPACT . '|紧凑模式', 'require|in:0,1,-1|default:-1'),
             array(Constant::WEB_UI_LAYOUT . '|网站布局', 'require|in:left,top|default:top'),
             array(Constant::WEB_UI_THEME . '|菜单主题', 'require|in:light,dark|default:light'),
         ), Request::param());
@@ -177,9 +180,9 @@ class Config extends Common
     public function setNotice()
     {
         $data = $this->validate(array(
-            array(Constant::WEB_NITICE_INDEX . '|首页公告', 'require|default:-1'),
-            array(Constant::WEB_NITICE_SHOP . '|商城公告', 'require|default:-1'),
-            array(Constant::WEB_NITICE_ADMIN . '|分站公告', 'require|default:-1'),
+            array(Constant::WEB_NOTICE_INDEX . '|首页公告', 'require|default:-1'),
+            array(Constant::WEB_NOTICE_SHOP . '|商城公告', 'require|default:-1'),
+            array(Constant::WEB_NOTICE_ADMIN . '|分站公告', 'require|default:-1'),
         ), Request::param());
         if ($data) {
             $web = AuthService::getInstance()->getCurrentWeb();

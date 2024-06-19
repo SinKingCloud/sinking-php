@@ -17,11 +17,11 @@ class BaseService
     /**
      * 获取单例
      *
-     * @return void
+     * @return object
      */
     public static function getInstance()
     {
-        $name =  get_called_class();
+        $name = get_called_class();
         if (!isset(self::$instance[$name])) {
             self::$instance[$name] = new $name();
         }
@@ -30,8 +30,8 @@ class BaseService
 
     /**
      * 设置错误消息
-     *
-     * @return void
+     * @param $message string 错误消息
+     * @return bool 执行结果
      */
     public function error($message = '')
     {
@@ -41,8 +41,7 @@ class BaseService
 
     /**
      * 获取错误信息
-     *
-     * @return void
+     * @return mixed|null
      */
     public function getError()
     {
@@ -56,11 +55,11 @@ class BaseService
      * @param string $order_field 排序字段
      * @param string $order_type 排序方式
      * @param integer $page 页码
-     * @param integer $page_size 每页数量 
+     * @param integer $page_size 每页数量
      * @param string $field 查询字段
-     * @return void 数据
+     * @return array|bool 数据
      */
-    public function page($where = array(),  $order_field = 'id',  $order_type = 'desc',  $page = 1, $page_size = 20, $field = '*')
+    public function page($where = array(), $order_field = 'id', $order_type = 'desc', $page = 1, $page_size = 20, $field = '*')
     {
         if (!$this->model) return false;
         return $this->model->where($where)
@@ -77,9 +76,9 @@ class BaseService
      * @param string $order_type 排序方式
      * @param string $field 查询字段
      * @param integer $limit 查询数量
-     * @return void 数据
+     * @return array|bool 数据
      */
-    public function select($where = array(),  $order_field = 'id',  $order_type = 'desc',  $field = '*', $limit = -1)
+    public function select($where = array(), $order_field = 'id', $order_type = 'desc', $field = '*', $limit = -1)
     {
         if (!$this->model) return false;
         return $this->model->where($where)
@@ -93,7 +92,7 @@ class BaseService
      * 统计数据
      *
      * @param array $where 查询条件
-     * @return void
+     * @return integer|bool
      */
     public function count($where = array())
     {
@@ -106,7 +105,7 @@ class BaseService
      *
      * @param mixed $where 查询条件
      * @param string $field
-     * @return void
+     * @return array|bool
      */
     public function find($where, $field = '*')
     {
@@ -118,7 +117,7 @@ class BaseService
      * 删除数据
      *
      * @param mixed $where 查询条件
-     * @return void
+     * @return bool
      */
     public function delete($where)
     {
@@ -131,7 +130,7 @@ class BaseService
      *
      * @param mixed $where 查询条件
      * @param array $data 数据
-     * @return void
+     * @return bool
      */
     public function update($where, $data = array())
     {
@@ -143,7 +142,7 @@ class BaseService
      * 创建数据(单条)
      *
      * @param array $data 数据
-     * @return void
+     * @return bool
      */
     public function create($data = array())
     {
@@ -155,7 +154,7 @@ class BaseService
      * 创建数据(多条)
      *
      * @param array $data 数据
-     * @return void
+     * @return bool
      */
     public function creates($data = array())
     {
@@ -168,7 +167,7 @@ class BaseService
      *
      * @param mixed $where 查询条件
      * @param array $data 数据
-     * @return void
+     * @return bool
      */
     public function auto($where, $data = array())
     {

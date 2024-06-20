@@ -19,6 +19,7 @@ type SettingsState = {
 };
 const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
     const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f0f0f0"
+    const menus = isDarkMode ? "#dad9d9" : "#4b4b4b"
     return{
         main:css`
             display: flex;
@@ -76,7 +77,7 @@ const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
         `,
         menu:css`
             .ant-menu-title-content {
-                color: #4b4b4b
+                color: ${menus}
             }
         `
     }

@@ -5,7 +5,7 @@ import {useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
 import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
-import {createStyles} from "antd-style";
+import {createStyles, useTheme} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
@@ -39,7 +39,7 @@ const RightTop: React.FC = () => {
     /**
      * 样式
      */
-    const useStyles = createStyles(({css, token, responsive}): any => {
+    const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
         const base = ((defaultSettings?.basePath || "/") + "images/bg_blue.png")
         return {
             img: {
@@ -79,7 +79,6 @@ const RightTop: React.FC = () => {
             content_top: css`
                 height: 70px;
                 width: 100%;
-                //background-color: "token?.colorPrimaryBorderHover";
                 border-bottom: 1px solid gray;
                 overflow: hidden;
                 background-image: url(${base});
@@ -174,19 +173,19 @@ const RightTop: React.FC = () => {
                      </Row>
                      <ul className={menu}>
                          <li className={menuItem} onClick={() => historyPush("user.setting")}>
-                             <div><Icon type={Setting} style={{fontSize: 14}}/>账号管理</div>
+                             <div><Icon type={Setting}  style={{fontSize: 14}}/>账号管理</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={() => historyPush("user.log2")}>
-                             <div><Icon type={Order} style={{fontSize: 14}}/>操作日志</div>
+                             <div><Icon type={Order}   style={{fontSize: 14}}/>操作日志</div>
                              <Icon type={Right}></Icon>
                          </li>
                          {user?.web?.is_master && <li className={menuItem} onClick={() => historyPush("master.index")}>
-                             <div><Icon type={System} style={{fontSize: 14}}/>系统管理</div>
+                             <div><Icon type={System}  style={{fontSize: 14}}/>系统管理</div>
                              <Icon type={Right}></Icon>
                          </li>}
                          {user?.web?.is_admin && <li className={menuItem} onClick={() => historyPush("admin.index")}>
-                             <div><Icon type={Web} style={{fontSize: 14}}/>网站管理</div>
+                             <div><Icon type={Web}   style={{fontSize: 14}}/>网站管理</div>
                              <Icon type={Right}></Icon>
                          </li>}
                          <li className={menuItem} onClick={async () => {
@@ -207,7 +206,7 @@ const RightTop: React.FC = () => {
                                  }
                              })
                          }}>
-                             <div><Icon type={Exit} style={{fontSize: 14}}/>退出登录</div>
+                             <div><Icon type={Exit}  style={{fontSize: 14}}/>退出登录</div>
                              <Icon type={Right}></Icon>
                          </li>
                      </ul>
@@ -272,7 +271,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     float: "left"
                 },
                 ">div": {
-                    color: "#1677FF",
+                    color: "rgb(0,81,235)",
                     fontSize: "25px",
                     marginLeft: "5px", fontWeight: "bolder",
                     float: "left",
@@ -288,6 +287,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
             <Title/>
             <Layout loading={loading}
                     menus={menu}
+                    themeType={web?.info?.theme}
                     layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
                     footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                     headerRight={<RightTop/>}
@@ -304,7 +304,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     }}
                     unCollapsedLogo={() => {
                         return (
-                            <div className={unCollapsed}>
+                            <div className={unCollapsed} >
                                 <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
                                      alt="沉沦云网络"/>
                                 <div>{web?.info?.name || Settings?.title}</div>

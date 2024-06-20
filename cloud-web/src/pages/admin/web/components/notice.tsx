@@ -3,17 +3,18 @@ import {App, Form, Spin} from "antd";
 import ProForm, {ProFormTextArea} from "@ant-design/pro-form";
 import {getNotice, setNotice} from "@/service/admin/set";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
     }
 })
 const NoticeView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
 
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
@@ -25,12 +26,12 @@ const NoticeView: React.FC = () => {
         setIsLoading(true);
         return await getNotice({
             onSuccess: (r: any) => {
-                    form.setFieldsValue(r?.data)
+                form.setFieldsValue(r?.data)
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsLoading(false)
             }
         });
@@ -45,10 +46,10 @@ const NoticeView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message || "修改成功")
+                message?.success(r?.message || "修改成功")
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         });
     }

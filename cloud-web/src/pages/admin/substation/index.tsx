@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable from '@ant-design/pro-table';
-import {getData, getParams} from "@/utils/page";
+import {getData} from "@/utils/page";
 import {
     Alert, App,
     Avatar,
@@ -15,7 +15,7 @@ import {
     Typography,
     Upload
 } from "antd";
-import { updateUserInfo, updateUserMoney} from "@/service/admin/user";
+import {updateUserInfo, updateUserMoney} from "@/service/admin/user";
 import {DownOutlined, ExclamationCircleOutlined, LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {getUploadUrl} from "@/service/common/upload";
 import {
@@ -31,17 +31,18 @@ import moment from "moment";
 import {Body, Title} from '@/components';
 import {useModel} from "umi";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     /**
      * 表单处理
      */
@@ -107,15 +108,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalVisible(false);
-                    actionRef.current.reload()
-                    form.resetFields();
+                message?.success(r?.message)
+                setIsModalVisible(false);
+                actionRef.current.reload()
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalBtnLoading(false);
             }
         });
@@ -128,7 +129,7 @@ export default (): React.ReactNode => {
     useEffect(() => {
         getDomainConfig({
             onSuccess: (r: any) => {
-                    setDomainConfig(r?.data);
+                setDomainConfig(r?.data);
             }
         });
     }, []);
@@ -150,13 +151,13 @@ export default (): React.ReactNode => {
                         web_id: web_id
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            domainActionRef?.current?.reload();
+                        message?.success(r?.message)
+                        domainActionRef?.current?.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message || "请求失败")
+                        message?.error(r?.message || "请求失败")
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy("delete")
                     }
                 });
@@ -177,13 +178,13 @@ export default (): React.ReactNode => {
                         web_id: web_id, ids: ids, status: status
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            domainActionRef?.current?.reload();
+                        message?.success(r?.message)
+                        domainActionRef?.current?.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message || "请求失败")
+                        message?.error(r?.message || "请求失败")
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key)
                     }
                 });
@@ -287,15 +288,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalDomainAddVisible(false);
-                    domainAdd.resetFields();
-                    domainActionRef.current.reload();
+                message?.success(r?.message)
+                setIsModalDomainAddVisible(false);
+                domainAdd.resetFields();
+                domainActionRef.current.reload();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalDomainAddBtnLoading(false);
             }
         });
@@ -319,15 +320,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalWebVisible(false);
-                    actionRef.current.reload()
-                    form.resetFields();
+                message?.success(r?.message)
+                setIsModalWebVisible(false);
+                actionRef.current.reload()
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalWebBtnLoading(false);
             }
         });
@@ -346,15 +347,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalMoneyVisible(false);
-                    actionRef.current.reload()
-                    form.resetFields();
+                message?.success(r?.message)
+                setIsModalMoneyVisible(false);
+                actionRef.current.reload()
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalMoneyBtnLoading(false);
             }
         });
@@ -378,13 +379,13 @@ export default (): React.ReactNode => {
                         ids: [user_id], status: status, user_type: 1
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            actionRef?.current.reload();
+                        message?.success(r?.message)
+                        actionRef?.current.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message)
+                        message?.error(r?.message)
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key)
                     }
                 });
@@ -411,13 +412,13 @@ export default (): React.ReactNode => {
                         ids: [web_id], status: status
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            actionRef?.current.reload();
+                        message?.success(r?.message)
+                        actionRef?.current.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message)
+                        message?.error(r?.message)
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key)
                     }
                 });
@@ -720,7 +721,8 @@ export default (): React.ReactNode => {
                 </Form>
             </Modal>
 
-            <Modal key="domain" destroyOnClose={true} forceRender={true} title={<Title>域名管理</Title>} className={modals}
+            <Modal key="domain" destroyOnClose={true} forceRender={true} title={<Title>域名管理</Title>}
+                   className={modals}
                    open={isModalDomainVisible} onOk={() => {
                 setIsModalDomainAddVisible(true);
             }}
@@ -786,7 +788,8 @@ export default (): React.ReactNode => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Modal key="web" destroyOnClose={true} forceRender={true} title={<Title>编 辑</Title>} open={isModalWebVisible}
+            <Modal key="web" destroyOnClose={true} forceRender={true} title={<Title>编 辑</Title>}
+                   open={isModalWebVisible}
                    onOk={web.submit} okButtonProps={{loading: isModalWebBtnLoading}} className={modals}
                    okText="确 认"
                    onCancel={() => {

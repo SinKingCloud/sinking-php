@@ -6,10 +6,11 @@ import {deleteOrder, getOrderList} from "@/service/master/order";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 import {Body, Title} from '@/components';
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
@@ -19,7 +20,7 @@ export default (): React.ReactNode => {
     /**
      * 表单处理
      */
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     const actionRef = useRef<any>();
     const ref = useRef<any>();
     const {message, modal} = App.useApp()
@@ -247,13 +248,13 @@ export default (): React.ReactNode => {
                         order_type: values['order_type'] >= 0 ? values['order_type'] : "",
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            actionRef.current.reloadAndRest()
+                        message?.success(r?.message)
+                        actionRef.current.reloadAndRest()
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message || "请求失败")
+                        message?.error(r?.message || "请求失败")
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy("delete")
                     }
                 })
@@ -347,7 +348,6 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
-                // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
                     return getData(params, sort, getOrderList)

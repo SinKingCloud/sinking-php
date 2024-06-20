@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getUpgradeList, systemUpgrade} from "@/service/master/config";
 import {Alert, App, Button, Result, Spin, Tag, Timeline} from "antd";
 import {history} from "umi";
+
 const UpgradeView: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const {message} = App.useApp()
@@ -11,16 +12,16 @@ const UpgradeView: React.FC = () => {
      */
     const getConfigs = async () => {
         setIsLoading(true);
-         await getUpgradeList({
-            onSuccess:(r:any)=>{
-                    setVersionInfo(r?.data)
+        await getUpgradeList({
+            onSuccess: (r: any) => {
+                setVersionInfo(r?.data)
             },
-            onFail:(r:any)=>{
-                    setVersionInfo({})
+            onFail: (r: any) => {
+                setVersionInfo({})
             },
-             onFinally:()=>{
-                 setIsLoading(false)
-             }
+            onFinally: () => {
+                setIsLoading(false)
+            }
         });
     }
     /**
@@ -66,8 +67,8 @@ const UpgradeView: React.FC = () => {
                                             });
                                         }
                                     },
-                                    onFail:(r:any)=>{
-                                        if(r?.code != 200){
+                                    onFail: (r: any) => {
+                                        if (r?.code != 200) {
                                             message.error(r?.message || "请求错误")
                                         }
                                     }

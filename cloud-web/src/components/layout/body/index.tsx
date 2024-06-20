@@ -9,7 +9,7 @@ import 'dayjs/locale/zh-cn';
 import {Animation, Theme} from "@/components";
 import {Animate} from "@/components/animation";
 
-const useStyles = createStyles(({token,css,responsive}): any => {
+const useStyles = createStyles(({token, css}): any => {
     return {
         body: css`
             padding: 10px;
@@ -60,7 +60,7 @@ const Body: React.FC<BodyProps> = (props) => {
         breadCrumb = true,
         themes = undefined,
         mode = undefined,
-        animation = true
+        animation = true,
     } = props;
     const {styles: {body, load, gutter, bread, breadStyle}} = useStyles();
 
@@ -108,28 +108,31 @@ const Body: React.FC<BodyProps> = (props) => {
     }, []);
 
     /**
+     * 内容
+     */
+    const content = <ConfigProvider locale={zhCN}>
+        <App>
+            {(loading && <Spin spinning={true} size="large" className={load}></Spin>) ||
+                <Layout style={style}>
+                    {breadCrumb && breadCrumbData?.length > 0 &&
+                        <Breadcrumb className={bread} items={breadCrumbData}/>}
+                    <div className={className ? className : body}>
+                        <Animation animate={animation ? Animate.FadeUp : Animate.None}>
+                            {(space && <Space direction="vertical" size="middle" className={gutter}>
+                                {children}
+                            </Space>) || children}
+                        </Animation>
+                    </div>
+                </Layout>}
+        </App>
+    </ConfigProvider>;
+
+    /**
      * 页面容器
      */
-    return (
-        <Theme theme={themes} mode={mode}>
-            <ConfigProvider locale={zhCN}>
-                <App>
-                    {(loading && <Spin spinning={true} size="large" className={load}></Spin>) ||
-                        <Layout style={style}>
-                            {breadCrumb && breadCrumbData?.length > 0 &&
-                                <Breadcrumb className={bread} items={breadCrumbData}/>}
-                            <div className={className ? className : body}>
-                                <Animation animate={animation ? Animate.FadeUp : Animate.None}>
-                                    {(space && <Space direction="vertical" size="middle" className={gutter}>
-                                        {children}
-                                    </Space>) || children}
-                                </Animation>
-                            </div>
-                        </Layout>}
-                </App>
-            </ConfigProvider>
-        </Theme>
-    );
+    return <Theme theme={themes} mode={mode}>
+        {content}
+    </Theme>;
 }
 
 export default Body

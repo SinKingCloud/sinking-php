@@ -9,7 +9,6 @@
 namespace app\Http\Master\Controller;
 
 use app\Model\Log;
-use app\Service\AuthService;
 use app\Service\LogService;
 use app\Service\MessageService;
 use app\Service\UserService;
@@ -30,7 +29,6 @@ class Message extends Common
             array('title|标题', 'require'),
             array('content|内容', 'require'),
         ), Request::param());
-        $web = AuthService::getInstance()->getCurrentWeb();
         $ids = array();
         if ($data['group'] == 'user' || $data['group'] == 'all') {
             $ids = array_merge($ids, UserService::getInstance()->getUserIds());

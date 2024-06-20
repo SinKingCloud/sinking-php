@@ -230,8 +230,8 @@ export type slide = {
  */
 const Layouts: React.FC<slide> = ({...props}) => {
     /**
-         * 初始化用户信息
-         */
+     * 初始化用户信息
+     */
     const {menu} = props,
         /**
          * 全局信息
@@ -286,9 +286,11 @@ const Layouts: React.FC<slide> = ({...props}) => {
         <>
             <Title/>
             <Layout loading={loading}
+                    waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
                     menus={menu}
                     themeType={web?.info?.theme}
                     layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
+                    menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
                     footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
                     headerRight={<RightTop/>}
                     menuCollapsedWidth={60}

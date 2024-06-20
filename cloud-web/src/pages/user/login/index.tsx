@@ -3,11 +3,11 @@ import {Alert, App, Button, Checkbox, Col, Form, Input, Row, Spin, Tabs, TabsPro
 import React, {useEffect, useRef, useState} from 'react';
 import {Body, Footer} from '@/components';
 // @ts-ignore
-import { useLocation, useModel} from "umi";
+import {useLocation, useModel} from "umi";
 import {genQrCode, loginByEmail, loginByPwd, loginBySms, qrLogin} from "@/service/user/login";
 import {setLoginToken} from "@/utils/auth";
 import {sendEmail} from "@/service/common/email";
-import Captcha,{CaptchaRef} from "@/components/captcha";
+import Captcha, {CaptchaRef} from "@/components/captcha";
 // @ts-ignore
 import QRCode from "qrcode.react/lib";
 import {getRandStr, qqJumpUrl} from "@/utils/string";
@@ -36,6 +36,7 @@ const useStyles = createStyles(({css, responsive}): any => {
         main: css`
             width: 328px;
             margin: 0 auto;
+
             ${responsive.md} {
                 .ant-tabs .ant-tabs-tab {
                     font-size: 12px;
@@ -113,8 +114,8 @@ const useStyles = createStyles(({css, responsive}): any => {
             borderTop: "none",
             borderBottomRightRadius: "10px"
         },
-        line:css`
-            .ant-tabs-nav::before{
+        line: css`
+            .ant-tabs-nav::before {
                 border: none !important;
             }
         `
@@ -124,11 +125,11 @@ const useStyles = createStyles(({css, responsive}): any => {
 const Index: React.FC = () => {
     const {
         styles: {
-            container, content, top, header, logo, desc, border_corner, main,line,
+            container, content, top, header, logo, desc, border_corner, main, line,
             border_corner_left_top, border_corner_right_top, border_corner_left_bottom, border_corner_right_bottom
         }
     } = useStyles();
-    const {message,modal} = App.useApp()
+    const {message, modal} = App.useApp()
     const captcha = useRef<CaptchaRef>({});
     /**
      * 登陆方式
@@ -147,7 +148,7 @@ const Index: React.FC = () => {
      */
     const web = useModel("web")
     const user = useModel("user")
-    const [loginType,setLoginType] = useState(true)
+    const [loginType, setLoginType] = useState(true)
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
@@ -190,22 +191,22 @@ const Index: React.FC = () => {
                 device: isMobile
             },
             onSuccess: (r: any) => {
-                    localStorage.removeItem("captcha_id");
-                    setQrcodeMessage("验证成功,正在登陆");
-                    setLoginToken(isMobile, r?.data?.token);
-                    historyPush("user.index");
-                    localStorage.removeItem("redirect");
-                    setQrcode("");
-                    message?.success(r?.message || "登陆成功,正在跳转");
+                localStorage.removeItem("captcha_id");
+                setQrcodeMessage("验证成功,正在登陆");
+                setLoginToken(isMobile, r?.data?.token);
+                historyPush("user.index");
+                localStorage.removeItem("redirect");
+                setQrcode("");
+                message?.success(r?.message || "登陆成功,正在跳转");
             },
             onFail: (r: any) => {
-                    if (r?.data?.code == -1) {
-                        getQrCode();
-                    } else if (r?.data?.code == 0) {
-                        setTimeout(() => {
-                            queryQrCodeStatus(id);
-                        }, 1000)
-                    }
+                if (r?.data?.code == -1) {
+                    getQrCode();
+                } else if (r?.data?.code == 0) {
+                    setTimeout(() => {
+                        queryQrCodeStatus(id);
+                    }, 1000)
+                }
             },
         })
     }
@@ -218,15 +219,15 @@ const Index: React.FC = () => {
                 captcha_id: tempToken,
             },
             onSuccess: (r: any) => {
-                    localStorage.setItem("captcha_id", tempToken);
-                    setQrcode(r?.data);
-                    setQrcodeMessage("请扫描二维码");
-                    queryQrCodeStatus(tempToken);
+                localStorage.setItem("captcha_id", tempToken);
+                setQrcode(r?.data);
+                setQrcodeMessage("请扫描二维码");
+                queryQrCodeStatus(tempToken);
             },
             onFail: (r: any) => {
-                    setQrcodeMessage(r?.message || "获取二维码失败");
+                setQrcodeMessage(r?.message || "获取二维码失败");
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setQrcodeLoading(false);
             }
         });
@@ -269,7 +270,8 @@ const Index: React.FC = () => {
                         </div>
                     </div>
                     <div className={main}>
-                        <Tabs items={items} centered className={line} style={{marginBottom: "10px"}} defaultActiveKey={type}
+                        <Tabs items={items} centered className={line} style={{marginBottom: "10px"}}
+                              defaultActiveKey={type}
                               onChange={(key: string) => {
                                   setType(key)
                                   if (key == "qrcode") {
@@ -297,16 +299,16 @@ const Index: React.FC = () => {
                                         ...values
                                     },
                                     onSuccess: (r: any) => {
-                                            localStorage.removeItem("captcha_id");
-                                            setLoginToken(isMobile, r?.data?.token);
-                                            message?.success(r?.message);
-                                            historyPush("user.index");
-                                            localStorage.removeItem("redirect");
+                                        localStorage.removeItem("captcha_id");
+                                        setLoginToken(isMobile, r?.data?.token);
+                                        message?.success(r?.message);
+                                        historyPush("user.index");
+                                        localStorage.removeItem("redirect");
                                     },
                                     onFail: (r: any) => {
-                                            message?.error(r?.message || "请求失败")
+                                        message?.error(r?.message || "请求失败")
                                     },
-                                    onFinally:()=>{
+                                    onFinally: () => {
                                         setIsLoading(false);
                                     }
                                 });
@@ -334,7 +336,7 @@ const Index: React.FC = () => {
                                 return;
                             }
                             setIsLoading(true);
-                            if(type == "email" || type=="phone") {
+                            if (type == "email" || type == "phone") {
                                 captcha?.current?.Show?.(async (res) => {
                                     await login({
                                         body: {
@@ -355,7 +357,7 @@ const Index: React.FC = () => {
                                                 okText: "确认"
                                             })
                                         },
-                                        onFinally:()=>{
+                                        onFinally: () => {
                                             setIsLoading(false)
                                         }
                                     });

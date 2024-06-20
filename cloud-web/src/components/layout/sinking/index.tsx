@@ -3,10 +3,10 @@ import Header from "../header";
 import Sider from "../sider";
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import React, {useState} from "react";
-import {Outlet, useModel} from "umi";
+import {Outlet} from "umi";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import Loading from "@/loading"
-import {App, Button, ConfigProvider, Drawer, Layout} from "antd";
+import {App, Button, ConfigProvider, Drawer, Layout, Watermark} from "antd";
 import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 
@@ -19,8 +19,8 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             overflowY: "auto",
             position: "fixed !important",
             bottom: 0,
-            ".ant-menu-dark":{
-                backgroundColor:isDarkMode?"rgb(20,20,20) ":"rgb(0,21,41)",
+            ".ant-layout-header": {
+                backgroundColor: token?.colorBgContainer
             }
         },
         menuBtn: {
@@ -52,19 +52,18 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             position: "sticky",
             top: 0,
             userSelect: "none",
-            backgroundColor: isDarkMode ? "rgb(20,20,20) " :"#fff !important",
-            ".ant-menu-dark":{
-                backgroundColor:isDarkMode?"rgb(20,20,20) ":"rgb(0,21,41)",
-            }
+            background: token?.colorBgContainer + " !important"
         },
         content: css`
             min-height: calc(100vh - 117px);
             width: 100%;
             height: 100%;
+
             > div > div > div:first-of-type {
                 width: 80%;
                 margin-left: 10%;
             }
+
             ${responsive.md} {
                 > div > div > div:first-of-type {
                     width: 100%;
@@ -79,11 +78,11 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
         },
         footer: {
             textAlign: 'center',
-
+            transform: "translateY(-1px)",
         },
         flow: {
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-between"
         },
         logo: {
             display: "inline-flex",
@@ -92,31 +91,35 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             width: "220px",
             height: "55px",
         },
+        darkColor: {
+            backgroundColor: "#001529 !important"
+        }
     };
 });
 
 export type LayoutProps = {
-    loading?: boolean,
-    menuCollapsedWidth?: Number,
-    menuUnCollapsedWidth?: Number,
-    menus?: any,
-    onMenuClick?: (item: any) => void,
-    onMenuBtnClick?: (state: boolean) => void,
-    footer?: any,
-    headerRight?: any,
-    headerLeft?: any,
-    onLogoClick?: () => void,
-    collapsedLogo?: (isLight: boolean) => any,
-    unCollapsedLogo?: (isLight: boolean) => any,
-    menuBottomBtnIcon?: string,
-    menuBottomBtnText?: string,
-    onMenuBottomBtnClick?: () => void,
-    layout?: string,
-    themeType?:any
+    loading?: boolean;//是否显示加载
+    menuCollapsedWidth?: Number;//菜单关闭时宽度
+    menuUnCollapsedWidth?: Number;//菜单开启时宽度
+    menus?: any;//菜单列表
+    onMenuClick?: (item: any) => void;//点击菜单回调
+    onMenuBtnClick?: (state: boolean) => void;//菜单按钮点击
+    footer?: any;//底部内容
+    headerRight?: any;//顶部右侧内容
+    headerLeft?: any;//顶部左侧内容
+    onLogoClick?: () => void;//点击logo回调
+    collapsedLogo?: (isLight: boolean) => any;//折叠时logo
+    unCollapsedLogo?: (isLight: boolean) => any;//展开时logo
+    menuBottomBtnIcon?: string;//底部按钮图标
+    menuBottomBtnText?: string;//底部按钮文字
+    onMenuBottomBtnClick?: () => void;//点击底部按钮回调
+    layout?: string;//布局
+    menuTheme?: string;//菜单主题
+    waterMark?: any;//水印
 };
 
 const SinKing: React.FC<LayoutProps> = (props) => {
-    const {
+    let {
         loading = false,
         menus,
         onMenuClick,
@@ -132,7 +135,8 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         menuBottomBtnText = undefined,
         onMenuBottomBtnClick,
         layout = 'inline',
-        themeType = "light"
+        menuTheme = "light",
+        waterMark = undefined
     } = props;
     const systemTheme = useTheme();
     /*
@@ -152,6 +156,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             menuBtn,
             flow,
             logo,
+            darkColor
         }
     } = useLayoutStyles();
     const {mobile, md} = useResponsive();
@@ -169,14 +174,32 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         }
         onMenuBtnClick?.(status);
     }
+
+    /**
+     * 获取菜单主题颜色
+     */
+    const getColor = () => {
+        const mode = systemTheme?.isDarkMode ? "light" : (menuTheme == "dark" ? menuTheme : "light");
+        return !systemTheme?.isDarkMode && mode == "dark" ? ' ' + darkColor : '';
+    }
+
+    /**
+     * 获取水印字体
+     */
+    const getWaterMaskFont = () => {
+        return {
+            color: systemTheme?.isDarkMode ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.07)"
+        };
+    }
+
     /**
      * 获取菜单
      * @param mode 布局模式
      */
     const getSider = (mode) => {
         mode = mode == "horizontal" ? mode : "inline";
-        return <Sider layout={mode} collapsed={collapsed}
-                      themeType={themeType}
+        menuTheme = menuTheme == "dark" ? menuTheme : "light";
+        return <Sider layout={mode} theme={menuTheme} collapsed={collapsed}
                       onLogoClick={onLogoClick}
                       collapsedLogo={collapsedLogo}
                       unCollapsedLogo={unCollapsedLogo}
@@ -185,9 +208,11 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                       onMenuBottomBtnClick={onMenuBottomBtnClick}
                       menus={menus}
                       onMenuClick={(item) => {
-                          onMenuClick?.(item)
-                      }}/>
+                          setOpen(false);
+                          onMenuClick?.(item);
+                      }}/>;
     }
+
     /**
      * 移动端抽屉
      */
@@ -198,20 +223,21 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                            }}>
         {getSider("inline")}
     </Drawer>;
+
     /**
      * 左右模式
      */
     const LayoutNormal = <Layout>
-        <Layout.Sider  className={sider} trigger={null} collapsible collapsed={collapsed}
+        <Layout.Sider className={sider} trigger={null} collapsible collapsed={collapsed}
                       width={menuUnCollapsedWidth} collapsedWidth={menuCollapsedWidth}
-                      hidden={mobile}  style={{background:themeType == "dark"? "rgb(0,21,41)" : "#fff"}}>
+                      hidden={mobile}>
             {(mobile && drawer)
                 ||
                 getSider(layout)}
         </Layout.Sider>
         <Layout className={body}
                 style={{marginLeft: mobile ? 0 : (collapsed ? menuCollapsedWidth + "px" : menuUnCollapsedWidth + "px")}}>
-            <Layout.Header className={header} >
+            <Layout.Header className={header}>
                 <Header left={<div><Button type="text" size={"large"}
                                            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                                            onClick={menuBtnOnClick} className={menuBtn}/>{headerLeft}</div>}
@@ -219,24 +245,26 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             </Layout.Header>
             <Layout.Content className={content1}>
                 <Outlet/>
+
             </Layout.Content>
             {props?.footer && <Layout.Footer className={footer}>
                 <Footer> {props?.footer}</Footer>
             </Layout.Footer>}
         </Layout>
     </Layout>;
+
     /**
      * 上下模式
      */
     const LayoutFlow = <Layout>
-        <Layout.Header className={header} style={{background:themeType == "dark"? systemTheme?.isDarkMode?"rgb(20,20,20)":"rgb(0,21,41)" : "#fff" }}>
+        <Layout.Header className={header}>
             {!md && <Header left={<div>
                 <Button type="text" size={"large"} icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                         onClick={menuBtnOnClick} className={menuBtn}/>
                 {headerLeft}
             </div>} right={headerRight}/>}
             {(!md && drawer) ||
-                <div className={flow} style={{background:themeType == "dark"? systemTheme?.isDarkMode?"rgb(20,20,20)":"rgb(0,21,41)" : systemTheme?.isDarkMode? "rgb(20,20,20)" : "#fff"}}>
+                <div className={flow + getColor()}>
                     <div className={logo}>
                         {unCollapsedLogo?.(!systemTheme?.isDarkMode)}
                     </div>
@@ -252,12 +280,16 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             <Footer> {props?.footer}</Footer>
         </Layout.Footer>}
     </Layout>;
+
     return (
         <ConfigProvider locale={zhCN}>
             <App>
-                {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
+                <Watermark gap={[200, 200]} font={getWaterMaskFont()} content={waterMark}>
+                    {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
+                </Watermark>
             </App>
         </ConfigProvider>
     );
+
 }
 export default SinKing;

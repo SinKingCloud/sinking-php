@@ -32,8 +32,8 @@ const useStyles = createStyles(({css}) => {
                 paddingInline: "7px !important",
                 paddingBlock: "6px !important",
             },
-            ".ant-pro-checkcard-header-left":{
-                marginLeft:"4px !important"
+            ".ant-pro-checkcard-header-left": {
+                marginLeft: "4px !important"
             }
         }
     }
@@ -257,7 +257,7 @@ export default (): React.ReactNode => {
                                                 className={chard}
                                                 style={{
                                                     borderRadius: "7px",
-                                                    textAlign:"center",
+                                                    textAlign: "center",
                                                     maxWidth: "65px",
                                                     boxSizing: "border-box",
                                                 }}
@@ -282,8 +282,8 @@ export default (): React.ReactNode => {
                                                                        maxWidth: "60px",
                                                                        margin: "0px",
                                                                        borderRadius: "7px",
-                                                                       paddingBlock:"6px",
-                                                                       letterSpacing:"1px",
+                                                                       paddingBlock: "6px",
+                                                                       letterSpacing: "1px",
                                                                        textAlign: "center"
                                                                    }}/>}
 
@@ -295,7 +295,7 @@ export default (): React.ReactNode => {
                                         rules={[{required: true, message: '请选择充值方式'}]}
                                         initialValue={"0"}
                                     >
-                                        <CheckCard.Group className={border} >
+                                        <CheckCard.Group className={border}>
                                             <Row gutter={10} wrap={true}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>
                                                     <CheckCard

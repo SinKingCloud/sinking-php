@@ -38,8 +38,7 @@ const EmailVerify: React.FC<EmailVerifyProps> = (props) => {
             <Captcha ref={captcha}/>
             <Form form={form} onFinish={async (values: any) => {
                 await onFinish(values);
-            }} labelAlign="right"
-                  labelCol={{span: 6}}>
+            }}>
                 {topNodes}
                 <Form.Item name="email_code" label="邮箱验证码"
                            rules={[{required: true, message: '请输入邮箱验证码',},]}>

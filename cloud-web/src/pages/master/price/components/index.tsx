@@ -3,10 +3,11 @@ import {getConfigList, updateConfigs} from "@/service/master/config";
 import {App, Form, Spin} from "antd";
 import ProForm, {ProFormDigit, ProFormText} from "@ant-design/pro-form";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        box:css`
-            .ant-form-item .ant-form-item-control{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        box: css`
+            .ant-form-item .ant-form-item-control {
                 margin-bottom: 10px !important;
             }
         `
@@ -14,7 +15,7 @@ const useStyles = createStyles(({css})=>{
 })
 
 const SiteView: React.FC = () => {
-    const {styles:{box}} = useStyles()
+    const {styles: {box}} = useStyles()
     const {message} = App.useApp()
     const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm();
@@ -24,23 +25,21 @@ const SiteView: React.FC = () => {
     const getConfigs = async () => {
         setIsLoading(true);
         return await getConfigList({
-            body:{
+            body: {
                 page_size: 1000,
                 key: "site"
             },
-            onSuccess:(r:any)=>{
-                    let temp:any = {};
-                    r?.data?.list.forEach((k: any) => {
-                       return temp[k?.key] = k?.value;
-                    });
-                     form.setFieldsValue(temp)
+            onSuccess: (r: any) => {
+                let temp: any = {};
+                r?.data?.list.forEach((k: any) => {
+                    return temp[k?.key] = k?.value;
+                });
+                form.setFieldsValue(temp)
             },
-            onFail:(r:any)=>{
-                if(r?.code != 200){
-                    return {}
-                }
+            onFail: (r: any) => {
+                return {}
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsLoading(false)
             }
         });
@@ -50,14 +49,14 @@ const SiteView: React.FC = () => {
      */
     const onFinish = async (values: any) => {
         await updateConfigs({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
-                    message?.success(r?.message || "修改成功")
+            onSuccess: (r: any) => {
+                message?.success(r?.message || "修改成功")
             },
-            onFail:(r:any)=>{
-                    message?.error(r?.message || "请求失败")
+            onFail: (r: any) => {
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -123,7 +122,10 @@ const SiteView: React.FC = () => {
                         rules={[{
                             required: true,
                             message: "请输入充值提成百分比"
-                        }, {pattern: /^([0-9]{1,2}$)|(^[0-9]{1,2}\.[0-9]{1,2}$)|100$|100.00$/, message: "请输入正确的百分比"}]}
+                        }, {
+                            pattern: /^([0-9]{1,2}$)|(^[0-9]{1,2}\.[0-9]{1,2}$)|100$|100.00$/,
+                            message: "请输入正确的百分比"
+                        }]}
                     />
                     <ProFormText
                         width="md"
@@ -134,7 +136,10 @@ const SiteView: React.FC = () => {
                         rules={[{
                             required: true,
                             message: "请输入利润金额的提成百分比"
-                        }, {pattern: /^([0-9]{1,2}$)|(^[0-9]{1,2}\.[0-9]{1,2}$)|100$|100.00$/, message: "请输入正确的百分比"}]}
+                        }, {
+                            pattern: /^([0-9]{1,2}$)|(^[0-9]{1,2}\.[0-9]{1,2}$)|100$|100.00$/,
+                            message: "请输入正确的百分比"
+                        }]}
                     />
                 </ProForm>
             </div>

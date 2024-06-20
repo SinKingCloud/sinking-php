@@ -35,7 +35,8 @@ declare namespace API {
     /**
      * 用户信息
      */
-    type UserInfo = {UserInfo
+    type UserInfo = {
+        UserInfo
         id?: number;
         web_id?: number;
         account?: string;
@@ -64,9 +65,10 @@ declare namespace API {
         water_mark?: string;
         layout?: string;
         theme?: string;
-        reg_email?: string;
-        reg_qrlogin?: string;
-        reg_phone?: string;
+        compact?: boolean;
+        reg_email?: boolean;
+        reg_qrlogin?: boolean;
+        reg_phone?: boolean;
     }
 }
 

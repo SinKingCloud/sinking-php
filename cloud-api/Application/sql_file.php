@@ -324,23 +324,22 @@ CREATE TABLE `cloud_settings`  (
   PRIMARY KEY (`id`, `type`, `key`) USING BTREE,
   INDEX `idx_type_key`(`type`, `key`) USING BTREE,
   INDEX `idx_key`(`key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cloud_settings
 -- ----------------------------
 INSERT INTO `cloud_settings` VALUES (1, 'User-1', 'login-time', '21066284', '2022-05-29 22:59:57', '2022-05-29 23:23:20');
-INSERT INTO `cloud_settings` VALUES (2, 'User-1', 'test', '455454', '2022-05-29 23:34:17', '2022-05-29 23:34:19');
-INSERT INTO `cloud_settings` VALUES (3, 'User-1', 'contact', '2710911512', '2022-06-02 14:06:02', '2022-07-20 20:05:35');
-INSERT INTO `cloud_settings` VALUES (4, 'Web-1', 'site.price', '188', '2022-06-12 11:10:05', '2022-07-03 17:36:03');
-INSERT INTO `cloud_settings` VALUES (5, 'Web-1', 'contact.one', '2710911512', '2022-06-21 12:33:56', '2022-07-20 20:06:14');
-INSERT INTO `cloud_settings` VALUES (6, 'Web-1', 'contact.two', '10001', '2022-06-21 12:33:56', '2022-07-20 20:06:14');
-INSERT INTO `cloud_settings` VALUES (7, 'Web-1', 'contact.three', '939576303', '2022-06-21 12:33:56', '2022-07-20 20:06:14');
-INSERT INTO `cloud_settings` VALUES (8, 'Web-5', 'site.price', '100.00', '2022-06-21 15:14:49', NULL);
-INSERT INTO `cloud_settings` VALUES (9, 'Web-1', 'notice.index', '欢迎使用沉沦云网络全新系统。七年技术沉淀，为您提供精彩绝伦的用户体验。购买服务请认准沉沦云网络产品！', '2022-07-01 12:54:16', '2022-07-01 15:30:28');
-INSERT INTO `cloud_settings` VALUES (10, 'Web-1', 'notice.shop', '欢迎使用沉沦云网络全新系统。七年技术沉淀，为您提供精彩绝伦的用户体验。购买服务请认准沉沦云网络产品！', '2022-07-01 12:54:16', '2022-07-01 15:30:38');
-INSERT INTO `cloud_settings` VALUES (11, 'Web-1', 'notice.admin', '欢迎使用沉沦云网络全新系统。七年技术沉淀，为您提供精彩绝伦的用户体验。购买服务请认准沉沦云网络产品！', '2022-07-01 12:54:16', '2022-07-01 15:30:50');
-INSERT INTO `cloud_settings` VALUES (12, 'Web-1', 'contact.four', 'https://qm.qq.com/cgi-bin/qm/qr?k=6fdOW7D5-n_TM1aeSox44EuyVn2PYAjQ&jump_from=webapi', '2022-07-01 15:23:15', '2022-07-20 20:06:15');
+INSERT INTO `cloud_settings` VALUES (2, 'User-1', 'contact', '2710911512', '2022-06-02 14:06:02', '2022-07-20 20:05:35');
+INSERT INTO `cloud_settings` VALUES (3, 'Web-1', 'site.price', '188', '2022-06-12 11:10:05', '2022-07-03 17:36:03');
+INSERT INTO `cloud_settings` VALUES (4, 'Web-1', 'contact.one', '2710911512', '2022-06-21 12:33:56', '2022-07-20 20:06:14');
+INSERT INTO `cloud_settings` VALUES (5, 'Web-1', 'contact.two', '10001', '2022-06-21 12:33:56', '2022-07-20 20:06:14');
+INSERT INTO `cloud_settings` VALUES (6, 'Web-1', 'contact.three', '939576303', '2022-06-21 12:33:56', '2022-07-20 20:06:14');
+INSERT INTO `cloud_settings` VALUES (7, 'Web-5', 'site.price', '100.00', '2022-06-21 15:14:49', NULL);
+INSERT INTO `cloud_settings` VALUES (8, 'Web-1', 'notice.index', '欢迎使用沉沦云网络全新系统。七年技术沉淀，为您提供精彩绝伦的用户体验。购买服务请认准沉沦云网络产品！', '2022-07-01 12:54:16', '2022-07-01 15:30:28');
+INSERT INTO `cloud_settings` VALUES (9, 'Web-1', 'notice.shop', '欢迎使用沉沦云网络全新系统。七年技术沉淀，为您提供精彩绝伦的用户体验。购买服务请认准沉沦云网络产品！', '2022-07-01 12:54:16', '2022-07-01 15:30:38');
+INSERT INTO `cloud_settings` VALUES (10, 'Web-1', 'notice.admin', '欢迎使用沉沦云网络全新系统。七年技术沉淀，为您提供精彩绝伦的用户体验。购买服务请认准沉沦云网络产品！', '2022-07-01 12:54:16', '2022-07-01 15:30:50');
+INSERT INTO `cloud_settings` VALUES (11, 'Web-1', 'contact.four', 'https://qm.qq.com/cgi-bin/qm/qr?k=6fdOW7D5-n_TM1aeSox44EuyVn2PYAjQ&jump_from=webapi', '2022-07-01 15:23:15', '2022-07-20 20:06:15');
 
 -- ----------------------------
 -- Table structure for cloud_users

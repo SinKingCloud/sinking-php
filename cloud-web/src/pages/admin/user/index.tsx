@@ -23,17 +23,18 @@ import {getLogList} from "@/service/admin/log";
 import {useModel} from "umi";
 import {Body, Title} from "@/components";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(({css})=>{
-    return{
-        modals:css`
-            .ant-modal-title{
+
+const useStyles = createStyles(({css}) => {
+    return {
+        modals: css`
+            .ant-modal-title {
                 margin-bottom: 15px;
             }
         `
     }
 })
 export default (): React.ReactNode => {
-    const {styles:{modals}} = useStyles()
+    const {styles: {modals}} = useStyles()
     /**
      * 表单处理
      */
@@ -100,15 +101,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    setIsModalVisible(false);
-                    message?.success(r?.message)
-                    actionRef.current.reload()
-                    form.resetFields();
+                setIsModalVisible(false);
+                message?.success(r?.message)
+                actionRef.current.reload()
+                form.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalBtnLoading(false);
             }
         });
@@ -120,7 +121,7 @@ export default (): React.ReactNode => {
     const [isModalPayVisible, setIsModalPayVisible] = useState(false);//编辑弹窗
     const [payUserId, setPayUserId] = useState(0);//编辑弹窗
     const payActionRef = useRef<any>();
-    const payRef = useRef();
+    const payRef = useRef<any>();
     const payColumns = [
         {
             title: 'ID',
@@ -189,15 +190,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalMoneyVisible(false);
-                    form.resetFields();
-                    actionRef.current.reload()
+                message?.success(r?.message)
+                setIsModalMoneyVisible(false);
+                form.resetFields();
+                actionRef.current.reload()
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsModalMoneyBtnLoading(false);
             }
         });
@@ -209,7 +210,7 @@ export default (): React.ReactNode => {
     const [isModalLogVisible, setIsModalLogVisible] = useState(false);//编辑弹窗
     const [logUserId, setLogUserId] = useState(0);//编辑弹窗
     const logActionRef = useRef<any>();
-    const logRef = useRef();
+    const logRef = useRef<any>();
     const logColumns = [
         {
             title: '请求IP',
@@ -287,13 +288,13 @@ export default (): React.ReactNode => {
                         status: status
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            actionRef?.current?.reload();
+                        message?.success(r?.message)
+                        actionRef?.current?.reload();
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message)
+                        message?.error(r?.message)
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message?.destroy(key);
                     }
                 });
@@ -610,7 +611,8 @@ export default (): React.ReactNode => {
                 </Form>
             </Modal>
 
-            <Modal key="pay" destroyOnClose={true} forceRender={true} title={<Title>余额明细</Title>} className={modals} open={isModalPayVisible}
+            <Modal key="pay" destroyOnClose={true} forceRender={true} title={<Title>余额明细</Title>} className={modals}
+                   open={isModalPayVisible}
                    onOk={() => {
                        money?.setFieldsValue({user_id: payUserId, type: 0});
                        setIsModalMoneyVisible(true);
@@ -640,7 +642,8 @@ export default (): React.ReactNode => {
                 )}
             </Modal>
 
-            <Modal key="log" destroyOnClose={true} forceRender={true} title={<Title>操作日志</Title>} className={modals} open={isModalLogVisible}
+            <Modal key="log" destroyOnClose={true} forceRender={true} title={<Title>操作日志</Title>} className={modals}
+                   open={isModalLogVisible}
                    footer={null}
                    onCancel={() => {
                        setIsModalLogVisible(false);
@@ -656,7 +659,6 @@ export default (): React.ReactNode => {
                         scroll={{x: true}}
                         rowKey={'id'}
                         options={false}
-                        // @ts-ignore
                         columns={logColumns}
                         request={(params, sort) => {
                             params.user_id = logUserId;
@@ -717,7 +719,6 @@ export default (): React.ReactNode => {
                     fullScreen: true,
                     setting: true,
                 }}
-                // @ts-ignore
                 columns={columns}
                 request={(params, sort) => {
                     return getData(params, sort, getUserList)

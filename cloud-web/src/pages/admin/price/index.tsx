@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {Menu} from 'antd';
 import ProCard from "@ant-design/pro-card";
 import SiteView from "./components/site";
@@ -10,10 +10,10 @@ type SettingsState = {
     mode: 'inline' | 'horizontal';
     selectKey: SettingsStateKeys;
 };
-const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
+const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f0f0f0"
-    return{
-        main:css`
+    return {
+        main: css`
             display: flex;
             width: 100%;
             height: 100%;
@@ -35,45 +35,48 @@ const useStyles = createStyles(({css,responsive,isDarkMode}):any=>{
                 flex-direction: column;
             }
         `,
-        leftMenu:css`
+        leftMenu: css`
             width: 224px;
-            .ant-menu-item{
+
+            .ant-menu-item {
                 position: absolute;
                 font-weight: bold;
                 font-size: 14px;
                 border-radius: 10px;
             }
-            ${responsive.md}{
+
+            ${responsive.md} {
                 width: 100%;
                 border: none;
                 margin-bottom: 10px;
             }
         `,
-        right:css`
+        right: css`
             flex: 1;
             padding: 8px 40px;
             margin-left: 1px;
-            border-left:${border} ;
-            ${responsive.md}{
+            border-left: ${border};
+
+            ${responsive.md} {
                 padding: 10px;
-                border-left:none;
+                border-left: none;
             }
         `,
-        title:css`
+        title: css`
             margin-bottom: 20px;
             font-weight: bolder;
             font-size: 25px;
             line-height: 28px;
         `,
-        card:css`
-            .ant-pro-card-body{
+        card: css`
+            .ant-pro-card-body {
                 padding: 24px;
             }
         `,
     }
 })
 const Settings: React.FC = () => {
-    const {styles:{main,leftMenu,right,title,card}} = useStyles()
+    const {styles: {main, leftMenu, right, title, card}} = useStyles()
     const menuMap: Record<string, React.ReactNode> = {
         site: '分站价格',
     };
@@ -86,7 +89,7 @@ const Settings: React.FC = () => {
     const getMenu = () => {
         return Object.keys(menuMap).map((item) => {
             return {
-                key: item,label:menuMap[item]
+                key: item, label: menuMap[item]
             }
         });
     };

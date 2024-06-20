@@ -30,7 +30,6 @@ export default (): React.ReactNode => {
     const actionRef = useRef<any>();
     const ref = useRef();
     const {message, modal} = App.useApp()
-    const [selectedRowsState, setSelectedRows] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalEditVisible, setIsModalEditVisible] = useState(false);
 
@@ -59,13 +58,13 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalVisible(false)
-                    form.resetFields();
-                    actionRef.current.reload()
+                message?.success(r?.message)
+                setIsModalVisible(false)
+                form.resetFields();
+                actionRef.current.reload()
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         })
     }
@@ -87,15 +86,15 @@ export default (): React.ReactNode => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message)
-                    setIsModalEditVisible(false);
-                    actionRef.current.reload()
-                    actionRef.current.clearSelected();
-                    edit.resetFields();
+                message?.success(r?.message)
+                actionRef.current.reload()
+                actionRef.current.clearSelected();
+                edit.resetFields();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
-                    setIsModalEditVisible(false)
+                message?.error(r?.message || "请求失败");
+            }, onFinally: () => {
+                setIsModalEditVisible(false);
             }
         })
     }
@@ -117,13 +116,13 @@ export default (): React.ReactNode => {
                         ids: ids
                     },
                     onSuccess: (r: any) => {
-                            message?.success(r?.message)
-                            actionRef.current.reloadAndRest()
+                        message?.success(r?.message)
+                        actionRef.current.reloadAndRest()
                     },
                     onFail: (r: any) => {
-                            message?.error(r?.message || "请求失败")
+                        message?.error(r?.message || "请求失败")
                     },
-                    onFinally:()=>{
+                    onFinally: () => {
                         message.destroy("notice")
                     }
                 })
@@ -296,13 +295,13 @@ export default (): React.ReactNode => {
                 id: id
             },
             onSuccess: (r: any) => {
-                    r.data.content = BraftEditor.createEditorState(r?.data?.content);
-                    form.setFieldsValue(r?.data);
+                r.data.content = BraftEditor.createEditorState(r?.data?.content);
+                form.setFieldsValue(r?.data);
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setNoticeLoading(false);
             }
         });
@@ -314,7 +313,7 @@ export default (): React.ReactNode => {
     return (
         <Body>
             <Drawer key={"form"} destroyOnClose={true} forceRender={true} width={"100%"}
-                    title= {<Title>{title == undefined ? "新 建" : "编 辑"}</Title>}
+                    title={<Title>{title == undefined ? "新 建" : "编 辑"}</Title>}
                     open={isModalVisible} onClose={() => {
                 setIsModalVisible(false);
                 form.resetFields();
@@ -434,7 +433,6 @@ export default (): React.ReactNode => {
             </Modal>
 
             <ProTable
-                // @ts-ignore
                 columns={columns}
                 defaultSize="small"
                 form={{layout: "vertical", autoFocusFirstInput: false}}

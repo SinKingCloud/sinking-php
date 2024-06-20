@@ -2,14 +2,19 @@ import {useState} from "react";
 import {theme} from "antd";
 
 // 获取风格
-const getTheme = (): any => {
+const getDefaultTheme = (): any => {
     return {
         token: {
             colorPrimary: "rgba(7,53,237,1)",
             colorInfo: "rgba(7,53,237,1)",
         },
-        algorithm: [theme.compactAlgorithm],
     }
+}
+// 获取风格
+const getCompactTheme = (): any => {
+    let temp = getDefaultTheme();
+    temp.algorithm = [theme.compactAlgorithm];
+    return temp;
 }
 /**
  * 获取主题模式
@@ -30,7 +35,7 @@ const setMode = (mode): void => {
 }
 
 export default () => {
-    const [themes, setThemes] = useState<any>(getTheme());//系统主题
+    const [themes, setThemes] = useState<any>(getDefaultTheme());//系统主题
     const [mode, setMode2] = useState<any>(getMode());//系统主题模式
     const [appearance, setAppearance] = useState<any>(null);//当前主题风格
 
@@ -39,6 +44,20 @@ export default () => {
     const darkMode = "dark";//暗色
 
     const autoMode = "auto";//跟随系统
+
+    /**
+     * 设置默认主题
+     */
+    const setDefaultTheme = () => {
+        setThemes(getDefaultTheme())
+    }
+
+    /**
+     * 设置紧凑主题
+     */
+    const setCompactTheme = () => {
+        setThemes(getCompactTheme())
+    }
 
     /**
      * 设置模式名称
@@ -131,6 +150,8 @@ export default () => {
     return {
         themes,
         setThemes,
+        setDefaultTheme,
+        setCompactTheme,
         appearance,
         setAppearance,
         mode,

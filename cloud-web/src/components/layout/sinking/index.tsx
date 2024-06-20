@@ -39,7 +39,6 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
         },
         body: {
             transition: "margin-left 0.2s !important",
-            transform: "translateY(1px)",
             backgroundColor: isDarkMode ? "black" : "transparent"
         },
         header: {
@@ -49,7 +48,7 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             width: "100%",
             zIndex: 3,
             boxShadow: "0 2px 8px 0 " + (isDarkMode ? "rgba(0, 0, 0, 0.25)" : "rgba(29, 35, 41, 0.05)"),
-            position: "sticky",
+            position: "sticky !important",
             top: 0,
             userSelect: "none",
             background: token?.colorBgContainer + " !important"
@@ -59,13 +58,13 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             width: 100%;
             height: 100%;
 
-            > div > div > div:first-of-type {
+            > div > div > div > div:first-of-type {
                 width: 80%;
                 margin-left: 10%;
             }
 
             ${responsive.md} {
-                > div > div > div:first-of-type {
+                > div > div > div > div:first-of-type {
                     width: 100%;
                     margin-left: 0;
                 }
@@ -78,7 +77,6 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
         },
         footer: {
             textAlign: 'center',
-            transform: "translateY(-1px)",
         },
         flow: {
             display: "flex",
@@ -214,6 +212,15 @@ const SinKing: React.FC<LayoutProps> = (props) => {
     }
 
     /**
+     * 获取outlet
+     */
+    const getOutlet = () => {
+        return <Watermark gap={[200, 200]} font={getWaterMaskFont()} content={waterMark}>
+            <Outlet/>
+        </Watermark>;
+    }
+
+    /**
      * 移动端抽屉
      */
     const drawer = <Drawer placement={"left"} closable={false} open={open} width={menuUnCollapsedWidth}
@@ -244,8 +251,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
                         right={headerRight}/>
             </Layout.Header>
             <Layout.Content className={content1}>
-                <Outlet/>
-
+                {getOutlet()}
             </Layout.Content>
             {props?.footer && <Layout.Footer className={footer}>
                 <Footer> {props?.footer}</Footer>
@@ -274,7 +280,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
             }
         </Layout.Header>
         <Layout.Content className={content}>
-            <Outlet/>
+            {getOutlet()}
         </Layout.Content>
         {props?.footer && <Layout.Footer className={footer}>
             <Footer> {props?.footer}</Footer>
@@ -284,9 +290,9 @@ const SinKing: React.FC<LayoutProps> = (props) => {
     return (
         <ConfigProvider locale={zhCN}>
             <App>
-                <Watermark gap={[200, 200]} font={getWaterMaskFont()} content={waterMark}>
-                    {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
-                </Watermark>
+
+                {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
+
             </App>
         </ConfigProvider>
     );

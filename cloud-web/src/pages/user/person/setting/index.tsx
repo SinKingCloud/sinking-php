@@ -37,7 +37,7 @@ export default (): React.ReactNode => {
     const {styles: {modal}} = useStyles()
     const user = useModel('user');
     useEffect(() => {
-        user.refreshWebUser();
+        user?.refreshWebUser();
     }, []);
     const {message} = App.useApp()
     const [isUploadAvatarLoading, setIsUploadAvatarLoading] = useState(false);
@@ -89,7 +89,7 @@ export default (): React.ReactNode => {
                             },
                             onSuccess: (r: any) => {
                                 message?.success(r?.message)
-                                user?.refresh?.refreshWebUser();
+                                user?.refreshWebUser();
                             },
                             onFail: (r: any) => {
                                 message?.error(r?.message || "请求失败")
@@ -120,7 +120,7 @@ export default (): React.ReactNode => {
                             },
                             onSuccess: (r: any) => {
                                 message?.success(r?.message)
-                                user?.refresh?.refreshWebUser()
+                                user?.refreshWebUser();
                                 setIsPasswordModalVisible(false)
                             },
                             onFail: (r: any) => {
@@ -151,7 +151,7 @@ export default (): React.ReactNode => {
                         },
                         onSuccess: (r: any) => {
                             message?.success(r?.message)
-                            user?.refresh?.refreshWebUser()
+                            user?.refreshWebUser();
                         },
                         onFail: (r: any) => {
                             message?.error(r?.message || "请求失败");
@@ -183,7 +183,7 @@ export default (): React.ReactNode => {
                         },
                         onSuccess: (r: any) => {
                             message?.success(r?.message)
-                            user?.refresh?.refreshWebUser()
+                            user?.refreshWebUser();
                         },
                         onFail: (r: any) => {
                             message?.error(r?.message || "请求失败")
@@ -244,7 +244,7 @@ export default (): React.ReactNode => {
                                                         },
                                                         onSuccess: (r: any) => {
                                                             message?.success(r?.message)
-                                                            user?.refresh?.refreshWebUser();
+                                                            user?.refreshWebUser();
                                                         },
                                                         onFail: (r: any) => {
                                                             message?.error(r?.message || "请求失败");
@@ -275,7 +275,7 @@ export default (): React.ReactNode => {
                                         },
                                         onSuccess: (r: any) => {
                                             message?.success(r?.message)
-                                            user?.refresh?.refreshWebUser();
+                                            user?.refreshWebUser();
                                             setIsPasswordModalVisible(false);
                                         },
                                         onFail: (r: any) => {

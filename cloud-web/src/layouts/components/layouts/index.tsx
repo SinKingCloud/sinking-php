@@ -48,7 +48,7 @@ const RightTop: React.FC = () => {
             nickname: {
                 marginLeft: "3px",
                 fontSize: "13px",
-                color: "rgb(122,122,122)",
+                color:isDarkMode?token.colorTextSecondary:"rgb(150,150,150)",
                 fontWeight: "bold",
             },
             profile: css`
@@ -122,7 +122,7 @@ const RightTop: React.FC = () => {
                 fontSize: "12px",
                 padding: "0px 15px",
                 transition: "background-color 0.3s ease",
-                color: "rgb(115, 115, 115)",
+                color: isDarkMode?token.colorTextSecondary:"rgba(0,0,0,0.65)",
                 display: "flex",
                 justifyContent: "space-between",
                 ":hover": {
@@ -145,7 +145,9 @@ const RightTop: React.FC = () => {
                 transition: "background-color 0.5s ease",
                 ":hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
-                }
+                },
+                color:isDarkMode?token.colorTextSecondary:"rgb(150,150,150)"
+
             },
         };
     });
@@ -288,7 +290,6 @@ const Layouts: React.FC<slide> = ({...props}) => {
             <Layout loading={loading}
                     waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
                     menus={menu}
-                    themeType={web?.info?.theme}
                     layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
                     menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
                     footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}

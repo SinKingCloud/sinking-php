@@ -39,7 +39,7 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
         },
         body: {
             transition: "margin-left 0.2s !important",
-            backgroundColor: isDarkMode ? "black" : "transparent"
+            backgroundColor: isDarkMode ? "black" : "transparent",
         },
         header: {
             padding: 0,
@@ -51,7 +51,10 @@ const useLayoutStyles = createStyles(({isDarkMode, token, css, responsive}): any
             position: "sticky !important",
             top: 0,
             userSelect: "none",
-            background: token?.colorBgContainer + " !important"
+            background: token?.colorBgContainer + " !important",
+            ".ant-menu-item-icon":{
+                color:isDarkMode?"rgb(255,255,255,0.85)":""
+            }
         },
         content: css`
             min-height: calc(100vh - 117px);

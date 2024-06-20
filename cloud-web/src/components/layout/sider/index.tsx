@@ -4,7 +4,7 @@ import {ConfigProvider, Menu, Layout} from 'antd';
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {Icon} from "@/components";
 
-const useStyles = createStyles(({token}): any => {
+const useStyles = createStyles(({token,isDarkMode}): any => {
     return {
         left: {
             position: "relative",
@@ -34,7 +34,10 @@ const useStyles = createStyles(({token}): any => {
             },
             ".ant-menu-item,.ant-menu-submenu-title": {
                 transition: "border-color 0.3s,background 0.3s !important"
-            }
+            },
+            " .ant-menu-item-icon":{
+                color:isDarkMode?"rgb(255,255,255,0.85)":""
+            },
         },
         menuTop: {
             zIndex: 2,
@@ -61,7 +64,7 @@ const useStyles = createStyles(({token}): any => {
             borderTop: "0.5px solid " + token?.colorBorder + " !important",
             fontWeight: "bolder",
             fontSize: 14,
-            color: token?.colorTextSecondary,
+            color:isDarkMode?"rgb(255,255,255,0.65)":"rgba(122,122,122)",
             cursor: "pointer",
             overflow: "hidden",
             position: "absolute",

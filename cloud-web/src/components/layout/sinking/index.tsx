@@ -293,9 +293,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
     return (
         <ConfigProvider locale={zhCN}>
             <App>
-
                 {(loading && <Loading/>) || (layout == "horizontal" ? LayoutFlow : LayoutNormal)}
-
             </App>
         </ConfigProvider>
     );

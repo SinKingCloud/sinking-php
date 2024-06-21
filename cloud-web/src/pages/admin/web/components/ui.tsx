@@ -6,6 +6,7 @@ import {getUploadUrl} from "@/service/common/upload";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {createStyles} from "antd-style";
 import {useModel} from "umi";
+
 const useStyles = createStyles(({css}) => {
     return {
         box: css`
@@ -21,7 +22,7 @@ const UiView: React.FC = () => {
     const [index, setIndex] = useState<any>({});
     const {message} = App.useApp()
     const [form] = Form.useForm();
-    const web = useModel("web")
+    const web = useModel("web");
     /**
      * 初始化表单值
      */
@@ -29,16 +30,16 @@ const UiView: React.FC = () => {
         setIsLoading(true);
         return await getUi({
             onSuccess: (r: any) => {
-                    form.setFieldsValue(r?.data)
-                    setIndex(r?.data?.["index.templates"]);
-                    if (r?.data?.["ui.logo"] != undefined && r?.data?.["ui.logo"] != "") {
-                        setUploadFileList([{uid: '-1', name: 'image.png', status: 'done', url: r?.data?.["ui.logo"]}]);
-                    }
+                form.setFieldsValue(r?.data)
+                setIndex(r?.data?.["index.templates"]);
+                if (r?.data?.["ui.logo"] != undefined && r?.data?.["ui.logo"] != "") {
+                    setUploadFileList([{uid: '-1', name: 'image.png', status: 'done', url: r?.data?.["ui.logo"]}]);
+                }
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setIsLoading(false)
             }
         });
@@ -79,6 +80,7 @@ const UiView: React.FC = () => {
             return;
         }
     };
+
     /**
      * 提交表单
      */
@@ -95,11 +97,11 @@ const UiView: React.FC = () => {
                 ...values
             },
             onSuccess: (r: any) => {
-                    message?.success(r?.message || "修改成功")
-                    web?.refreshInfo()
+                message?.success(r?.message || "修改成功")
+                web?.refreshInfo();
             },
             onFail: (r: any) => {
-                    message?.error(r?.message || "请求失败")
+                message?.error(r?.message || "请求失败")
             }
         });
     }
@@ -124,24 +126,36 @@ const UiView: React.FC = () => {
                         placeholder="请选择网站首页模板"
                         rules={[{required: true, message: '请选择网站首页模板'}]}
                     />
-                        <ProFormSelect
-                            name="ui.layout"
-                            label="网站布局"
-                            width="md"
-                            options={[
-                                {
-                                    value: 'top',
-                                    label: '上下布局',
-                                },
-                                {
-                                    value: 'left',
-                                    label: '左右布局',
-                                }
-                            ]}
-                            tooltip="网站的整体布局"
-                            placeholder="请选择网站布局"
-                            rules={[{required: true, message: '请选择网站布局'}]}
-                        />
+                    <ProFormSelect
+                        name="ui.compact"
+                        label="紧凑模式"
+                        width="md"
+                        valueEnum={{
+                            1: '开启',
+                            0: '关闭',
+                        }}
+                        tooltip="网站界面紧凑模式"
+                        placeholder="请选择紧凑模式是否开启"
+                        rules={[{required: true, message: '请选择紧凑模式是否开启'}]}
+                    />
+                    <ProFormSelect
+                        name="ui.layout"
+                        label="网站布局"
+                        width="md"
+                        options={[
+                            {
+                                value: 'top',
+                                label: '上下布局',
+                            },
+                            {
+                                value: 'left',
+                                label: '左右布局',
+                            }
+                        ]}
+                        tooltip="网站的整体布局"
+                        placeholder="请选择网站布局"
+                        rules={[{required: true, message: '请选择网站布局'}]}
+                    />
                     <ProFormSelect
                         name="ui.theme"
                         label="菜单主题"
@@ -159,6 +173,18 @@ const UiView: React.FC = () => {
                         tooltip="网站的主题颜色"
                         placeholder="请选择菜单主题"
                         rules={[{required: true, message: '请选择菜单主题'}]}
+                    />
+                    <ProFormSelect
+                        name="ui.watermark"
+                        label="界面水印"
+                        valueEnum={{
+                            1: '开启',
+                            0: '关闭',
+                        }}
+                        width="md"
+                        tooltip="系统界面是否显示用户昵称水印"
+                        placeholder="请选择是否打开界面水印"
+                        rules={[{required: true, message: '请选择是否打开界面水印'}]}
                     />
                     <ProFormText name="ui.logo" label="网站LOGO" tooltip="网站的显示LOGO">
                         <Upload

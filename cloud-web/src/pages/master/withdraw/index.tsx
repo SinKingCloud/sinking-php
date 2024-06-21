@@ -274,21 +274,17 @@ export default (): React.ReactNode => {
             }
         },
     ];
-    const [title, setTitle] = useState<any>()
-    useEffect(() => {
-        setTitle(form.getFieldValue("id" as NamePath) == undefined ? "申请提现" : "编辑提现")
-    }, [isModalVisible]);
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} width={400} forceRender={true}
-                   title={<Title>{title}</Title>} className={modals}
+                   title={<Title>编辑提现</Title>} className={modals}
                    open={isModalVisible} onOk={form.submit} okText={"确 认"} onCancel={() => {
                 setIsModalVisible(false);
                 form.resetFields();
             }}>
                 <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right" labelCol={{span: 6}}
                       wrapperCol={{span: 16}}>
-                    <Form.Item name="id" label="ID" rules={[{required: true}]}>
+                    <Form.Item name="id" label="ID" rules={[{required: true}]} hidden={true}>
                         <Input placeholder="请输入ID"/>
                     </Form.Item>
                     <Form.Item name="type" label="提现方式" rules={[{required: true}]}>
@@ -305,9 +301,9 @@ export default (): React.ReactNode => {
                     <Form.Item name="account" label="提现账号" rules={[{required: true}]}>
                         <Input placeholder="请输入提现账号"/>
                     </Form.Item>
-                    <Form.Item name="money" label="提现金额" hidden={title != undefined}
+                    <Form.Item name="money" label="提现金额"
                                rules={[{required: true}]}>
-                        <InputNumber placeholder="请输入提现金额" style={{minWidth: "150px"}}/>
+                        <InputNumber placeholder="请输入提现金额" style={{minWidth: "150px"}} disabled/>
                     </Form.Item>
                     <Form.Item name="status" label="提现状态" rules={[{required: true}]}>
                         <Select placeholder="请选择提现状态" options={[

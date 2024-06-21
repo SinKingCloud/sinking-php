@@ -232,7 +232,7 @@ export default (): React.ReactNode => {
     const [title, setTitle] = useState<any>()
     useEffect(() => {
         setTitle(form.getFieldValue("id" as NamePath))
-    }, [])
+    }, [isModalVisible])
     return (
         <Body>
             <Modal key={"form"} destroyOnClose={true} forceRender={true} width={400}

@@ -28,12 +28,18 @@ const useStyles = createStyles(({css}) => {
             }
         `,
         chard: {
+            maxWidth: "80px",
+            height: "35px",
+            margin: " 10px auto",
             ".ant-pro-checkcard-content": {
                 paddingInline: "7px !important",
                 paddingBlock: "6px !important",
             },
             ".ant-pro-checkcard-header-left": {
                 marginLeft: "4px !important"
+            },
+            ".ant-pro-checkcard-header": {
+                justifyContent: "space-around"
             }
         }
     }
@@ -195,7 +201,7 @@ export default (): React.ReactNode => {
                                 >
                                     <Form.Item name="money" label="充值金额" initialValue={"10"}
                                                rules={[{required: true, message: '请输入充值金额'}]}>
-                                        <CheckCard.Group style={{width: '100%', textAlign: "center"}} className={border}
+                                        <CheckCard.Group className={border}
                                                          onChange={(values) => {
                                                              if (values == "") {
                                                                  setMoneyInput(false);
@@ -206,86 +212,62 @@ export default (): React.ReactNode => {
                                                                  setMoneyInput(true);
                                                              }
                                                          }}>
-                                            <CheckCard
-                                                title="10元"
-                                                size={"small"}
-                                                value="10"
-                                                className={chard}
-                                                style={{
-                                                    borderRadius: "7px",
-                                                    maxWidth: "51px",
-                                                    boxSizing: "border-box",
-                                                }}
-                                            />
-                                            <CheckCard
-                                                title="50元"
-                                                size={"small"}
-                                                value="50"
-                                                className={chard}
-                                                style={{
-                                                    borderRadius: "7px",
-                                                    maxWidth: "53px",
-                                                    boxSizing: "border-box",
-                                                }}
-                                            />
-                                            <CheckCard
-                                                title="100元"
-                                                size={"small"}
-                                                value="100"
-                                                className={chard}
-                                                style={{
-                                                    borderRadius: "7px",
-                                                    maxWidth: "58px",
-                                                    boxSizing: "border-box",
-                                                }}
-                                            />
-                                            <CheckCard
-                                                title="500元"
-                                                size={"small"}
-                                                value="500"
-                                                className={chard}
-                                                style={{
-                                                    borderRadius: "7px",
-                                                    maxWidth: "60px",
-                                                    boxSizing: "border-box",
-                                                }}
-                                            />
-                                            <CheckCard
-                                                title="1000元"
-                                                size={"small"}
-                                                value="1000"
-                                                className={chard}
-                                                style={{
-                                                    borderRadius: "7px",
-                                                    textAlign: "center",
-                                                    maxWidth: "65px",
-                                                    boxSizing: "border-box",
-                                                }}
-                                            />
-                                            <CheckCard
-                                                title="自定义"
-                                                size={"small"}
-                                                value=""
-                                                className={chard}
-                                                style={{
-                                                    borderRadius: "7px",
-                                                    maxWidth: "64px",
-                                                    boxSizing: "border-box",
-                                                }}
-                                            />
-                                            {!moneyInput && <Input placeholder={"金额"}
-                                                                   onChange={(e) => {
-                                                                       setMoney(e.target.value);
-                                                                       form.setFieldsValue({money: e.target.value});
-                                                                   }}
-                                                                   style={{
-                                                                       maxWidth: "60px",
-                                                                       margin: "0px",
-                                                                       borderRadius: "7px",
-                                                                       paddingBlock: "6px",
-                                                                       letterSpacing: "1px",
-                                                                       textAlign: "center"
-                                                                   }}/>}
+                                            <Row gutter={5}>
+                                                <Col span={8}>
+                                                    <CheckCard
+                                                        title="10元"
+                                                        size={"small"}
+                                                        value="10"
+                                                        className={chard}
+                                                    />
+                                                </Col>
+                                                <Col span={8}>
+                                                    <CheckCard
+                                                        title="50元"
+                                                        size={"small"}
+                                                        value="50"
+                                                        className={chard}
+                                                    />
+                                                </Col>
+                                                <Col span={8}>
+                                                    <CheckCard
+                                                        title="100元"
+                                                        size={"small"}
+                                                        value="100"
+                                                        className={chard}
+                                                    />
+                                                </Col>
+                                                <Col span={8}>
+                                                    <CheckCard
+                                                        title="500元"
+                                                        size={"small"}
+                                                        value="500"
+                                                        className={chard}
+                                                    />
+                                                </Col>
+                                                <Col span={8}>
+                                                    <CheckCard
+                                                        title="1000元"
+                                                        size={"small"}
+                                                        value="1000"
+                                                        className={chard}
+                                                    />
+                                                </Col>
+                                                <Col span={8}>
+                                                    {(!moneyInput &&
+                                                        <Input className={chard} placeholder={"金额"}
+                                                               onChange={(e) => {
+                                                                   setMoney(e.target.value);
+                                                                   form.setFieldsValue({money: e.target.value});
+                                                               }}/>) || <CheckCard
+                                                        title="自定义"
+                                                        size={"small"}
+                                                        value=""
+                                                        className={chard}
+                                                    />}
+                                                </Col>
+
+                                            </Row>
 
                                         </CheckCard.Group>
                                     </Form.Item>
@@ -293,8 +275,7 @@ export default (): React.ReactNode => {
                                         label="充值方式"
                                         name="type"
                                         rules={[{required: true, message: '请选择充值方式'}]}
-                                        initialValue={"0"}
-                                    >
+                                        initialValue={"0"}>
                                         <CheckCard.Group className={border}>
                                             <Row gutter={10} wrap={true}>
                                                 <Col lg={{span: 24}} xs={{span: 24}}>

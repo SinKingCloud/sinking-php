@@ -3,6 +3,8 @@ import ProTable from '@ant-design/pro-table';
 import {getData} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
 import {Body, Title} from '@/components';
+import Mobile from "../../../../components/mobile";
+import {useResponsive} from "antd-style";
 
 export default (): React.ReactNode => {
     /**
@@ -98,24 +100,25 @@ export default (): React.ReactNode => {
             },
         },
     ];
-
-    return (
-        <Body>
-            <ProTable
-                form={{layout: "vertical", autoFocusFirstInput: false}}
-                headerTitle={<Title>操作日志</Title>}
-                actionRef={actionRef}
-                style={{overflowX: "auto", whiteSpace: "nowrap"}}
-                scroll={{x: true}}
-                rowKey={'id'}
-                columns={columns}
-                request={(params, sort) => {
-                    return getData(params, sort, getLogList)
-                }}
-                search={{
-                    labelWidth: "auto",
-                }}
-            />
-        </Body>
-    );
+    const page = <ProTable
+        form={{layout: "vertical", autoFocusFirstInput: false}}
+        headerTitle={<Title>操作日志</Title>}
+        actionRef={actionRef}
+        style={{overflowX: "auto", whiteSpace: "nowrap"}}
+        scroll={{x: true}}
+        rowKey={'id'}
+        columns={columns}
+        request={(params, sort) => {
+            return getData(params, sort, getLogList)
+        }}
+        search={{
+            labelWidth: "auto",
+        }}
+    />
+    const {mobile} = useResponsive()
+    return <>
+        {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body>
+            {page}
+        </Body>}
+    </>
 };

@@ -4,7 +4,9 @@ import {NavBar, TabBar} from "antd-mobile";
 import {Icon} from "@/components";
 import {Home, Money, Shop, User} from "@/components/icon";
 import {history, useLocation} from "umi";
-const useStyles = createStyles((): any => {
+import {ConfigProvider} from "antd";
+import zhCN from "antd/locale/zh_CN";
+const useStyles = createStyles(({isDarkMode,token}): any => {
     return {
         header: {
             height:"50px !important",
@@ -21,8 +23,14 @@ const useStyles = createStyles((): any => {
             bottom: "0px",
             zIndex: 999,
             width: "100vw",
-            backgroundColor: "#fff",
+            backgroundColor:isDarkMode ? "rgb(20,20,20)" : "#fff",
             boxShadow: "0px 0px 2px rgba(0,0,0,0.2)",
+            ".adm-tab-bar-item":{
+                color:isDarkMode ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.65)"
+            },
+            ".adm-tab-bar-item-active":{
+                color:"#1677ff !important"
+            }
         },
     }
 })
@@ -62,7 +70,7 @@ const Mobile: React.FC<MobileProps> = (props: any) => {
         {
             icon: <Icon type={User}/>,
             title: '账户管理',
-            key: '/user/person/setting'
+            key: '/user/person/log'
         }
     ]
     const back = ()=>{
@@ -82,27 +90,29 @@ const Mobile: React.FC<MobileProps> = (props: any) => {
     } = props
 
     return <>
-        {showHeader && <NavBar
-            className={header}
-            backArrow={showBack}
-            onBack={onBack}
-        >
-            {title}
-        </NavBar>}
-        <div className={body}>
-            {children}
-        </div>
-        {showTabBar && <div className={tab_bar}>
-            <TabBar
-                activeKey={path}
-                onChange={(key)=>{
-                    history.push(key)
-                }}>
-                {tabBar?.map(item => (
-                    <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
-                ))}
-            </TabBar>
-        </div>}
+        <ConfigProvider locale={zhCN}>
+                {showHeader && <NavBar
+                    className={header}
+                    backArrow={showBack}
+                    onBack={onBack}
+                >
+                    {title}
+                </NavBar>}
+                <div className={body}>
+                    {children}
+                </div>
+                {showTabBar && <div className={tab_bar}>
+                    <TabBar
+                        activeKey={path}
+                        onChange={(key)=>{
+                            history.push(key)
+                        }}>
+                        {tabBar?.map(item => (
+                            <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
+                        ))}
+                    </TabBar>
+                </div>}
+        </ConfigProvider>
     </>
 }
 export default Mobile

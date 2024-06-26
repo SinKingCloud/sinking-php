@@ -16,6 +16,7 @@ import {setPayJumpUrl} from "@/utils/pay";
 import {Body, Title} from '@/components';
 import {createStyles, useResponsive} from "antd-style";
 import ProTable, {ProColumns} from "@ant-design/pro-table";
+import Mobile from "../../../../components/mobile";
 
 const useStyles = createStyles(({css}) => {
     return {
@@ -35,12 +36,18 @@ const useStyles = createStyles(({css}) => {
                 paddingInline: "7px !important",
                 paddingBlock: "6px !important",
             },
-            ".ant-pro-checkcard-header-left": {
-                marginLeft: "4px !important"
+            ".ant-pro-checkcard-sm ":{
+                width:"0 !important"
+            },
+            ".ant-pro-checkcard ":{
+                width:"0 !important"
             },
             ".ant-pro-checkcard-header": {
                 justifyContent: "space-around"
             }
+            // ".ant-pro-checkcard-header-left": {
+            //     marginLeft: "4px !important"
+            // }
         }
     }
 })
@@ -125,232 +132,235 @@ export default (): React.ReactNode => {
             hideInSearch: true,
         },
     ];
-    return (
-        <Body>
-            <Row gutter={8}>
-                <Col xs={{span: 24, offset: 0}} lg={{span: 8, offset: 0}} style={{paddingBottom: "20px"}}>
-                    <Row style={{paddingBottom: "20px"}}>
-                        <Col xs={{span: 24}} lg={{span: 24}}>
-                            <ProCard bordered loading={loading}>
+    const page = <>
+        <Row gutter={8}>
+            <Col xs={{span: 24, offset: 0}} lg={{span: 8, offset: 0}} style={{paddingBottom: "20px"}}>
+                <Row style={{paddingBottom: "20px"}}>
+                    <Col xs={{span: 24}} lg={{span: 24}}>
+                        <ProCard bordered loading={loading}>
+                            <div style={{float: "left"}}>
                                 <div style={{float: "left"}}>
-                                    <div style={{float: "left"}}>
-                                        <Avatar style={{width: "80px", height: "80px"}} src={
-                                            <Image preview={false} style={{width: "80px", height: "80px"}}
-                                                   src={user?.web?.avatar || "https://q1.qlogo.cn/g?b=qq&nk=10086&s=100&t=20190225"}/>}/>
-                                    </div>
+                                    <Avatar style={{width: "80px", height: "80px"}} src={
+                                        <Image preview={false} style={{width: "80px", height: "80px"}}
+                                               src={user?.web?.avatar || "https://q1.qlogo.cn/g?b=qq&nk=10086&s=100&t=20190225"}/>}/>
                                 </div>
-                                <div style={{float: "right"}}>
+                            </div>
+                            <div style={{float: "right"}}>
                   <span style={{
                       fontSize: "40px",
                       fontWeight: "bolder"
                   }}>{parseFloat(user?.web?.money || 0).toFixed(2)}￥</span>
-                                    <br/>
-                                    <span style={{color: "#7e7e7e", float: "right"}}>账户余额
+                                <br/>
+                                <span style={{color: "#7e7e7e", float: "right"}}>账户余额
                     <Tooltip title="刷新余额"><a onClick={async () => {
                         setRefreshIcon(true);
                         setRefreshIcon(false);
                         message?.success("刷新成功");
                     }}> <SyncOutlined spin={refreshIcon}/></a></Tooltip></span>
-                                </div>
-                            </ProCard>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={{span: 24}} lg={{span: 24}}>
-                            <ProCard bordered title={<Title>账户充值</Title>} loading={loading}>
-                                <Form
-                                    form={form}
-                                    labelCol={{span: 12}}
-                                    wrapperCol={{span: 24}}
-                                    autoComplete="off"
-                                    layout={"vertical"}
-                                    onFinish={(values) => {
-                                        // eslint-disable-next-line no-param-reassign
-                                        values = {money: parseInt(values?.money), type: parseInt(values?.type)}
-                                        setPayBtnLoading(true);
-                                        recharge({
-                                            body: {
-                                                ...values
-                                            },
-                                            onSuccess: (r: any) => {
-                                                if (r?.code == 200) {
-                                                    ref?.current?.reload();
-                                                    setPayJumpUrl();
-                                                    if (mobile) {
-                                                        window.location.href = r.data;
-                                                    } else {
-                                                        window.open(r.data);
-                                                    }
-                                                    modal.confirm({
-                                                        title: '订单是否已支付成功?',
-                                                        icon: <ExclamationCircleOutlined/>,
-                                                        content: '如支付成功请点击确认或点击刷新按钮刷新余额',
-                                                        async onOk() {
-                                                            ref?.current?.reload();
-                                                        },
-                                                    });
-                                                    setPayBtnLoading(false);
+                            </div>
+                        </ProCard>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={{span: 24}} lg={{span: 24}}>
+                        <ProCard bordered title={<Title>账户充值</Title>} loading={loading}>
+                            <Form
+                                form={form}
+                                labelCol={{span: 12}}
+                                wrapperCol={{span: 24}}
+                                autoComplete="off"
+                                layout={"vertical"}
+                                onFinish={(values) => {
+                                    // eslint-disable-next-line no-param-reassign
+                                    values = {money: parseInt(values?.money), type: parseInt(values?.type)}
+                                    setPayBtnLoading(true);
+                                    recharge({
+                                        body: {
+                                            ...values
+                                        },
+                                        onSuccess: (r: any) => {
+                                            if (r?.code == 200) {
+                                                ref?.current?.reload();
+                                                setPayJumpUrl();
+                                                if (mobile) {
+                                                    window.location.href = r.data;
+                                                } else {
+                                                    window.open(r.data);
                                                 }
-                                            },
-                                            onFail: (r: any) => {
-                                                message?.error(r?.message || "请求错误")
+                                                modal.confirm({
+                                                    title: '订单是否已支付成功?',
+                                                    icon: <ExclamationCircleOutlined/>,
+                                                    content: '如支付成功请点击确认或点击刷新按钮刷新余额',
+                                                    async onOk() {
+                                                        ref?.current?.reload();
+                                                    },
+                                                });
                                                 setPayBtnLoading(false);
                                             }
-                                        })
-                                    }}
-                                >
-                                    <Form.Item name="money" label="充值金额" initialValue={"10"}
-                                               rules={[{required: true, message: '请输入充值金额'}]}>
-                                        <CheckCard.Group className={border}
-                                                         onChange={(values) => {
-                                                             if (values == "") {
-                                                                 setMoneyInput(false);
-                                                                 if (money != "") {
-                                                                     form.setFieldsValue({money: money});
-                                                                 }
-                                                             } else {
-                                                                 setMoneyInput(true);
+                                        },
+                                        onFail: (r: any) => {
+                                            message?.error(r?.message || "请求错误")
+                                            setPayBtnLoading(false);
+                                        }
+                                    })
+                                }}
+                            >
+                                <Form.Item name="money" label="充值金额" initialValue={"10"}
+                                           rules={[{required: true, message: '请输入充值金额'}]}>
+                                    <CheckCard.Group className={border}
+                                                     onChange={(values) => {
+                                                         if (values == "") {
+                                                             setMoneyInput(false);
+                                                             if (money != "") {
+                                                                 form.setFieldsValue({money: money});
                                                              }
-                                                         }}>
-                                            <Row gutter={5}>
-                                                <Col span={8}>
-                                                    <CheckCard
-                                                        title="10元"
-                                                        size={"small"}
-                                                        value="10"
-                                                        className={chard}
-                                                    />
-                                                </Col>
-                                                <Col span={8}>
-                                                    <CheckCard
-                                                        title="50元"
-                                                        size={"small"}
-                                                        value="50"
-                                                        className={chard}
-                                                    />
-                                                </Col>
-                                                <Col span={8}>
-                                                    <CheckCard
-                                                        title="100元"
-                                                        size={"small"}
-                                                        value="100"
-                                                        className={chard}
-                                                    />
-                                                </Col>
-                                                <Col span={8}>
-                                                    <CheckCard
-                                                        title="500元"
-                                                        size={"small"}
-                                                        value="500"
-                                                        className={chard}
-                                                    />
-                                                </Col>
-                                                <Col span={8}>
-                                                    <CheckCard
-                                                        title="1000元"
-                                                        size={"small"}
-                                                        value="1000"
-                                                        className={chard}
-                                                    />
-                                                </Col>
-                                                <Col span={8}>
-                                                    {(!moneyInput &&
-                                                        <Input className={chard} placeholder={"金额"}
-                                                               onChange={(e) => {
-                                                                   setMoney(e.target.value);
-                                                                   form.setFieldsValue({money: e.target.value});
-                                                               }}/>) || <CheckCard
-                                                        title="自定义"
-                                                        size={"small"}
-                                                        value=""
-                                                        className={chard}
-                                                    />}
-                                                </Col>
+                                                         } else {
+                                                             setMoneyInput(true);
+                                                         }
+                                                     }}>
+                                        <Row gutter={5}>
+                                            <Col span={8}>
+                                                <CheckCard
+                                                    title="10元"
+                                                    size={"small"}
+                                                    value="10"
+                                                    className={chard}
+                                                />
+                                            </Col>
+                                            <Col span={8}>
+                                                <CheckCard
+                                                    title="50元"
+                                                    size={"small"}
+                                                    value="50"
+                                                    className={chard}
+                                                />
+                                            </Col>
+                                            <Col span={8}>
+                                                <CheckCard
+                                                    title="100元"
+                                                    size={"small"}
+                                                    value="100"
+                                                    className={chard}
+                                                />
+                                            </Col>
+                                            <Col span={8}>
+                                                <CheckCard
+                                                    title="500元"
+                                                    size={"small"}
+                                                    value="500"
+                                                    className={chard}
+                                                />
+                                            </Col>
+                                            <Col span={8}>
+                                                <CheckCard
+                                                    title="1000元"
+                                                    size={"small"}
+                                                    value="1000"
+                                                    className={chard}
+                                                />
+                                            </Col>
+                                            <Col span={8}>
+                                                {(!moneyInput &&
+                                                    <Input className={chard} placeholder={"金额"}
+                                                           onChange={(e) => {
+                                                               setMoney(e.target.value);
+                                                               form.setFieldsValue({money: e.target.value});
+                                                           }}/>) || <CheckCard
+                                                    title="自定义"
+                                                    size={"small"}
+                                                    value=""
+                                                    className={chard}
+                                                />}
+                                            </Col>
 
-                                            </Row>
+                                        </Row>
 
-                                        </CheckCard.Group>
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="充值方式"
-                                        name="type"
-                                        rules={[{required: true, message: '请选择充值方式'}]}
-                                        initialValue={"0"}>
-                                        <CheckCard.Group className={border}>
-                                            <Row gutter={10} wrap={true}>
-                                                <Col lg={{span: 24}} xs={{span: 24}}>
-                                                    <CheckCard
-                                                        title={(<><AlipayCircleOutlined
-                                                            style={{marginRight: "3px"}}/> 支付宝</>)}
-                                                        value="0"
-                                                        size={"small"}
-                                                        className={chard}
-                                                        style={{
-                                                            maxWidth: "80px",
-                                                            borderRadius: "10px",
-                                                            display: payConfig['pay.alipay.type'] ? 'inline-block' : 'none'
-                                                        }}
-                                                    />
-                                                    <CheckCard
-                                                        title={(<><WechatOutlined
-                                                            style={{marginRight: "3px"}}/> 微信</>)}
-                                                        value="1"
-                                                        size={"small"}
-                                                        className={chard}
-                                                        style={{
-                                                            maxWidth: "84px",
-                                                            borderRadius: "10px",
-                                                            display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
-                                                        }}
-                                                    />
-                                                    <CheckCard
-                                                        title={(<><QqOutlined style={{marginRight: "3px"}}/> QQ</>)}
-                                                        value="2"
-                                                        size={"small"}
-                                                        className={chard}
-                                                        style={{
-                                                            maxWidth: "84px",
-                                                            borderRadius: "10px",
-                                                            display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
-                                                        }}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        </CheckCard.Group>
-                                    </Form.Item>
-                                    <Form.Item style={{textAlign: "center"}}>
-                                        <Button type="primary" htmlType="submit" loading={payBtnLoading}>
-                                            确认
-                                        </Button>
-                                        <Button htmlType="button" onClick={() => {
-                                            form?.resetFields();
-                                        }} style={{marginLeft: "10px"}}>
-                                            重置
-                                        </Button>
-                                    </Form.Item>
-                                </Form>
-                            </ProCard>
-                        </Col>
-                    </Row>
-                </Col>
-                <Col xs={{span: 24, offset: 0}} lg={{span: 16, offset: 0}} style={{paddingBottom: "20px"}}>
-                    <ProTable
-                        actionRef={ref}
-                        form={{layout: "vertical", autoFocusFirstInput: false}}
-                        headerTitle={<Title>充值记录</Title>}
-                        rowKey={'id'}
-                        style={{overflowX: "auto", whiteSpace: "nowrap"}}
-                        scroll={{x: true}}
-                        columns={columns}
-                        request={(params, sort) => {
-                            params.order_type = 0;
-                            return getData(params, sort, getPayOrder)
-                        }}
-                        pagination={{defaultPageSize: 10} as TablePaginationConfig}
-                        search={false}
-                    />
-                </Col>
-            </Row>
-        </Body>
-    );
+                                    </CheckCard.Group>
+                                </Form.Item>
+                                <Form.Item
+                                    label="充值方式"
+                                    name="type"
+                                    rules={[{required: true, message: '请选择充值方式'}]}
+                                    initialValue={"0"}>
+                                    <CheckCard.Group className={border}>
+                                        <Row gutter={10} wrap={true}>
+                                            <Col lg={{span: 24}} xs={{span: 24}}>
+                                                <CheckCard
+                                                    title={(<><AlipayCircleOutlined
+                                                        style={{marginRight: "3px"}}/> 支付宝</>)}
+                                                    value="0"
+                                                    size={"small"}
+                                                    className={chard}
+                                                    style={{
+                                                        maxWidth: "80px",
+                                                        borderRadius: "10px",
+                                                        display: payConfig['pay.alipay.type'] ? 'inline-block' : 'none'
+                                                    }}
+                                                />
+                                                <CheckCard
+                                                    title={(<><WechatOutlined
+                                                        style={{marginRight: "3px"}}/> 微信</>)}
+                                                    value="1"
+                                                    size={"small"}
+                                                    className={chard}
+                                                    style={{
+                                                        maxWidth: "84px",
+                                                        borderRadius: "10px",
+                                                        display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
+                                                    }}
+                                                />
+                                                <CheckCard
+                                                    title={(<><QqOutlined style={{marginRight: "3px"}}/> QQ</>)}
+                                                    value="2"
+                                                    size={"small"}
+                                                    className={chard}
+                                                    style={{
+                                                        maxWidth: "84px",
+                                                        borderRadius: "10px",
+                                                        display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
+                                                    }}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </CheckCard.Group>
+                                </Form.Item>
+                                <Form.Item style={{textAlign: "center"}}>
+                                    <Button type="primary" htmlType="submit" loading={payBtnLoading}>
+                                        确认
+                                    </Button>
+                                    <Button htmlType="button" onClick={() => {
+                                        form?.resetFields();
+                                    }} style={{marginLeft: "10px"}}>
+                                        重置
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </ProCard>
+                    </Col>
+                </Row>
+            </Col>
+            <Col xs={{span: 24, offset: 0}} lg={{span: 16, offset: 0}} style={{paddingBottom: "20px"}}>
+                <ProTable
+                    actionRef={ref}
+                    form={{layout: "vertical", autoFocusFirstInput: false}}
+                    headerTitle={<Title>充值记录</Title>}
+                    rowKey={'id'}
+                    style={{overflowX: "auto", whiteSpace: "nowrap"}}
+                    scroll={{x: true}}
+                    columns={columns}
+                    request={(params, sort) => {
+                        params.order_type = 0;
+                        return getData(params, sort, getPayOrder)
+                    }}
+                    pagination={{defaultPageSize: 10} as TablePaginationConfig}
+                    search={false}
+                />
+            </Col>
+        </Row>
+    </>
+    return <>
+        {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body>
+            {page}
+        </Body>}
+    </>
 };

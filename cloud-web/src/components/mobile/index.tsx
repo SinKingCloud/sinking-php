@@ -6,20 +6,21 @@ import {Home, Money, Shop, User} from "@/components/icon";
 import {history, useLocation} from "umi";
 const useStyles = createStyles((): any => {
     return {
-        container: {
-            height: "100vh",
-            display:"flex",
-            flexDirection:"column",
-        },
         header: {
             height:"50px !important",
+            position: 'sticky',
+            top: "0px",
+            zIndex: "999",
         },
         body: {
+            height: "calc(100vh - 100px)",
             overflowY: "auto",
-            flex:1
         },
         tab_bar: {
-            height:"50px",
+            position: "fixed",
+            bottom: "0px",
+            zIndex: 999,
+            width: "100vw",
             backgroundColor: "#fff",
             boxShadow: "0px 0px 2px rgba(0,0,0,0.2)",
         },
@@ -68,7 +69,7 @@ const Mobile: React.FC<MobileProps> = (props: any) => {
         history.back()
     }
     const {pathname} = useLocation()
-    const {styles: {header, body, tab_bar,container}} = useStyles()
+    const {styles: {header, body, tab_bar}} = useStyles()
     const {
         onBack = back,
         title = undefined,
@@ -80,28 +81,28 @@ const Mobile: React.FC<MobileProps> = (props: any) => {
         children
     } = props
 
-    return <div className={container}>
-            {showHeader && <NavBar
-                className={header}
-                backArrow={showBack}
-                onBack={onBack}
-            >
-                {title}
-            </NavBar>}
-            <div className={body}>
-                {children}
-            </div>
-            {showTabBar && <div className={tab_bar}>
-                <TabBar
-                    activeKey={path}
-                    onChange={(key)=>{
-                        history.push(key)
-                    }}>
-                    {tabBar?.map(item => (
-                        <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
-                    ))}
-                </TabBar>
-            </div>}
+    return <>
+        {showHeader && <NavBar
+            className={header}
+            backArrow={showBack}
+            onBack={onBack}
+        >
+            {title}
+        </NavBar>}
+        <div className={body}>
+            {children}
         </div>
+        {showTabBar && <div className={tab_bar}>
+            <TabBar
+                activeKey={path}
+                onChange={(key)=>{
+                    history.push(key)
+                }}>
+                {tabBar?.map(item => (
+                    <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
+                ))}
+            </TabBar>
+        </div>}
+    </>
 }
 export default Mobile

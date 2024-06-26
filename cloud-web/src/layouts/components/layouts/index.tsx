@@ -293,12 +293,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
     return (
         <>
             <Title/>
-            {mobile && <Mobile showBack={false}>
-                <ConfigProvider locale={zhCN}>
-                    <SafeArea position='top'/>
-                    < Outlet/>
-                </ConfigProvider>
-            </Mobile> || <Layout loading={loading}
+            <Layout loading={loading}
                              waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
                              menus={menu}
                              layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
@@ -326,10 +321,7 @@ const Layouts: React.FC<slide> = ({...props}) => {
                                              alt="沉沦云网络"/>
                                          <div>{web?.info?.name || Settings?.title}</div>
                                      </div>)
-                             }}
-            />}
-
-
+                             }}/>
         </>
     );
 }

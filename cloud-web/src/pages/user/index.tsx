@@ -479,7 +479,7 @@ export default () => {
         </Row>
     </>
     return <>
-            {mobile && <Mobile title={"首页"} showBack={false}>{page}</Mobile> || <Body>
+            {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body>
                 {page}
             </Body>}
         </>

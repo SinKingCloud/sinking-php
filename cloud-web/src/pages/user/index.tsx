@@ -12,6 +12,7 @@ import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles, useResponsive} from "antd-style";
 import {Title,Body} from "@/components";
 import Mobile from "@/components/mobile";
+import {RightTop} from "@/layouts/components/layouts";
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
     const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f6f6f6"
@@ -479,7 +480,7 @@ export default () => {
         </Row>
     </>
     return <>
-            {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body>
+            {mobile && <Mobile title="首页"  showBack={false}>{page}</Mobile> || <Body>
                 {page}
             </Body>}
         </>

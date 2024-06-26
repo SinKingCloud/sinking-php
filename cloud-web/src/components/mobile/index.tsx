@@ -13,6 +13,8 @@ const useStyles = createStyles(({isDarkMode,token}): any => {
             position: 'sticky',
             top: "0px",
             zIndex: "999",
+            backgroundColor:isDarkMode ? "rgb(20,20,20)" : "#fff",
+            boxShadow: "0px 0px 2px rgba(0,0,0,0.2)",
         },
         body: {
             height: "calc(100vh - 100px)",
@@ -49,6 +51,7 @@ export type MobileProps = {
     showHeader?: any;//显示头部header
     tabBar?: TabItem[];//tabBar
     path?: any;//激活色
+    right?: any;// 导航栏右边内容
 }
 const Mobile: React.FC<MobileProps> = (props: any) => {
     const tabs = [
@@ -86,7 +89,8 @@ const Mobile: React.FC<MobileProps> = (props: any) => {
         showHeader = true,
         tabBar = tabs,
         path = pathname,
-        children
+        children,
+        right = undefined
     } = props
 
     return <>
@@ -95,6 +99,7 @@ const Mobile: React.FC<MobileProps> = (props: any) => {
                     className={header}
                     backArrow={showBack}
                     onBack={onBack}
+                    right={right}
                 >
                     {title}
                 </NavBar>}

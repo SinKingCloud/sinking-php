@@ -9,9 +9,9 @@ import {getNoticeList} from "@/service/person/notice";
 import {ago} from "@/utils/time";
 import {getContact, getNotice} from "@/service/person/config";
 import NoticeInfo from "@/pages/components/noticeInfo";
-import {createStyles} from "antd-style";
-import {Body, Title} from "@/components";
-
+import {createStyles, useResponsive} from "antd-style";
+import {Title,Body} from "@/components";
+import Mobile from "@/components/mobile";
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
     const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f6f6f6"
@@ -68,14 +68,13 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             display: flex;
             align-items: center;
 
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+            ${responsive.md} {
                 padding: 0 30px;
                 box-sizing: border-box;
-
+                margin-top: 10px;
                 .ant-statistic-title {
                     font-size: 14px;
                 }
-
                 .ant-statistic-content {
                     font-size: 22px !important;
                 }
@@ -87,7 +86,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             border-radius: 0 !important;
             padding: 0 !important;
 
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+            ${responsive.md} {
                 width: 100%;
 
                 .ant-card-body {
@@ -107,7 +106,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         contact: {
             padding: "15px",
             height: "100%",
-            width: "100%",
+            // width: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -143,7 +142,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             display: flex;
             align-items: center;
 
-            ${responsive.md && responsive.xl && responsive.lg && responsive.sm} {
+            ${responsive.md} {
                 display: flex;
                 flex-direction: column;
 
@@ -162,6 +161,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         my: css`
             .ant-pro-card-header {
                 margin-bottom: 5px;
+                padding-inline: 16px;
             }
         `,
         card: css`
@@ -226,7 +226,6 @@ export default () => {
             projectGrid,
             newButton,
             my,
-            notice,
             inner,
             align,
             pageHeaderContent,
@@ -314,6 +313,7 @@ export default () => {
         setNoticeId(0);
         setNoticeVisible(false);
     }
+    const {mobile} = useResponsive()
     /**
      * 初始化数据
      */
@@ -322,162 +322,165 @@ export default () => {
         getNotice2Data();
         getContactData();
     }, []);
-    return (
-        <Body>
-            <NoticeInfo id={noticeId} open={noticeVisible} onClose={hideNoticeInfoModal}/>
-            <Row gutter={24}>
-                <Skeleton title={false} loading={notice2Loading} active>
-                    {notice2Data?.['notice.index'] && <Col xl={24} md={24}>
-                        <Alert
-                            style={{fontSize: "14px", marginTop: "8px", marginBottom: "15px"}} banner
-                            type={"info"}
-                            message={
-                                <Marquee pauseOnHover gradient={false}>
-                                    {notice2Data?.['notice.index']}
-                                </Marquee>
-                            }
-                        />
-                    </Col>}
-                </Skeleton>
-                <Col xl={24} md={24}>
-                    <Card style={{marginBottom: "20px"}}>
-                        <Row className={align}>
-                            <Col span={16} className={pageHeaderContent}>
-                                <PageHeaderContent/>
-                            </Col>
-                            <Col span={8} className={right}>
-                                <ExtraContent/>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
-                <Col xl={16} lg={24} md={24} sm={24} xs={24}>
-                    <Row>
-                        <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                            <ProCard
-                                className={my}
-                                style={{marginBottom: 24}}
-                                title={<Title>我的数据</Title>}
-                                extra={<Link to="/user/index">查看全部</Link>}
-                                loading={false}
-                                bodyStyle={{padding: 0}}
-                            >
-                                <Card.Grid className={projectGrid} style={{padding: "0px"}}>
-                                    <Card className={card} bordered={false}>
-                                        <Button className={newButton}>
-                                            <PlusOutlined/> 立即添加
-                                        </Button>
-                                    </Card>
-                                </Card.Grid>
-                            </ProCard>
+    const page = <>
+        <NoticeInfo id={noticeId} open={noticeVisible} onClose={hideNoticeInfoModal}/>
+        <Row gutter={24}>
+            <Skeleton title={false} loading={notice2Loading} active>
+                {notice2Data?.['notice.index'] && <Col xl={24} md={24}>
+                    <Alert
+                        style={{fontSize: "14px", marginTop: "8px", marginBottom: "15px"}} banner
+                        type={"info"}
+                        message={
+                            <Marquee pauseOnHover gradient={false}>
+                                {notice2Data?.['notice.index']}
+                            </Marquee>
+                        }
+                    />
+                </Col>}
+            </Skeleton>
+            <Col xl={24} md={24}>
+                <Card style={{marginBottom: "20px"}}>
+                    <Row className={align}>
+                        <Col span={16} className={pageHeaderContent}>
+                            <PageHeaderContent/>
                         </Col>
-                        <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                            <ProCard
-                                className={projectList}
-                                style={{marginBottom: 24}}
-                                bordered={false}
-                                loading={contactLoading}
-                                bodyStyle={{padding: 0}}
-                            >
-                                <Row>
-                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
-                                         hidden={contactData?.['contact.one'] == ''}>
-                                        <div className={contact}>
-                                            <div className={inner}>
-                                                <Avatar className={avatar2}
-                                                        src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
-                                                        size="large" shape="square" style={{borderRadius: "5px"}}/>
-                                                <div className={info}>
-                                                    <div><span className={text}>官方客服</span></div>
-                                                    <div><span
-                                                        className={uin}>QQ:{contactData?.['contact.one']}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <Button size={"small"} className={btn} type="primary" ghost onClick={() => {
-                                                window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.one'] + "&site=qq&menu=yes");
-                                            }}>联系</Button>
-                                        </div>
-                                    </Col>
-                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
-                                         hidden={contactData?.['contact.two'] == ''}>
-                                        <div className={contact}>
-                                            <div className={inner}>
-                                                <Avatar className={avatar2}
-                                                        src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.two'] || 10000) + "&spec=100"}
-                                                        size="large" shape="square" style={{borderRadius: "5px"}}/>
-                                                <div className={info}>
-                                                    <div><span className={text}>官方客服</span></div>
-                                                    <div><span
-                                                        className={uin}>QQ:{contactData?.['contact.two']}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <Button className={btn} size={"small"} type="primary" ghost onClick={() => {
-                                                window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.two'] + "&site=qq&menu=yes");
-                                            }}>联系</Button>
-                                        </div>
-                                    </Col>
-                                    <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
-                                         hidden={contactData?.['contact.three'] == '' || contactData?.['contact.four'] == ''}>
-                                        <div className={contact}>
-                                            <div className={inner}>
-                                                <Avatar className={avatar2}
-                                                        src={"https://p.qlogo.cn/gh/" + (contactData?.['contact.three'] || 10000) + "/" + (contactData?.['contact.three'] || 1000) + "/100"}
-                                                        size="large" shape="square" style={{borderRadius: "5px"}}/>
-                                                <div className={info}>
-                                                    <div><span className={text}>官方Q群</span></div>
-                                                    <div><span
-                                                        className={uin}>群号:{contactData?.['contact.three']}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <Button className={btn} size={"small"} type="primary" ghost onClick={() => {
-                                                window.open(contactData?.['contact.four']);
-                                            }}>加入</Button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </ProCard>
+                        <Col span={8} className={right}>
+                            <ExtraContent/>
                         </Col>
                     </Row>
-                </Col>
-                <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-                    <ProCard
-                        style={{marginBottom: 24}}
-                        className={notice}
-                        title={<Title>系统公告</Title>}
+                </Card>
+            </Col>
+            <Col xl={16} lg={24} md={24} sm={24} xs={24}>
+                <Row>
+                    <Col xl={24} lg={24} md={24} sm={24} xs={24}>
+                        <ProCard
+                            className={my}
+                            style={{marginBottom: 24}}
+                            title={<Title>我的数据</Title>}
+                            extra={<Link to="/user/index">查看全部</Link>}
+                            loading={false}
+                            bodyStyle={{padding: 0}}
+                        >
+                            <Card.Grid className={projectGrid} style={{padding: "0px"}}>
+                                <Card className={card} bordered={false}>
+                                    <Button className={newButton}>
+                                        <PlusOutlined/> 立即添加
+                                    </Button>
+                                </Card>
+                            </Card.Grid>
+                        </ProCard>
+                    </Col>
+                    <Col xl={24} lg={24} md={24} sm={24} xs={24}>
+                        <ProCard
+                            className={projectList}
+                            style={{marginBottom: 24}}
+                            bordered={false}
+                            loading={contactLoading}
+                            bodyStyle={{padding: 0}}
+                        >
+                            <Row>
+                                <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
+                                     hidden={contactData?.['contact.one'] == ''}>
+                                    <div className={contact}>
+                                        <div className={inner}>
+                                            <Avatar className={avatar2}
+                                                    src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
+                                                    size="large" shape="square" style={{borderRadius: "5px"}}/>
+                                            <div className={info}>
+                                                <div><span className={text}>官方客服</span></div>
+                                                <div><span
+                                                    className={uin}>QQ:{contactData?.['contact.one']}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Button size={"small"} className={btn} type="primary" ghost onClick={() => {
+                                            window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.one'] + "&site=qq&menu=yes");
+                                        }}>联系</Button>
+                                    </div>
+                                </Col>
+                                <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
+                                     hidden={contactData?.['contact.two'] == ''}>
+                                    <div className={contact}>
+                                        <div className={inner}>
+                                            <Avatar className={avatar2}
+                                                    src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.two'] || 10000) + "&spec=100"}
+                                                    size="large" shape="square" style={{borderRadius: "5px"}}/>
+                                            <div className={info}>
+                                                <div><span className={text}>官方客服</span></div>
+                                                <div><span
+                                                    className={uin}>QQ:{contactData?.['contact.two']}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Button className={btn} size={"small"} type="primary" ghost onClick={() => {
+                                            window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.two'] + "&site=qq&menu=yes");
+                                        }}>联系</Button>
+                                    </div>
+                                </Col>
+                                <Col xl={8} lg={8} md={8} sm={24} xs={24} span={8}
+                                     hidden={contactData?.['contact.three'] == '' || contactData?.['contact.four'] == ''}>
+                                    <div className={contact}>
+                                        <div className={inner}>
+                                            <Avatar className={avatar2}
+                                                    src={"https://p.qlogo.cn/gh/" + (contactData?.['contact.three'] || 10000) + "/" + (contactData?.['contact.three'] || 1000) + "/100"}
+                                                    size="large" shape="square" style={{borderRadius: "5px"}}/>
+                                            <div className={info}>
+                                                <div><span className={text}>官方Q群</span></div>
+                                                <div><span
+                                                    className={uin}>群号:{contactData?.['contact.three']}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Button className={btn} size={"small"} type="primary" ghost onClick={() => {
+                                            window.open(contactData?.['contact.four']);
+                                        }}>加入</Button>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </ProCard>
+                    </Col>
+                </Row>
+            </Col>
+            <Col xl={8} lg={24} md={24} sm={24} xs={24}>
+                <ProCard
+                    style={{marginBottom: 24}}
+                    className={my}
+                    title={<Title>系统公告</Title>}
+                    loading={noticeLoading}
+                    bodyStyle={{padding: "0 20px 0 20px"}}
+                >
+                    <List
                         loading={noticeLoading}
-                        bodyStyle={{padding: "0 20px 0 20px"}}
-                    >
-                        <List
-                            loading={noticeLoading}
-                            itemLayout="horizontal"
-                            dataSource={noticeData}
-                            renderItem={(item: any) => (
-                                <Skeleton avatar title={false} loading={noticeLoading} active>
-                                    <List.Item
-                                        actions={[<a key="list-loadmore-edit" onClick={() => {
-                                            showNoticeInfoModal(item?.id || 0);
-                                        }}>查看</a>]}
-                                    >
-                                        <List.Item.Meta
-                                            key={"notice-" + item?.id}
-                                            avatar={<NotificationOutlined
-                                                style={{fontSize: "20px", lineHeight: "50px"}}/>}
-                                            title={item?.title}
-                                            description={<span
-                                                style={{fontSize: "10px"}}>发布于 {ago(item?.create_time)} ,共 {item?.look_num} 次浏览</span>}
-                                        />
+                        itemLayout="horizontal"
+                        dataSource={noticeData}
+                        renderItem={(item: any) => (
+                            <Skeleton avatar title={false} loading={noticeLoading} active>
+                                <List.Item
+                                    actions={[<a key="list-loadmore-edit" onClick={() => {
+                                        showNoticeInfoModal(item?.id || 0);
+                                    }}>查看</a>]}
+                                >
+                                    <List.Item.Meta
+                                        key={"notice-" + item?.id}
+                                        avatar={<NotificationOutlined
+                                            style={{fontSize: "20px", lineHeight: "50px"}}/>}
+                                        title={item?.title}
+                                        description={<span
+                                            style={{fontSize: "10px"}}>发布于 {ago(item?.create_time)} ,共 {item?.look_num} 次浏览</span>}
+                                    />
 
-                                    </List.Item>
+                                </List.Item>
 
-                                </Skeleton>
-                            )}
-                        />
-                    </ProCard>
-                </Col>
-            </Row>
-        </Body>
-    )
+                            </Skeleton>
+                        )}
+                    />
+                </ProCard>
+            </Col>
+        </Row>
+    </>
+    return <>
+            {mobile && <Mobile title={"首页"} showBack={false}>{page}</Mobile> || <Body>
+                {page}
+            </Body>}
+        </>
 }

@@ -5,7 +5,7 @@ import Theme from "@/components/theme";
 import Animation from "@/components/animation";
 import Title from "@/components/title";
 import Layout, {Body, Header, Footer, Sider} from "@/components/layout";
-
+import Mobile from "@/components/mobile"
 export {
     Icon,
     Antd,
@@ -21,4 +21,5 @@ export {
     Footer,
     Header,
     Sider,
+    Mobile
 }

@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {Layout} from "@/components";
 import {Icon} from "@/components";
-import {useModel} from "umi";
+import {Outlet, useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
-import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
-import {createStyles, useTheme} from "antd-style";
+import {App, Avatar, Col, ConfigProvider, Popover, Row, Tooltip} from "antd";
+import {createStyles, useResponsive, useTheme} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
 import Title from "../title";
 import defaultSettings from "../../../../config/defaultSettings";
+import Mobile from "@/components/mobile"
+import {SafeArea} from "antd-mobile";
+import zhCN from "antd/locale/zh_CN";
 
 /**
  * 中间件
@@ -39,7 +42,7 @@ const RightTop: React.FC = () => {
     /**
      * 样式
      */
-    const useStyles = createStyles(({css, token, responsive,isDarkMode}): any => {
+    const useStyles = createStyles(({css, token, responsive, isDarkMode}): any => {
         const base = ((defaultSettings?.basePath || "/") + "images/bg_blue.png")
         return {
             img: {
@@ -48,7 +51,7 @@ const RightTop: React.FC = () => {
             nickname: {
                 marginLeft: "3px",
                 fontSize: "13px",
-                color:isDarkMode?token.colorTextSecondary:"rgb(150,150,150)",
+                color: isDarkMode ? token.colorTextSecondary : "rgb(150,150,150)",
                 fontWeight: "bold",
             },
             profile: css`
@@ -122,7 +125,7 @@ const RightTop: React.FC = () => {
                 fontSize: "12px",
                 padding: "0px 15px",
                 transition: "background-color 0.3s ease",
-                color: isDarkMode?token.colorTextSecondary:"rgba(0,0,0,0.65)",
+                color: isDarkMode ? token.colorTextSecondary : "rgba(0,0,0,0.65)",
                 display: "flex",
                 justifyContent: "space-between",
                 ":hover": {
@@ -146,7 +149,7 @@ const RightTop: React.FC = () => {
                 ":hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
                 },
-                color:isDarkMode?token.colorTextSecondary:"rgb(150,150,150)"
+                color: isDarkMode ? token.colorTextSecondary : "rgb(150,150,150)"
 
             },
         };
@@ -175,19 +178,19 @@ const RightTop: React.FC = () => {
                      </Row>
                      <ul className={menu}>
                          <li className={menuItem} onClick={() => historyPush("user.setting")}>
-                             <div><Icon type={Setting}  style={{fontSize: 14}}/>账号管理</div>
+                             <div><Icon type={Setting} style={{fontSize: 14}}/>账号管理</div>
                              <Icon type={Right}></Icon>
                          </li>
                          <li className={menuItem} onClick={() => historyPush("user.log2")}>
-                             <div><Icon type={Order}   style={{fontSize: 14}}/>操作日志</div>
+                             <div><Icon type={Order} style={{fontSize: 14}}/>操作日志</div>
                              <Icon type={Right}></Icon>
                          </li>
                          {user?.web?.is_master && <li className={menuItem} onClick={() => historyPush("master.index")}>
-                             <div><Icon type={System}  style={{fontSize: 14}}/>系统管理</div>
+                             <div><Icon type={System} style={{fontSize: 14}}/>系统管理</div>
                              <Icon type={Right}></Icon>
                          </li>}
                          {user?.web?.is_admin && <li className={menuItem} onClick={() => historyPush("admin.index")}>
-                             <div><Icon type={Web}   style={{fontSize: 14}}/>网站管理</div>
+                             <div><Icon type={Web} style={{fontSize: 14}}/>网站管理</div>
                              <Icon type={Right}></Icon>
                          </li>}
                          <li className={menuItem} onClick={async () => {
@@ -208,7 +211,7 @@ const RightTop: React.FC = () => {
                                  }
                              })
                          }}>
-                             <div><Icon type={Exit}  style={{fontSize: 14}}/>退出登录</div>
+                             <div><Icon type={Exit} style={{fontSize: 14}}/>退出登录</div>
                              <Icon type={Right}></Icon>
                          </li>
                      </ul>
@@ -227,10 +230,13 @@ const RightTop: React.FC = () => {
 export type slide = {
     menu?: any,
 }
+
 /**
  * 用户系统
  */
+
 const Layouts: React.FC<slide> = ({...props}) => {
+    const {mobile} = useResponsive()
     /**
      * 初始化用户信息
      */
@@ -287,33 +293,43 @@ const Layouts: React.FC<slide> = ({...props}) => {
     return (
         <>
             <Title/>
-            <Layout loading={loading}
-                    waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
-                    menus={menu}
-                    layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
-                    menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
-                    footer={<>©{new Date().getFullYear()} All Right Revered {web?.info?.name || Settings?.title}</>}
-                    headerRight={<RightTop/>}
-                    menuCollapsedWidth={60}
-                    menuUnCollapsedWidth={210}
-                    menuBottomBtnText={"首页"}
-                    menuBottomBtnIcon={Main}
-                    onMenuBottomBtnClick={() => {
-                        historyPush("user.index")
-                    }}
-                    collapsedLogo={() => {
-                        return <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                    alt={Settings?.title} className={collapsedImg}/>
-                    }}
-                    unCollapsedLogo={() => {
-                        return (
-                            <div className={unCollapsed} >
-                                <img src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                     alt="沉沦云网络"/>
-                                <div>{web?.info?.name || Settings?.title}</div>
-                            </div>)
-                    }}
-            />
+            {mobile && <Mobile showBack={false}>
+                <ConfigProvider locale={zhCN}>
+                    <SafeArea position='top'/>
+                    < Outlet/>
+                </ConfigProvider>
+            </Mobile> || <Layout loading={loading}
+                             waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
+                             menus={menu}
+                             layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
+                             menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
+                             footer={<>©{new Date().getFullYear()} All Right
+                                 Revered {web?.info?.name || Settings?.title}</>}
+                             headerRight={<RightTop/>}
+                             menuCollapsedWidth={60}
+                             menuUnCollapsedWidth={210}
+                             menuBottomBtnText={"首页"}
+                             menuBottomBtnIcon={Main}
+                             onMenuBottomBtnClick={() => {
+                                 historyPush("user.index")
+                             }}
+                             collapsedLogo={() => {
+                                 return <img
+                                     src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                     alt={Settings?.title} className={collapsedImg}/>
+                             }}
+                             unCollapsedLogo={() => {
+                                 return (
+                                     <div className={unCollapsed}>
+                                         <img
+                                             src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                             alt="沉沦云网络"/>
+                                         <div>{web?.info?.name || Settings?.title}</div>
+                                     </div>)
+                             }}
+            />}
+
+
         </>
     );
 }

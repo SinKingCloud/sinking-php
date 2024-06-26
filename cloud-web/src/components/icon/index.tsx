@@ -11,7 +11,7 @@ const Icon = createFromIconfontCN({
 const Exit = "icon-exit"
 const Right = "icon-right"
 const Order = "icon-order"
-const Home = "icon.home"
+const Home = "icon-home"
 const Setting = "icon-set"
 const System = "icon-system"
 const Link = "icon-link"
@@ -22,8 +22,11 @@ const Main = "icon-main"
 const Light = "icon-light";//亮色
 const Dark = "icon-dark";
 const Auto = "icon-auto";
+const Shop = "icon-shop";
+const User = "icon-user";
 export {
     Icon,
+    User,
     Home,
     Main,
     Exit,
@@ -37,5 +40,6 @@ export {
     Web,
     Light,
     Dark,
-    Auto
+    Auto,
+    Shop
 }

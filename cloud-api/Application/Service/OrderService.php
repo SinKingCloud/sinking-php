@@ -464,7 +464,7 @@ class OrderService extends BaseService
             'money' => round($money, 2),
             'commission_money' => round($commission_money, 2),
             'trade_no' => $trade_no,
-            'param' => json_encode($param),
+            'param' => Util::jsonEncode($param),
             'status' => Order::STATUS_UNPAY,
         );
 

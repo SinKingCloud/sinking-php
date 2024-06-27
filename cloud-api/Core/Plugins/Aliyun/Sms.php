@@ -1,6 +1,7 @@
 <?php
 
 namespace Plugins\Aliyun;
+use Systems\Util;
 
 class Sms
 {
@@ -46,7 +47,7 @@ class Sms
         $params['OutId'] = $other['OutId'];
         $params['SmsUpExtendCode'] = $other['SmsUpExtendCode'];
         if (!empty($params["TemplateParam"]) && is_array($params["TemplateParam"])) {
-            $params["TemplateParam"] = json_encode($params["TemplateParam"]);
+            $params["TemplateParam"] = Util::jsonEncode($params["TemplateParam"]);
         }
         $res = $this->request($this->AccessKeyId, $this->AccessKeySecret, "dysmsapi.aliyuncs.com", array_merge($params, array("RegionId" => "cn-hangzhou", "Action" => "SendSms", "Version" => "2017-05-25")));
         if ($res['Message'] == 'OK') {

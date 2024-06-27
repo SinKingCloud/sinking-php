@@ -43,7 +43,7 @@ class RequestLogService extends BaseService
             'request_ip' => $request_ip,
             'request_url' => Request::url(),
             'request_method' => Request::method(),
-            'request_header' => json_encode(Request::headers()),
+            'request_header' => Util::jsonEncode(Request::headers()),
             'request_body' => file_get_contents("php://input"),
             'request_time' => date("Y-m-d H:i:s", $request_time),
             'response_body' => ob_get_contents(),

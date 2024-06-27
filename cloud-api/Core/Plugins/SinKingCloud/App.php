@@ -1,6 +1,7 @@
 <?php
 
 namespace Plugins\SinKingCloud;
+use Systems\Util;
 
 class App extends Client
 {
@@ -29,7 +30,7 @@ class App extends Client
     public function logger($info)
     {
         $param = array(
-            'content' => json_encode($info),
+            'content' => Util::jsonEncode($info),
         );
         $data = $this->request("/open/api/auth/log", $param)->getResponse();
         if ($data['code'] == 200) {

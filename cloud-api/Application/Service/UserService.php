@@ -73,7 +73,7 @@ class UserService extends BaseService
             $user['login_token'] = array();
         }
         $user['login_token'][$device] = $token;
-        $login_token = json_encode($user['login_token']);
+        $login_token = Util::jsonEncode($user['login_token']);
         if (User::where(array('id' => $user_id))->update(array(
             'login_token' => $login_token,
             'login_time' => date("Y-m-d H:i:s"),

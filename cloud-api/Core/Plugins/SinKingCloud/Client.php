@@ -1,6 +1,7 @@
 <?php
 
 namespace Plugins\SinKingCloud;
+use Systems\Util;
 
 class Client
 {
@@ -46,7 +47,7 @@ class Client
         if (empty($data)) {
             $post = 0;
         } else {
-            $post = json_encode($data);
+            $post = Util::jsonEncode($data);
         }
         $this->response = $this->curl($this->gateway . $url, $post);
         return $this;

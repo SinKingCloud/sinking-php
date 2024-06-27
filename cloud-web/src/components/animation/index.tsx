@@ -3,6 +3,7 @@ import {createStyles} from "antd-style";
 
 export type AnimationProps = {
     animate?: any;//主题
+    style?: any;
     children?: any;//子内容
 };
 
@@ -52,7 +53,8 @@ const useStyles = createStyles(({css}): any => {
 const Animation: React.FC<AnimationProps> = ({...props}) => {
     const {styles} = useStyles();
     return (
-        <div className={props?.animate && props?.animate != Animate.None ? styles?.[props?.animate] : null}>
+        <div className={props?.animate && props?.animate != Animate.None ? styles?.[props?.animate] : null}
+             style={props?.style}>
             {props?.children}
         </div>
     );

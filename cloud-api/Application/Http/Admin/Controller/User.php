@@ -64,16 +64,12 @@ class User extends Common
             array('ids|用户ID列表', 'require|array|number|length_between:1,1000'),
             array('user_type|用户类型', 'omitempty|number|default:0|in:0,1'),
             array('nick_name|昵称', 'omitempty'),
-            array('password|密码', 'omitempty|length_between:5,20'),
             array('avatar|头像', 'omitempty|url'),
             array('status|状态', 'omitempty|number|in:0,1'),
         ), Request::param());
         $user = AuthService::getInstance()->getCurrentUser();
         if (in_array($user['id'], $data['ids'])) {
             return $this->error('您不能操作自己的账户');
-        }
-        if (isset($data['password']) && $data['password']) {
-            $data['password'] = Util::getPassword($data['password']);
         }
         $web = AuthService::getInstance()->getCurrentWeb();
         if ($data['user_type'] == 0) {

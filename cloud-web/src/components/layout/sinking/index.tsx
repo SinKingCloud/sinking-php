@@ -175,6 +175,7 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         }
         onMenuBtnClick?.(status);
     }
+
     /**
      * 获取菜单主题颜色
      */
@@ -246,13 +247,12 @@ const SinKing: React.FC<LayoutProps> = (props) => {
         </Layout.Sider>
         <Layout className={body}
                 style={{marginLeft: mobile ? 0 : (collapsed ? menuCollapsedWidth + "px" : menuUnCollapsedWidth + "px")}}>
-            {md && <Layout.Header className={header}>
+            <Layout.Header className={header}>
                 <Header left={<div><Button type="text" size={"large"}
                                            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                                            onClick={menuBtnOnClick} className={menuBtn}/>{headerLeft}</div>}
                         right={headerRight}/>
-            </Layout.Header> || null}
-
+            </Layout.Header>
             <Layout.Content className={content1}>
                 {getOutlet()}
             </Layout.Content>
@@ -266,38 +266,22 @@ const SinKing: React.FC<LayoutProps> = (props) => {
      * 上下模式
      */
     const LayoutFlow = <Layout>
-        {md &&  <Layout.Header className={header}>
-            {/*{!md && <Header left={<div>*/}
-            {/*    <Button type="text" size={"large"} icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}*/}
-            {/*            onClick={menuBtnOnClick} className={menuBtn}/>*/}
-            {/*    {headerLeft}*/}
-            {/*</div>} right={headerRight}/>}*/}
-            {/*{(!md && drawer)||*/}
-            <div className={flow + getColor()}>
-                <div className={logo}>
-                    {unCollapsedLogo?.(!systemTheme?.isDarkMode)}
+        <Layout.Header className={header}>
+            {!md && <Header left={<div>
+                <Button type="text" size={"large"} icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+                        onClick={menuBtnOnClick} className={menuBtn}/>
+                {headerLeft}
+            </div>} right={headerRight}/>}
+            {(!md && drawer) ||
+                <div className={flow + getColor()}>
+                    <div className={logo}>
+                        {unCollapsedLogo?.(!systemTheme?.isDarkMode)}
+                    </div>
+                    {getSider(layout)}
+                    <div>{headerRight}</div>
                 </div>
-                {getSider(layout)}
-                <div>{headerRight}</div>
-            </div>
-            {/*}*/}
-        </Layout.Header> || null}
-        {/*<Layout.Header className={header}>*/}
-        {/*    /!*{!md && <Header left={<div>*!/*/}
-        {/*    /!*    <Button type="text" size={"large"} icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}*!/*/}
-        {/*    /!*            onClick={menuBtnOnClick} className={menuBtn}/>*!/*/}
-        {/*    /!*    {headerLeft}*!/*/}
-        {/*    /!*</div>} right={headerRight}/>}*!/*/}
-        {/*    /!*{(!md && drawer)||*!/*/}
-        {/*        <div className={flow + getColor()}>*/}
-        {/*            <div className={logo}>*/}
-        {/*                {unCollapsedLogo?.(!systemTheme?.isDarkMode)}*/}
-        {/*            </div>*/}
-        {/*            {getSider(layout)}*/}
-        {/*            <div>{headerRight}</div>*/}
-        {/*        </div>*/}
-        {/*    /!*}*!/*/}
-        {/*</Layout.Header>*/}
+            }
+        </Layout.Header>
         <Layout.Content className={content}>
             {getOutlet()}
         </Layout.Content>

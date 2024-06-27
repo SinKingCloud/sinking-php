@@ -138,6 +138,12 @@ class WebService extends BaseService
         }
         $config = ConfigService::getInstance();
         $datetime = new \DateTime();
+        if ($months <= 0) {
+            $months = intval(ConfigService::getInstance()->get(Config::SYSTEM_SITE_MONTH));
+            if ($months <= 0) {
+                $months = 999;
+            }
+        }
         $w_data = array(
             'user_id' => $user['id'],
             'web_id' => $user['web_id'],
@@ -148,12 +154,6 @@ class WebService extends BaseService
             'status' => Web::STATUS_NORMAL,
             'expire_time' => $datetime->setTimestamp(time() + $months * 30 * 24 * 60)->format('Y-m-d H:i:s'),
         );
-        if ($months <= 0) {
-            $months = intval(ConfigService::getInstance()->get(Config::SYSTEM_SITE_MONTH));
-            if ($months <= 0) {
-                $months = 999;
-            }
-        }
         Web::startTrans(); //开启事务
         //写入站点
         if ($this->create($w_data)) {

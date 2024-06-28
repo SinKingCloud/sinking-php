@@ -1,20 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {Layout} from "@/components";
 import {Icon} from "@/components";
-import {Outlet, useModel} from "umi";
+import {useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
-import {App, Avatar, Col, ConfigProvider, Popover, Row, Tooltip} from "antd";
-import {createStyles, useResponsive, useTheme} from "antd-style";
+import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
+import {createStyles, useResponsive} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
 import Title from "../title";
 import defaultSettings from "../../../../config/defaultSettings";
-import Mobile from "@/components/mobile"
-import {SafeArea} from "antd-mobile";
-import zhCN from "antd/locale/zh_CN";
 
 /**
  * 中间件
@@ -294,34 +291,34 @@ const Layouts: React.FC<slide> = ({...props}) => {
         <>
             <Title/>
             <Layout loading={loading}
-                             waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
-                             menus={menu}
-                             layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
-                             menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
-                             footer={<>©{new Date().getFullYear()} All Right
-                                 Revered {web?.info?.name || Settings?.title}</>}
-                             headerRight={<RightTop/>}
-                             menuCollapsedWidth={60}
-                             menuUnCollapsedWidth={210}
-                             menuBottomBtnText={"首页"}
-                             menuBottomBtnIcon={Main}
-                             onMenuBottomBtnClick={() => {
-                                 historyPush("user.index")
-                             }}
-                             collapsedLogo={() => {
-                                 return <img
-                                     src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                     alt={Settings?.title} className={collapsedImg}/>
-                             }}
-                             unCollapsedLogo={() => {
-                                 return (
-                                     <div className={unCollapsed}>
-                                         <img
-                                             src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                             alt="沉沦云网络"/>
-                                         <div>{web?.info?.name || Settings?.title}</div>
-                                     </div>)
-                             }}/>
+                    waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
+                    menus={menu}
+                    layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
+                    menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
+                    footer={<>©{new Date().getFullYear()} All Right
+                        Revered {web?.info?.name || Settings?.title}</>}
+                    headerRight={<RightTop/>}
+                    menuCollapsedWidth={60}
+                    menuUnCollapsedWidth={210}
+                    menuBottomBtnText={"首页"}
+                    menuBottomBtnIcon={Main}
+                    onMenuBottomBtnClick={() => {
+                        historyPush("user.index")
+                    }}
+                    collapsedLogo={() => {
+                        return <img
+                            src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                            alt={Settings?.title} className={collapsedImg}/>
+                    }}
+                    unCollapsedLogo={() => {
+                        return (
+                            <div className={unCollapsed}>
+                                <img
+                                    src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                    alt={web?.info?.name || Settings?.title}/>
+                                <div>{web?.info?.name || Settings?.title}</div>
+                            </div>)
+                    }}/>
         </>
     );
 }

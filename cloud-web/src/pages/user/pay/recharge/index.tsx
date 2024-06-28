@@ -35,11 +35,11 @@ const useStyles = createStyles(({css}) => {
                 paddingInline: "7px !important",
                 paddingBlock: "6px !important",
             },
-            ".ant-pro-checkcard-sm ":{
-                width:"0 !important"
+            ".ant-pro-checkcard-sm ": {
+                width: "0 !important"
             },
-            ".ant-pro-checkcard ":{
-                width:"0 !important"
+            ".ant-pro-checkcard ": {
+                width: "0 !important"
             },
             ".ant-pro-checkcard-header": {
                 justifyContent: "space-around"
@@ -282,40 +282,38 @@ export default (): React.ReactNode => {
                                     rules={[{required: true, message: '请选择充值方式'}]}
                                     initialValue={"0"}>
                                     <CheckCard.Group className={border}>
-                                        <Row gutter={10} wrap={true}>
-                                            <Col lg={{span: 24}} xs={{span: 24}}>
+                                        <Row gutter={10} wrap={false}>
+                                            <Col span={8}>
                                                 <CheckCard
                                                     title={(<><AlipayCircleOutlined
-                                                        style={{marginRight: "3px"}}/> 支付宝</>)}
+                                                        style={{marginRight: "3px"}}/>&nbsp;支付宝</>)}
                                                     value="0"
                                                     size={"small"}
                                                     className={chard}
                                                     style={{
-                                                        maxWidth: "80px",
-                                                        borderRadius: "10px",
                                                         display: payConfig['pay.alipay.type'] ? 'inline-block' : 'none'
                                                     }}
                                                 />
+                                            </Col>
+                                            <Col span={8}>
                                                 <CheckCard
                                                     title={(<><WechatOutlined
-                                                        style={{marginRight: "3px"}}/> 微信</>)}
+                                                        style={{marginRight: "3px"}}/>&nbsp;微信</>)}
                                                     value="1"
                                                     size={"small"}
                                                     className={chard}
                                                     style={{
-                                                        maxWidth: "84px",
-                                                        borderRadius: "10px",
                                                         display: payConfig['pay.wxpay.type'] ? 'inline-block' : 'none'
                                                     }}
                                                 />
+                                            </Col>
+                                            <Col span={8}>
                                                 <CheckCard
-                                                    title={(<><QqOutlined style={{marginRight: "3px"}}/> QQ</>)}
+                                                    title={(<><QqOutlined style={{marginRight: "3px"}}/>&nbsp;QQ</>)}
                                                     value="2"
                                                     size={"small"}
                                                     className={chard}
                                                     style={{
-                                                        maxWidth: "84px",
-                                                        borderRadius: "10px",
                                                         display: payConfig['pay.qqpay.type'] ? 'inline-block' : 'none'
                                                     }}
                                                 />

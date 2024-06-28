@@ -712,9 +712,6 @@ export default (): React.ReactNode => {
                             }
                         ]}/>
                     </Form.Item>
-                    <Form.Item name="password" label="密码">
-                        <Input placeholder="不修改则留空"/>
-                    </Form.Item>
                     <Form.Item name="nick_name" label="昵称">
                         <Input placeholder="请输入用户昵称"/>
                     </Form.Item>

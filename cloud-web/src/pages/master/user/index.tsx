@@ -555,8 +555,9 @@ export default (): React.ReactNode => {
                         },
                         {
                             key: "add_modal",
+                            disabled: record?.is_admin,
                             label: (
-                                <a style={{fontSize: "small"}} hidden={record?.is_admin} onClick={() => {
+                                <a style={{fontSize: "small"}} onClick={() => {
                                     add?.setFieldsValue({
                                         user_id: record?.id,
                                         domain: domainConfig['master.domains']?.[0]

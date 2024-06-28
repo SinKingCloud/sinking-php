@@ -31,6 +31,7 @@ class Web extends Common
         $layout = $set->getWeb($web['id'], Config::WEB_UI_LAYOUT);
         $theme = $set->getWeb($web['id'], Config::WEB_UI_THEME);
         $compact = $set->getWeb($web['id'], Config::WEB_UI_COMPACT);
+        $color = $set->getWeb($web['id'], Config::WEB_UI_COLOR);
         return $this->success('获取成功', array(
             'id' => $web['id'],
             'name' => $web['name'],
@@ -44,6 +45,7 @@ class Web extends Common
             'water_mark' => $set->getWeb($web['id'], Config::WEB_UI_WATERMARK) == 1,
             'layout' => $layout == 'left' ? 'left' : 'top',
             'theme' => $theme == 'dark' ? 'dark' : 'light',
+            'color' => $color != "" ? $color : "rgb(7,53,237)",
             'compact' => $compact == 1,
             'reg_email' => $config->get(Config::SYSTEM_REG_EMAIL) == 1,
             'reg_qrlogin' => $config->get(Config::SYSTEM_REG_QRLOGIN) == 1,

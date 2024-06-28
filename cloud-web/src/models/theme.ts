@@ -1,18 +1,17 @@
 import {useState} from "react";
 import {theme} from "antd";
-
 // 获取风格
-const getDefaultTheme = (): any => {
+const getDefaultTheme = (color): any => {
     return {
         token: {
-            colorPrimary: "rgba(7,53,237,1)",
-            colorInfo: "rgba(7,53,237,1)",
+            colorPrimary: color,
+            colorInfo: color,
         },
     }
 }
 // 获取风格
-const getCompactTheme = (): any => {
-    let temp = getDefaultTheme();
+const getCompactTheme = (color): any => {
+    let temp = getDefaultTheme(color);
     temp.algorithm = [theme.compactAlgorithm];
     return temp;
 }
@@ -35,7 +34,7 @@ const setMode = (mode): void => {
 }
 
 export default () => {
-    const [themes, setThemes] = useState<any>(getDefaultTheme());//系统主题
+    const [themes, setThemes] = useState<any>(getDefaultTheme("rgba(7,53,237,1)"));//系统主题
     const [mode, setMode2] = useState<any>(getMode());//系统主题模式
     const [appearance, setAppearance] = useState<any>(null);//当前主题风格
 
@@ -49,14 +48,24 @@ export default () => {
      * 设置默认主题
      */
     const setDefaultTheme = () => {
-        setThemes(getDefaultTheme())
+        setThemes(getDefaultTheme(themes?.token?.colorPrimary))
     }
 
     /**
      * 设置紧凑主题
      */
     const setCompactTheme = () => {
-        setThemes(getCompactTheme())
+        setThemes(getCompactTheme(themes?.token?.colorPrimary))
+    }
+
+    /**
+     * 设置主题颜色
+     */
+    const setColor = (color) => {
+        let temp = {...themes}
+        temp.token.colorPrimary = color;
+        temp.token.colorInfo = color
+        setThemes(temp);
     }
 
     /**
@@ -149,6 +158,7 @@ export default () => {
 
     return {
         themes,
+        setColor,
         setThemes,
         setDefaultTheme,
         setCompactTheme,

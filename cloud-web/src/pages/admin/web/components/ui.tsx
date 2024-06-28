@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {App, Form, Spin, Upload} from "antd";
-import ProForm, {ProFormSelect, ProFormText} from "@ant-design/pro-form";
+import {App, ColorPicker, ColorPickerProps, Form, Spin, Upload} from "antd";
+import ProForm, {ProFormItem, ProFormSelect, ProFormText} from "@ant-design/pro-form";
 import {getUi, setUi} from "@/service/admin/set";
 import {getUploadUrl} from "@/service/common/upload";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {createStyles} from "antd-style";
 import {useModel} from "umi";
+import {NamePath} from "rc-field-form/es/interface";
 
 const useStyles = createStyles(({css}) => {
     return {
@@ -113,6 +114,8 @@ const UiView: React.FC = () => {
         getConfigs();
     }, []);
 
+    const theme = useModel("theme");
+
     return (
         <Spin spinning={isLoading} size="default">
             <div style={{display: isLoading ? 'none' : 'block'}}>
@@ -186,6 +189,15 @@ const UiView: React.FC = () => {
                         placeholder="请选择是否打开界面水印"
                         rules={[{required: true, message: '请选择是否打开界面水印'}]}
                     />
+                    <ProFormItem name="ui.color" label="主题颜色" tooltip="网站的主题颜色">
+                        <ColorPicker
+                            format="rgb"
+                            defaultFormat="rgb"
+                            onChange={(color) => {
+                                form?.setFieldValue("ui.color" as NamePath, color?.toRgbString());
+                            }}
+                        />
+                    </ProFormItem>
                     <ProFormText name="ui.logo" label="网站LOGO" tooltip="网站的显示LOGO">
                         <Upload
                             name="file"

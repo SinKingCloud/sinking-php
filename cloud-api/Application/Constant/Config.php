@@ -89,4 +89,5 @@ class Config
     const WEB_UI_WATERMARK = 'ui.watermark'; //网站水印设置
     const WEB_UI_THEME = 'ui.theme'; //菜单主题设置
     const WEB_UI_COMPACT = 'ui.compact'; //紧凑模式设置
+    const WEB_UI_COLOR = 'ui.color'; //网站主题颜色设置
 }

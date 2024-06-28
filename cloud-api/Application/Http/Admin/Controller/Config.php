@@ -93,6 +93,7 @@ class Config extends Common
         $layout = $set->getWeb($web['id'], Constant::WEB_UI_LAYOUT);
         $theme = $set->getWeb($web['id'], Constant::WEB_UI_THEME);
         $compact = $set->getWeb($web['id'], Constant::WEB_UI_COMPACT);
+        $color = $set->getWeb($web['id'], Constant::WEB_UI_COLOR);
         $arr = explode(",", Web::INDEX_TEMPLATE);
         $temps = array();
         foreach ($arr as $key) {
@@ -109,6 +110,7 @@ class Config extends Common
             Constant::WEB_UI_LAYOUT => $layout == "left" ? "left" : "top",
             Constant::WEB_UI_THEME => $theme == 'dark' ? 'dark' : 'light',
             Constant::WEB_UI_COMPACT => $compact == 1 ? "1" : "0",
+            Constant::WEB_UI_COLOR => $color != "" ? $color : "rgb(7,53,237)",
         ));
     }
 
@@ -134,6 +136,7 @@ class Config extends Common
             array(Constant::WEB_UI_COMPACT . '|紧凑模式', 'require|in:0,1,-1|default:-1'),
             array(Constant::WEB_UI_LAYOUT . '|网站布局', 'require|in:left,top|default:top'),
             array(Constant::WEB_UI_THEME . '|菜单主题', 'require|in:light,dark|default:light'),
+            array(Constant::WEB_UI_COLOR . '|主题颜色', 'require|default:rgb(7,53,237)'),
         ), Request::param());
         if ($data) {
             $web = AuthService::getInstance()->getCurrentWeb();

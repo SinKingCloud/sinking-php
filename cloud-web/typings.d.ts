@@ -65,6 +65,7 @@ declare namespace API {
         water_mark?: string;
         layout?: string;
         theme?: string;
+        color?: string;
         compact?: boolean;
         reg_email?: boolean;
         reg_qrlogin?: boolean;

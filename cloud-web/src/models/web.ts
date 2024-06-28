@@ -22,6 +22,9 @@ export default () => {
     const refreshInfo = () => {
         getInfo().then((d) => {
             setInfo(d);
+            if (d?.color) {
+                theme?.setColor(d?.color);
+            }
             if (d?.compact) {
                 theme?.setCompactTheme();
             } else {

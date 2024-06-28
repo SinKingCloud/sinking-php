@@ -73,18 +73,17 @@ const RightTop: React.FC = () => {
                 }
 
                 .ant-popover-arrow:before {
-                    background-color: rgba(85, 126, 253, 1) !important;
+                    background-color: ${token?.colorPrimary} !important;
                 }
             `,
             content_top: css`
                 height: 70px;
                 width: 100%;
-                border-bottom: 1px solid gray;
+                background-color: ${token?.colorPrimary};
                 overflow: hidden;
-                background-image: url(${base});
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIgAAACGBAMAAAD0nt8RAAAAD1BMVEVHcEz///////////////8T4DEaAAAABXRSTlMADAYJA8T7L0gAAALASURBVGjezVpbcoMwDCS2DxBhDgC0BwhNDoDb3v9MfaQQMLb1cqfVVz6YjbS7ks2IptnFCOD7RhcDfIafVRgGvqPVJ/IZmoLcD4YqFbuAgAIkrCCKeqYaICsGnP8WxP0bkE05F71hK4EoWvC0YHh9EwN0v93Fr9frs3aefP/PjdA9Pfo3F8xuxRk74LlaTBpLaPOATaRA0A+lBPAB6rBUNy2KVXwmDOF8YwSs3g1Ij8zYVgPi0PYjlGOppJVATmi9BgcZUJDH1PKokzIamwdGVkGDPGEeB2S+jU9lT2/4KFASip4edxgtfpxDidJiIpvmOsoTYfQEI8UPmR3GOFJuOLHGe0o97YYT8fYKNE4jSnYP7mUpH2x292SW0vKtIyQlNAeM4pEzpTQ0E3BAXOpJA4mYqZTcCx+BCRKOOg5JDE+m5AskjVECcfGzJoNRsokFanRkSgpxJlNSiAudEgmIoYPM+AVWAzKQMTzlzUAOwqCkq0FJV8FqBa9NFWzCsBrt2BLbhEEJ1KDE16DE16Ckq0FJV4GSrNc4lGS9xqEk6zUOJVmvcSgB/UAq2GSqAWJq2IQxpQsgpsZcY4h89Jpbf0xSr5kngBeuaSOv3f/9xuQ2LUnP4tanFWlZqfiMID1nHnQZry/Kv/FB3PF9giTz9foyju/vc6Spl7TQHW5IqDaAPBphKhn/hBogbqoAwpv7WRNKue2kkzI/ZoSpzPIjtTWZ1+03BkgfzRPJKdQupmjlo98v1hoVp9AyiGbFKdRSN0Wy1x56C6FLJKsuhiYzYZtleL0iu2zQtoROXQwqM3nlMmmLQWRm7BkHfSJ5mXkL6aAuJiszd5FsBc1Lkpm/ATbqYpIyS1bRcSo35U5dseLfT0rpXt3qE6GtUTjcKj4SWFNRfcPh9Kvs9bLRN7qY1B+k/HCrTeSL24saozF4MR+gwScpYNNOxQAAAABJRU5ErkJggg==);
                 background-repeat: no-repeat;
-                background-size: 100% 100%;
-                background-position: center;
+                background-position: right;
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
                 line-height: 70px;
@@ -233,29 +232,28 @@ export type slide = {
  */
 
 const Layouts: React.FC<slide> = ({...props}) => {
-    const {mobile} = useResponsive()
     /**
      * 初始化用户信息
      */
-    const {menu} = props,
-        /**
-         * 全局信息
-         */
-        user = useModel("user"),
-        web = useModel("web"),
-        [loading, setLoading] = useState(false),
-        initUser = () => {
-            setLoading(true);
-            if (getLoginToken() == "") {
-                historyPush("user.login");
-                return;
-            }
-            user?.getWebUser()?.then((u: any) => {
-                user?.setWeb(u);
-            })?.finally(() => {
-                setLoading(false);
-            });
-        };
+    const {menu} = props;
+    /**
+     * 全局信息
+     */
+    const user = useModel("user");
+    const web = useModel("web");
+    const [loading, setLoading] = useState(false);
+    const initUser = () => {
+        setLoading(true);
+        if (getLoginToken() == "") {
+            historyPush("user.login");
+            return;
+        }
+        user?.getWebUser()?.then((u: any) => {
+            user?.setWeb(u);
+        })?.finally(() => {
+            setLoading(false);
+        });
+    };
     useEffect(() => {
         initUser();
     }, []);
@@ -276,7 +274,6 @@ const Layouts: React.FC<slide> = ({...props}) => {
                     float: "left"
                 },
                 ">div": {
-                    color: "rgb(0,81,235)",
                     fontSize: "25px",
                     marginLeft: "5px", fontWeight: "bolder",
                     float: "left",
@@ -316,7 +313,9 @@ const Layouts: React.FC<slide> = ({...props}) => {
                                 <img
                                     src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
                                     alt={web?.info?.name || Settings?.title}/>
-                                <div>{web?.info?.name || Settings?.title}</div>
+                                <div style={{color: web?.info?.color ? web?.info?.color : "rgb(0,81,235)"}}>
+                                    {web?.info?.name || Settings?.title}
+                                </div>
                             </div>)
                     }}/>
         </>

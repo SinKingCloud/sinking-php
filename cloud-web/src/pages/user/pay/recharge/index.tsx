@@ -17,11 +17,11 @@ import {Body, Title} from '@/components';
 import {createStyles, useResponsive} from "antd-style";
 import ProTable, {ProColumns} from "@ant-design/pro-table";
 
-const useStyles = createStyles(({css}) => {
+const useStyles = createStyles(({css, token}) => {
     return {
         border: css`
             .ant-pro-checkcard-checked:after {
-                border: 6px solid #0735ed;
+                border: 6px solid ${token?.colorPrimary};
                 border-block-end: 6px solid transparent;
                 border-inline-start: 6px solid transparent;
                 border-start-end-radius: 6px;
@@ -44,9 +44,6 @@ const useStyles = createStyles(({css}) => {
             ".ant-pro-checkcard-header": {
                 justifyContent: "space-around"
             }
-            // ".ant-pro-checkcard-header-left": {
-            //     marginLeft: "4px !important"
-            // }
         }
     }
 })
@@ -271,9 +268,7 @@ export default (): React.ReactNode => {
                                                     className={chard}
                                                 />}
                                             </Col>
-
                                         </Row>
-
                                     </CheckCard.Group>
                                 </Form.Item>
                                 <Form.Item
@@ -282,7 +277,7 @@ export default (): React.ReactNode => {
                                     rules={[{required: true, message: '请选择充值方式'}]}
                                     initialValue={"0"}>
                                     <CheckCard.Group className={border}>
-                                        <Row gutter={10} wrap={false}>
+                                        <Row gutter={5}>
                                             <Col span={8}>
                                                 <CheckCard
                                                     title={(<><AlipayCircleOutlined

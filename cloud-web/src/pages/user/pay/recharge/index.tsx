@@ -16,7 +16,6 @@ import {setPayJumpUrl} from "@/utils/pay";
 import {Body, Title} from '@/components';
 import {createStyles, useResponsive} from "antd-style";
 import ProTable, {ProColumns} from "@ant-design/pro-table";
-import Mobile from "../../../../components/mobile";
 
 const useStyles = createStyles(({css}) => {
     return {
@@ -358,9 +357,7 @@ export default (): React.ReactNode => {
             </Col>
         </Row>
     </>
-    return <>
-        {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body>
-            {page}
-        </Body>}
-    </>
+    return <Body>
+        {page}
+    </Body>
 };

@@ -10,9 +10,8 @@ import {ago} from "@/utils/time";
 import {getContact, getNotice} from "@/service/person/config";
 import NoticeInfo from "@/pages/components/noticeInfo";
 import {createStyles, useResponsive} from "antd-style";
-import {Title,Body} from "@/components";
-import Mobile from "@/components/mobile";
-import {RightTop} from "@/layouts/components/layouts";
+import {Title, Body} from "@/components";
+
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
     const color = isDarkMode ? "#fff" : "rgba(0, 0, 0, 0.85)"
     const border = isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #f6f6f6"
@@ -73,9 +72,11 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
                 padding: 0 30px;
                 box-sizing: border-box;
                 margin-top: 10px;
+
                 .ant-statistic-title {
                     font-size: 14px;
                 }
+
                 .ant-statistic-content {
                     font-size: 22px !important;
                 }
@@ -278,9 +279,9 @@ export default () => {
         setNotice2Loading(true);
         getNotice({
             onSuccess: (r: any) => {
-                    setNotice2Data(r?.data);
+                setNotice2Data(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setNotice2Loading(false);
             }
         })
@@ -294,9 +295,9 @@ export default () => {
         setContactLoading(true);
         getContact({
             onSuccess: (r: any) => {
-                    setContactData(r?.data);
+                setContactData(r?.data);
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setContactLoading(false);
             }
         })
@@ -479,9 +480,7 @@ export default () => {
             </Col>
         </Row>
     </>
-    return <>
-            {mobile && <Mobile title="首页"  showBack={false}>{page}</Mobile> || <Body>
-                {page}
-            </Body>}
-        </>
+    return <Body>
+        {page}
+    </Body>
 }

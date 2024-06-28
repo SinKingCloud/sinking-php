@@ -9,11 +9,10 @@ import {Body, Title} from "@/components";
 import {useModel} from "umi";
 import {createStyles, useResponsive} from "antd-style";
 import defaultSettings from "../../../../config/defaultSettings";
-import Mobile from "../../../components/mobile";
 
 const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
-    const base = ((defaultSettings?.basePath || "/") + "images/buy-bg.png" )
-    const base1 = ((defaultSettings?.basePath || "/") + "images/personPackage.svg" )
+    const base = ((defaultSettings?.basePath || "/") + "images/buy-bg.png")
+    const base1 = ((defaultSettings?.basePath || "/") + "images/personPackage.svg")
     return {
         modals: css`
             .ant-modal-title {
@@ -697,10 +696,8 @@ export default (): React.ReactNode => {
             </div>
         </ProCard>
     </>
-    return <>
-        {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body  loading={loading}>
-            {page}
-        </Body>}
-    </>
+    return <Body loading={loading}>
+        {page}
+    </Body>
 
 }

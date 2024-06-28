@@ -3,7 +3,6 @@ import ProTable from '@ant-design/pro-table';
 import {getData} from "@/utils/page";
 import {getLogList} from "@/service/person/log";
 import {Body, Title} from '@/components';
-import Mobile from "../../../../components/mobile";
 import {useResponsive} from "antd-style";
 
 export default (): React.ReactNode => {
@@ -116,9 +115,7 @@ export default (): React.ReactNode => {
         }}
     />
     const {mobile} = useResponsive()
-    return <>
-        {mobile && <Mobile showHeader={false} showBack={false}>{page}</Mobile> || <Body>
-            {page}
-        </Body>}
-    </>
+    return <Body>
+        {page}
+    </Body>
 };

@@ -3,7 +3,7 @@ import {Layouts} from "./components";
 import {getUserMenuItems} from "@/utils/route";
 
 export default () => {
-    return (
+    return <>
         <Layouts menu={getUserMenuItems()}/>
-    );
+    </>
 }

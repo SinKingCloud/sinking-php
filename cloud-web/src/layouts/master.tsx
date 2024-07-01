@@ -3,7 +3,8 @@ import {Layouts} from "./components";
 import {getMasterMenuItems} from "@/utils/route";
 
 export default () => {
-    return (
+    return <>
         <Layouts menu={getMasterMenuItems()}/>
-    );
+    </>
+
 }

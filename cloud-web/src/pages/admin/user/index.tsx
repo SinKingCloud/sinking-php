@@ -273,15 +273,16 @@ export default (): React.ReactNode => {
      * @param user_id 用户ID
      * @param status 状态
      */
+    const [changeBtn,setChangeBtn] = useState(false)
     const changeUserStatus = (user_id: string, status: number) => {
         modal.confirm({
             title: '确定要' + (status == 0 ? "恢复" : "封禁") + '用户吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '您的操作将会立即生效',
             okType: 'primary',
+            loading:changeBtn,
             onOk: () => {
-                const key = "userStatus";
-                message?.loading({content: '正在更改用户状态', key: key, duration: 60})
+                setChangeBtn(true)
                 updateUserInfo({
                     body: {
                         ids: [user_id],
@@ -295,7 +296,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message)
                     }
                 }).finally(() => {
-                    message?.destroy(key);
+                   setChangeBtn(false)
                 });
             },
         } as ModalProps);

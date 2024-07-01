@@ -34,15 +34,16 @@ const DomainView: React.FC = () => {
     }, []);
     const domainActionRef = useRef<any>();
     const domainRef = useRef();
+    const [deleteBtn,setDeleteBtn] = useState<any>(false)
     const deleteDomains = (ids: [number], web_id: number) => {
         modal.confirm({
             title: '确定要删除此域名吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '删除后此域名则不可访问',
             okType: 'danger',
+            loading:deleteBtn,
             onOk: async () => {
-                const key = "deleteDomains";
-                message?.loading({content: '正在删除域名', key, duration: 60})
+              setDeleteBtn(true)
                 await deleteDomain({
                     body: {
                         ids: ids, web_id: web_id
@@ -55,21 +56,22 @@ const DomainView: React.FC = () => {
                         message?.error(r?.message)
                     },
                     onFinally: () => {
-                        message?.destroy(key)
+                        setDeleteBtn(false)
                     }
                 });
             },
         } as ModalProps);
     }
+    const [changeBtn,setChangeBtn] = useState<any>(false)
     const changeDomainStatus = (ids: [number], web_id: number, status: number) => {
         modal.confirm({
             title: '确定要' + (status == 0 ? "恢复" : "封禁") + '此域名吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响此域名的访问',
             okType: 'primary',
+            loading:changeBtn,
             onOk: async () => {
-                const key = "changeDomainStatus";
-                message?.loading({content: '正在更改域名状态', key, duration: 60})
+               setChangeBtn(true)
                 await updateDomain({
                     body: {
                         web_id: web_id, ids: ids, status: status
@@ -82,7 +84,7 @@ const DomainView: React.FC = () => {
                         message?.error(r?.message)
                     },
                     onFinally: () => {
-                        message?.destroy(key)
+                        setChangeBtn(false)
                     }
                 });
             },

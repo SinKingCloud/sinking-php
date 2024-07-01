@@ -18,7 +18,6 @@ import {getData} from "@/utils/page";
 import {DownOutlined} from "@ant-design/icons";
 import {getCashList, updateCash} from "@/service/master/withdraw";
 import {Body, Title} from '@/components';
-import {NamePath} from "rc-field-form/es/interface";
 import {createStyles} from "antd-style";
 
 const useStyles = createStyles(({css}) => {

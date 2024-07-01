@@ -49,15 +49,15 @@ export default (): React.ReactNode => {
     const [domainWebId, setDomainWebId] = useState(0);//编辑弹窗
     const domainActionRef = useRef<any>();
     const domainRef = useRef();
+    const [delBtn,setDelBtn] = useState(false)
     const deleteDomains = (ids: [number], web_id: number) => {
         modal.confirm({
             title: '确定要删除此域名吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '删除后此域名则不可访问',
             okType: 'danger',
+            loading:delBtn,
             onOk: async () => {
-                const key = "deleteDomains";
-                message?.loading({content: '正在删除域名', key, duration: 60})
                 await deleteDomain({
                     body: {
                         ids: ids,
@@ -71,21 +71,22 @@ export default (): React.ReactNode => {
                         message?.error(r?.message)
                     },
                     onFinally: () => {
-                        message?.destroy(key)
+                        setDelBtn(false)
                     }
                 });
             },
         } as ModalProps);
     }
+    const [changeBtn,setChangeBtn] = useState(false)
     const changeDomainStatus = (ids: [number], web_id: number, status: number) => {
         modal.confirm({
             title: '确定要' + (status == 0 ? "恢复" : "封禁") + '此域名吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响此域名的访问',
             okType: 'primary',
+            loading:changeBtn,
             onOk: async () => {
-                const key = "changeDomainStatus";
-                message?.loading({content: '正在更改域名状态', key, duration: 60})
+                setChangeBtn(true)
                 await updateDomain({
                     body: {
                         web_id: web_id,
@@ -100,7 +101,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message)
                     },
                     onFinally: () => {
-                        message?.destroy(key)
+                       setChangeBtn(false)
                     }
                 });
             },
@@ -341,16 +342,17 @@ export default (): React.ReactNode => {
      * @param user_id 用户ID
      * @param status 状态
      */
+    const [statusBtn,setStatusBtn] = useState(false)
     const changeUserStatus = (user_id: string, status: number) => {
         modal.confirm({
             title: '确定要' + (status == 0 ? "恢复" : "封禁") + '用户吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响站长用户',
             okType: 'primary',
-            onOk() {
-                const key = "userStatus";
-                message?.loading({content: '正在更改用户状态', key, duration: 60})
-                updateUserInfo({
+            loading:statusBtn,
+            onOk:async()=> {
+                setStatusBtn(true)
+               await updateUserInfo({
                     body: {
                         ids: [user_id],
                         status: status
@@ -363,7 +365,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message)
                     },
                     onFinally: () => {
-                        message?.destroy(key)
+                        setStatusBtn(false)
                     }
                 });
             },
@@ -375,15 +377,16 @@ export default (): React.ReactNode => {
      * @param web_id 站点ID
      * @param status 状态
      */
+    const [webStatus,setWebStatus] = useState(false)
     const changeWebStatus = (web_id: string, status: number) => {
         modal.confirm({
             title: '确定要' + (status == 0 ? "恢复" : "封禁") + '此站点吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '此操作将会影响此站点所有用户',
             okType: 'primary',
+            loading:webStatus,
             onOk: async () => {
-                const key = "webStatus";
-                message?.loading({content: '正在更改站点状态', key, duration: 60});
+                setWebStatus(true)
                 await updateWebInfo({
                     body: {
                         ids: [web_id],
@@ -397,7 +400,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message)
                     },
                     onFinally: () => {
-                        message?.destroy(key)
+                        setWebStatus(false)
                     }
                 });
             },

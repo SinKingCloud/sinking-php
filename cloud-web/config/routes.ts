@@ -98,6 +98,7 @@ export const master = [
         name: "master.index",
         hideInMenu: false,
     },
+
     {
         path: "user",
         component: "@/pages/master/user",

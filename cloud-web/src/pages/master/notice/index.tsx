@@ -121,14 +121,16 @@ export default (): React.ReactNode => {
      * 删除数据
      * @param ids id列表
      */
+    const [deleteBtn,setDeleteBtn] = useState<any>(false)
     const deleteSubmit = (ids: any[]) => {
         modal.confirm({
             title: '您确定要删除该数据吗?',
             icon: <ExclamationCircleOutlined/>,
             content: '删除后该数据不可恢复',
             okType: 'danger',
+            loading: deleteBtn,
             onOk: async () => {
-                message?.loading({content: '正在删除公告', duration: 600000, key: "notice"})
+                setDeleteBtn(true)
                 await deleteNotice({
                     body: {
                         ids: ids
@@ -141,7 +143,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message || "请求失败")
                     },
                     onFinally: () => {
-                        message.destroy("notice")
+                       setDeleteBtn(false)
                     }
                 })
             },

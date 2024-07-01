@@ -58,7 +58,7 @@ const BaseView: React.FC = () => {
             }
         });
     }
-
+    const [btn,setBtn] = useState<any>(false)
     /**
      * 获取成本价格
      */
@@ -130,9 +130,9 @@ const BaseView: React.FC = () => {
                                 icon: <ExclamationCircleOutlined/>,
                                 content: '将会花费' + (myPrice?.['site.cost.price'] || 0) + '元续期' + (myPrice?.['site.month'] || 0) + '个月网站时长',
                                 okType: 'primary',
+                                loading:btn,
                                 onOk: async () => {
-                                    const key = 'buySite';
-                                    message?.loading({content: '正在进行续期操作', key, duration: 60})
+                                 setBtn(true)
                                     await buySite({
                                         body: {},
                                         onSuccess: (r: any) => {
@@ -143,7 +143,7 @@ const BaseView: React.FC = () => {
                                             message?.error(r?.message || "续期失败");
                                         },
                                         onFinally: () => {
-                                            message.destroy(key)
+                                            setBtn(false)
                                         }
                                     });
                                 },

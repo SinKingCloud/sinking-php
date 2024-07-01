@@ -229,6 +229,7 @@ export default (): React.ReactNode => {
      */
     const [deleteForm] = Form.useForm();//删除表单
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [delBtn,setDelBtn] = useState(false)
     const onDeleteFinish = async (values: any) => {
         setIsDeleteModalVisible(false);
         modal.confirm({
@@ -236,9 +237,10 @@ export default (): React.ReactNode => {
             icon: <ExclamationCircleOutlined/>,
             content: '删除后该数据不可恢复',
             okType: 'danger',
+            loading:delBtn,
             onOk: async () => {
                 const rangeTimeValue = values['range-time-picker'];
-                message?.loading({content: "正在删除数据", duration: 60000, key: "delete"})
+                setDelBtn(true)
                 await deleteOrder({
                     body: {
                         create_time_start: rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
@@ -255,7 +257,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message || "请求失败")
                     },
                     onFinally: () => {
-                        message?.destroy("delete")
+                       setDelBtn(false)
                     }
                 })
                 deleteForm.resetFields();

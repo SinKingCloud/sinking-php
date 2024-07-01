@@ -279,10 +279,10 @@ export default (): React.ReactNode => {
             icon: <ExclamationCircleOutlined/>,
             content: '您的操作将会立即生效',
             okType: 'primary',
-            onOk: async () => {
+            onOk: () => {
                 const key = "userStatus";
                 message?.loading({content: '正在更改用户状态', key: key, duration: 60})
-                await updateUserInfo({
+                updateUserInfo({
                     body: {
                         ids: [user_id],
                         status: status
@@ -293,10 +293,9 @@ export default (): React.ReactNode => {
                     },
                     onFail: (r: any) => {
                         message?.error(r?.message)
-                    },
-                    onFinally: () => {
-                        message?.destroy(key);
                     }
+                }).finally(() => {
+                    message?.destroy(key);
                 });
             },
         } as ModalProps);

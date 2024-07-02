@@ -42,6 +42,7 @@ export default (): React.ReactNode => {
      * 新建编辑提交表单
      * @param values 表单项
      */
+    const [btnLoading,setBtnLoading] = useState(false)
     const onFormFinish = async (values: any) => {
         let api = createNotice;
         if (values.id != undefined) {
@@ -53,6 +54,7 @@ export default (): React.ReactNode => {
         }
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         values.content = editValue || "";
+        setBtnLoading(true)
         await api({
             body: {
                 ...values
@@ -65,6 +67,9 @@ export default (): React.ReactNode => {
             },
             onFail: (r: any) => {
                 message?.error(r?.message || "请求失败")
+            },
+            onFinally:()=>{
+                setBtnLoading(false)
             }
         })
     }
@@ -322,9 +327,8 @@ export default (): React.ReactNode => {
             }}>
                 <Spin spinning={noticeLoading}>
                     <div style={{display: !noticeLoading ? "block" : "none"}}>
-                        <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right"
-                              labelCol={{span: 2}}
-                              wrapperCol={{span: 21}}>
+                        <Form form={form} name="control-hooks"  onFinish={onFormFinish} labelAlign="right"
+                              labelCol={{span: 2}} wrapperCol={{span: 21}}>
                             <Form.Item name="id" label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
                             </Form.Item>
@@ -396,7 +400,7 @@ export default (): React.ReactNode => {
                                 />
                             </Form.Item>
                             <Form.Item style={{textAlign: "center"}}>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" loading={btnLoading}>
                                     确认
                                 </Button>
                                 <Button htmlType="button" onClick={() => {

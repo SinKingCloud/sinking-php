@@ -54,6 +54,7 @@ export default (): React.ReactNode => {
      * 新建编辑提交表单
      * @param values 表单项
      */
+    const [btnLoading,setBtnLoading] = useState(false)
     const onFormFinish = async (values: any) => {
         let api = createNotice;
         if (values.id != undefined) {
@@ -65,6 +66,7 @@ export default (): React.ReactNode => {
         }
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         values.content = editValue || "";
+        setBtnLoading(true)
         await api({
             body: {
                 ...values
@@ -79,6 +81,7 @@ export default (): React.ReactNode => {
             },
             onFinally: () => {
                 setIsModalVisible(false)
+                setBtnLoading(false)
             }
         })
     }
@@ -407,7 +410,7 @@ export default (): React.ReactNode => {
                                 />
                             </Form.Item>
                             <Form.Item style={{textAlign: "center"}}>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" loading={btnLoading}>
                                     确认
                                 </Button>
                                 <Button htmlType="button" onClick={() => {

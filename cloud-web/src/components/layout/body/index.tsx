@@ -71,7 +71,7 @@ const Body: React.FC<BodyProps> = (props) => {
     const location = useLocation();
     const match = useRouteData();
     const initBreadCrumb = () => {
-        const items = getParentList(getCurrentMenus(location?.pathname), match?.route?.name);
+        const items = getParentList(getCurrentMenus(location?.pathname, false), match?.route?.name);
         let temp = [{
             title: '首页',
             onClick: () => {

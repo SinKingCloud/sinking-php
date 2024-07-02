@@ -1,7 +1,8 @@
 import {history} from 'umi';
-import route, {user, userPath,index,indexPath,master,masterPath,admin,adminPath} from '../../config/routes'
+import route, {user, userPath, index, indexPath, master, masterPath, admin, adminPath} from '../../config/routes'
 import {Icon} from "@/components"
 import React from "react"
+
 /**
  * 递归获取完整路径
  * @param routes
@@ -63,10 +64,11 @@ export function historyPush(name: any, params = {}) {
  * 递归获取菜单
  * @param routes
  * @param parentPath
+ * @param hideMenu
  */
-function getMenuItems(routes: any, parentPath = '/') {
-    return routes.map((route: any)=> {
-        if (route?.hideInMenu) {
+function getMenuItems(routes: any, parentPath = '/', hideMenu = true) {
+    return routes.map((route: any) => {
+        if (hideMenu && route?.hideInMenu) {
             return;
         }
         const menuItem: any = {
@@ -87,7 +89,7 @@ function getMenuItems(routes: any, parentPath = '/') {
             }
         }
         if (route?.routes) {
-            const children = getMenuItems(route?.routes, menuItem.key);
+            const children = getMenuItems(route?.routes, menuItem.key, hideMenu);
             if (children.length > 0) {
                 menuItem.children = children;
             }
@@ -109,6 +111,7 @@ export function getParentList(data: any[], name: string): any[] {
         return parentCache[name];
     }
     let parents: any[] = [];
+
     function findParent(data: any, name: string): boolean {
         if (data?.children && data?.children?.length > 0) {
             if (data?.name === name) {
@@ -142,34 +145,36 @@ export function getParentList(data: any[], name: string): any[] {
 /**
  * 获取user菜单
  */
-export function getUserMenuItems() {
-    return getMenuItems(user, '/' + userPath);
+export function getUserMenuItems(hideMenu = true) {
+    return getMenuItems(user, '/' + userPath, hideMenu);
 }
+
 /**
  * 获取index菜单
  */
-export function getIndexMenuItems() {
-    return getMenuItems(index, '/' + indexPath);
+export function getIndexMenuItems(hideMenu = true) {
+    return getMenuItems(index, '/' + indexPath, hideMenu);
 }
 
 /**
  * 获取master菜单
  */
-export function getMasterMenuItems() {
-    return getMenuItems(master, '/' + masterPath);
+export function getMasterMenuItems(hideMenu = true) {
+    return getMenuItems(master, '/' + masterPath, hideMenu);
 }
 
 /**
  * 获取admin菜单
  */
-export function getAdminMenuItems() {
-    return getMenuItems(admin, '/' + adminPath);
+export function getAdminMenuItems(hideMenu = true) {
+    return getMenuItems(admin, '/' + adminPath, hideMenu);
 }
+
 /**
  * 获取菜单
  */
-export function getAllMenuItems() {
-    return getMenuItems(route)
+export function getAllMenuItems(hideMenu = true) {
+    return getMenuItems(route, '/', hideMenu)
 }
 
 /**
@@ -200,7 +205,7 @@ export function getCurrentPath(pathName: any): any {
 /**
  * 当前访问系统路由
  */
-export function getCurrentMenus(pathName: any): any {
+export function getCurrentMenus(pathName: any, hideMenu = true): any {
     let mode = "";
     const regex = /\/([^/]+)\//; // 正则表达式匹配 / 之间的内容
     const matches = pathName.match(regex); // 匹配结果数组
@@ -208,16 +213,16 @@ export function getCurrentMenus(pathName: any): any {
         mode = matches[1];
     }
     if (mode == userPath) {
-        return getUserMenuItems();
+        return getUserMenuItems(hideMenu);
     }
     if (mode == indexPath) {
-        return getIndexMenuItems();
+        return getIndexMenuItems(hideMenu);
     }
     if (mode == masterPath) {
-        return getMasterMenuItems();
+        return getMasterMenuItems(hideMenu);
     }
     if (mode == adminPath) {
-        return getAdminMenuItems();
+        return getAdminMenuItems(hideMenu);
     }
     return [];
 }

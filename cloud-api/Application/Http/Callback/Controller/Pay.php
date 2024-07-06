@@ -75,7 +75,7 @@ class Pay extends Common
             if ($trade_status == 'TRADE_SUCCESS') {
                 OrderService::getInstance()->changeStatusSync($trade_no, $out_trade_no);
             }
-            return '<script>window.location.href="/?s#/user/result"</script>';
+            return '<script>window.location.href="/?s#/pay"</script>';
         } else {
             return '<script>window.location.href="/?s"</script>';
         }

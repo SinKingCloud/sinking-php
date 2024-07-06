@@ -5,7 +5,7 @@ import {useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
 import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
-import {createStyles, useResponsive} from "antd-style";
+import {createStyles} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
@@ -231,7 +231,7 @@ export type slide = {
  * 用户系统
  */
 
-const Layouts: React.FC<slide> = ({...props}) => {
+const SKLayout: React.FC<slide> = ({...props}) => {
     /**
      * 初始化用户信息
      */
@@ -321,4 +321,4 @@ const Layouts: React.FC<slide> = ({...props}) => {
         </>
     );
 }
-export default Layouts;
+export default SKLayout;

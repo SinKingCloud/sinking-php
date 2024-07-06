@@ -176,7 +176,7 @@ const Index: React.FC = () => {
         } else {
             setIsMobile("pc")
         }
-    }, [isMobile])
+    }, [mobile]);
     const [qrcode, setQrcode] = useState("");
     const [qrcodeLoading, setQrcodeLoading] = useState(true);
     const [qrcodeMessage, setQrcodeMessage] = useState("正在生成二维码");

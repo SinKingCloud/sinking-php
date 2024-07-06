@@ -248,7 +248,6 @@ export default [
         path: "/",
         name: "redirect." + indexPath,
         title: index[0]?.title,
-        component: '@/layouts/index',
         routes: [
             {
                 path: "/",
@@ -273,8 +272,6 @@ export default [
         title: "系统首页",
         icon: 'icon-doc',
         routes: index,
-        component: '@/layouts/index',
-        layout: false,
     },
     /**
      * 用户路由
@@ -291,8 +288,6 @@ export default [
         name: userPath,
         title: "用户系统",
         icon: 'icon-doc',
-        layout: false,
-        component: '@/layouts/user',
         routes: user,
     },
     /**
@@ -310,8 +305,6 @@ export default [
         name: masterPath,
         title: "后台系统",
         icon: 'icon-system',
-        layout: false,
-        component: '@/layouts/master',
         routes: master,
     },
     /**
@@ -329,9 +322,18 @@ export default [
         name: adminPath,
         title: "后台网站",
         icon: 'icon-set',
-        layout: false,
-        component: '@/layouts/admin',
         routes: admin,
+    },
+    /**
+     * 支付结果
+     */
+    {
+        path: "pay",
+        component: "@/pages/pay.tsx",
+        name: "pay",
+        title: "支付结果",
+        layout: false,
+        hideInMenu: true,
     },
     /**
      * 500

@@ -181,6 +181,9 @@ export function getAllMenuItems(hideMenu = true) {
  * 当前访问系统path
  */
 export function getCurrentPath(pathName: any): any {
+    if (pathName == "/" || pathName == "") {
+        pathName = "/index/index";
+    }
     let mode = "";
     const regex = /\/([^/]+)\//; // 正则表达式匹配 / 之间的内容
     const matches = pathName.match(regex); // 匹配结果数组
@@ -206,6 +209,9 @@ export function getCurrentPath(pathName: any): any {
  * 当前访问系统路由
  */
 export function getCurrentMenus(pathName: any, hideMenu = true): any {
+    if (pathName == "/" || pathName == "") {
+        pathName = "/index/index";
+    }
     let mode = "";
     const regex = /\/([^/]+)\//; // 正则表达式匹配 / 之间的内容
     const matches = pathName.match(regex); // 匹配结果数组

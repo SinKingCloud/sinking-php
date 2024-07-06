@@ -1,7 +1,7 @@
 import Title from "./title";
-import Layouts from "./layouts";
+import Layout from "./layout";
 
 export {
     Title,
-    Layouts
+    Layout
 }

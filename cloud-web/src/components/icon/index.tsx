@@ -1,4 +1,5 @@
-import { createFromIconfontCN } from '@ant-design/icons';
+import {createFromIconfontCN} from '@ant-design/icons';
+
 /**
  * 图标组件(生产环境需使用本地资源)
  */
@@ -18,7 +19,6 @@ const Link = "icon-link"
 const Money = "icon-money"
 const Bottom = "icon-bottom"
 const Web = "icon-web"
-const Main = "icon-main"
 const Light = "icon-light";//亮色
 const Dark = "icon-dark";
 const Auto = "icon-auto";
@@ -28,7 +28,6 @@ export {
     Icon,
     User,
     Home,
-    Main,
     Exit,
     Right,
     Order,

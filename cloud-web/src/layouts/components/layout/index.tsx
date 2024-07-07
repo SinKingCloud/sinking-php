@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Layout} from "@/components";
 import {Icon} from "@/components";
-import {useModel} from "umi";
+import {useLocation, useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
-import {historyPush} from "@/utils/route";
+import {getCurrentPath, historyPush} from "@/utils/route";
 import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
 import {createStyles} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
-import {Auto, Bottom, Dark, Exit, Light, Main, Order, Right, Setting, System, Web} from "@/components/icon";
+import {Auto, Bottom, Dark, Exit, Light, Order, Right, Setting, System, Web} from "@/components/icon";
 import {outLogin} from "@/service/user/login";
 import request from "@/utils/request";
 import Title from "../title";
-import defaultSettings from "../../../../config/defaultSettings";
 
 /**
  * 中间件
@@ -36,11 +35,11 @@ const RightTop: React.FC = () => {
     const user = useModel("user");//用户信息
     const {message} = App.useApp()
     const theme = useModel("theme");//主题信息
+    const location = useLocation();
     /**
      * 样式
      */
-    const useStyles = createStyles(({css, token, responsive, isDarkMode}): any => {
-        const base = ((defaultSettings?.basePath || "/") + "images/bg_blue.png")
+    const useStyles = createStyles(({css, token, isDarkMode}): any => {
         return {
             img: {
                 marginBottom: "5px",
@@ -151,6 +150,9 @@ const RightTop: React.FC = () => {
         };
     });
     const {styles: {img, nickname, profile, pop, content_top, ava, top_text, box, menu, menuItem, icon}} = useStyles();
+    const currentPath = () => {
+        return getCurrentPath(location?.pathname).slice(1);
+    }
     return <>
         <Tooltip title={theme?.getModeName(theme?.mode)}>
             <Icon type={theme?.isDarkMode() ? Dark : (theme?.isAutoMode() ? Auto : Light)} className={icon}
@@ -181,14 +183,21 @@ const RightTop: React.FC = () => {
                              <div><Icon type={Order} style={{fontSize: 14}}/>操作日志</div>
                              <Icon type={Right}></Icon>
                          </li>
-                         {user?.web?.is_master && <li className={menuItem} onClick={() => historyPush("master.index")}>
-                             <div><Icon type={System} style={{fontSize: 14}}/>系统管理</div>
-                             <Icon type={Right}></Icon>
-                         </li>}
-                         {user?.web?.is_admin && <li className={menuItem} onClick={() => historyPush("admin.index")}>
-                             <div><Icon type={Web} style={{fontSize: 14}}/>网站管理</div>
-                             <Icon type={Right}></Icon>
-                         </li>}
+                         {currentPath() != 'user' && user?.web?.is_master &&
+                             <li className={menuItem} onClick={() => historyPush("user.index")}>
+                                 <div><Icon type={System} style={{fontSize: 14}}/>网站首页</div>
+                                 <Icon type={Right}></Icon>
+                             </li>}
+                         {currentPath() != 'admin' && user?.web?.is_admin &&
+                             <li className={menuItem} onClick={() => historyPush("admin.index")}>
+                                 <div><Icon type={Web} style={{fontSize: 14}}/>网站管理</div>
+                                 <Icon type={Right}></Icon>
+                             </li>}
+                         {currentPath() != 'master' && user?.web?.is_master &&
+                             <li className={menuItem} onClick={() => historyPush("master.index")}>
+                                 <div><Icon type={Setting} style={{fontSize: 14}}/>系统管理</div>
+                                 <Icon type={Right}></Icon>
+                             </li>}
                          <li className={menuItem} onClick={async () => {
                              message?.loading({content: '正在退出登录', duration: 600000, key: "outLogin"});
                              await outLogin({
@@ -260,7 +269,7 @@ const SKLayout: React.FC<slide> = ({...props}) => {
     /**
      * 样式信息
      */
-    const useStyles = createStyles(({css}): any => {
+    const useStyles = createStyles((): any => {
         return {
             collapsedImg: {
                 width: "35px",
@@ -275,7 +284,8 @@ const SKLayout: React.FC<slide> = ({...props}) => {
                 },
                 ">div": {
                     fontSize: "25px",
-                    marginLeft: "5px", fontWeight: "bolder",
+                    marginLeft: "5px",
+                    fontWeight: "bolder",
                     float: "left",
                     lineHeight: "30px",
                     whiteSpace: "nowrap",
@@ -297,11 +307,6 @@ const SKLayout: React.FC<slide> = ({...props}) => {
                     headerRight={<RightTop/>}
                     menuCollapsedWidth={60}
                     menuUnCollapsedWidth={210}
-                    menuBottomBtnText={"首页"}
-                    menuBottomBtnIcon={Main}
-                    onMenuBottomBtnClick={() => {
-                        historyPush("user.index")
-                    }}
                     collapsedLogo={() => {
                         return <img
                             src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}

@@ -124,13 +124,9 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
                     color: "rgb(122 122 122)",
                 }
             },
-            btn: {
-                float: "right",
-                button: {
-                    marginTop: "10px",
-                    fontSize: "10px",
-                }
-            }
+        },
+        btn: {
+            fontSize: "10px !important",
         },
         avatar2: css`
             margin-right: 15px;
@@ -169,6 +165,15 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
         card: css`
             .ant-card-body {
                 padding: 0 !important;
+            }
+        `,
+        alert: css`
+            .rfm-child {
+                font-size: 13px !important;
+
+                ${responsive.mobile} {
+                    font-size: 9px !important;
+                }
             }
         `
     };
@@ -232,7 +237,8 @@ export default () => {
             align,
             pageHeaderContent,
             right,
-            card
+            card,
+            alert
         }
     } = useStyles();
     /**
@@ -333,7 +339,7 @@ export default () => {
                         style={{fontSize: "14px", marginTop: "8px", marginBottom: "15px"}} banner
                         type={"info"}
                         message={
-                            <Marquee pauseOnHover gradient={false}>
+                            <Marquee pauseOnHover gradient={false} className={alert}>
                                 {notice2Data?.['notice.index']}
                             </Marquee>
                         }

@@ -202,10 +202,10 @@ export default (): React.ReactNode => {
                 }/>
             </Modal>
             <Row>
-                <Col xs={{span: 24, offset: 0}} lg={{span: 12, offset: 6}}>
+                <Col xs={{span: 24, offset: 0}} md={{span: 18, offset: 3}} lg={{span: 16, offset: 4}}>
                     <Card title={<Title>账户设置</Title>} bordered>
                         <Row>
-                            <Col lg={{span: 12}} style={{textAlign: "center", margin: "0px auto 20px auto"}}>
+                            <Col lg={12} style={{textAlign: "center", margin: "0px auto 20px auto", width: "100%"}}>
                                 <Space direction="vertical" size={"small"}>
                                     <Avatar style={{width: "150px", height: "150px"}} src={
                                         <Image
@@ -267,7 +267,7 @@ export default (): React.ReactNode => {
                                     </div>
                                 </Space>
                             </Col>
-                            <Col lg={{span: 12}}>
+                            <Col lg={12} style={{width: "100%"}}>
                                 <ProForm onFinish={async (values) => {
                                     await updateInfo({
                                         body: {
@@ -323,7 +323,6 @@ export default (): React.ReactNode => {
                                                 </Dropdown>
                                             </Col>
                                         </Row>
-
                                     </ProFormItem>
                                     <ProFormItem label="绑定手机" tooltip="账户绑定的安全手机">
                                         <Row gutter={5} wrap={false}>

@@ -277,7 +277,7 @@ export default (): React.ReactNode => {
                                 },
                             });
                         } else {
-                            setPayJumpUrl();
+                            setPayJumpUrl(location.protocol + '//' + url);
                             if (mobile) {
                                 window.location.href = r.data;
                             } else {

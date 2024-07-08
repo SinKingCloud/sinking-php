@@ -17,6 +17,21 @@ import {ago} from "@/utils/time";
 import {DonutConfig} from "@ant-design/charts/es/donut";
 import {Donut} from "@ant-design/charts";
 import {useModel} from "umi";
+import {createStyles} from "antd-style";
+
+const useStyles = createStyles(({css, responsive}) => {
+    return {
+        alert: css`
+            .rfm-child {
+                font-size: 13px !important;
+
+                ${responsive.mobile} {
+                    font-size: 9px !important;
+                }
+            }
+        `
+    }
+});
 
 const Info: React.FC<{
     title: React.ReactNode;
@@ -30,6 +45,7 @@ const Info: React.FC<{
     </div>
 );
 export default (): React.ReactNode => {
+    const {styles: {alert}} = useStyles();
     /**
      * 数据概览
      */
@@ -224,7 +240,7 @@ export default (): React.ReactNode => {
                             style={{fontSize: "14px", marginTop: "8px", marginBottom: "8px"}} banner
                             type="info"
                             message={
-                                <Marquee pauseOnHover gradient={false}>
+                                <Marquee pauseOnHover gradient={false} className={alert}>
                                     {notice2Data?.['notice.admin']}
                                 </Marquee>
                             }

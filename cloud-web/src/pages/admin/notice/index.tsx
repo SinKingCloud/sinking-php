@@ -22,8 +22,21 @@ import 'braft-editor/dist/index.css';
 import {uploadFile} from "@/service/common/upload";
 import {Body, Title} from '@/components';
 import {NamePath} from "rc-field-form/es/interface";
+import {createStyles} from "antd-style";
+
+const useStyles = createStyles(({css, isDarkMode}) => {
+    const braftColor = isDarkMode ? "1px solid rgb(60, 60, 60) !important" : "1px solid rgb(230, 230, 230)!important";
+    return {
+        braft: css`
+            .bf-container {
+                border: ${braftColor};
+            }
+        `
+    }
+});
 
 export default (): React.ReactNode => {
+    const {styles: {braft}} = useStyles();
     /**
      * 表单处理
      */
@@ -42,7 +55,7 @@ export default (): React.ReactNode => {
      * 新建编辑提交表单
      * @param values 表单项
      */
-    const [btnLoading,setBtnLoading] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false)
     const onFormFinish = async (values: any) => {
         let api = createNotice;
         if (values.id != undefined) {
@@ -68,7 +81,7 @@ export default (): React.ReactNode => {
             onFail: (r: any) => {
                 message?.error(r?.message || "请求失败")
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setBtnLoading(false)
             }
         })
@@ -327,7 +340,7 @@ export default (): React.ReactNode => {
             }}>
                 <Spin spinning={noticeLoading}>
                     <div style={{display: !noticeLoading ? "block" : "none"}}>
-                        <Form form={form} name="control-hooks"  onFinish={onFormFinish} labelAlign="right"
+                        <Form form={form} name="control-hooks" onFinish={onFormFinish} labelAlign="right"
                               labelCol={{span: 2}} wrapperCol={{span: 21}}>
                             <Form.Item name="id" label="ID" hidden={true}>
                                 <Input placeholder="请输入ID"/>
@@ -367,7 +380,7 @@ export default (): React.ReactNode => {
                                     }
                                 ]} style={{maxWidth: "500px"}}/>
                             </Form.Item>
-                            <Form.Item name="content" label="内容" rules={[{required: true}]}>
+                            <Form.Item name="content" label="内容" className={braft} rules={[{required: true}]}>
                                 <BraftEditor
                                     onChange={(editorState: any) => {
                                         setEditValue(editorState.toHTML());

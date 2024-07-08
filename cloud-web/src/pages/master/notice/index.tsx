@@ -25,18 +25,25 @@ import {Body, Title} from '@/components';
 import {NamePath} from "rc-field-form/es/interface";
 import {createStyles} from "antd-style";
 
-const useStyles = createStyles(({css}) => {
+const useStyles = createStyles(({css, isDarkMode}) => {
+    const braftColor = isDarkMode ? "1px solid rgb(60, 60, 60) !important" : "1px solid rgb(230, 230, 230)!important";
     return {
         modals: css`
             .ant-modal-title {
                 margin-bottom: 15px;
             }
+        `,
+        braft: css`
+            .bf-container {
+                border: ${braftColor};
+            }
         `
     }
-})
+});
+
 export default (): React.ReactNode => {
     const {message, modal} = App.useApp()
-    const {styles: {modals}} = useStyles()
+    const {styles: {modals, braft}} = useStyles();
     /**
      * 表单处理
      */
@@ -54,7 +61,7 @@ export default (): React.ReactNode => {
      * 新建编辑提交表单
      * @param values 表单项
      */
-    const [btnLoading,setBtnLoading] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false)
     const onFormFinish = async (values: any) => {
         let api = createNotice;
         if (values.id != undefined) {
@@ -124,7 +131,7 @@ export default (): React.ReactNode => {
      * 删除数据
      * @param ids id列表
      */
-    const [deleteBtn,setDeleteBtn] = useState<any>(false)
+    const [deleteBtn, setDeleteBtn] = useState<any>(false)
     const deleteSubmit = (ids: any[]) => {
         modal.confirm({
             title: '您确定要删除该数据吗?',
@@ -146,7 +153,7 @@ export default (): React.ReactNode => {
                         message?.error(r?.message || "请求失败")
                     },
                     onFinally: () => {
-                       setDeleteBtn(false)
+                        setDeleteBtn(false)
                     }
                 })
             },
@@ -377,7 +384,7 @@ export default (): React.ReactNode => {
                                 }]}/>
 
                             </Form.Item>
-                            <Form.Item name="content" label="内容" rules={[{required: true}]}>
+                            <Form.Item name="content" className={braft} label="内容" rules={[{required: true}]}>
                                 <BraftEditor
                                     onChange={(editorState: any) => {
                                         setEditValue(editorState.toHTML());

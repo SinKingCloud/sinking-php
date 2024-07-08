@@ -204,7 +204,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
             }
-        `
+        `,
     }
 })
 export default (): React.ReactNode => {
@@ -351,7 +351,7 @@ export default (): React.ReactNode => {
                 </Form.Item>
             </Form>
         </Modal>
-        <ProCard>
+        <ProCard bodyStyle={{padding:0}}>
             <div className={mainTitle}>
                 <div className={topTitle}>合作加盟，专享超值权益</div>
             </div>

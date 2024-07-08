@@ -47,8 +47,7 @@ const NoticeInfo: React.FC<NoticeInfoProps> = (props) => {
                             <div style={{
                                 textAlign: "center",
                                 fontSize: "20px",
-                                fontWeight: "bolder",
-                                color: "#545454"
+                                fontWeight: "bolder"
                             }}>{noticeData?.title}</div>
                             <div style={{textAlign: "center", fontSize: "13px", color: "#8d8d8d", margin: "10px 0"}}>
                                 <UserOutlined/> 管理员&nbsp;&nbsp;&nbsp;

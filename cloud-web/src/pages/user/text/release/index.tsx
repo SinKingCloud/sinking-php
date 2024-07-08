@@ -24,7 +24,8 @@ export default () => {
     return (
         <Body  breadCrumb={false}>
             <Row style={{display:"flex",justifyContent:"space-around"}}>
-                <Col span={15} style={{padding:"15px",backgroundColor:theme.isDarkMode?"rgb(20,20,20)":"#fff",borderRadius:"5px"}}>
+                <Col xs={24} sm={24} md={24} lg={15} xl={15}
+                     style={{padding:"15px",backgroundColor:theme.isDarkMode?"rgb(20,20,20)":"#fff",borderRadius:"5px",marginBottom:"10px"}}>
                     <div style={{margin:"0 0 10px 0",fontSize:"16px",fontWeight:"bold"}}>
                         <Title>发布文章</Title>
                     </div>
@@ -63,7 +64,7 @@ export default () => {
                         </Form.Item>
                     </Form>
                 </Col>
-                <Col span={8} style={{padding:"15px",backgroundColor:theme.isDarkMode?"rgb(20,20,20)":"#fff",borderRadius:"5px"}}>
+                <Col xs={24} sm={24} md={24} lg={8} xl={8} style={{padding:"15px",backgroundColor:theme.isDarkMode?"rgb(20,20,20)":"#fff",borderRadius:"5px"}}>
                     <Card title={<Title>其他信息</Title>} bordered={false}>
                         <Form layout={"vertical"} form={subForm}>
                             <Form.Item label="浏览量">

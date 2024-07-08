@@ -3,7 +3,7 @@ import {Body, Title} from "@/components";
 import {Card, Col, Drawer, List, Row} from "antd";
 import {createStyles, useTheme} from "antd-style";
 
-const useStyles = createStyles(({responsive,css}): any => {
+const useStyles = createStyles((): any => {
     return {
         card: {
             ".ant-card-body": {
@@ -52,10 +52,10 @@ export default () => {
                         <Title>文章列表</Title>
                     </div>
                     <Card title="最近发表" className={card} bordered={false}>
-                        <ul style={{marginBottom: 0}}>
+                        <ul style={{marginBottom: 0,paddingLeft:"15px"}}>
                             <li className={li}>
                                 <span>fdsjfksjdfksjkfdfldsjfdksfskdfksdfk</span>
-                                <span style={{color: "rgb(130,130,130)"}}>2021-01-01</span>
+                                <span style={{color: "rgb(130,130,130)",marginRight:"5px"}}>2021-01-01</span>
                             </li>
                             <li className={li}>
                                 <span>fdsjfksjdfksjkfdfldsjfdksfskdfksdfk</span>

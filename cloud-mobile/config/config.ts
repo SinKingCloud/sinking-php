@@ -1,6 +1,6 @@
 import { defineConfig } from "umi";
 import routes from "./routes"
-import defaultSetting from "./defaultSetting";
+import defaultSetting from "./defaultSettings";
 export default defineConfig({
     routes,
     npmClient: 'yarn',

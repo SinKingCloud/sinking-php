@@ -19,7 +19,7 @@ const useStyles = createStyles(({css}): any => {
             @keyframes fadeInUp {
                 0% {
                     opacity: 0;
-                    transform: translateY(20px);
+                    transform: translateY(30px);
                 }
 
                 100% {
@@ -35,7 +35,7 @@ const useStyles = createStyles(({css}): any => {
             @keyframes fadeInDown {
                 0% {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateY(-30px);
                 }
 
                 100% {

@@ -17,7 +17,6 @@ import {
 } from "@/components/icon";
 import {history} from "umi";
 import React, {useRef} from "react";
-import {RightOutline} from "antd-mobile-icons";
 import {createStyles} from "antd-style";
 
 const useStyles = createStyles(() => {

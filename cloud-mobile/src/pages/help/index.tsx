@@ -1,7 +1,63 @@
 import React from 'react'
+import {Body} from "@/components";
 export default () => {
     return (
-        <p>帮助</p>
+        <Body showHeader={false}>
+            <div>--------------------------------</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div>--------------------------------</div>
+        </Body>
     )
 
 }

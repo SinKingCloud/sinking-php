@@ -8,8 +8,8 @@ export default () => {
             <div style={{
                 padding: "10px",
                 boxSizing: "border-box",
-                height: "calc(100vh - 45px)",
-                backgroundColor: "#faf8f8"
+               // height: "calc(100vh - 45px)",
+               // backgroundColor: "#faf8f8"
             }}>
                 <Card>
                     <p style={{

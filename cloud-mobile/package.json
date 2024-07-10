@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "author": "",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/plugins": "^4.3.0",
+    "antd": "^5.19.0",
+    "antd-mobile": "^5.37.0",
+    "antd-style": "^3.6.2",
+    "react-load-script": "^0.0.6",
+    "umi": "^4.3.0",
+    "umi-request": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.3"
+  }
+}

@@ -1,7 +1,7 @@
+import React from "react";
 import {history} from 'umi';
-import route from '../../config/routes'
-import {Icon} from "@/components"
-import React from "react"
+import route, {index, user, admin, master, indexPath, userPath, adminPath, masterPath} from '../../config/routes';
+import {Icon} from "@/components/icon";
 
 /**
  * 递归获取完整路径
@@ -61,108 +61,91 @@ export function historyPush(name: any, params = {}) {
 }
 
 /**
- * 递归获取菜单
- * @param routes
- * @param parentPath
- * @param hideMenu
+ * 获取tabBarItems
+ * @param routes 路由信息
+ * @param hideTabBar 是否判断隐藏
  */
-function getMenuItems(routes: any, parentPath = '/', hideMenu = true) {
-    return routes.map((route: any) => {
-        if (hideMenu && route?.hideInMenu) {
-            return;
+export function getTabBarItems(routes: any, hideTabBar = true): any {
+    let items: any[] = [];
+    routes?.map((item) => {
+        if (hideTabBar && item?.hideInTabBar === true) {
+            return
         }
-        const menuItem: any = {
-            label: route?.title,
-            path: route?.path,
-            name: route?.name
-        };
-        if (route?.icon) {
-            menuItem.icon = <Icon type={route?.icon}/>;
-        }
-        if (parentPath != '/' && !route.path.startsWith('/')) {
-            menuItem.key = `${parentPath}/${route.path}`;
+        let temp: any = undefined;
+        if (item?.component) {
+            temp = {
+                icon: <Icon type={item?.icon || "icon-home"}/>,
+                title: item?.title || "",
+                key: item?.name || item.path || item?.component,
+            }
         } else {
-            if (parentPath == '/' && route.path != '/') {
-                menuItem.key = `/${route.path}`;
-            } else {
-                menuItem.key = `${route.path}`;
+            if ((item?.routes?.length || 0) > 0) {
+                temp = {
+                    icon: <Icon type={item?.icon || "icon-home"}/>,
+                    title: item?.title || "",
+                    key: item?.routes?.[0]?.name || item?.routes?.[0].path || item?.routes?.[0]?.component,
+                }
             }
         }
-        if (route?.routes) {
-            const children = getMenuItems(route?.routes, menuItem.key, hideMenu);
-            if (children.length > 0) {
-                menuItem.children = children;
-            }
+        if (item) {
+            items?.push(temp);
         }
-        return menuItem;
     });
-}
-
-
-const parentCache: any = {}
-
-/**
- * 根据name查找父级菜单
- * @param data 菜单
- * @param name 标识
- */
-export function getParentList(data: any[], name: string): any[] {
-    if (Object.keys(name).length <= 0 && parentCache?.[name] != undefined) {
-        return parentCache[name];
-    }
-    let parents: any[] = [];
-
-    function findParent(data: any, name: string): boolean {
-        if (data?.children && data?.children?.length > 0) {
-            if (data?.name === name) {
-                parents.push(data);
-                return true;
-            }
-        } else {
-            for (const item of data) {
-                if (item?.name === name) {
-                    parents.push(item);
-                    return true;
-                }
-                if (item?.children) {
-                    if (findParent(item?.children, name)) {
-                        parents.push(item);
-                        return true;
-                    }
-                }
-            }
-
-        }
-        return false;
-    }
-
-    findParent(data, name);
-    parentCache[name] = parents.reverse()
-    return parentCache[name];
+    return items;
 }
 
 /**
- * 获取菜单
+ * 获取user菜单
  */
-export function getAllMenuItems(hideMenu = true) {
-    return getMenuItems(route, '/', hideMenu)
+export function getUserTabBarItems(hideMenu = true) {
+    return getTabBarItems(user, hideMenu);
 }
 
+/**
+ * 获取index菜单
+ */
+export function getIndexTabBarItems(hideMenu = true) {
+    return getTabBarItems(index, hideMenu);
+}
 
 /**
- * 获取第一个菜单(排除children)
- * @param menu
+ * 获取master菜单
  */
-export function getFirstMenuWithoutChildren(menu: any[]): any | null {
-    for (const item of menu) {
-        if (!item.hasOwnProperty('children')) {
-            return item; // 如果对象没有 children 属性，则返回该对象
-        } else {
-            const result = getFirstMenuWithoutChildren(item.children);
-            if (result !== null) {
-                return result;
-            }
-        }
+export function getMasterTabBarItems(hideMenu = true) {
+    return getTabBarItems(master, hideMenu);
+}
+
+/**
+ * 获取admin菜单
+ */
+export function getAdminTabBarItems(hideMenu = true) {
+    return getTabBarItems(admin, hideMenu);
+}
+
+/**
+ * 当前访问系统路由
+ */
+export function getCurrentTabBarItems(pathName: any, hideMenu = true): any {
+    if (pathName == "/" || pathName == "") {
+        pathName = "/index/index";
     }
-    return null;
+    let mode = "";
+    const regex = /\/([^/]+)\//; // 正则表达式匹配 / 之间的内容
+    const matches = pathName.match(regex); // 匹配结果数组
+    if (matches && matches.length >= 2) {
+        mode = matches[1];
+    }
+    if (mode == userPath) {
+        return getUserTabBarItems(hideMenu);
+    }
+    if (mode == indexPath) {
+        return getIndexTabBarItems(hideMenu);
+    }
+    if (mode == masterPath) {
+        return getMasterTabBarItems(hideMenu);
+    }
+    if (mode == adminPath) {
+        return getAdminTabBarItems(hideMenu);
+    }
+    return [];
 }

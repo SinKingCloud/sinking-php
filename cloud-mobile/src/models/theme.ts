@@ -1,5 +1,4 @@
-import {useState} from "react";
-import {theme} from "antd";
+import {useEffect, useState} from "react";
 // 获取风格
 const getDefaultTheme = (color): any => {
     return {
@@ -9,12 +8,7 @@ const getDefaultTheme = (color): any => {
         },
     }
 }
-// 获取风格
-const getCompactTheme = (color): any => {
-    let temp = getDefaultTheme(color);
-    temp.algorithm = [theme.compactAlgorithm];
-    return temp;
-}
+
 /**
  * 获取主题模式
  */
@@ -49,13 +43,6 @@ export default () => {
      */
     const setDefaultTheme = () => {
         setThemes(getDefaultTheme(themes?.token?.colorPrimary))
-    }
-
-    /**
-     * 设置紧凑主题
-     */
-    const setCompactTheme = () => {
-        setThemes(getCompactTheme(themes?.token?.colorPrimary))
     }
 
     /**
@@ -156,12 +143,21 @@ export default () => {
         }
     }
 
+    useEffect(() => {
+        window?.document?.documentElement.setAttribute(
+            'data-prefers-color-scheme',
+            appearance == darkMode ? darkMode : lightMode,
+        );
+        window?.document?.documentElement?.style.setProperty(
+            "--adm-color-primary", themes?.token?.colorPrimary
+        );
+    }, [appearance, themes]);
+
     return {
         themes,
         setColor,
         setThemes,
         setDefaultTheme,
-        setCompactTheme,
         appearance,
         setAppearance,
         mode,

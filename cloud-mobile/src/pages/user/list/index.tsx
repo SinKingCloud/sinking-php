@@ -2,6 +2,9 @@ import React from 'react'
 import {Body, Icon} from "@/components";
 import {Clock, Cuo, Del, Dui, Ellipsis, Explore, Search, Type} from "@/components/icon";
 import {Dropdown} from "antd";
+import {Button} from "antd-mobile";
+import {history} from "umi";
+import {historyPush} from "@/utils/route";
 
 export default () => {
     const items = [
@@ -79,13 +82,17 @@ export default () => {
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div><Button onClick={() => {
+                history?.push("/admin/index")
+            }}>后台</Button></div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
-            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
-            <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
+            <div><Button onClick={() => {
+                historyPush("other.person.info")
+            }}>公告页面</Button></div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>
             <div>etdsdsddsshdshjsdhjhdshhjdhjshjd</div>

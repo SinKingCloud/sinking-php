@@ -7,7 +7,7 @@ import zhCN from "antd-mobile/es/locales/zh-CN";
 import {useLocation} from "umi";
 import {App} from "antd";
 
-const useStyles = createStyles(({token, isDarkMode, css}): any => {
+const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
     return {
         container: css`
             display: flex;
@@ -17,6 +17,13 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
             left: 0;
             right: 0;
             bottom: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.13);
+
+            ${responsive.mobile} {
+                max-width: none;
+            }
         `,
         body: {
             display: "flex",
@@ -53,9 +60,11 @@ export interface TabItem {
 export type MobileProps = {
     showTabBar?: any; // 显示底部tabBar
     tabBar?: TabItem[];//tabBar
+    tabBarActiveKey?: any;//tabBar选中key
     tabBarStyles?: any;//tabBar样式
     tabBarClassNames?: any;//tabBar样式
     path?: any;//当前激活的tabBar
+    onTabBarChange?: (key: any) => void;//tabBar改变事件
 }
 
 const SkLayout: React.FC<MobileProps> = (props: any) => {
@@ -67,9 +76,10 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
     const {
         showTabBar = true,
         tabBar = [],
-        path = pathname,
+        tabBarActiveKey = pathname,
         tabBarStyles = {},
-        tabBarClassNames = ""
+        tabBarClassNames = "",
+        onTabBarChange = undefined
     } = props;
 
     return <ConfigProvider locale={zhCN}>
@@ -81,9 +91,9 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
                 {showTabBar && (tabBar?.length || 0) > 0 && <div className={tab}>
                     <TabBar className={tabBarClassNames}
                             style={tabBarStyles}
-                            activeKey={path}
+                            activeKey={tabBarActiveKey}
                             onChange={(key) => {
-                                history.push(key)
+                                onTabBarChange?.(key);
                             }}>
                         {tabBar.length > 0 && tabBar?.map((item: any) => (
                             <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>

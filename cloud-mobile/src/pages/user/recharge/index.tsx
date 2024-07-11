@@ -1,7 +1,9 @@
 import React from 'react'
+import {Body} from "@/components";
+
 export default () => {
     return (
-        <p>充值</p>
+        <Body>充值</Body>
     )
 
 }

@@ -2,6 +2,8 @@ import {Mobile} from "@/components";
 import {useLocation, useSelectedRoutes} from "@umijs/renderer-react";
 import React, {useEffect, useState} from "react";
 import {getCurrentTabBarItems, historyPush} from "@/utils/route";
+import {getLoginToken} from "@/utils/auth";
+import {useModel} from "umi";
 
 export default function () {
     const location = useLocation();
@@ -9,7 +11,22 @@ export default function () {
     const route: any = useSelectedRoutes();
     const [tabBarActiveKey, setTabBarActiveKey] = useState("");
     const [showTabBar, setShowTabBar] = useState(true);
-
+    const user = useModel('user')
+    const initUser = () => {
+        if (getLoginToken() == "") {
+            historyPush("user.login");
+            return;
+        }
+        user?.getWebUser()?.then((u: any) => {
+            user?.setWeb(u);
+        })
+    }
+    /**
+     * 初始化用户
+     */
+    useEffect(() => {
+        initUser();
+    }, []);
     useEffect(() => {
         const name = route?.pop()?.route?.name;
         setTabBarActiveKey(name);

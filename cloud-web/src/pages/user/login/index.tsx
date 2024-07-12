@@ -311,7 +311,7 @@ const Index: React.FC = () => {
                                     onFinally: () => {
                                         setIsLoading(false);
                                     }
-                                });
+                                })
                             } else if (type == 'email') {
                                 if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
                                     message?.error("请输入正确的邮箱");

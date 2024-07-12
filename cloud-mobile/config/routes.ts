@@ -8,7 +8,7 @@ export const user = [
         title: "首页",
         name: "user.index",
         icon: 'icon-home',
-        component: "@/pages/user/list",
+        component: "@/pages/user/index",
     },
     {
         path: "list",
@@ -22,14 +22,14 @@ export const user = [
         title: "充值",
         name: "user.pay",
         icon: 'icon-recharge',
-        component: "@/pages/user/list",
+        component: "@/pages/user/recharge",
     },
     {
         path: "help",
         title: "帮助",
         name: "user.help",
         icon: 'icon-help',
-        component: "@/pages/user/list",
+        component: "@/pages/user/help",
     },
     {
         path: "person",
@@ -39,7 +39,7 @@ export const user = [
         routes: [
             {
                 path: "info",
-                component: "@/pages/user/list",
+                component: "@/pages/user/my",
                 title: "账号信息",
                 name: "user.person.info",
                 icon: 'icon-user',
@@ -60,10 +60,63 @@ export const user = [
                 name: "other.person.info",
                 icon: 'icon-user',
             },
+            {
+                path: "onlinePay",
+                title: "在线支付",
+                name: "other.person.onlinePay",
+                component: "@/pages/user/index/components/onlinePay",
+            },
+            {
+                path: "cdkPay",
+                title: "卡密支付",
+                name: "other.person.cdkPay",
+                component: "@/pages/user/index/components/cdkPay",
+            },
+            {
+                path: "helpInfo",
+                title: "帮助信息",
+                name: "other.person.helpInfo",
+                component: "@/pages/user/index/components/helpInfo",
+            },
+            {
+                path: "invite",
+                title: "邀请好友活动",
+                name: "other.person.invite",
+                component: "@/pages/user/index/components/invite",
+            },
+            {
+                path: "summer",
+                title: "暑假活动",
+                name: "other.person.summer",
+                component: "@/pages/user/index/components/summer",
+            },
+            {
+                path: "join",
+                title: "活动参与记录",
+                name: "other.person.join",
+                component: "@/pages/user/index/components/join",
+            },
+            {
+                path: "smsLogin",
+                component: "@/pages/user/login/components/smsLogin",
+                title: "短信登录",
+                name: "other.smsLogin",
+            },
+            {
+                path: "qrLogin",
+                component: "@/pages/user/login/components/qrLogin",
+                title: "扫码登录",
+                name: "other.qrLogin",
+            },
+            {
+                path: "emailLogin",
+                component: "@/pages/user/login/components/emailLogin",
+                title: "邮箱登录",
+                name: "other.emailLogin",
+            },
         ]
     },
 ];
-
 /**
  * 系统后台路由
  */
@@ -77,7 +130,6 @@ export const master = [
         name: "master.index",
     },
 ]
-
 /**
  * 网站后台路由
  */
@@ -91,7 +143,6 @@ export const admin = [
         icon: 'icon-web',
     },
 ]
-
 /**
  * 首页系统路由
  */

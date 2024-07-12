@@ -5,6 +5,7 @@ import {createStyles} from "antd-style";
 import {Label} from "@/components/icon";
 import {Modal} from "antd"
 import {history} from "umi"
+import {historyPush} from "@/utils/route";
 const useStyles = createStyles(():any=>{
     return{
         label:{
@@ -42,15 +43,20 @@ const useStyles = createStyles(():any=>{
                 height:"15px !important",
                 width:"15px !important",
             }
+        },
+        content:{
+            height:"100vh",
+            backgroundColor:"#faf8f8 !important",
+            padding:"10px",
         }
     }
 })
 export default () => {
-    const {styles:{label,body,modal,check}} = useStyles();
+    const {styles:{label,body,modal,check,content}} = useStyles();
     const [form] = Form.useForm();
     const [isModalOpen,setIsModalOpen] = useState<any>(false)
     return (
-        <Body title="使用卡密下单">
+        <Body title="使用卡密下单" bodyClassNames={content}>
             <Modal title="请选择要更换到的代练地区" className={modal} open={isModalOpen} onCancel={()=>setIsModalOpen(false)} footer={null}>
                 <p style={{fontSize: "12px", lineHeight: "30px", color: "#f38e1b",textAlign:"center",
                     borderTop:"1px solid #eeeeee",borderBottom:"1px solid #eeeeee",marginBottom:0}}>
@@ -71,57 +77,50 @@ export default () => {
                     </li>
                 </ul>
             </Modal>
-            <div style={{
-                padding: "10px",
-                boxSizing: "border-box",
-                height: "calc(100vh - 45px)",
-                backgroundColor: "#faf8f8"
-            }}>
-                <NoticeBar
-                    style={{
-                        fontSize: "12px",
-                        lineHeight: "15px",
-                        borderRadius: "5px",
-                        backgroundColor: "#b6d2ef", marginBottom:"10px"}}
-                    content='暑假活动开启，下单任意套装代练3个月及以上的均享受超低折扣价，并且还有额外赠送时长，欢迎参与。'
-                    wrap
-                    color='info'
-                />
-                <Form layout='horizontal' form={form} className={body} >
-                    <p style={{textAlign: 'center', color: "#f655a6",fontSize:"12px",fontWeight:"bold",letterSpacing:"0.5px",lineHeight:"30px"}}>请输入需要代练的号码和密码</p>
-                    <Form.Item label='号码 :' name="number" className={label}>
-                        <Input placeholder='请输入要代练的号码'/>
-                    </Form.Item>
-                    <Form.Item label='密码 :' name="password" className={label}>
-                        <Input placeholder='请输入代练号码的密码' />
-                    </Form.Item>
-                    <Form.Item label='代练卡密 :' name="cdk" className={label}>
-                        <Input placeholder='请输入代练下单卡密' />
-                    </Form.Item>
-                    <Form.Item className={label}>
-                        <div style={{fontSize:"12px",marginTop:"10px"}}>
-                            <span style={{fontWeight:"bold",marginRight:"10px"}}>代练地区 :</span>
-                            <span style={{color:"#477eeb",marginRight:"8px"}}><Icon type={Label}/></span>
-                            <span style={{color:"red"}}>安徽省</span>
-                        </div>
-                        <span style={{fontSize:"12px",lineHeight:1}}>此位置来自于系统自动定位，如定位错误，
+            <NoticeBar
+                style={{
+                    fontSize: "12px",
+                    lineHeight: "15px",
+                    borderRadius: "5px",
+                    backgroundColor: "#b6d2ef", marginBottom:"10px"}}
+                content='暑假活动开启，下单任意套装代练3个月及以上的均享受超低折扣价，并且还有额外赠送时长，欢迎参与。'
+                wrap
+                color='info'
+            />
+            <Form layout='horizontal' form={form} className={body} >
+                <p style={{textAlign: 'center', color: "#f655a6",fontSize:"12px",fontWeight:"bold",letterSpacing:"0.5px",lineHeight:"30px"}}>请输入需要代练的号码和密码</p>
+                <Form.Item label='号码 :' name="number" className={label}>
+                    <Input placeholder='请输入要代练的号码'/>
+                </Form.Item>
+                <Form.Item label='密码 :' name="password" className={label}>
+                    <Input placeholder='请输入代练号码的密码' />
+                </Form.Item>
+                <Form.Item label='代练卡密 :' name="cdk" className={label}>
+                    <Input placeholder='请输入代练下单卡密' />
+                </Form.Item>
+                <Form.Item className={label}>
+                    <div style={{fontSize:"12px",marginTop:"10px"}}>
+                        <span style={{fontWeight:"bold",marginRight:"10px"}}>代练地区 :</span>
+                        <span style={{color:"#477eeb",marginRight:"8px"}}><Icon type={Label}/></span>
+                        <span style={{color:"red"}}>安徽省</span>
+                    </div>
+                    <span style={{fontSize:"12px",lineHeight:1}}>此位置来自于系统自动定位，如定位错误，
                                 <a style={{fontWeight:"bold",color:"#477eeb"}} onClick={()=>setIsModalOpen(true)}>可点此更改</a>
                             </span>
-                    </Form.Item>
-                    <Form.Item name="checked" className={label}>
-                        <Checkbox className={check}>
-                            <span style={{fontSize: "13px", marginRight: "10px"}}>我已阅读</span>
-                            <span style={{fontSize: "12px", color: "#477eeb"}}  onClick={(e) => {
-                                e.preventDefault();
-                                history.push("/helpInfo")
-                            }}>关于禁止养号、禁止小号挂机的说明</span>
-                        </Checkbox>
-                    </Form.Item>
-                    <Form.Item>
-                        <Button style={{"--background-color":"#5ca5d6","--border-color":"#5ca5d6"}} block color='primary'>下一步</Button>
-                    </Form.Item>
-                </Form>
-            </div>
+                </Form.Item>
+                <Form.Item name="checked" className={label}>
+                    <Checkbox className={check}>
+                        <span style={{fontSize: "13px", marginRight: "10px"}}>我已阅读</span>
+                        <span style={{fontSize: "12px", color: "#477eeb"}}  onClick={(e) => {
+                            e.preventDefault();
+                            historyPush("other.person.helpInfo")
+                        }}>关于禁止养号、禁止小号挂机的说明</span>
+                    </Checkbox>
+                </Form.Item>
+                <Form.Item>
+                    <Button style={{"--background-color":"#5ca5d6","--border-color":"#5ca5d6"}} block color='primary'>下一步</Button>
+                </Form.Item>
+            </Form>
         </Body>
     )
 }

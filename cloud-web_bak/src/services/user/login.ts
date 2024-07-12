@@ -45,7 +45,7 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 二维码登陆 GET /auth/login/qrlogin */
+/** 二维码登陆 GET /auth/login/qrLogin */
 export async function qrLogin(params?: {}, options?: { [key: string]: any }) {
   return request<API.Response>('/auth/login/qrlogin', {
     method: 'GET',

@@ -1,12 +1,11 @@
 import React from "react";
 import {createStyles} from "antd-style";
 import {TabBar} from "antd-mobile";
-import {history, Outlet} from "umi";
+import {Outlet} from "umi";
 import {ConfigProvider} from "antd-mobile";
 import zhCN from "antd-mobile/es/locales/zh-CN";
 import {useLocation} from "umi";
 import {App} from "antd";
-
 const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
     return {
         container: css`
@@ -20,7 +19,6 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
             max-width: 500px;
             margin: 0 auto;
             box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.13);
-
             ${responsive.mobile} {
                 max-width: none;
             }
@@ -81,7 +79,6 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         tabBarClassNames = "",
         onTabBarChange = undefined
     } = props;
-
     return <ConfigProvider locale={zhCN}>
         <App>
             <div className={container}>
@@ -102,7 +99,6 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
                 </div>}
             </div>
         </App>
-    </ConfigProvider>
-        ;
+    </ConfigProvider>;
 }
 export default SkLayout

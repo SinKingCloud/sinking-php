@@ -3,7 +3,7 @@ import { createFromIconfontCN } from '@ant-design/icons';
  * 图标组件(生产环境需使用本地资源)
  */
 const Icon = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/c/font_4606373_skf9be2a1yc.js',
+    scriptUrl: '//at.alicdn.com/t/c/font_4606373_nt5uzu9zljp.js',
 });
 /**
  * 图标数据
@@ -36,6 +36,10 @@ const Search = "icon-search"
 const Del = "icon-del"
 const Dui = "icon-dui"
 const Cuo = "icon-cuo"
+const Qrcode = "icon-qrcode"
+const Email = "icon-email"
+const Reset = "icon-reset"
+const Reg = "icon-reg"
 export {
     Icon,
     Home,
@@ -66,4 +70,8 @@ export {
     Del,
     Dui,
     Cuo,
+    Qrcode,
+    Email,
+    Reset,
+    Reg,
 }

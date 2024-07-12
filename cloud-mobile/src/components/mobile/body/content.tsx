@@ -41,6 +41,7 @@ export type BodyProps = {
     bodyClassNames?: any;//内容class
     themes?: any;//主题
     mode?: any;//模式
+    titleStyle?:any;//标题样式
 }
 
 const Content: React.FC<BodyProps> = (props: any) => {
@@ -63,6 +64,7 @@ const Content: React.FC<BodyProps> = (props: any) => {
         bodyStyle = undefined,
         headClassNames = "",
         bodyClassNames = "",
+        titleStyle = undefined
     } = props;
 
     /**
@@ -74,7 +76,7 @@ const Content: React.FC<BodyProps> = (props: any) => {
             onBack={onBack}
             className={header + " " + headClassNames}
             right={right} style={headStyle}>
-            {title && <span className={title2}>{title}</span>}
+            {title && <span className={title2} style={titleStyle}>{title}</span>}
         </NavBar>}
         <div className={body + " " + bodyClassNames} style={bodyStyle}>
             <Animation animate={animate ? Animate.FadeUp : Animate.None}>

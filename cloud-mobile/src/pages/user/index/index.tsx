@@ -1,24 +1,14 @@
-import {Body, Icon} from "@/components";
-import {Button, List, Modal} from "antd-mobile";
-import {
-    Cdk,
-    Gift,
-    Help,
-    Huo,
-    Left,
-    Tabulate,
-    Recharge,
-    Right,
-    Shop,
-    Type,
-    User,
-    Message,
-    Than
-} from "@/components/icon";
-import {history} from "umi";
-import React, {useRef} from "react";
-import {createStyles} from "antd-style";
+import {Body, Icon, Title} from "@/components";
+import {Avatar, Button, Card, List, NoticeBar, Skeleton} from "antd-mobile";
+import {Huo, Message,} from "@/components/icon";
+import React, {useEffect, useState} from "react";
+import {createStyles, useTheme} from "antd-style";
 import {historyPush} from "@/utils/route";
+import {getContact, getNotice} from "@/service/person/config";
+import {getNoticeList} from "@/service/person/notice";
+import {ago} from "@/utils/time";
+import {useModel} from "umi";
+import {AddOutline} from "antd-mobile-icons";
 
 const useStyles = createStyles(() => {
     return {
@@ -27,7 +17,6 @@ const useStyles = createStyles(() => {
                 lineHeight: "1 !important"
             },
             ".adm-list-header": {
-                backgroundColor: "#fff",
                 borderRadius: "5px",
                 fontSize: "12px !important",
             }
@@ -41,173 +30,157 @@ const useStyles = createStyles(() => {
                 marginTop:"3px"
             }
         },
-        body:{
-            backgroundColor:"#faf8f8 !important",
-        },
+        btn:{
+            height:"160px",
+            width:"100%",
+            fontSize:"14px",
+        }
     }
 })
 export default function HomePage() {
-    const modalRef = useRef<any>();
-    const {styles: {list, icon,body}} = useStyles()
-    const users = [
-        {
-            key: 1,
-            name: (
-                <span style={{fontSize: "13px", color: "#f655a6",fontWeight:600}}>暑假活动<Icon type={Huo}
-                                                                                                style={{marginLeft: "10px"}}/></span>
-            ),
-            description: (
-                <span style={{
-                    fontSize: "12px",
-                    color: "rgba(0,0,0,0.7)"
-                }} >永久代挂5折，下单年费多送6个月，点此查看</span>
-            ),
-        },
-        {
-            key: 2,
-            name: (
-                <span style={{fontSize: "13px", color: "#477eeb",fontWeight:600}}>邀请好友活动<Icon type={Huo}
-                                                                                                    style={{marginLeft: "10px"}}/></span>
-            ),
-            description: (
-                <span style={{
-                    fontSize: "12px",
-                    color: "rgba(0,0,0,0.7)"
-                }}>与好友一起动动手指即可免费用代挂，欢迎参与</span>
-            ),
-        },
-    ]
-    const notice = [
-        {
-            key:1,
-            name:(<span style={{fontSize: "13px", color: "rgba(0,0,0,0.7)"}}>关于挂机状态频繁变为登录保护的通知</span>)
-        }
-    ]
+    const theme = useTheme()
+    const user = useModel("user")
+    const {styles: {list,icon,btn}} = useStyles()
+    /**
+     * 获取公告信息
+     */
+    const [noticeData, setNoticeData] = useState<any>([]);
+    const [noticeLoading,setNoticeLoading] = useState(false)
+    const getNoticeData = async () => {
+        setNoticeLoading(true)
+        const temp: any[] = [];
+        await getNoticeList({
+            body: {
+                page: 1, page_size: 3, web_id: 'system', place: "index"
+            },
+            onSuccess: (r: any) => {
+                    r?.data?.list?.map((k: any) => {
+                        temp?.push(k);
+                    });
+            },
+            onFinally:()=>{
+                setNoticeLoading(false)
+            }
+        });
+        await getNoticeList({
+            body: {
+                page: 1, page_size: 5, web_id: 'my', place: "index"
+            },
+            onSuccess: (r: any) => {
+                    r?.data?.list?.map((k: any) => {
+                        temp?.push(k);
+                    });
+            },
+            onFinally:()=>{
+                setNoticeLoading(false)
+            }
+        });
+        setNoticeData(temp);
+    };
+    /**
+     * 滚动公告
+     */
+    const [noticeData2,setNoticeData2] = useState()
+    const [noticeLoading2,setNoticeLoading2] = useState(false)
+    const getNoticeData2 = async() => {
+        setNoticeLoading2(true)
+       await getNotice({
+            onSuccess: (r: any) => {
+                setNoticeData2(r?.data);
+            },
+            onFinally: () => {
+                setNoticeLoading2(false);
+            }
+        })
+    }
+    /**
+     * 客服信息
+     */
+    const [contactLoading, setContactLoading] = useState(true);
+    const [contactData, setContactData] = useState({});
+    const getContactData = () => {
+        setContactLoading(true);
+        getContact({
+            onSuccess: (r: any) => {
+                setContactData(r?.data);
+            },
+            onFinally: () => {
+                setContactLoading(false);
+            }
+        })
+    };
+    useEffect(() => {
+        getNoticeData()
+        getNoticeData2()
+        getContactData()
+    }, []);
     return (
-        <Body  showHeader={false} bodyClassNames={body}>
-            <div style={{
-                textAlign: 'center', backgroundColor: "rgb(92,165,214)",
-                overflow: "hidden", color: "#fff"
-            }}>
-                <h1 style={{marginBottom:0, color: "yellow",fontSize:"32px", textShadow: "0 1px 0 #525252, 1px 1px 1px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.3)",}}>测试数据</h1>
-                <p style={{
-                    fontSize: "18px",
-                    marginTop:0,
-                    textShadow: "0 1px 0 #525252, 1px 1px 1px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.3)",
-                    paddingBottom:"10px"
-                }}>创建最好用的在线挂机网站</p>
-            </div>
-            <div style={{padding: "10px", boxSizing: "border-box",}}>
-                <Button block color='warning' size='large' style={{marginBottom: "10px"}} onClick={() => {
-                    modalRef.current = Modal?.show({
-                        content: (
-                            <>
-                                <div style={{
-                                    color: "red",
-                                    fontWeight: "bold",
-                                    textAlign: "center",
-                                    marginBottom: "30px"
-                                }}>请选择下单方式
-                                </div>
-                                <div style={{display: "flex", justifyContent: "space-around"}}>
-                                    <Button color='warning' style={{fontSize: "14px"}} onClick={() => {
-                                        historyPush("other.person.onlinePay")
-                                        modalRef?.current?.close()
-                                    }}>
-                                        <Icon type={Shop} style={{marginRight: "5px"}}/>在线支付
-                                    </Button>
-                                    <Button color='warning' style={{fontSize: "14px"}} onClick={() => {
-                                        historyPush("other.person.cdkPay")
-                                        modalRef?.current?.close()
-                                    }}>
-                                        <Icon type={Cdk} style={{marginRight: "5px"}}/>使用卡密
-                                    </Button>
-                                </div>
-
-                            </>
-                        ),
-                        closeOnMaskClick: true,
-                    })
-                }}>
-                    <Icon type={Right} style={{marginRight: "15px"}}/>
-                    点此下单
-                    <Icon type={Left} style={{marginLeft: "15px"}}/>
-                </Button>
-                <ul style={{
-                    listStyle: "none",
-                    padding: "0",
-                    margin: "0",
-                    height: "90px",
-                    backgroundColor: "#fff",
-                    width: "100%",
-                    borderRadius: "5px",
-                    display: "flex",
-                    marginBottom: "10px"
-                }}>
-                    <li style={{height: "100%", width: "25%", textAlign: "center"}}
-                        onClick={() => historyPush("user.list")}>
-                        <Icon type={Tabulate} style={{fontSize: "26px", margin: "25px 0 5px 0"}}/><br/>
-                        <span>代练列表</span>
-                    </li>
-                    <li style={{height: "100%", width: "25%", textAlign: "center"}}
-                        onClick={() => historyPush("user.pay")}>
-                        <Icon type={Recharge} style={{fontSize: "26px", margin: "25px 0 5px 0"}}/><br/>
-                        <span>余额充值</span>
-                    </li>
-                    <li style={{height: "100%", width: "25%", textAlign: "center"}}
-                        onClick={() => historyPush("user.help")}>
-                        <Icon type={Help} style={{fontSize: "26px", margin: "25px 0 5px 0"}}/><br/>
-                        <span>使用帮助</span>
-                    </li>
-                    <li style={{height: "100%", width: "25%", textAlign: "center"}} onClick={() => historyPush("user.person.info")}>
-                        <Icon type={User} style={{fontSize: "26px", margin: "25px 0 5px 0"}}/><br/>
-                        <span>我的账户</span>
-                    </li>
-                </ul>
-                <div style={{marginBottom: "10px", display: "flex", justifyContent: "space-between",backgroundColor:"#fff",borderRadius:"5px",padding:"13px 13px 10px 13px",boxSizing:"border-box"}}>
-                    <span style={{fontSize: "12px"}}><Icon type={Type} style={{marginRight: "17px", fontSize: "15px"}}/>点此下载代练APP，一键安装，方便随时使用</span>
-                    <Icon type={Than} style={{fontSize:"13px"}}/>
+        <Body title={"首页"} showBack={false}>
+            {noticeLoading2 && <Skeleton.Paragraph  animated /> ||
+                <NoticeBar content={noticeData2?.['notice.index']} color="info" style={{fontSize:"14px",marginBottom:"10px"}}  />
+            }
+            <Card>
+                <div style={{display: "flex", alignItems: "center", justifyContent: 'center',flexDirection:"column"}}>
+                    <Avatar src={user?.web?.avatar} style={{borderRadius: "50%",height:"50px",width:"50px"}}/>
+                    <span style={{fontSize:"26px"}}>你好,{user?.web?.nick_name}</span>
+                    <span style={{fontSize:"16px",marginTop:"10px"}}>尊敬的 <span style={{fontWeight:600}}>{user?.web?.nick_name}</span>，欢迎回来！</span>
                 </div>
-                <List header='活动信息' className={list} style={{marginBottom:"10px"}}>
-                    {users.map(user => (
-                        <List.Item
-                            className={icon}
-                            key={user.key}
-                            prefix={
-                                <Icon type={Gift} style={{fontSize: "18px"}}/>
-                            }
-                            extra={""}
-                            description={user.description}
-                            onClick={() => {
-                                if(user?.key == 1){
-                                    historyPush("other.person.summer")
-                                }else{
-                                    historyPush("other.person.invite")
-                                }
-                            }}
-                        >
-                            {user.name}
-                        </List.Item>
-                    ))}
+            </Card>
+            <List header={<Title><span style={{fontSize:"14px",color:theme.isDarkMode ? "#b3b3b3":"#000",fontWeight:600}}>我的数据</span></Title>} style={{marginBottom:"15px"}}>
+                <Button fill='none' className={btn}><AddOutline />立即添加</Button>
+            </List>
+            <div style={{padding: "10px", boxSizing: "border-box",}}>
+                <List  header={<Title><span style={{fontSize:"14px",color:theme.isDarkMode ? "#b3b3b3":"#000",fontWeight:600}}>联系方式</span></Title>} style={{marginBottom:"15px","--border-top":"none","--border-bottom":"none"}}>
+                    {contactLoading && <Skeleton.Paragraph  animated />||
+                    <>
+                    <List.Item prefix={
+                        <Avatar src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
+                                size="large" shape="square" style={{borderRadius: "5px",height:"36px",width:"36px"}}/>}
+                               description={<span>QQ:{contactData?.['contact.one']}</span>}
+                               extra={<Button fill='outline' color='primary' size={"small"} style={{fontSize:"12px"}} onClick={() => {
+                                   window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.one'] + "&site=qq&menu=yes");
+                               }}>联系</Button>}>
+                        <span style={{fontSize:"14px",marginBottom:"4px"}}>官方客服</span>
+                    </List.Item>
+                    <List.Item prefix={
+                        <Avatar src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.two'] || 10000) + "&spec=100"}
+                                size="large" shape="square" style={{borderRadius: "5px",height:"36px",width:"36px"}}/>}
+                               description={<span>QQ:{contactData?.['contact.two']}</span>}
+                               extra={<Button fill='outline' color='primary' size={"small"} style={{fontSize:"12px"}} onClick={() => {
+                                   window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.two'] + "&site=qq&menu=yes");
+                               }}>联系</Button>}>
+                        <span style={{fontSize:"14px",marginBottom:"4px"}}>官方客服</span>
+                    </List.Item>
+                    <List.Item prefix={
+                        <Avatar src={"https://p.qlogo.cn/gh/" + (contactData?.['contact.three'] || 10000) + "/" + (contactData?.['contact.three'] || 1000) + "/100"}
+                                size="large" shape="square" style={{borderRadius: "5px",height:"36px",width:"36px"}}/>}
+                               description={<span>群号:{contactData?.['contact.three']}</span>}
+                               extra={<Button fill='outline' color='primary' size={"small"} style={{fontSize:"12px"}} onClick={() => {
+                                   window.open(contactData?.['contact.four']);
+                               }}>加入</Button>}>
+                        <span style={{fontSize:"14px",marginBottom:"4px"}}>官方Q群</span>
+                    </List.Item>
+                    </>
+                    }
                 </List>
-                <List header='公告信息' className={list}>
-                    {notice.map(user => (
-                        <List.Item
-                            className={icon}
-                            key={user.key}
-                            prefix={
-                                <Icon type={Message} style={{fontSize: "18px",color:"#ff8f1f"}}/>
-                            }
-                            extra={
-                                ''
-                            }
-                            onClick={() => {
-                                historyPush("other.person.info")
-                            }}
-                        >
-                            {user.name}
-                        </List.Item>
-                    ))}
+                <List className={list} header={<Title><span style={{fontSize:"14px",color:theme.isDarkMode ? "#b3b3b3":"#000",fontWeight:600}}>系统公告</span></Title>}  style={{"--border-top":"none","--border-bottom":"none"}}>
+                    {noticeLoading && <Skeleton.Paragraph  animated /> ||
+                        noticeData.map(user => (
+                                <List.Item
+                                    className={icon}
+                                    key={user?.id}
+                                    prefix={<Icon type={Message} style={{fontSize: "18px",color:"#ff8f1f"}}/>}
+                                    extra={''}
+                                    description={<span
+                                        style={{fontSize: "10px"}}>发布于 {ago(user?.create_time)} ,共 {user?.look_num} 次浏览</span>}
+                                    onClick={() => {
+                                        historyPush("index.notice",{id:user?.id})
+                                    }}
+                                >
+                                    <span style={{fontSize:"14px",color:theme.isDarkMode ? "#b3b3b3":"#000"}}>{user?.title}</span>
+                                </List.Item>
+                            ))
+                    }
                 </List>
             </div>
         </Body>

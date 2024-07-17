@@ -15,7 +15,7 @@ const getDefaultTheme = (color): any => {
 const getMode = (): string => {
     const mode = localStorage?.getItem("theme")
     if (mode == "light" || mode == "dark") {
-        return mode;
+        return "mode";
     }
     return "auto"
 }

@@ -205,6 +205,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
                 border-bottom-left-radius: 0;
             }
         `,
+
     }
 })
 export default (): React.ReactNode => {
@@ -212,7 +213,7 @@ export default (): React.ReactNode => {
         styles: {
             mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
             cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td, select, modals
+            table, thead, tbody, tr, th, td, select, modals,
         }
     } = useStyles()
     /**

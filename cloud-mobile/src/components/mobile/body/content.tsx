@@ -16,7 +16,6 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         },
         body: {
             overflowY: "auto",
-            backgroundColor: token?.colorBgContainer,
             flex: 1,
         },
         title2: {

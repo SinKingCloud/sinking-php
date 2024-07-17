@@ -4,13 +4,7 @@ import {Card} from "antd-mobile";
 import {Danger, Time, User} from "@/components/icon";
 export default () => {
     return (
-        <Body title="帮助信息" >
-            <div  style={{
-                padding: "10px",
-                boxSizing: "border-box",
-                height: "calc(100vh - 45px)",
-                backgroundColor: "#faf8f8"
-            }}>
+        <Body title="帮助信息" bodyStyle={{padding:"10px"}}>
                 <Card>
                     <p style={{fontSize: "13px", color: "red",textAlign:"center",fontWeight:600,marginBottom:"20px"}}>关于禁止养号、禁止挂机违规用途号码的说明</p>
                     <div style={{fontSize:"11px",color:"gray",borderBottom:"1px dashed #eeeeee",paddingBottom:"5px"}}>
@@ -40,7 +34,6 @@ export default () => {
                         注：新注册号码请自行挂到5级后再下单，5级以下小号无法正常代练。
                     </p>
                 </Card>
-            </div>
         </Body>
     )
 

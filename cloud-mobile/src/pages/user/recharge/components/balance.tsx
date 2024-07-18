@@ -57,7 +57,7 @@ export default () => {
                 orderData?.list?.map(user => (
                     <Card key={user.id} style={{marginBottom: "10px"}}
                           title={<div style={{fontSize: "12px", fontWeight: "normal"}}><Icon type={Recharge}
-                                                                                             style={{marginRight: "3px"}}/>{user.name}
+                                                                                             style={{marginRight: "3px"}}/>{user.title}
                           </div>}
                           extra={<div style={{
                               fontSize: "11px",
@@ -75,9 +75,7 @@ export default () => {
                         <Paragraph copyable style={{marginBottom: "-22px"}}>
                             <span style={{fontSize: "11px", color: "gray"}}>订单号：{user.content}</span>
                         </Paragraph><br/>
-                        <span style={{fontSize: "11px", color: "gray"}}>
-                        记录标题：{user.title}
-                    </span>
+
 
                     </Card>
                 ))

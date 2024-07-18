@@ -17,6 +17,8 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         body: {
             overflowY: "auto",
             flex: 1,
+            backgroundColor:isDarkMode ? "rgb(20,20,20)":"rgb(246,246,246)",
+            padding:"10px"
         },
         title2: {
             fontSize: "15px",

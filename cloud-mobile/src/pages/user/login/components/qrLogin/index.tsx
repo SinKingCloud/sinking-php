@@ -1,15 +1,14 @@
 import {Body} from "@/components";
-import {Button, Card, NoticeBar, Toast} from "antd-mobile";
+import {Button, Card, NoticeBar, SpinLoading, Toast} from "antd-mobile";
 import {createStyles, useResponsive, useTheme} from "antd-style";
-import {QRCode, Spin} from "antd";
+import {QRCode} from "antd";
 import React, {useEffect, useState} from "react";
-import {getRandStr} from "@/utils/string";
+import {getRandStr, qqJumpUrl} from "@/utils/string";
 import {genQrCode, qrLogin} from "@/service/user/login";
 import {useLocation} from "umi";
 import {setLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
-import {getContact} from "@/service/person/config";
-const useStyles = createStyles(():any=>{
+const useStyles = createStyles(({token}):any=>{
     return{
         border_corner: {
             zIndex: 2500,
@@ -131,8 +130,7 @@ const qrLoginPage = () => {
 
     const theme = useTheme()
     return (
-        <Body title={"扫码登录"} bodyStyle={{ padding: "10px"}}
-              headStyle={{backgroundColor: "rgb(92,165,214)", color: "#fff"}} titleStyle={{color: "#fff"}}>
+        <Body title={"扫码登录"}  headStyle={{backgroundColor:theme.colorPrimary, color:"#fff"}} titleStyle={{color: "#fff"}}>
             <NoticeBar style={{borderRadius: "8px", "--height": "26px", "--font-size": "12px",marginBottom:"15px"}}
                        content='请使用手机QQ扫码下方二维码' color='info' wrap/>
             <div style={{
@@ -151,26 +149,26 @@ const qrLoginPage = () => {
                     className={border_corner + " " + border_corner_left_bottom}></div>
                 <div
                     className={border_corner + " " + border_corner_left_top}></div>
-                <Spin spinning={qrcodeLoading || qrcode == ""}>
-                          <QRCode
-                              value={qrcode}
-                              size={150}
-                          />
-                </Spin>
+                    {qrcodeLoading &&<SpinLoading  color='primary' style={{margin:"50px auto"}}/> ||
+                        <QRCode
+                            value={qrcode}
+                            size={150}
+                        />
+                    }
             </div>
           <p style={{fontSize:"12px",color:"#808080",textAlign:"center",marginTop:"15px",borderBottom:"1px dashed #eeeeee",paddingBottom:"20px"}}>
               如提示二维码过期可
-          <span style={{color:"#5ca5d6"}} onClick={()=>{
+          <span style={{color:theme.colorPrimary}} onClick={()=>{
               getQrCode()
           }}>点此获取新二维码</span>
           </p>
             <p style={{fontSize:"13px",fontWeight:600,textAlign:"center",color:"#10bb10",marginBottom:0}}>请使用手机QQ扫码二维码，并授权登录</p>
             <p style={{fontSize:"11px",textAlign:'center',marginTop:"5px",color:theme.isDarkMode?"#b3b3b3" : ""}}>需要在绑定的手机QQ登录后扫码，其他QQ扫码无效</p>
             <Button type={"submit"} block color='primary'
-                    style={{"--background-color":"#5ca5d6","--border-color":"#5ca5d6",fontSize:"14px",fontWeight:600,marginBottom:"20px",letterSpacing:"0.5px"}} onClick={()=>{
-                window.open("");
-            }}>点击跳转到手机QQ登录</Button>
-            <Card>
+                    style={{"--background-color":theme.colorPrimary,"--border-color":theme.colorPrimary,fontWeight:600,fontSize:"15px",marginBottom:"20px",letterSpacing:"0.5px"}} onClick={()=>{
+                    qqJumpUrl(qrcode);
+            }} >点击跳转到手机QQ登录</Button>
+            <Card style={{marginBottom:"10px"}}>
                 <p style={{fontSize:"12px",fontWeight:600,margin:0}}>验证说明:</p>
                 <span style={{fontSize:"11px",color:"#808080"}}>1、使用手机QQ扫描二维码后，在QQ上授权登录。</span><br/>
             </Card>

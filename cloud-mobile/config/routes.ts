@@ -104,6 +104,18 @@ export const user = [
                 title: "开通主站",
                 name: "pay.station",
             },
+            {
+                path: "record",
+                component: "@/pages/user/recharge/components/record",
+                title: "订单记录",
+                name: "pay.record",
+            },
+            {
+                path: "balance",
+                component: "@/pages/user/recharge/components/balance",
+                title: "余额明细",
+                name: "pay.balance",
+            },
         ]
     }
 ];

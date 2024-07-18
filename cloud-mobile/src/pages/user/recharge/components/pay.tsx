@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import {Body, Icon} from "@/components";
 import {Button, Form, Input, Selector, Toast} from "antd-mobile";
-import {createStyles, useResponsive} from "antd-style";
+import {createStyles, useResponsive, useTheme} from "antd-style";
 import {Mayun, Qq, Weinxin} from "@/components/icon";
 import {recharge} from "@/service/pay";
 import {setPayJumpUrl} from "@/utils/pay";
@@ -10,20 +10,16 @@ const useStyles = createStyles(():any=>{
     return{
         label:{
             ".adm-list-item-content-prefix":{
-                fontSize:"30px",
-                paddingTop:"5px !important",
+                fontSize:"28px",
+                paddingTop:"0px !important",
                 fontWeight:600,
                 width:"auto !important",
-            },
-            ".adm-form-item-label":{
-                lineHeight:1
             },
             ".adm-list-item-content":{
                 borderBottom:"none !important",
                 borderTop:"none !important",
                 paddingBlock:"8px"
             },
-
         },
         body:{
             ".adm-list-body":{
@@ -37,6 +33,7 @@ const useStyles = createStyles(():any=>{
 })
 export default ()=>{
     const [form] = Form.useForm()
+    const theme = useTheme()
     const {styles:{label,body}} = useStyles();
     const [loading,setLoading] = useState(false)
     const {mobile} = useResponsive()
@@ -73,16 +70,16 @@ export default ()=>{
         })
     }
     return(
-        <Body title="充值账户余额" bodyStyle={{padding:"20px"}}>
+        <Body title="充值账户余额">
             <Form  layout="horizontal" form={form} className={body} onFinish={formFinish}>
-                <p style={{fontSize:"14px"}}>充值金额</p>
+                <p style={{fontSize:"14px",marginLeft:"20px"}}>充值金额</p>
                 <Form.Item name="money" label={"￥"}  className={label}>
                     <Input placeholder="请输入充值金额" clearable/>
                 </Form.Item>
-                <p style={{fontSize: "14px"}}>支付方式</p>
+                <p style={{fontSize: "14px",marginLeft:"20px"}}>支付方式</p>
                 <Form.Item name="type"  className={label}>
                     <Selector
-                        style={{"--border-radius": "5px","--padding":"8px 12px"}}
+                        style={{"--border-radius": "5px","--padding":"10px 14px"}}
                         options={[
                             {
                                 label:(
@@ -108,7 +105,7 @@ export default ()=>{
                 </Form.Item>
                 <Form.Item className={label}>
                     <Button type={"submit"} block color='primary' loading={loading}
-                            style={{"--background-color":"#5ca5d6","--border-color":"#5ca5d6",fontSize:"15px",fontWeight:600,marginBottom:"10px",letterSpacing:"1px"}}>立即支付</Button>
+                            style={{"--background-color":theme.colorPrimary,"--border-color":theme.colorPrimary,fontWeight:600,letterSpacing:"1px"}}>立即支付</Button>
                 </Form.Item>
             </Form>
             <p style={{color:"#b3b3b3",fontSize:"12px",textAlign:"center"}}>提示信息:在线支付后余额实时到账，无需等待</p>

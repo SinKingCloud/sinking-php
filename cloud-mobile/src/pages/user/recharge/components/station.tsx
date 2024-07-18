@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react'
-import {Body, Icon} from "@/components";
-import {Button, Card, Form, Input, Modal, Toast,Image} from "antd-mobile";
+import {Body} from "@/components";
+import {Button, Card, Form, Input, Modal, Toast, Image, SpinLoading} from "antd-mobile";
 import defaultSettings from "../../../../../config/defaultSettings";
-import {createStyles, useResponsive} from "antd-style";
+import {createStyles, useResponsive, useTheme} from "antd-style";
 import {useModel} from "umi";
 import {buySite, getSite} from "@/service/shop/site";
 import {getPayConfig} from "@/service/pay";
-import {Weinxin} from "@/components/icon";
 import {Select, Typography} from 'antd';
 import {setPayJumpUrl} from "@/utils/pay";
 
-const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
+const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
     const base = ((defaultSettings?.basePath || "/") + "images/buy-bg.png")
     const base1 = ((defaultSettings?.basePath || "/") + "images/personPackage.svg")
     return {
@@ -78,7 +77,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             height: 65px;
             line-height: 75px;
 
-            ${responsive.md } {
+            ${responsive.md} {
                 font-size: 20px;
                 height: 50px;
                 line-height: 65px;
@@ -88,7 +87,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             font-size: 18px;
             color: #af6e01;
 
-            ${responsive.md } {
+            ${responsive.md} {
                 font-size: 13px;
             }
         `,
@@ -96,26 +95,6 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
             borderRadius: "0 0 10px 10px !important",
             padding: "12px 0"
         },
-        button: css`
-            margin-top: 10px;
-            font-size: 13px;
-            width: 40%;
-            margin-left: 30%;
-            background: linear-gradient(303deg, #e7c183, #fce9c9 100%, #fce9c9 0, #fce9c9 0) !important;
-            color: #ab6d28 !important;
-            border: 0;
-            line-height: 20px;
-            height: 40px;
-
-            .ant-btn-primary {
-                box-shadow: 0 0 0 rgba(5, 95, 255, 0.1) !important;
-            }
-
-            ${responsive.md} {
-                width: 100%;
-                margin-left: 0;
-            }
-        `,
         box: {
             backgroundColor: "rgb(255 249 238)",
             border: "1px solid #ffdea8",
@@ -205,35 +184,38 @@ const useStyles = createStyles(({css, responsive, isDarkMode}): any => {
                 border-bottom-left-radius: 0;
             }
         `,
-        formBody:{
-            ".adm-list-body":{
-                borderRadius:"5px",
-                borderTop:"none !important",
-                borderBottom:"none !important",
+        formBody: {
+            ".adm-list-body": {
+                borderRadius: "5px",
+                borderTop: "none !important",
+                borderBottom: "none !important",
             },
-            marginBottom:"10px",
+            marginBottom: "10px",
         },
-        modal:{
-            ".adm-center-popup-wrap":{
-                minWidth: "98% !important",
-                maxWidth:"98% !important"
+        modal: {
+            ".adm-center-popup-wrap": {
+                minWidth: "96% !important",
+                maxWidth: "96% !important"
+            }
+        },
+        label:{
+            ".adm-input-element":{
+                fontSize:"14px !important"
+            }
+        },
+        to:{
+            ".adm-list-item-content":{
+                borderTop: "none !important"
             }
         }
     }
 })
 export default () => {
     const {
-        styles: {
-            mainTitle, topTitle, main, body, cardTitle, topTitle2, bottomTitle,
-            cardBody, button, box, top, tips, bottom, left, right, describe, contain,
-            table, thead, tbody, tr, th, td, select, modals,formBody,modal
-        }
-    } = useStyles()
+        styles: {select, formBody, modal,label,to}} = useStyles()
     /**
      * 初始化
      */
-
-    const { Paragraph, Text } = Typography;
     const {mobile} = useResponsive()
     const user = useModel("user")
     const [siteConfig, setSiteConfig] = useState({});
@@ -260,46 +242,46 @@ export default () => {
      * 表单提交
      */
     const [form] = Form.useForm()
-    const [btnLoading,setBtnLoading] = useState(false)
-    const formFinish = (values:any)=>{
+    const [btnLoading, setBtnLoading] = useState(false)
+    const formFinish = (values: any) => {
         const url = values.prefix + '.' + values.domain;
-        if(values?.name == undefined || values?.name == ""){
+        if (values?.name == undefined || values?.name == "") {
             Toast.show({
-                position:"top",
-                content:"请输入网站名称"
+                position: "top",
+                content: "请输入网站名称"
             })
             return
         }
-        if(values?.prefix == undefined || values?.prefix == ""){
+        if (values?.prefix == undefined || values?.prefix == "") {
             Toast.show({
-                position:"top",
-                content:"请输入前缀"
+                position: "top",
+                content: "请输入前缀"
             })
             return
         }
-        if(values?.domain == undefined || values?.domain == ""){
+        if (values?.domain == undefined || values?.domain == "") {
             Toast.show({
-                position:"top",
-                content:"请选择后缀"
+                position: "top",
+                content: "请选择后缀"
             })
             return
         }
-        if(values?.type == undefined || values?.type == ""){
+        if (values?.type == undefined || values?.type == "") {
             Toast.show({
-                position:"top",
-                content:"请选择支付方式"
+                position: "top",
+                content: "请选择支付方式"
             })
             return
         }
         setBtnLoading(true)
         buySite({
-            body:{
+            body: {
                 ...values
             },
-            onSuccess:(r:any)=>{
+            onSuccess: (r: any) => {
                 Toast?.show({
-                    icon:"success",
-                    content:r?.message
+                    icon: "success",
+                    content: r?.message
                 })
                 //支付成功
                 if (r?.code == 200 && values.type == 3) {
@@ -307,7 +289,7 @@ export default () => {
                         title: '开通成功,请点击确认访问您的网站',
                         content: (<>您的网站域名：<Typography.Text
                             copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
-                        onConfirm:()=>{
+                        onConfirm: () => {
                             window.location.href = location.protocol + '//' + url
                         }
                     })
@@ -322,155 +304,91 @@ export default () => {
                         title: '订单是否已支付成功',
                         content: (<>如支付成功请点击确认访问您的网站，域名：<Typography.Text
                             copyable={{tooltips: ['复制', '复制成功']}}>{url}</Typography.Text></>),
-                        onConfirm:()=>{
+                        onConfirm: () => {
                             window.location.href = location.protocol + '//' + url
                         }
                     })
                 }
             },
-            onFail:(r:any)=>{
+            onFail: (r: any) => {
                 Toast?.show({
-                    icon:"fail",
-                    content:r?.message || "开通失败"
+                    icon: "fail",
+                    content: r?.message || "开通失败"
                 })
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setLoading(false)
             }
 
         })
     }
+    const theme = useTheme()
     return (
         <Body title="开通主站">
-            <Card bodyStyle={{padding: 0}}>
-                <div className={mainTitle}>
-                    <div className={topTitle}>合作加盟，专享超值权益</div>
-                </div>
-                <div className={main}>
-                    <div className={body}>
-                        <div className={cardTitle}>
-                            <div className={topTitle2}>尊享主站</div>
-                            <div className={bottomTitle}>专享特权，享受更多权益，独立站长后台</div>
-                        </div>
-                        <Card>
-                            <div className={box}>
-                                <div className={top}>
-                                    <div className={tips}>
-                                        尊享主站限时低价开通
-                                    </div>
-                                    <div style={{padding: "15px 15px 0 15px"}}>
-                                        <div style={{lineHeight: "60px", height: "45px", overflow: "hidden"}}>
-                                            <div style={{float: "left"}}>
-                                <span style={{
-                                    color: "rgb(188 115 0)",
-                                    fontSize: "30px",
-                                    fontWeight: "bolder"
-                                }}>￥{parseInt(siteConfig?.['site.price'])}</span>
-                                                <span style={{
-                                                    color: "#999",
-                                                    fontSize: "12px"
-                                                }}>/{parseInt(siteConfig?.['site.month'])}月&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                            </div>
-                                            <div style={{float: "right"}}>
-                                                <span style={{color: "#999", fontSize: "12px"}}>原价:</span>
-                                                <span style={{
-                                                    color: "#999",
-                                                    fontSize: "16px",
-                                                    fontWeight: "bolder",
-                                                    textDecoration: "line-through"
-                                                }}>￥{parseInt(siteConfig?.['site.price']) * 8.5}</span>
-                                                <span style={{color: "#999", fontSize: "12px"}}>/年</span>
-                                            </div>
-                                        </div>
-                                        <div style={{lineHeight: "30px", height: "30px"}}>
-                                            <span style={{color: "#999", fontSize: "12px"}}>开通主站享受更多权益</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={bottom}>
-                                    <div className={left}>
-                                        <span style={{color: "#999", fontSize: "12px"}}>合计</span>
-                                        <span style={{
-                                            color: "#666",
-                                            fontSize: "15px",
-                                            fontWeight: "bolder"
-                                        }}>￥{parseInt(siteConfig?.['site.price'])}</span>
-                                    </div>
-                                    <div className={right} style={{fontSize: "13px"}}>
-                                        <a style={{color: "#0786ff"}} onClick={() => {
-                                            Modal?.alert({
-                                                content: (
-                                                    <>
-                                                        <div style={{
-                                                            fontSize: "16px",
-                                                            fontWeight: 600,
-                                                            marginBottom: "10px"
-                                                        }}>请联系销售咨询详情
-                                                        </div>
-                                                        <div style={{flexWrap: "nowrap", display: "flex"}}>
-                                                            <span>联系方式:</span>
-                                                            <Paragraph copyable>2710911512</Paragraph>
-                                                        </div>
-                                                    </>
-                                                ),
-                                            })
-                                        }}><Icon type={Weinxin} style={{marginRight: "5px"}}/>咨询详情</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <Button className={button} onClick={() => {
-                                Modal?.show({
-                                    className: modal,
-                                    showCloseButton: true,
-                                    content: (<Form form={form} className={formBody} onFinish={formFinish}>
-                                        <Form.Item name="name" label="网站名称">
-                                            <Input placeholder="请输入网站名称" clearable/>
-                                        </Form.Item>
-                                        <Form.Item
-                                            name="prefix"
-                                            label={"域名前缀"}
-                                        >
-                                            <Input style={{
-                                                borderTopRightRadius: 0,
-                                                borderBottomRightRadius: 0,
-                                            }} placeholder="请输入前缀"/>
-                                        </Form.Item>
-                                        <Form.Item
-                                            name="domain"
-                                            label={"域名后缀"}
-                                        >
-                                            <Select placeholder="请选择后缀" className={select}>
-                                                {siteConfig?.['master.domains']?.map((k: any) => {
-                                                    return <Select.Option key={"domain_" + k}
-                                                                          value={k}>.{k}</Select.Option>
-                                                })}
-                                            </Select>
-                                        </Form.Item>
-                                        <Form.Item name="type" label="支付方式">
-                                            <Select placeholder="请选择支付方式" defaultValue={3}>
-                                                <Select.Option
-                                                    value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
-                                                {payConfig?.['pay.qqpay.type'] &&
-                                                    <Select.Option value={2}>QQ支付</Select.Option>}
-                                                {payConfig?.['pay.wxpay.type'] &&
-                                                    <Select.Option value={1}>微信支付</Select.Option>}
-                                                {payConfig?.['pay.alipay.type'] &&
-                                                    <Select.Option value={0}>支付宝支付</Select.Option>}
-                                            </Select>
-                                        </Form.Item>
-                                        <Form.Item>
-                                            <Button type="submit" block color={"primary"}
-                                                    loading={btnLoading}>开通</Button>
-                                        </Form.Item>
-                                    </Form>)
-                                })
-                                form?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
-                            }}>
-                                立即支付￥{parseInt(siteConfig?.['site.price'])}开通主站
-                            </Button>
-                        </Card>
-                    </div>
-                </div>
+            <Card>
+                <p style={{fontSize: "19px", fontWeight: 600, color: "#f38e1b", margin: "10px 0"}}>搭建主站介绍</p>
+                <span style={{fontSize: "12px"}}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，
+                                    方便的自动化收款能力，拥有自己的用户管理体系，可极低的价格为用户开通主站等。</span>
+                <p style={{
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    color: "#f655a6"
+                }}>主站搭建费用:￥{parseInt(siteConfig?.['site.price'])}</p>
+                <Button block style={{
+                    "--background-color": theme.colorPrimary,
+                    "--border-color": theme.colorPrimary,
+                    fontWeight: 600,
+                    color: "#fff"
+                }} onClick={() => {
+                    Modal?.show({
+                        className: modal,
+                        showCloseButton: true,
+                        content: (<Form form={form} className={formBody} onFinish={formFinish}>
+                            <Form.Item name="name" label="网站名称"  className={label}>
+                                <Input placeholder="请输入网站名称" clearable/>
+                            </Form.Item>
+                            <Form.Item
+                                name="prefix"
+                                label={"域名前缀"}
+                                className={label}
+                            >
+                                <Input style={{
+                                    borderTopRightRadius: 0,
+                                    borderBottomRightRadius: 0,
+                                }} placeholder="请输入前缀"/>
+                            </Form.Item>
+                            <Form.Item
+                                name="domain"
+                                label={"域名后缀"}
+                            >
+                                <Select placeholder="请选择后缀" className={select}>
+                                    {siteConfig?.['master.domains']?.map((k: any) => {
+                                        return <Select.Option key={"domain_" + k}
+                                                              value={k}>.{k}</Select.Option>
+                                    })}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="type" label="支付方式">
+                                <Select placeholder="请选择支付方式" defaultValue={3}>
+                                    <Select.Option
+                                        value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
+                                    {payConfig?.['pay.qqpay.type'] &&
+                                        <Select.Option value={2}>QQ支付</Select.Option>}
+                                    {payConfig?.['pay.wxpay.type'] &&
+                                        <Select.Option value={1}>微信支付</Select.Option>}
+                                    {payConfig?.['pay.alipay.type'] &&
+                                        <Select.Option value={0}>支付宝支付</Select.Option>}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item className={to}>
+                                <Button type="submit" block color={"primary"} loading={btnLoading}>开通</Button>
+                            </Form.Item>
+                        </Form>)
+                    })
+                    form?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
+                }}>
+                    我要搭建
+                </Button>
             </Card>
         </Body>)
 }

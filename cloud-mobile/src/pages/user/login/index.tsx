@@ -96,6 +96,7 @@ const passLoginPage = () => {
     /**
      * 表单提交
      */
+    const user = useModel("user")
     const [loading, setLoading] = useState<any>(false)
     const finish = async (values: any) => {
         if (values?.account == undefined || values.account == "") {
@@ -122,7 +123,9 @@ const passLoginPage = () => {
                     content: r?.message,
                     icon: "success"
                 })
-                historyPush("user.index")
+                user?.refreshWebUser(()=>{
+                    historyPush("user.index")
+                })
                 setLoginToken(isMobile, r?.data?.token);
             },
             onFail: (r: any) => {

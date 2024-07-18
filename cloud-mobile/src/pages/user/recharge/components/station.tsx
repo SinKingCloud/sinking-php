@@ -207,12 +207,17 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
             ".adm-list-item-content":{
                 borderTop: "none !important"
             }
+        },
+        inner:{
+            ".adm-form-item-child-inner":{
+                display:"flex"
+            }
         }
     }
 })
 export default () => {
     const {
-        styles: {select, formBody, modal,label,to}} = useStyles()
+        styles: {select, formBody, modal,label,to,inner}} = useStyles()
     /**
      * 初始化
      */
@@ -347,29 +352,25 @@ export default () => {
                             <Form.Item name="name" label="网站名称"  className={label}>
                                 <Input placeholder="请输入网站名称" clearable/>
                             </Form.Item>
-                            <Form.Item
-                                name="prefix"
-                                label={"域名前缀"}
-                                className={label}
-                            >
-                                <Input style={{
-                                    borderTopRightRadius: 0,
-                                    borderBottomRightRadius: 0,
-                                }} placeholder="请输入前缀"/>
-                            </Form.Item>
-                            <Form.Item
-                                name="domain"
-                                label={"域名后缀"}
-                            >
-                                <Select placeholder="请选择后缀" className={select}>
-                                    {siteConfig?.['master.domains']?.map((k: any) => {
-                                        return <Select.Option key={"domain_" + k}
-                                                              value={k}>.{k}</Select.Option>
-                                    })}
-                                </Select>
+                            <Form.Item label={"绑定域名"} className={inner}>
+                                <Form.Item name="prefix" className={label} noStyle>
+                                    <Input style={{
+                                        borderTopRightRadius: 0,
+                                        borderBottomRightRadius: 0,
+                                        width:"55%"
+                                    }} placeholder="请输入前缀" />
+                                </Form.Item>
+                                <Form.Item name="domain" noStyle>
+                                    <Select placeholder="请选择后缀" style={{width:"45%"}} className={select}>
+                                        {siteConfig?.['master.domains']?.map((k: any) => {
+                                            return <Select.Option key={"domain_" + k}
+                                                                  value={k}>.{k}</Select.Option>
+                                        })}
+                                    </Select>
+                                </Form.Item>
                             </Form.Item>
                             <Form.Item name="type" label="支付方式">
-                                <Select placeholder="请选择支付方式" defaultValue={3}>
+                                <Select placeholder="请选择支付方式" defaultValue={3} style={{width: "100%"}}>
                                     <Select.Option
                                         value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
                                     {payConfig?.['pay.qqpay.type'] &&

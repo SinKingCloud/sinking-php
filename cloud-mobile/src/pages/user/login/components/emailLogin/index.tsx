@@ -1,5 +1,5 @@
 import {Body, Icon} from "@/components";
-import {Ellipsis, Email, Message, Qrcode, Reg, Reset} from "@/components/icon";
+import {Ellipsis, Email, Message, Qrcode} from "@/components/icon";
 import React, {useEffect, useRef, useState} from "react";
 import {Col, Dropdown, Row} from "antd";
 import {Button, Card, Checkbox, Form, Input, Toast} from "antd-mobile";
@@ -118,6 +118,7 @@ const emailLoginPage = () => {
      * 表单提交
      */
     const [loading, setLoading] = useState(false)
+    const user = useModel("user")
     const formFinish = async (values: any) => {
         if (values?.email == undefined || values.email == "") {
             Toast.show({
@@ -151,7 +152,9 @@ const emailLoginPage = () => {
                         content: r?.message,
                         icon: "success"
                     })
-                    historyPush("user.index")
+                    user?.refreshWebUser(()=>{
+                        historyPush("user.index")
+                    })
                     setLoginToken(isMobile, r?.data?.token);
                 },
                 onFail: (r: any) => {

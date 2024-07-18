@@ -118,6 +118,7 @@ const smsLoginPage = () => {
      * @param values
      */
     const [btnLoading, setLoading] = useState(false)
+    const user = useModel("user")
     const formFinish = async (values: any) => {
         if(values?.phone == undefined || values.phone==""){
             Toast.show({
@@ -153,7 +154,9 @@ const smsLoginPage = () => {
                         content: r?.message,
                         icon: "success"
                     })
-                    historyPush("user.index")
+                    user?.refreshWebUser(()=>{
+                        historyPush("user.index")
+                    })
                     setLoginToken(isMobile, r?.data?.token);
                 },
                 onFail:(r:any)=>{

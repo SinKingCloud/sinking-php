@@ -56,8 +56,8 @@ export default () => {
             {loading && <Skeleton.Paragraph animated/> ||
                 orderData?.list?.map(user => (
                     <Card key={user.id} style={{marginBottom: "10px"}}
-                          title={<div style={{fontSize: "12px", fontWeight: "normal"}}><Icon type={Recharge}
-                                                                                             style={{marginRight: "3px"}}/>{user.title}
+                          title={<div style={{fontSize: "12px", fontWeight: "normal"}}>
+                              <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.title}
                           </div>}
                           extra={<div style={{
                               fontSize: "11px",

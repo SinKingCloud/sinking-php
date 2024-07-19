@@ -2,7 +2,7 @@ import {Body, Icon} from "@/components";
 import {Ellipsis, Email, Message, Qrcode} from "@/components/icon";
 import React, {useEffect, useRef, useState} from "react";
 import {Col, Dropdown, Row} from "antd";
-import {Button, Card, Checkbox, Form, Input, Toast} from "antd-mobile";
+import {Button, Card, Checkbox, Form, Grid, Input, Toast} from "antd-mobile";
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {historyPush} from "@/utils/route";
 import Captcha, {CaptchaRef} from "@/components/captcha";
@@ -31,7 +31,8 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
             ".adm-list-item-content": {
                 borderBottom: "none !important",
                 borderTop: "none !important",
-                paddingBlock: "9px"
+                paddingBlock: "9px",
+                paddingRight:"0 !important"
             },
         },
         body: {
@@ -89,7 +90,6 @@ const emailLoginPage = () => {
             ),
         },
     ]
-    const {mobile} = useResponsive()
     /**
      * 获取邮箱验证码
      */
@@ -150,7 +150,7 @@ const emailLoginPage = () => {
                     user?.refreshWebUser(()=>{
                         historyPush("user.index")
                     })
-                    setLoginToken(mobile, r?.data?.token);
+                    setLoginToken("mobile", r?.data?.token);
                 },
                 onFail: (r: any) => {
                     Toast.show({
@@ -180,88 +180,93 @@ const emailLoginPage = () => {
             </Dropdown>
         }>
             <Captcha ref={captcha}/>
-            <Card style={{marginBottom: "10px"}}>
-                <Form form={form} className={body} onFinish={formFinish}>
-                    <Form.Item label='邮箱账号' name="email" className={label}>
-                        <Input placeholder='请输入邮箱' clearable/>
-                    </Form.Item>
-                    <Form.Item label='验证码' name="email_code" className={label}
-                               extra={<Button loading={emailLoading} disabled={disabled} style={{
-                                   fontSize: "12px",
-                                   color: theme.colorPrimary,
-                                   "--border-width": "0px",
-                                   padding:"0px"
-                               }}
-                                              onClick={(e) => {
-                                                  const email = form.getFieldValue("email")
-                                                  if (email == undefined || email == "") {
-                                                      Toast.show({
-                                                          content: "请输入邮箱",
-                                                          icon: "fail"
-                                                      })
-                                                      return
-                                                  }
-                                                  setEmailLoading(true)
-                                                  captcha?.current?.Show?.(async (res) => {
-                                                      await sendEmail({
-                                                          body: {
-                                                              captcha_id: res?.randstr,
-                                                              captcha_code: res?.ticket,
-                                                              email: email,
-                                                          },
-                                                          onSuccess: (r) => {
+            <Grid columns={1} gap={8}>
+                <Grid.Item>
+                    <Card>
+                        <Form form={form} className={body} onFinish={formFinish}>
+                            <Form.Item label='邮箱账号' name="email" className={label}>
+                                <Input placeholder='请输入邮箱' clearable/>
+                            </Form.Item>
+                            <Form.Item label='验证码' name="email_code" className={label}
+                                       extra={<Button loading={emailLoading} disabled={disabled} style={{
+                                           fontSize: "12px",
+                                           color: theme.colorPrimary,
+                                           "--border-width": "0px",
+                                           padding:"0px"
+                                       }}
+                                                      onClick={(e) => {
+                                                          const email = form.getFieldValue("email")
+                                                          if (email == undefined || email == "") {
                                                               Toast.show({
-                                                                  content: r?.message,
-                                                                  icon: "success"
-                                                              })
-                                                              getCode(e)
-                                                          },
-                                                          onFail: (r) => {
-                                                              Toast.show({
-                                                                  content: r?.message,
+                                                                  content: "请输入邮箱",
                                                                   icon: "fail"
                                                               })
-                                                          },
-                                                          onFinally: () => {
-                                                              setEmailLoading(false)
+                                                              return
                                                           }
-                                                      })
-                                                  }, () => {
-                                                      Toast.show({
-                                                          content: "请完成验证码认证",
-                                                          icon: "fail"
-                                                      })
-                                                      setEmailLoading(false)
-                                                  })
-                                              }}>发送验证码</Button>}>
-                        <Input placeholder='请输入邮箱验证码' clearable/>
-                    </Form.Item>
-                    <Form.Item name="checked" className={label}>
-                        <Checkbox className={check}>
-                            <span style={{fontSize: "12px", marginRight: "10px"}}>记住登录状态</span>
-                            <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
-                        </Checkbox>
-                    </Form.Item>
-                    <Form.Item className={btn}>
-                        <Button type={"submit"} loading={loading} style={{
-                            "--background-color": theme.colorPrimary,
-                            "--border-color": theme.colorPrimary,
-                            fontWeight: 600,
+                                                          setEmailLoading(true)
+                                                          captcha?.current?.Show?.(async (res) => {
+                                                              await sendEmail({
+                                                                  body: {
+                                                                      captcha_id: res?.randstr,
+                                                                      captcha_code: res?.ticket,
+                                                                      email: email,
+                                                                  },
+                                                                  onSuccess: (r) => {
+                                                                      Toast.show({
+                                                                          content: r?.message,
+                                                                          icon: "success"
+                                                                      })
+                                                                      getCode(e)
+                                                                  },
+                                                                  onFail: (r) => {
+                                                                      Toast.show({
+                                                                          content: r?.message,
+                                                                          icon: "fail"
+                                                                      })
+                                                                  },
+                                                                  onFinally: () => {
+                                                                      setEmailLoading(false)
+                                                                  }
+                                                              })
+                                                          }, () => {
+                                                              Toast.show({
+                                                                  content: "请完成验证码认证",
+                                                                  icon: "fail"
+                                                              })
+                                                              setEmailLoading(false)
+                                                          })
+                                                      }}>发送验证码</Button>}>
+                                <Input placeholder='请输入邮箱验证码' clearable/>
+                            </Form.Item>
+                            <Form.Item name="checked" className={label}>
+                                <Checkbox className={check}>
+                                    <span style={{fontSize: "12px", marginRight: "10px"}}>记住登录状态</span>
+                                    <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
+                                </Checkbox>
+                            </Form.Item>
+                            <Form.Item className={btn}>
+                                <Button type={"submit"} loading={loading} style={{
+                                    "--background-color": theme.colorPrimary,
+                                    "--border-color": theme.colorPrimary,
+                                    fontWeight: 600,
 
-                        }} block color='primary'>登&nbsp;&nbsp;录</Button>
-                    </Form.Item>
-                </Form>
-            </Card>
-
-            <Card className={card}>
-                <Row justify={"space-evenly"}>
-                    <Col onClick={() => historyPush('user.login')}><span className={tab}>密码登录</span></Col>
-                    {web?.info?.reg_phone &&
-                        <Col onClick={() => historyPush('login.smsLogin')}><span className={tab}>短信登录</span></Col>}
-                    {web?.info?.reg_qrlogin &&
-                        <Col onClick={() => historyPush('login.qrLogin')}><span className={tab}>扫码登录</span></Col>}
-                </Row>
-            </Card>
+                                }} block color='primary'>登&nbsp;&nbsp;录</Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </Grid.Item>
+                <Grid.Item>
+                    <Card className={card}>
+                        <Row justify={"space-evenly"}>
+                            <Col onClick={() => historyPush('user.login')}><span className={tab}>密码登录</span></Col>
+                            {web?.info?.reg_phone &&
+                                <Col onClick={() => historyPush('login.smsLogin')}><span className={tab}>短信登录</span></Col>}
+                            {web?.info?.reg_qrlogin &&
+                                <Col onClick={() => historyPush('login.qrLogin')}><span className={tab}>扫码登录</span></Col>}
+                        </Row>
+                    </Card>
+                </Grid.Item>
+            </Grid>
         </Body>
     );
 };

@@ -4,7 +4,7 @@ import {
     Avatar,
     Button,
     Card, DotLoading,
-    Form,
+    Form, Grid,
     Input,
     List,
     Modal,
@@ -21,7 +21,7 @@ import {deleteHeader} from "@/utils/auth";
 import {outLogin} from "@/service/user/login";
 import {getUploadUrl, uploadFile} from "@/service/common/upload";
 
-const useStyles = createStyles(() => {
+const useStyles = createStyles(({token,isDarkMode}) => {
     return {
         card: {
             ".adm-card-body": {
@@ -43,7 +43,8 @@ const useStyles = createStyles(() => {
         item: {
             ".adm-list-item-content-arrow": {
                 fontSize: "14px"
-            }
+            },
+            fontSize: "14px", color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
         },
         modal: {
             ".adm-center-popup-wrap": {
@@ -62,11 +63,29 @@ const useStyles = createStyles(() => {
                 borderTop: "none !important",
                 borderBottom: "none !important",
             },
+            ".adm-list-item":{
+                paddingLeft:"0 !important"
+            }
         },
+        btn:{
+            ".adm-list-item-content":{
+                paddingRight:"0 !important"
+            }
+        },
+        tag:{
+            backgroundColor: "#dbe6f0",
+            color: `${token.colorPrimary} !important`,
+            paddingBlock: "6px",
+            "--border-radius": "5px",
+            "--border-color": `${token.colorPrimary} !important`
+        },
+        extra:{
+            fontSize: "13px", color: "gray"
+        }
     }
 })
 export default () => {
-    const {styles: {card, list, card1, item, modal, label, formBody}} = useStyles()
+    const {styles: {card, list, card1, item, modal, label, formBody,btn,tag,extra}} = useStyles()
     const theme = useTheme()
     const user = useModel("user")
     const modalRef = useRef<any>()
@@ -197,7 +216,7 @@ export default () => {
                         textAlign: "center",
                         fontSize: "12px",
                         color: "gray"
-                    }}>首次未设置密码的账号，直接修改即可</p>
+                    }}>未绑定手机号和邮箱的用户需要先进行绑定才能修改密码</p>
                     <Button block color={"primary"} style={{
                         letterSpacing: "1px",
                         margin: "20px 0",
@@ -222,187 +241,168 @@ export default () => {
 
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}}>
-            <Card className={card} style={{backgroundColor: theme.colorPrimary, borderRadius: 0, paddingBlock: "15px"}}>
-                <Avatar src={user?.web?.avatar}
-                        style={{width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"}}/>
-                <div>
+            <Grid columns={1} gap={8}>
+                <Grid.Item>
+                    <Card className={card} style={{backgroundColor: theme.colorPrimary, borderRadius: 0, paddingBlock: "15px"}}>
+                        <Avatar src={user?.web?.avatar}
+                                style={{width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"}}/>
+                        <div>
                     <span style={{
                         color: "#fff",
                         display: "inline-block",
                         marginBottom: "10px"
                     }}>{user?.web?.nick_name}</span><br/>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Tag style={{
-                            backgroundColor: "#dbe6f0",
-                            color: theme.colorPrimary,
-                            paddingBlock: "6px",
-                            "--border-radius": "5px",
-                            "--border-color": theme.colorPrimary
-                        }}>{user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}</Tag>
-                        <Tag style={{
-                            marginLeft: "10px",
-                            backgroundColor: "#dbe6f0",
-                            color: theme.colorPrimary,
-                            paddingBlock: "6px",
-                            "--border-radius": "5px",
-                            "--border-color": theme.colorPrimary
-                        }}>ID:{user?.web?.id}</Tag>
-                    </div>
-                </div>
-            </Card>
+                            <div style={{display: "flex", alignItems: "center"}}>
+                                <Tag className={tag}>{user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}</Tag>
+                                <Tag style={{marginLeft: "10px"}} className={tag}>ID:{user?.web?.id}</Tag>
+                            </div>
+                        </div>
+                    </Card>
+                </Grid.Item>
+            </Grid>
+
             <div style={{padding: "10px"}}>
-                <Card style={{marginBottom: "10px", "--adm-card-padding-inline": 0}} className={card1}>
-                    <List className={list} style={{borderRadius: "5px"}}>
-                        <List.Item className={item}
-                                   style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}
-                                   prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Money}/>}
-                                   extra={<span style={{fontSize: "13px", color: "gray"}}>{user?.web?.money}</span>}
-                                   onClick={() => historyPush("user.pay")}>
-                            账户余额
-                        </List.Item>
-                        <List.Item className={item}
-                                   style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}
-                                   prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Cards}/>}
-                                   extra={<span style={{fontSize: "13px", color: "gray"}}>{user?.web?.id}</span>}
-                                   onClick={() => {
-                                   }}>
-                            账号ID
-                        </List.Item>
-                        <List.Item className={item}
-                                   style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}
-                                   prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={NiCheng}/>}
-                                   extra={<span style={{fontSize: "13px", color: "gray"}}>{user?.web?.nick_name}</span>}
-                                   onClick={() => {
-                                       modalRef.current = Modal?.show({
-                                           className: modal,
-                                           showCloseButton: true,
-                                           content: (<Form form={form}
-                                                           initialValues={{nick_name: user?.web?.nick_name || "未设置"}}
-                                                           className={formBody} onFinish={formFinish}>
-                                               <Form.Item name="nick_name" label="昵称" className={label}>
-                                                   <Input placeholder="请输入账户名称" clearable/>
-                                               </Form.Item>
-                                               <Form.Item>
-                                                   <Button type="submit" block color={"primary"} loading={btnLoading}
-                                                           style={{letterSpacing: "1px"}}>保存</Button>
-                                               </Form.Item>
-                                           </Form>)
-                                       } as ModalShowProps)
-                                   }}>
-                            我的昵称
-                        </List.Item>
-                        <List.Item className={item}
-                                   style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}
-                                   prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}} type={Tongxunlu}/>}
-                                   extra={<span style={{fontSize: "13px", color: "gray"}}>{user?.web?.contact}</span>}
-                                   onClick={() => {
-                                       modalRef.current = Modal?.show({
-                                           className: modal,
-                                           showCloseButton: true,
-                                           content: (<Form form={form}
-                                                           initialValues={{contact: user?.web?.contact || "未设置"}}
-                                                           className={formBody} onFinish={formFinish}>
-                                               <Form.Item name="contact" label="联系方式" className={label}>
-                                                   <Input placeholder="请输入联系方式" clearable/>
-                                               </Form.Item>
-                                               <Form.Item>
-                                                   <Button type="submit" block color={"primary"} loading={btnLoading}
-                                                           style={{letterSpacing: "1px"}}>保存</Button>
-                                               </Form.Item>
-                                           </Form>)
-                                       } as ModalShowProps)
-                                   }}>
-                            联系方式
-                        </List.Item>
-                        <List.Item className={item}
-                                   style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}
-                                   prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Clock}/>}
-                                   extra={<span
-                                       style={{fontSize: "13px", color: "gray"}}>{user?.web?.login_time}</span>}
-                                   onClick={() => {
-                                   }}>
-                            登录时间
-                        </List.Item>
-                        {/*<List.Item className={item}*/}
-                        {/*           style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}*/}
-                        {/*           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={UploadImage}/>}*/}
-                        {/*           onClick={() => {*/}
-                        {/*                Modal?.show({*/}
-                        {/*                   className: modal,*/}
-                        {/*                   showCloseButton: true,*/}
-                        {/*                   content: (<Basic/>)*/}
-                        {/*               } as ModalShowProps)*/}
-                        {/*           }}>*/}
-                        {/*    上传头像*/}
-                        {/*</List.Item>*/}
-                    </List>
-                </Card>
-                <Card style={{"--adm-card-padding-inline": 0, marginBottom: "10px"}} className={card1}>
-                    <List className={list} style={{borderRadius: "5px"}}>
-                        <List.Item className={item}
-                                   style={{fontSize: "14px", color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"}}
-                                   prefix={<Icon style={{fontSize: "22px", color: "#f655a6"}} type={Reset}/>}
-                                   extra={<span style={{
-                                       fontSize: "13px",
-                                       color: "gray"
-                                   }}>{user?.web?.account || "未绑定账号"}</span>}
-                                   onClick={() => {
-                                       if (user?.web?.account === null) {
-                                           handleShowModalForNullAccount();
-                                       } else {
-                                           handleShowModalForPasswordChange();
-                                       }
-                                   }}>
-                            修改密码
-                        </List.Item>
-                    </List>
-                </Card>
-                {outLoading &&
-                    <div style={{
-                        color: '#00b578',
-                        position: "absolute",
-                        top: "70%",
-                        left: "50%",
-                        transform: "translate(-50%,-50%)"
-                    }}>
-                        <DotLoading color={theme.colorPrimary}/>
-                        <span>退出登录中</span>
-                    </div> || <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                        <List className={list} style={{borderRadius: "5px"}}>
-                            <List.Item className={item}
-                                       style={{
-                                           fontSize: "14px",
-                                           color: theme.isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
-                                       }}
-                                       prefix={<Icon style={{fontSize: "22px", color: "#f65555"}} type={OutLogin}/>}
-                                       onClick={async () => {
-                                           setOutLoading(true)
-                                           await outLogin({
-                                               onSuccess: (r: any) => {
-                                                   deleteHeader()
-                                                   Toast.show({
-                                                       content: r?.message,
-                                                       position: 'top',
-                                                   })
-                                                   historyPush("user.login")
-                                               },
-                                               onFail: (r: any) => {
-                                                   Toast.show({
-                                                       content: r?.message,
-                                                       position: 'top',
-                                                   })
-                                               },
-                                               onFinally: () => {
-                                                   setOutLoading(false)
+                <Grid columns={1} gap={8}>
+                    <Grid.Item>
+                        <Card style={{ "--adm-card-padding-inline": 0}} className={card1}>
+                            <List className={list} style={{borderRadius: "5px"}}>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Money}/>}
+                                           extra={<span className={extra}>{user?.web?.money}</span>}
+                                           onClick={() => historyPush("user.pay")}>
+                                    账户余额
+                                </List.Item>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Cards}/>}
+                                           extra={<span className={extra}>{user?.web?.id}</span>}
+                                           onClick={() => {
+                                           }}>
+                                    账号ID
+                                </List.Item>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={NiCheng}/>}
+                                           extra={<span className={extra}>{user?.web?.nick_name}</span>}
+                                           onClick={() => {
+                                               modalRef.current = Modal?.show({
+                                                   className: modal,
+                                                   showCloseButton: true,
+                                                   content: (<Form form={form}
+                                                                   initialValues={{nick_name: user?.web?.nick_name || "未设置"}}
+                                                                   className={formBody} onFinish={formFinish}>
+                                                       <Form.Item name="nick_name" label="昵称" className={label}>
+                                                           <Input placeholder="请输入账户名称" clearable/>
+                                                       </Form.Item>
+                                                       <Form.Item className={btn}>
+                                                           <Button type="submit" block color={"primary"} loading={btnLoading}
+                                                                   style={{letterSpacing: "1px"}}>保存</Button>
+                                                       </Form.Item>
+                                                   </Form>)
+                                               } as ModalShowProps)
+                                           }}>
+                                    我的昵称
+                                </List.Item>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}} type={Tongxunlu}/>}
+                                           extra={<span className={extra}>{user?.web?.contact}</span>}
+                                           onClick={() => {
+                                               modalRef.current = Modal?.show({
+                                                   className: modal,
+                                                   showCloseButton: true,
+                                                   content: (<Form form={form}
+                                                                   initialValues={{contact: user?.web?.contact || "未设置"}}
+                                                                   className={formBody} onFinish={formFinish}>
+                                                       <Form.Item name="contact" label="联系方式" className={label}>
+                                                           <Input placeholder="请输入联系方式" clearable/>
+                                                       </Form.Item>
+                                                       <Form.Item className={btn}>
+                                                           <Button type="submit" block color={"primary"} loading={btnLoading}
+                                                                   style={{letterSpacing: "1px"}}>保存</Button>
+                                                       </Form.Item>
+                                                   </Form>)
+                                               } as ModalShowProps)
+                                           }}>
+                                    联系方式
+                                </List.Item>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Clock}/>}
+                                           extra={<span className={extra}>{user?.web?.login_time}</span>}
+                                           onClick={() => {
+                                           }}>
+                                    登录时间
+                                </List.Item>
+                                {/*<List.Item className={item}*/}
+                                {/*           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={UploadImage}/>}*/}
+                                {/*           onClick={() => {*/}
+                                {/*                Modal?.show({*/}
+                                {/*                   className: modal,*/}
+                                {/*                   showCloseButton: true,*/}
+                                {/*                   content: (<Basic/>)*/}
+                                {/*               } as ModalShowProps)*/}
+                                {/*           }}>*/}
+                                {/*    上传头像*/}
+                                {/*</List.Item>*/}
+                            </List>
+                        </Card>
+                    </Grid.Item>
+                    <Grid.Item>
+                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
+                            <List className={list} style={{borderRadius: "5px"}}>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#f655a6"}} type={Reset}/>}
+                                           extra={<span className={extra}>{user?.web?.account || "未绑定账号"}</span>}
+                                           onClick={() => {
+                                               if (user?.web?.account === null) {
+                                                   handleShowModalForNullAccount();
+                                               } else {
+                                                   handleShowModalForPasswordChange();
                                                }
-                                           })
+                                           }}>
+                                    修改密码
+                                </List.Item>
+                            </List>
+                        </Card>
+                    </Grid.Item>
+                    <Grid.Item>
+                        {outLoading &&
+                            <div style={{
+                                color: '#00b578',
+                                textAlign:'center'
+                            }}>
+                                <DotLoading color={theme.colorPrimary}/>
+                                <span>退出登录中</span>
+                            </div> || <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
+                                <List className={list} style={{borderRadius: "5px"}}>
+                                    <List.Item className={item}
+                                               prefix={<Icon style={{fontSize: "22px", color: "#f65555"}} type={OutLogin}/>}
+                                               onClick={async () => {
+                                                   setOutLoading(true)
+                                                   await outLogin({
+                                                       onSuccess: (r: any) => {
+                                                           deleteHeader()
+                                                           Toast.show({
+                                                               content: r?.message,
+                                                               position: 'top',
+                                                           })
+                                                           historyPush("user.login")
+                                                       },
+                                                       onFail: (r: any) => {
+                                                           Toast.show({
+                                                               content: r?.message,
+                                                               position: 'top',
+                                                           })
+                                                       },
+                                                       onFinally: () => {
+                                                           setOutLoading(false)
+                                                       }
+                                                   })
 
-                                       }}>
-                                退出登录
-                            </List.Item>
-                        </List>
-                    </Card>}
-
+                                               }}>
+                                        退出登录
+                                    </List.Item>
+                                </List>
+                            </Card>}
+                    </Grid.Item>
+                </Grid>
             </div>
         </Body>
     )

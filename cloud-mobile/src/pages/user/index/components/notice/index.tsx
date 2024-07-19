@@ -48,11 +48,9 @@ export default () => {
                         <span style={{marginRight:"5px"}}><Icon type={Time} style={{marginRight: "2px"}}/>{ago(noticeData?.create_time || '0000-00-00 00:00:00')}</span>
                         <span><Icon type={Look} style={{marginRight: "2px",fontSize:"24px"}}/>{noticeData?.look_num || 0}次</span>
                     </div>
-
                     <p dangerouslySetInnerHTML={{__html: noticeData?.content || ""}}/>
                 </Card>
             }
-
         </Body>
     )
 }

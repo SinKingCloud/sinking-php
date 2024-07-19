@@ -1,7 +1,7 @@
 import {Body, Icon} from "@/components";
 import {Ellipsis, Email, Message, Qrcode} from "@/components/icon";
 import {Col, Dropdown, Row} from "antd";
-import {Button, Card, Checkbox, Form, Input, Tabs, Toast} from "antd-mobile";
+import {Button, Card, Checkbox, Form, Grid, Input, Tabs, Toast} from "antd-mobile";
 import React, {useEffect, useState} from "react";
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {historyPush} from "@/utils/route";
@@ -36,7 +36,8 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
             ".adm-list-item-content": {
                 borderBottom: "none !important",
                 borderTop: "none !important",
-                paddingBlock: "9px"
+                paddingBlock: "9px",
+                paddingRight:"0 !important"
             },
         },
         body: {
@@ -93,7 +94,6 @@ const passLoginPage = () => {
             ),
         },
     ]
-    const {mobile} = useResponsive()
     /**
      * 表单提交
      */
@@ -124,10 +124,9 @@ const passLoginPage = () => {
                     content: r?.message,
                     icon: "success"
                 })
-                user?.refreshWebUser(() => {
-                    historyPush("user.index")
-                })
-                setLoginToken(mobile, r?.data?.token);
+                setLoginToken("mobile", r?.data?.token);
+                user?.refreshWebUser()
+                historyPush("user.index")
             },
             onFail: (r: any) => {
                 Toast.show({
@@ -150,45 +149,50 @@ const passLoginPage = () => {
                       <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
                   </Dropdown>
               }>
-            <Card style={{marginBottom: "10px"}}>
-                <Form form={form} className={body} onFinish={finish}>
-                    <Form.Item label='账号' name="account" className={label}>
-                        <Input placeholder='请输入手机号/账号' clearable/>
-                    </Form.Item>
-                    <Form.Item label='密码' name="password" className={label}>
-                        <Input placeholder='请输入登录密码' type={"password"} clearable/>
-                    </Form.Item>
-                    <Form.Item name="checked" className={label}>
-                        <Checkbox className={check}>
+            <Grid columns={1} gap={8}>
+                <Grid.Item>
+                    <Card>
+                        <Form form={form} className={body} onFinish={finish}>
+                            <Form.Item label='账号' name="account" className={label}>
+                                <Input placeholder='请输入手机号/账号' clearable/>
+                            </Form.Item>
+                            <Form.Item label='密码' name="password" className={label}>
+                                <Input placeholder='请输入登录密码' type={"password"} clearable/>
+                            </Form.Item>
+                            <Form.Item name="checked" className={label}>
+                                <Checkbox className={check}>
                         <span className={span} style={{
                             fontSize: "12px",
                             marginRight: "10px",
                             color: theme.isDarkMode ? "#b3b3b3" : ""
                         }}>记住登录状态</span>
-                            <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
-                        </Checkbox>
-                    </Form.Item>
-                    <Form.Item className={btn}>
-                        <Button type={"submit"} block color='primary' loading={loading}
-                                style={{
-                                    "--background-color": theme.colorPrimary,
-                                    "--border-color": theme.colorPrimary,
-                                    fontWeight: 600,
-                                }}>登&nbsp;&nbsp;录</Button>
-                    </Form.Item>
-                </Form>
-            </Card>
-
-            <Card className={card}>
-                <Row justify={"space-evenly"}>
-                    {web?.info?.reg_phone &&
-                        <Col onClick={() => historyPush('login.smsLogin')}><span className={tab}>短信登录</span></Col>}
-                    {web?.info?.reg_qrlogin &&
-                        <Col onClick={() => historyPush('login.qrLogin')}><span className={tab}>扫码登录</span></Col>}
-                    {web?.info?.reg_email && <Col onClick={() => historyPush('login.emailLogin')}><span
-                        className={tab}>邮箱登录</span></Col>}
-                </Row>
-            </Card>
+                                    <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
+                                </Checkbox>
+                            </Form.Item>
+                            <Form.Item className={btn}>
+                                <Button type={"submit"} block color='primary' loading={loading}
+                                        style={{
+                                            "--background-color": theme.colorPrimary,
+                                            "--border-color": theme.colorPrimary,
+                                            fontWeight: 600,
+                                        }}>登&nbsp;&nbsp;录</Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </Grid.Item>
+                <Grid.Item>
+                    <Card className={card}>
+                        <Row justify={"space-evenly"}>
+                            {web?.info?.reg_phone &&
+                                <Col onClick={() => historyPush('login.smsLogin')}><span className={tab}>短信登录</span></Col>}
+                            {web?.info?.reg_qrlogin &&
+                                <Col onClick={() => historyPush('login.qrLogin')}><span className={tab}>扫码登录</span></Col>}
+                            {web?.info?.reg_email && <Col onClick={() => historyPush('login.emailLogin')}><span
+                                className={tab}>邮箱登录</span></Col>}
+                        </Row>
+                    </Card>
+                </Grid.Item>
+            </Grid>
         </Body>
     );
 };

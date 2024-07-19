@@ -4,7 +4,7 @@
  * @param type
  * @param token
  */
-export function setLoginToken(type:any,token: string) {
+export function setLoginToken(type:string,token: string) {
     localStorage.setItem('cloud-token', token);
     localStorage.setItem('cloud-device', type);
 }

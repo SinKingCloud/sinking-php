@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react'
 import {Body} from "@/components";
 import Captcha, {CaptchaRef} from "@/components/captcha";
-import {Button, Card, Checkbox, Form, Input, Toast} from "antd-mobile";
+import {Button, Card, Form, Input, Toast} from "antd-mobile";
 import {sendSms} from "@/service/common/sms";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
@@ -31,14 +31,19 @@ const useStyles = createStyles(({css,isDarkMode,token}): any => {
             ".adm-list-item-content": {
                 borderBottom: "none !important",
                 borderTop: "none !important",
-                paddingBlock: "9px"
+                paddingBlock: "9px",
+                paddingRight:"0 !important"
             },
+
         },
         body: {
             ".adm-list-body": {
                 borderRadius: "5px",
                 borderTop:"none !important",
                 borderBottom:"none !important",
+            },
+            ".adm-list-item": {
+                paddingLeft: "0 !important"
             },
         },
     }
@@ -77,6 +82,12 @@ export default () => {
         if(values?.phone==undefined || values?.phone==""){
             Toast?.show({
                 content: "请输入手机号码",
+                position:"top"
+            })
+            return
+        }else if(!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)){
+            Toast.show({
+                content: "请输入正确的手机号",
                 position:"top"
             })
             return
@@ -134,7 +145,7 @@ export default () => {
     return (
         <Body title={"手机号码验证"} headStyle={{backgroundColor: theme.colorPrimary,color: "#fff"}} titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>
-            <Card style={{marginBottom:"10px"}}>
+            <Card>
                 <Form  form={form} initialValues={{phone:user?.web?.phone}} className={body} onFinish={formFinish}>
                     <Form.Item label='手机号码' name="phone" className={label}>
                         <Input placeholder='请输入手机号码' clearable/>

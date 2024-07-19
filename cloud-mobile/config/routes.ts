@@ -36,13 +36,23 @@ export const user = [
         title: "我的",
         name: "user.person",
         icon: 'icon-user',
-        routes: [
+        component: "@/pages/user/my",
+    },
+    {
+        path: "person",
+        hideInTabBar: true,
+        routes:[
             {
-                path: "info",
-                component: "@/pages/user/my",
-                title: "账号信息",
-                name: "user.person.info",
-                icon: 'icon-user',
+                path: "phoneVerify",
+                title: "手机验证",
+                name: "person.phoneVerify",
+                component: "@/pages/user/my/components/phoneVerify",
+            },
+            {
+                path: "emailVerify",
+                title: "邮箱验证",
+                name: "person.emailVerify",
+                component: "@/pages/user/my/components/emailVerify",
             },
         ]
     },

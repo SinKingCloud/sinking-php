@@ -1,9 +1,10 @@
+
 /**
  * 设置登录token
  * @param type
  * @param token
  */
-export function setLoginToken(type: string, token: string) {
+export function setLoginToken(type:any,token: string) {
     localStorage.setItem('cloud-token', token);
     localStorage.setItem('cloud-device', type);
 }

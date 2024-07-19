@@ -54,14 +54,6 @@ const useStyles = createStyles(({token}):any=>{
 const qrLoginPage = () => {
     const {styles:{border_corner,border_corner_left_top, border_corner_right_top, border_corner_left_bottom, border_corner_right_bottom}} = useStyles()
     const {mobile} = useResponsive()
-    const [isMobile, setIsMobile] = useState("pc")
-    useEffect(() => {
-        if (mobile) {
-            setIsMobile("mobile")
-        } else {
-            setIsMobile("pc")
-        }
-    }, [mobile]);
     /**
      * 生成二维码
      */
@@ -103,12 +95,12 @@ const qrLoginPage = () => {
         qrLogin({
             body: {
                 captcha_id: id,
-                device: isMobile,
+                device:mobile
             },
             onSuccess: (r: any) => {
                 localStorage.removeItem("captcha_id");
                 setQrcodeMessage("验证成功,正在登陆");
-                setLoginToken(isMobile, r?.data?.token);
+                setLoginToken(mobile, r?.data?.token);
                 historyPush("user.index");
                 setQrcode("");
                 Toast.show({

@@ -16,18 +16,21 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
             .adm-list-item-content-prefix {
                 font-size: 12px !important;
                 width: 65px
-            } , 
+            }
+
+        ,
         . adm-form-item-label {
             line-height: 2;
-            margin-bottom:6px !important;
+            margin-bottom: 6px !important;
         },
         . adm-list-item-content {
             border-bottom: ${border};
             border-top: none !important;
         },
-        .adm-input-element{
+        . adm-input-element {
             font-size: 12px !important;
         },
+
         `,
         btn: {
             ".adm-list-item-content": {
@@ -41,6 +44,12 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
                 borderRadius: "5px",
                 borderTop: "none !important",
                 borderBottom: "none !important",
+            },
+            ".adm-list-item": {
+                paddingLeft: "0 !important"
+            },
+            ".adm-input-element": {
+                fontSize: "12px !important"
             },
         },
         check: {
@@ -85,14 +94,6 @@ const passLoginPage = () => {
         },
     ]
     const {mobile} = useResponsive()
-    const [isMobile, setIsMobile] = useState("pc")
-    useEffect(() => {
-        if (mobile) {
-            setIsMobile("mobile")
-        } else {
-            setIsMobile("pc")
-        }
-    }, [mobile]);
     /**
      * 表单提交
      */
@@ -123,10 +124,10 @@ const passLoginPage = () => {
                     content: r?.message,
                     icon: "success"
                 })
-                user?.refreshWebUser(()=>{
+                user?.refreshWebUser(() => {
                     historyPush("user.index")
                 })
-                setLoginToken(isMobile, r?.data?.token);
+                setLoginToken(mobile, r?.data?.token);
             },
             onFail: (r: any) => {
                 Toast.show({
@@ -149,10 +150,10 @@ const passLoginPage = () => {
                       <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
                   </Dropdown>
               }>
-            <Card style={{marginBottom:"10px"}} >
-                <Form  form={form} className={body} onFinish={finish}>
+            <Card style={{marginBottom: "10px"}}>
+                <Form form={form} className={body} onFinish={finish}>
                     <Form.Item label='账号' name="account" className={label}>
-                        <Input placeholder='请输入手机号/账号' clearable />
+                        <Input placeholder='请输入手机号/账号' clearable/>
                     </Form.Item>
                     <Form.Item label='密码' name="password" className={label}>
                         <Input placeholder='请输入登录密码' type={"password"} clearable/>

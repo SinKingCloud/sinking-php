@@ -144,7 +144,7 @@ export default function HomePage() {
                     <Col onClick={()=>historyPush('user.help')}>
                         <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}><Icon type={Help} style={{display:"block",fontSize:"22px",lineHeight:1.3}}/>使用帮助</div>
                     </Col>
-                    <Col onClick={()=>historyPush('user.person.info')}>
+                    <Col onClick={()=>historyPush('user.person')}>
                         <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}><Icon type={User} style={{display:"block",fontSize:"22px",lineHeight:1.3}}/>我的账户</div>
                     </Col>
                 </Row>

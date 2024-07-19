@@ -1,15 +1,13 @@
-import {Body, Icon} from "@/components";
-import {Ellipsis, Email, Message, Qrcode} from "@/components/icon";
-import React, {useEffect, useRef, useState} from "react";
-import {Col, Dropdown, Row} from "antd";
-import {Button, Card, Checkbox, Form, Input, Toast} from "antd-mobile";
-import {createStyles, useResponsive, useTheme} from "antd-style";
-import {historyPush} from "@/utils/route";
+import React, {useRef, useState} from 'react'
+import {Body} from "@/components";
 import Captcha, {CaptchaRef} from "@/components/captcha";
+import {Button, Card, Checkbox, Form, Input, Toast} from "antd-mobile";
 import {sendSms} from "@/service/common/sms";
-import {loginBySms} from "@/service/user/login";
-import {setLoginToken} from "@/utils/auth";
+import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
+import {updatePassword} from "@/service/person/update";
+import {historyPush} from "@/utils/route";
+import {deleteHeader} from "@/utils/auth";
 const useStyles = createStyles(({css,isDarkMode,token}): any => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
     return {
@@ -25,6 +23,9 @@ const useStyles = createStyles(({css,isDarkMode,token}): any => {
             border-bottom: ${border};
             border-top: none !important;
         },
+        .adm-input-element{
+            font-size: 12px !important;
+        }
         `,
         btn: {
             ".adm-list-item-content": {
@@ -39,56 +40,15 @@ const useStyles = createStyles(({css,isDarkMode,token}): any => {
                 borderTop:"none !important",
                 borderBottom:"none !important",
             },
-            ".adm-list-item": {
-                paddingLeft: "0 !important"
-            },
-            ".adm-input-element": {
-                fontSize: "12px !important"
-            },
         },
-        check: {
-            ".adm-checkbox-icon": {
-                height: "15px !important",
-                width: "15px !important",
-            }
-        },
-        tab:{
-            fontSize:"14px",
-            color:token.colorPrimary
-        },
-        card:{
-            ".adm-card":{
-                padding:"0 !important",
-                lineHeight:2.5
-            }
-        }
     }
 })
-const smsLoginPage = () => {
+export default () => {
     const captcha = useRef<CaptchaRef>({});
     const [form] = Form.useForm()
-    const {styles: {label, body, check, btn,tab,card}} = useStyles();
-    const items = [
-        {
-            key: "password",
-            label: (
-                <span onClick={() => historyPush('user.login')}><Icon type={Message} style={{marginRight: "5px"}}/>密码登录</span>
-            ),
-        },
-        {
-            key: "qrcode",
-            label: (
-                <span onClick={() => historyPush('login.qrLogin')}><Icon type={Qrcode} style={{marginRight: "5px"}}/>扫码登录</span>
-            ),
-        },
-        {
-            key: "email",
-            label: (
-                <span onClick={() => historyPush('login.emailLogin')}><Icon type={Email} style={{marginRight: "5px"}}/>邮箱登录</span>
-            ),
-        },
-    ]
-    const {mobile} = useResponsive()
+    const {styles: {label, body, btn}} = useStyles();
+    const theme = useTheme()
+    const user = useModel("user")
     /**
      * 获取验证码
      */
@@ -110,79 +70,72 @@ const smsLoginPage = () => {
     };
     /**
      * 表单提交
-     * @param values
      */
-    const [btnLoading, setLoading] = useState(false)
-    const user = useModel("user")
-    const formFinish = async (values: any) => {
-        if(values?.phone == undefined || values.phone==""){
-            Toast.show({
-                content: "手机号不能为空",
-                position:"top"
-            })
-            return
-        }else if(!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)){
-            Toast.show({
-                content: "请输入正确的手机号",
-                position:"top"
-            })
-            return
-        }
-        if(values?.sms_code == undefined || values.sms_code==""){
-            Toast.show({
-                content: "验证码不能为空",
-                position:"top"
-            })
-            return
-        }
+    const [btnLoading,setBtnLoading] = useState(false)
+    const formFinish = async(values:any)=>{
 
-        setLoading(true)
-        captcha?.current?.Show?.(async (res) => {
-            await loginBySms({
-                body: {
-                    ...values,
-                    captcha_id: res?.randstr,
-                    captcha_code: res?.ticket,
-                },
-                onSuccess: (r: any) => {
-                    Toast.show({
-                        content: r?.message,
-                        icon: "success"
-                    })
-                    user?.refreshWebUser(()=>{
-                        historyPush("user.index")
-                    })
-                    setLoginToken(mobile, r?.data?.token);
-                },
-                onFail:(r:any)=>{
-                    Toast.show({
-                        content: r?.message || "登录失败",
-                        icon: "fail"
-                    })
-                },
-                onFinally:()=>{
-                    setLoading(false)
-                }
+        if(values?.phone==undefined || values?.phone==""){
+            Toast?.show({
+                content: "请输入手机号码",
+                position:"top"
             })
-        }, () => {
-            Toast.show({
-                content: "请完成验证码认证",
-                icon: "fail"
+            return
+        }
+        if(values?.sms_code==undefined || values?.sms_code==""){
+            Toast?.show({
+                content: "请输入验证码",
+                position:"top"
             })
-            setLoading(false)
+            return
+        }
+        if(values?.password==undefined || values?.password==""){
+            Toast?.show({
+                content: "请输入新密码",
+                position:"top"
+            })
+            return
+        }else if (values.password.length > 20 || values.password.length < 6) {
+            Toast?.show({
+                content: "密码长度必须为6-20位之间",
+                position:"top"
+            })
+            return
+        }
+        const code = values?.sms_code
+        delete values?.sms_code
+        setBtnLoading(true)
+        await updatePassword({
+            body:{
+                type:"phone",
+                ...values,
+                code:code
+            },
+            onSuccess:(r:any)=>{
+                Toast.show({
+                    content: r?.message,
+                    icon: "success"
+                })
+                user?.refreshWebUser(()=>{
+                    deleteHeader()
+                    historyPush("user.login")
+                })
+            },
+            onFail:(r:any)=>{
+                Toast?.show({
+                    content: r?.message || "修改失败",
+                    icon:"fail"
+                })
+            },
+            onFinally:()=>{
+                setBtnLoading(false)
+            }
         })
     }
-    const web = useModel("web")
-    const theme = useTheme()
     return (
-        <Body title={"手机短信登录"} headStyle={{backgroundColor:theme.colorPrimary, color:"#fff"}} titleStyle={{color: "#fff"}} right={
-            <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>
-                <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
-            </Dropdown>
-        }>
+        <Body title={"手机号码验证"} headStyle={{backgroundColor: theme.colorPrimary,color: "#fff"}} titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>
             <Card style={{marginBottom:"10px"}}>
-                <Form  form={form} className={body} onFinish={formFinish}>
+                <Form  form={form} initialValues={{phone:user?.web?.phone}} className={body} onFinish={formFinish}>
                     <Form.Item label='手机号码' name="phone" className={label}>
                         <Input placeholder='请输入手机号码' clearable/>
                     </Form.Item>
@@ -198,7 +151,6 @@ const smsLoginPage = () => {
                                                       })
                                                       return
                                                   }
-
                                                   setSmsLoading(true)
                                                   captcha?.current?.Show?.(async (res) => {
                                                       await sendSms({
@@ -234,31 +186,19 @@ const smsLoginPage = () => {
                                               }}>发送验证码</Button>}>
                         <Input placeholder='请输入短信验证码'   clearable/>
                     </Form.Item>
-                    <Form.Item name="checked" className={label}>
-                        <Checkbox className={check}>
-                            <span style={{fontSize: "12px", marginRight: "10px"}}>记住登录状态</span>
-                            <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
-                        </Checkbox>
+                    <Form.Item name="password" label="账户新密码" className={label}>
+                        <Input placeholder="请输入新密码"/>
                     </Form.Item>
                     <Form.Item className={btn}>
                         <Button type="submit" loading={btnLoading} style={{
                             "--background-color":theme.colorPrimary,
                             "--border-color": theme.colorPrimary,
                             fontWeight: 600,
-                        }} block color='primary' >登&nbsp;&nbsp;录</Button>
+                        }} block color='primary' >修改</Button>
                     </Form.Item>
                 </Form>
             </Card>
-
-            <Card className={card}>
-                <Row justify={"space-evenly"}>
-                    <Col onClick={()=>historyPush('user.login')}><span className={tab}>密码登录</span></Col>
-                    {web?.info?.reg_qrlogin &&<Col onClick={()=>historyPush('login.qrLogin')}><span className={tab}>扫码登录</span></Col>}
-                    {web?.info?.reg_email &&<Col onClick={()=>historyPush('login.emailLogin')}><span className={tab}>邮箱登录</span></Col>}
-                </Row>
-            </Card>
         </Body>
-    );
-};
+    )
 
-export default smsLoginPage;
+}

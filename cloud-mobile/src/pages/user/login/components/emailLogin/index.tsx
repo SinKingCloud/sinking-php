@@ -26,9 +26,6 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
             border-bottom: ${border};
             border-top: none !important;
         },
-        .adm-input-element{
-            font-size: 12px !important;
-        }
         `,
         btn: {
             ".adm-list-item-content": {
@@ -42,6 +39,12 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
                 borderRadius: "5px",
                 borderTop: "none !important",
                 borderBottom: "none !important",
+            },
+            ".adm-list-item": {
+                paddingLeft: "0 !important"
+            },
+            ".adm-input-element": {
+                fontSize: "12px !important"
             },
         },
         check: {
@@ -87,14 +90,6 @@ const emailLoginPage = () => {
         },
     ]
     const {mobile} = useResponsive()
-    const [isMobile, setIsMobile] = useState("pc")
-    useEffect(() => {
-        if (mobile) {
-            setIsMobile("mobile")
-        } else {
-            setIsMobile("pc")
-        }
-    }, [mobile]);
     /**
      * 获取邮箱验证码
      */
@@ -155,7 +150,7 @@ const emailLoginPage = () => {
                     user?.refreshWebUser(()=>{
                         historyPush("user.index")
                     })
-                    setLoginToken(isMobile, r?.data?.token);
+                    setLoginToken(mobile, r?.data?.token);
                 },
                 onFail: (r: any) => {
                     Toast.show({

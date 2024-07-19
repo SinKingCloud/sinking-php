@@ -20,11 +20,7 @@ export async function outLogin(params: API.RequestParams = {}) {
     return get("/auth/login/out", params?.body, params?.onSuccess, params?.onFail, params?.onFinally);
 }
 /** 二维码登陆 GET /auth/login/qrLogin */
-export async function qrLogin(params?: {
-    onFail: (r: any) => void;
-    body: { captcha_id: string; device: string };
-    onSuccess: (r: any) => void
-}) {
+export async function qrLogin(params: API.RequestParams = {}) {
     return get("/auth/login/qrlogin", params?.body, params?.onSuccess, params?.onFail, params?.onFinally);
 }
 /** 生成二维码 GET /auth/verify/qrcode */

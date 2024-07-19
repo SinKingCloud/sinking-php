@@ -14,7 +14,7 @@ import {
 import {historyPush} from "@/utils/route";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
-import {Account, Cards, Clock, Money, NiCheng, OutLogin, Reset, Tongxunlu, UploadImage} from "@/components/icon";
+import {Account, Cards, Clock, Email, Money, NiCheng, OutLogin, Reset, Tongxunlu, UploadImage} from "@/components/icon";
 import {updateInfo} from "@/service/person/update";
 import {ModalShowProps} from "antd-mobile/2x/es/components/modal";
 import {deleteHeader} from "@/utils/auth";
@@ -117,6 +117,19 @@ export default () => {
             Toast.show({
                 content: "请输入联系方式",
                 position: 'top',
+            })
+            return
+        }
+        if (values?.email == undefined || values.email == "") {
+            Toast.show({
+                content: "邮箱不能为空",
+                position: "top"
+            })
+            return
+        } else if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
+            Toast.show({
+                content: "邮箱格式不正确",
+                position: "top"
             })
             return
         }
@@ -244,7 +257,25 @@ export default () => {
             )
         });
     };
-
+    /**
+     * 绑定邮箱
+     */
+    // const handleShowModalForEmailChange = () => {
+    //     modalRef.current = Modal.show({
+    //         className: modal,
+    //         showCloseButton: true,
+    //         content: (
+    //             <Form form={form} className={formBody} onFinish={formFinish}>
+    //                 <Form.Item name="email" label="邮箱" className={label}>
+    //                     <Input placeholder="请输入邮箱" clearable />
+    //                 </Form.Item>
+    //                 <Form.Item>
+    //                     <Button type="submit" block color={"primary"} loading={btnLoading} style={{ letterSpacing: "1px" }}>保存</Button>
+    //                 </Form.Item>
+    //             </Form>
+    //         )
+    //     })
+    // }
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}}>
             <Grid columns={1} gap={8}>
@@ -266,7 +297,6 @@ export default () => {
                     </Card>
                 </Grid.Item>
             </Grid>
-
             <div style={{padding: "10px"}}>
                 <Grid columns={1} gap={8}>
                     <Grid.Item>
@@ -364,6 +394,22 @@ export default () => {
                                                }
                                            }}>
                                     修改密码
+                                </List.Item>
+                            </List>
+                        </Card>
+                    </Grid.Item>
+                    <Grid.Item>
+                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
+                            <List className={list} style={{borderRadius: "5px"}}>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Email}/>}
+                                           extra={<span className={extra}>{user?.web?.email || "未绑定邮箱"}</span>}
+                                           onClick={()=>{
+                                               // if(user?.web?.email === null){
+                                               //     handleShowModalForEmailChange()
+                                               // }
+                                           }}>
+                                    绑定邮箱
                                 </List.Item>
                             </List>
                         </Card>

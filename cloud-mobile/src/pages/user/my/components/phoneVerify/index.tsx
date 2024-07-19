@@ -146,7 +146,7 @@ export default () => {
         <Body title={"手机号码验证"} headStyle={{backgroundColor: theme.colorPrimary,color: "#fff"}} titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>
             <Card>
-                <Form  form={form} initialValues={{phone:user?.web?.phone}} className={body} onFinish={formFinish}>
+                <Form form={form} initialValues={{phone:user?.web?.phone}} className={body} onFinish={formFinish}>
                     <Form.Item label='手机号码' name="phone" className={label}>
                         <Input placeholder='请输入手机号码' clearable/>
                     </Form.Item>

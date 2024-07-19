@@ -198,7 +198,7 @@ export default () => {
                         <Input placeholder='请输入短信验证码'   clearable/>
                     </Form.Item>
                     <Form.Item name="password" label="账户新密码" className={label}>
-                        <Input placeholder="请输入新密码"/>
+                        <Input placeholder="请输入新密码" type="password"/>
                     </Form.Item>
                     <Form.Item className={btn}>
                         <Button type="submit" loading={btnLoading} style={{

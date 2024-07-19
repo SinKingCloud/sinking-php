@@ -8,6 +8,7 @@ import {useModel} from "umi";
 import {updateInfo, updatePassword} from "@/service/person/update";
 import {historyPush} from "@/utils/route";
 import {deleteHeader} from "@/utils/auth";
+import {sendEmail} from "@/service/common/email";
 const useStyles = createStyles(({css,isDarkMode,token}): any => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
     return {
@@ -112,8 +113,8 @@ export default () => {
             })
             return
         }
-        const code = values?.sms_code
-        delete values?.sms_code
+        const code = values?.email_code
+        delete values?.email_code
         setBtnLoading(true)
         await updatePassword({
             body:{
@@ -145,62 +146,12 @@ export default () => {
     return (
         <Body title={"邮箱账号验证"} headStyle={{backgroundColor: theme.colorPrimary,color: "#fff"}} titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>
-            {user?.web?.email == null && <Card>
-                <Form form={emailForm} className={body} onFinish={async(values:any)=>{
-                    if (values?.email == undefined || values.email == "") {
-                        Toast.show({
-                            content: "邮箱不能为空",
-                            position: "top"
-                        })
-                        return
-                    } else if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
-                        Toast.show({
-                            content: "邮箱格式不正确",
-                            position: "top"
-                        })
-                        return
-                    }
-                    setBtnLoading(true)
-                    await updateInfo({
-                        body: {
-                            ...values
-                        },
-                        onSuccess: (r: any) => {
-                            Toast.show({
-                                content: r?.message,
-                                position: 'top',
-                            })
-                            user?.refreshWebUser()
-                            historyPush("user.person")
-                        },
-                        onFail: (r: any) => {
-                            Toast.show({
-                                content: r?.message || "修改失败",
-                                position: 'top',
-                            })
-                        },
-                        onFinally: () => {
-                            setBtnLoading(false)
-                        }
-                    })
-                }}>
-                    <Form.Item label='邮箱账号' name="email" className={label}>
-                        <Input placeholder='绑定邮箱账号' clearable/>
-                    </Form.Item>
-                    <Form.Item className={btn}>
-                        <Button type="submit" loading={btnLoading} style={{
-                            "--background-color":theme.colorPrimary,
-                            "--border-color": theme.colorPrimary,
-                            fontWeight: 600,
-                        }} block color='primary'>保存</Button>
-                    </Form.Item>
-                </Form>
-            </Card> ||  <Card>
+             <Card>
                 <Form  form={form} initialValues={{phone:user?.web?.email}} className={body} onFinish={formFinish}>
                     <Form.Item label='邮箱账号' name="email" className={label}>
                         <Input placeholder='请输入邮箱账号' clearable/>
                     </Form.Item>
-                    <Form.Item label='验证码' name="sms_code" className={label}
+                    <Form.Item label='验证码' name="email_code" className={label}
                                extra={<Button loading={smsLoading} disabled={sendCodeDisabled}
                                               style={{fontSize: "12px", color: theme.colorPrimary, "--border-width": "0px",padding:"0px"}}
                                               onClick={(e) => {
@@ -214,7 +165,7 @@ export default () => {
                                                   }
                                                   setSmsLoading(true)
                                                   captcha?.current?.Show?.(async (res) => {
-                                                      await sendSms({
+                                                      await sendEmail({
                                                           body: {
                                                               captcha_id: res?.randstr,
                                                               captcha_code: res?.ticket,
@@ -248,7 +199,7 @@ export default () => {
                         <Input placeholder='请输入邮箱验证码'   clearable/>
                     </Form.Item>
                     <Form.Item name="password" label="账户新密码" className={label}>
-                        <Input placeholder="请输入新密码"/>
+                        <Input placeholder="请输入新密码" type={"password"}/>
                     </Form.Item>
                     <Form.Item className={btn}>
                         <Button type="submit" loading={btnLoading} style={{
@@ -258,8 +209,7 @@ export default () => {
                         }} block color='primary' >修改</Button>
                     </Form.Item>
                 </Form>
-            </Card>}
-
+            </Card>
         </Body>
     )
 

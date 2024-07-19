@@ -33,6 +33,12 @@ const useStyles = createStyles(({token,isDarkMode}) => {
                 borderTop: "none !important",
                 borderBottom: "none !important",
                 borderRadius: "8px"
+            },
+            ".adm-list-item":{
+                paddingLeft:"0 !important"
+            },
+            ".adm-list-item-content":{
+                paddingLeft:"12px !important"
             }
         },
         card1: {

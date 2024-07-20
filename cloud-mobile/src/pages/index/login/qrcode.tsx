@@ -64,11 +64,10 @@ const useStyles = createStyles((): any => {
         },
         p: {
             textAlign: 'center',
-            marginTop: 0,
-            marginBottom: 0,
+            marginTop: "10px",
+            marginBottom: "10px",
             fontSize: "12px",
             color: "#808080",
-            borderBottom: "1px dashed #eeeeee",
         },
         sp: {
             fontSize: "11px",
@@ -160,62 +159,56 @@ export default () => {
                     <NoticeBar className={notice} content='请使用手机QQ扫码下方二维码' color='info' wrap/>
                 </Grid.Item>
                 <Grid.Item>
-                    <div className={qrcodeBorder}>
-                        <div
-                            className={border_corner + " " + border_corner_right_bottom}
-                            style={{borderColor: theme.colorPrimary}}></div>
-                        <div
-                            className={border_corner + " " + border_corner_right_top}
-                            style={{borderColor: theme.colorPrimary}}></div>
-                        <div
-                            className={border_corner + " " + border_corner_left_bottom}
-                            style={{borderColor: theme.colorPrimary}}></div>
-                        <div
-                            className={border_corner + " " + border_corner_left_top}
-                            style={{borderColor: theme.colorPrimary}}></div>
-                        {qrcodeLoading && <SpinLoading color='primary' style={{margin: "50px auto"}}/> ||
-                            <QRCode
-                                value={qrcode}
-                                size={150}
-                            />
-                        }
-                    </div>
+                    <Card>
+                        <div className={qrcodeBorder}>
+                            <div
+                                className={border_corner + " " + border_corner_right_bottom}
+                                style={{borderColor: theme.colorPrimary}}></div>
+                            <div
+                                className={border_corner + " " + border_corner_right_top}
+                                style={{borderColor: theme.colorPrimary}}></div>
+                            <div
+                                className={border_corner + " " + border_corner_left_bottom}
+                                style={{borderColor: theme.colorPrimary}}></div>
+                            <div
+                                className={border_corner + " " + border_corner_left_top}
+                                style={{borderColor: theme.colorPrimary}}></div>
+                            {qrcodeLoading && <SpinLoading color='primary' style={{margin: "50px auto"}}/> ||
+                                <QRCode
+                                    value={qrcode}
+                                    size={150}
+                                />
+                            }
+                        </div>
+                        <p className={p}>
+                            如提示二维码过期可
+                            <span style={{color: theme.colorPrimary}} onClick={() => {
+                                getQrCode()
+                            }}>点此获取新二维码</span>
+                        </p>
+                        <p style={{
+                            fontSize: "13px",
+                            fontWeight: 600,
+                            color: "#10bb10",
+                        }} className={p}>请使用手机QQ扫码二维码，并授权登录</p>
+                        <p style={{
+                            fontSize: "11px",
+                            color: theme.isDarkMode ? "#b3b3b3" : ""
+                        }} className={p}>需要在绑定的手机QQ登录后扫码，其他QQ扫码无效</p>
+                        <Button type={"submit"} block color='primary'
+                                style={{
+                                    "--background-color": theme.colorPrimary,
+                                    "--border-color": theme.colorPrimary,
+                                    fontWeight: 600,
+                                    fontSize: "15px",
+                                    letterSpacing: "0.5px"
+                                }} onClick={() => {
+                            qqJumpUrl(qrcode);
+                        }}>点击跳转到手机QQ登录</Button>
+                    </Card>
                 </Grid.Item>
                 <Grid.Item>
-                    <p className={p}>
-                        如提示二维码过期可
-                        <span style={{color: theme.colorPrimary}} onClick={() => {
-                            getQrCode()
-                        }}>点此获取新二维码</span>
-                    </p>
-                </Grid.Item>
-                <Grid.Item>
-                    <p style={{
-                        fontSize: "13px",
-                        fontWeight: 600,
-                        color: "#10bb10",
-                    }} className={p}>请使用手机QQ扫码二维码，并授权登录</p>
-                </Grid.Item>
-                <Grid.Item>
-                    <p style={{
-                        fontSize: "11px",
-                        color: theme.isDarkMode ? "#b3b3b3" : ""
-                    }} className={p}>需要在绑定的手机QQ登录后扫码，其他QQ扫码无效</p>
-                </Grid.Item>
-                <Grid.Item>
-                    <Button type={"submit"} block color='primary'
-                            style={{
-                                "--background-color": theme.colorPrimary,
-                                "--border-color": theme.colorPrimary,
-                                fontWeight: 600,
-                                fontSize: "15px",
-                                letterSpacing: "0.5px"
-                            }} onClick={() => {
-                        qqJumpUrl(qrcode);
-                    }}>点击跳转到手机QQ登录</Button>
-                </Grid.Item>
-                <Grid.Item>
-                    <Card style={{marginBottom: "10px"}}>
+                    <Card>
                         <p style={{fontSize: "12px", fontWeight: 600, margin: 0}}>验证说明:</p>
                         <span className={sp}>1、使用手机QQ扫描二维码后，在QQ上授权登录。</span><br/>
                     </Card>

@@ -5,6 +5,9 @@ import {getCurrentPath, getCurrentTabBarItems, historyPush} from "@/utils/route"
 import {getLoginToken} from "@/utils/auth";
 import {useModel} from "umi";
 import request from "@/utils/request";
+import {createStyles} from "antd-style";
+import Loading from "@/loading";
+import {Spin} from "antd";
 
 /**
  * 中间件
@@ -19,6 +22,19 @@ const check = async (ctx: any, next: any) => {
 }
 request.use(check);
 
+const useStyles = createStyles((): any => {
+    return {
+        body: {
+            background: "radial-gradient(191.09% 94.72% at 12.72264631043257% 89.55399061032864%, rgba(247, 171, 171, 0.3) 0%, rgba(150, 240, 250, 0.21) 45.59%, rgba(181, 174, 245, 0.15) 66.76%, rgba(255, 255, 255, 0.3) 100%) !important"
+        },
+        load: {
+            margin: "0 auto",
+            width: "100%",
+            lineHeight: "80vh",
+        },
+    }
+})
+
 export default function () {
     const location = useLocation();
     const tabBarItems = getCurrentTabBarItems(location?.pathname);
@@ -26,6 +42,7 @@ export default function () {
     const [tabBarActiveKey, setTabBarActiveKey] = useState("");
     const [showTabBar, setShowTabBar] = useState(true);
     const user = useModel('user');
+    const web = useModel('web');
     const isIndex = () => {
         return getCurrentPath(location?.pathname) == '/index';
     }
@@ -72,10 +89,14 @@ export default function () {
         initUser();
     }, []);
 
-    return <Mobile tabBar={tabBarItems}
-                   onTabBarChange={(key) => {
-                       historyPush(key);
-                   }}
-                   tabBarActiveKey={tabBarActiveKey}
-                   showTabBar={showTabBar}/>;
+    const {styles: {body, load}} = useStyles();
+    return <>
+        {(!web?.info?.id && <Spin spinning={true} size="large" className={load}></Spin>) ||
+            <Mobile bodyClassName={!isIndex() ? body : ""} tabBar={tabBarItems}
+                    onTabBarChange={(key) => {
+                        historyPush(key);
+                    }}
+                    tabBarActiveKey={tabBarActiveKey}
+                    showTabBar={showTabBar}/>}
+    </>;
 }

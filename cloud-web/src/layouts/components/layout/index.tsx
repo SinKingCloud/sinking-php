@@ -4,7 +4,7 @@ import {Icon} from "@/components";
 import {useLocation, useModel} from "umi";
 import {deleteHeader, getLoginToken} from "@/utils/auth";
 import {getCurrentPath, historyPush} from "@/utils/route";
-import {App, Avatar, Col, Popover, Row, Tooltip} from "antd";
+import {App, Avatar, Col, Popover, Row, Spin, Tooltip} from "antd";
 import {createStyles} from "antd-style";
 import Settings from "../../../../config/defaultSettings";
 import {Auto, Bottom, Dark, Exit, Light, Order, Right, Setting, System, Web} from "@/components/icon";
@@ -291,38 +291,45 @@ const SKLayout: React.FC<slide> = ({...props}) => {
                     whiteSpace: "nowrap",
                 }
             },
+            load: {
+                margin: "0 auto",
+                width: "100%",
+                lineHeight: "80vh",
+            },
         };
     });
-    const {styles: {collapsedImg, unCollapsed}} = useStyles();
+    const {styles: {collapsedImg, unCollapsed, load}} = useStyles();
     return (
         <>
             <Title/>
-            <Layout loading={loading}
-                    waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
-                    menus={menu}
-                    layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
-                    menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
-                    footer={<>©{new Date().getFullYear()} All Right
-                        Revered {web?.info?.name || Settings?.title}</>}
-                    headerRight={<RightTop/>}
-                    menuCollapsedWidth={60}
-                    menuUnCollapsedWidth={210}
-                    collapsedLogo={() => {
-                        return <img
-                            src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                            alt={Settings?.title} className={collapsedImg}/>
-                    }}
-                    unCollapsedLogo={() => {
-                        return (
-                            <div className={unCollapsed}>
-                                <img
-                                    src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
-                                    alt={web?.info?.name || Settings?.title}/>
-                                <div style={{color: web?.info?.color ? web?.info?.color : "rgb(0,81,235)"}}>
-                                    {web?.info?.name || Settings?.title}
-                                </div>
-                            </div>)
-                    }}/>
+            {(!web?.info?.id && <Spin spinning={true} size="large" className={load}></Spin>) ||
+                <Layout loading={loading}
+                        waterMark={web?.info?.water_mark ? [user?.web?.nick_name, user?.web?.email] : ""}
+                        menus={menu}
+                        layout={web?.info?.layout == "left" ? "inline" : "horizontal"}
+                        menuTheme={web?.info?.theme == "dark" ? "dark" : "light"}
+                        footer={<>©{new Date().getFullYear()} All Right
+                            Revered {web?.info?.name || Settings?.title}</>}
+                        headerRight={<RightTop/>}
+                        menuCollapsedWidth={60}
+                        menuUnCollapsedWidth={210}
+                        collapsedLogo={() => {
+                            return <img
+                                src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                alt={Settings?.title} className={collapsedImg}/>
+                        }}
+                        unCollapsedLogo={() => {
+                            return (
+                                <div className={unCollapsed}>
+                                    <img
+                                        src={web?.info?.logo || (Settings?.basePath || "/") + "logo.svg"}
+                                        alt={web?.info?.name || Settings?.title}/>
+                                    <div style={{color: web?.info?.color ? web?.info?.color : "rgb(0,81,235)"}}>
+                                        {web?.info?.name || Settings?.title}
+                                    </div>
+                                </div>)
+                        }}/>}
+
         </>
     );
 }

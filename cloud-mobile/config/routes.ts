@@ -24,31 +24,31 @@ export const user = [
         routes: [
             {
                 path: "index",
-                component: "@/pages/user/recharge",
+                component: "@/pages/user/pay",
                 title: "充值",
                 name: "user.pay",
             },
             {
                 path: "recharge",
-                component: "@/pages/user/recharge/components/pay",
+                component: "@/pages/user/pay/recharge",
                 title: "充值账户余额",
                 name: "user.pay.recharge",
             },
             {
                 path: "station",
-                component: "@/pages/user/recharge/components/station",
+                component: "@/pages/user/pay/station",
                 title: "开通主站",
                 name: "user.pay.station",
             },
             {
                 path: "record",
-                component: "@/pages/user/recharge/components/record",
+                component: "@/pages/user/pay/record",
                 title: "订单记录",
                 name: "user.pay.record",
             },
             {
                 path: "balance",
-                component: "@/pages/user/recharge/components/balance",
+                component: "@/pages/user/pay/balance",
                 title: "余额明细",
                 name: "user.pay.balance",
             },

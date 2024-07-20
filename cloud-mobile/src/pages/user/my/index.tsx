@@ -39,10 +39,6 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
             },
             ".adm-list-item-content": {
                 paddingLeft: "12px !important",
-                // color: "var(--adm-color-weak)",
-                // ":hover": {
-                //     color: "var(--adm-color-weak)"
-                // }
             }
         },
         card1: {

@@ -32,6 +32,7 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
             flexDirection: "column",
             flex: "1 1 auto",
             overflow: "hidden",
+            background: isDarkMode ? "rgb(20,20,20)" : "rgb(246,246,246)",
         },
         tab: {
             borderTop: "0.5px solid " + (isDarkMode ? "rgb(29, 29, 29)" : "rgb(236, 236, 236)"),
@@ -67,6 +68,8 @@ export type MobileProps = {
     tabBarClassNames?: any;//tabBar样式
     path?: any;//当前激活的tabBar
     onTabBarChange?: (key: any) => void;//tabBar改变事件
+    bodyStyle?: any;//内容样式
+    bodyClassName?: any;//内容class
 }
 
 const SkLayout: React.FC<MobileProps> = (props: any) => {
@@ -81,13 +84,15 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         tabBarActiveKey = pathname,
         tabBarStyles = {},
         tabBarClassNames = "",
-        onTabBarChange = undefined
+        onTabBarChange = undefined,
+        bodyStyle = undefined,
+        bodyClassName = "",
     } = props;
     return <ConfigProvider locale={zhCN}>
         <AntdConfigProvider locale={antdZhCN}>
             <App>
                 <div className={container}>
-                    <div className={body}>
+                    <div className={body + " " + bodyClassName} style={bodyStyle}>
                         <Outlet/>
                     </div>
                     {showTabBar && (tabBar?.length || 0) > 0 && <div className={tab}>

@@ -34,29 +34,29 @@ export const user = [
             },
         ]
     },
-    {
-        path: "text",
-        title: "文章管理",
-        name: "user.text",
-        icon: 'icon-text',
-        hideInMenu: false,
-        routes: [
-            {
-                path: "release",
-                component: "@/pages/user/text/release",
-                title: "发布文章",
-                name: "user.article",
-                hideInMenu: false,
-            },
-            {
-                path: "list",
-                component: "@/pages/user/text/list",
-                title: "文章列表",
-                name: "user.articleList",
-                hideInMenu: false,
-            },
-        ]
-    },
+    // {
+    //     path: "text",
+    //     title: "文章管理",
+    //     name: "user.text",
+    //     icon: 'icon-text',
+    //     hideInMenu: false,
+    //     routes: [
+    //         {
+    //             path: "release",
+    //             component: "@/pages/user/text/release",
+    //             title: "发布文章",
+    //             name: "user.article",
+    //             hideInMenu: false,
+    //         },
+    //         {
+    //             path: "list",
+    //             component: "@/pages/user/text/list",
+    //             title: "文章列表",
+    //             name: "user.articleList",
+    //             hideInMenu: false,
+    //         },
+    //     ]
+    // },
     {
         path: "pay",
         title: "财务管理",
@@ -280,9 +280,9 @@ export default [
                 hideInMenu: true,
             },
             {
-                path: '/' + userPath + '/login',
+                path: '/login',
                 component: '@/pages/user/login',
-                name: "user.login",
+                name: "login",
                 title: "帐号登录",
                 hideInMenu: false,
             },
@@ -293,7 +293,6 @@ export default [
         path: indexPath,
         name: indexPath,
         title: "系统首页",
-        icon: 'icon-doc',
         routes: index,
     },
     /**
@@ -310,7 +309,6 @@ export default [
         path: userPath,
         name: userPath,
         title: "用户系统",
-        icon: 'icon-doc',
         routes: user,
     },
     /**
@@ -327,7 +325,6 @@ export default [
         path: masterPath,
         name: masterPath,
         title: "后台系统",
-        icon: 'icon-system',
         routes: master,
     },
     /**

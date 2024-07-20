@@ -5,6 +5,7 @@ import {API} from "../../typings";
 import {Modal} from "@/components/antd";
 import {historyPush} from "@/utils/route";
 import {ModalProps} from "antd";
+
 /**
  * request对象
  */
@@ -50,7 +51,7 @@ const check = async (ctx: any, next: any) => {
     ctx.req.options.headers = getHeaders();
     await next();
     if (ctx.res.code == 401) {
-        historyPush("user.login");//无权限页面;
+        historyPush("login");//无权限页面;
         deleteHeader()
     }
 }

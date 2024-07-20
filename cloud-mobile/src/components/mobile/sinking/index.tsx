@@ -3,9 +3,12 @@ import {createStyles} from "antd-style";
 import {TabBar} from "antd-mobile";
 import {Outlet} from "umi";
 import {ConfigProvider} from "antd-mobile";
+import {ConfigProvider as AntdConfigProvider} from "antd";
 import zhCN from "antd-mobile/es/locales/zh-CN";
+import antdZhCN from "antd/es/locale/zh_CN";
 import {useLocation} from "umi";
 import {App} from "antd";
+
 const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
     return {
         container: css`
@@ -19,6 +22,7 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
             max-width: 500px;
             margin: 0 auto;
             box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.13);
+
             ${responsive.mobile} {
                 max-width: none;
             }
@@ -80,25 +84,27 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         onTabBarChange = undefined
     } = props;
     return <ConfigProvider locale={zhCN}>
-        <App>
-            <div className={container}>
-                <div className={body}>
-                    <Outlet/>
+        <AntdConfigProvider locale={antdZhCN}>
+            <App>
+                <div className={container}>
+                    <div className={body}>
+                        <Outlet/>
+                    </div>
+                    {showTabBar && (tabBar?.length || 0) > 0 && <div className={tab}>
+                        <TabBar className={tabBarClassNames}
+                                style={tabBarStyles}
+                                activeKey={tabBarActiveKey}
+                                onChange={(key) => {
+                                    onTabBarChange?.(key);
+                                }}>
+                            {tabBar.length > 0 && tabBar?.map((item: any) => (
+                                <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
+                            ))}
+                        </TabBar>
+                    </div>}
                 </div>
-                {showTabBar && (tabBar?.length || 0) > 0 && <div className={tab}>
-                    <TabBar className={tabBarClassNames}
-                            style={tabBarStyles}
-                            activeKey={tabBarActiveKey}
-                            onChange={(key) => {
-                                onTabBarChange?.(key);
-                            }}>
-                        {tabBar.length > 0 && tabBar?.map((item: any) => (
-                            <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
-                        ))}
-                    </TabBar>
-                </div>}
-            </div>
-        </App>
+            </App>
+        </AntdConfigProvider>
     </ConfigProvider>;
 }
 export default SkLayout

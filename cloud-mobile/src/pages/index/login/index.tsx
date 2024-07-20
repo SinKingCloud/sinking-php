@@ -19,15 +19,15 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
             }
 
         ,
-        . adm-form-item-label {
+        .adm-form-item-label {
             line-height: 2;
             margin-bottom: 6px !important;
         },
-        . adm-list-item-content {
+        .adm-list-item-content {
             border-bottom: ${border};
             border-top: none !important;
         },
-        . adm-input-element {
+        .adm-input-element {
             font-size: 12px !important;
         },
 
@@ -37,7 +37,7 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
                 borderBottom: "none !important",
                 borderTop: "none !important",
                 paddingBlock: "9px",
-                paddingRight:"0 !important"
+                paddingRight: "0 !important"
             },
         },
         body: {
@@ -70,27 +70,30 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
             }
         }
     }
-})
-const passLoginPage = () => {
+});
+
+
+export default () => {
     const [form] = Form.useForm()
     const {styles: {label, body, check, btn, span, tab, card}} = useStyles();
     const items = [
         {
             key: "sms",
             label: (
-                <span onClick={() => historyPush('login.smsLogin')}><Icon type={Message} style={{marginRight: "5px"}}/>短信登录</span>
+                <span onClick={() => historyPush('login.sms')}><Icon type={Message} style={{marginRight: "5px"}}/>短信登录</span>
             ),
         },
         {
             key: "qrcode",
             label: (
-                <span onClick={() => historyPush('login.qrLogin')}><Icon type={Qrcode} style={{marginRight: "5px"}}/>扫码登录</span>
+                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode}
+                                                                        style={{marginRight: "5px"}}/>扫码登录</span>
             ),
         },
         {
             key: "email",
             label: (
-                <span onClick={() => historyPush('login.emailLogin')}><Icon type={Email} style={{marginRight: "5px"}}/>邮箱登录</span>
+                <span onClick={() => historyPush('login.email')}><Icon type={Email} style={{marginRight: "5px"}}/>邮箱登录</span>
             ),
         },
     ]
@@ -120,13 +123,14 @@ const passLoginPage = () => {
                 ...values,
             },
             onSuccess: (r: any) => {
-                Toast.show({
-                    content: r?.message,
-                    icon: "success"
-                })
                 setLoginToken("mobile", r?.data?.token);
-                user?.refreshWebUser()
-                historyPush("user.index")
+                user?.refreshWebUser(() => {
+                    Toast.show({
+                        content: r?.message,
+                        icon: "success"
+                    });
+                    historyPush("user.index");
+                })
             },
             onFail: (r: any) => {
                 Toast.show({
@@ -135,12 +139,12 @@ const passLoginPage = () => {
                 })
             },
             onFinally: () => {
-                setLoading(false)
+                setLoading(false);
             }
         })
     }
-    const theme = useTheme()
-    const web = useModel("web")
+    const theme = useTheme();
+    const web = useModel("web");
     return (
         <Body title="欢迎登录" headStyle={{backgroundColor: theme.colorPrimary}} titleStyle={{color: "#fff"}}
               showBack={false}
@@ -182,12 +186,14 @@ const passLoginPage = () => {
                 </Grid.Item>
                 <Grid.Item>
                     <Card className={card}>
-                        <Row justify={"space-evenly"}>
+                        <Row justify={"space-around"}>
                             {web?.info?.reg_phone &&
-                                <Col onClick={() => historyPush('login.smsLogin')}><span className={tab}>短信登录</span></Col>}
+                                <Col onClick={() => historyPush('login.sms')}><span
+                                    className={tab}>短信登录</span></Col>}
                             {web?.info?.reg_qrlogin &&
-                                <Col onClick={() => historyPush('login.qrLogin')}><span className={tab}>扫码登录</span></Col>}
-                            {web?.info?.reg_email && <Col onClick={() => historyPush('login.emailLogin')}><span
+                                <Col onClick={() => historyPush('login.qrcode')}><span
+                                    className={tab}>扫码登录</span></Col>}
+                            {web?.info?.reg_email && <Col onClick={() => historyPush('login.email')}><span
                                 className={tab}>邮箱登录</span></Col>}
                         </Row>
                     </Card>
@@ -196,5 +202,3 @@ const passLoginPage = () => {
         </Body>
     );
 };
-
-export default passLoginPage;

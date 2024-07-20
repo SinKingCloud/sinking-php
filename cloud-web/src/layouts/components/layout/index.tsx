@@ -206,7 +206,7 @@ const RightTop: React.FC = () => {
                                          message?.success(r?.message || "退出登录成功")
                                          deleteHeader()
                                          message?.destroy("outLogin")
-                                         historyPush("user.login");
+                                         historyPush("login");
                                      }
                                  },
                                  onFail: (r) => {
@@ -254,7 +254,7 @@ const SKLayout: React.FC<slide> = ({...props}) => {
     const initUser = () => {
         setLoading(true);
         if (getLoginToken() == "") {
-            historyPush("user.login");
+            historyPush("login");
             return;
         }
         user?.getWebUser()?.then((u: any) => {

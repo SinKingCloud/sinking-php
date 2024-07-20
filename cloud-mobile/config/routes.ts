@@ -71,19 +71,19 @@ export const user = [
                 path: "info",
                 title: "我的",
                 name: "user.person.info",
-                component: "@/pages/user/my",
+                component: "@/pages/user/person",
             },
             {
                 path: "phoneVerify",
                 title: "手机验证",
                 name: "person.phoneVerify",
-                component: "@/pages/user/my/components/phoneVerify",
+                component: "@/pages/user/person/components/phoneVerify",
             },
             {
                 path: "emailVerify",
                 title: "邮箱验证",
                 name: "person.emailVerify",
-                component: "@/pages/user/my/components/emailVerify",
+                component: "@/pages/user/person/components/emailVerify",
             },
         ]
     },

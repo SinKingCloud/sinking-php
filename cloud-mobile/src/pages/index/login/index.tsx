@@ -19,15 +19,15 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
             }
 
         ,
-        .adm-form-item-label {
+        . adm-form-item-label {
             line-height: 2;
             margin-bottom: 6px !important;
         },
-        .adm-list-item-content {
+        . adm-list-item-content {
             border-bottom: ${border};
             border-top: none !important;
         },
-        .adm-input-element {
+        . adm-input-element {
             font-size: 12px !important;
         },
 
@@ -136,12 +136,12 @@ export default () => {
                 Toast.show({
                     content: r?.message || "登录失败",
                     icon: "fail"
-                })
+                });
             },
             onFinally: () => {
                 setLoading(false);
             }
-        })
+        });
     }
     const theme = useTheme();
     const web = useModel("web");
@@ -149,7 +149,8 @@ export default () => {
         <Body title="欢迎登录" headStyle={{backgroundColor: theme.colorPrimary}} titleStyle={{color: "#fff"}}
               showBack={false}
               right={
-                  <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>
+                  <Dropdown menu={{items}} placement="bottomRight" autoAdjustOverflow={false}
+                            overlayStyle={{width: "max-content"}} arrow>
                       <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
                   </Dropdown>
               }>

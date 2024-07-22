@@ -287,7 +287,6 @@ export default [
                 hideInMenu: false,
             },
         ],
-        layout: false,
     },
     {
         path: indexPath,
@@ -302,7 +301,6 @@ export default [
         path: "/" + userPath,
         name: "redirect." + userPath,
         redirect: '/' + userPath + '/' + (user[0]?.path || 'index'),
-        layout: false,
         hideInMenu: true,
     },
     {
@@ -318,7 +316,6 @@ export default [
         path: "/" + masterPath,
         name: "redirect." + masterPath,
         redirect: '/' + masterPath + '/' + (master[0]?.path || 'index'),
-        layout: false,
         hideInMenu: true,
     },
     {
@@ -334,7 +331,6 @@ export default [
         path: "/" + adminPath,
         name: "redirect." + adminPath,
         redirect: '/' + adminPath + '/' + (admin[0]?.path || 'index'),
-        layout: false,
         hideInMenu: true,
     },
     {

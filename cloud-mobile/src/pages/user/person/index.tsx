@@ -1,4 +1,4 @@
-import React, { useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {Body, Icon} from "@/components";
 import {
     Avatar,
@@ -14,14 +14,13 @@ import {
 import {historyPush} from "@/utils/route";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
-import {Account, Cards, Clock, Email, Money, NiCheng, OutLogin, Reset, Tongxunlu, UploadImage} from "@/components/icon";
+import {Cards, Clock, Money, NiCheng, OutLogin, Reset, Tongxunlu} from "@/components/icon";
 import {updateInfo} from "@/service/person/update";
-import {ModalShowProps} from "antd-mobile/2x/es/components/modal";
+import {ModalShowProps} from "antd-mobile/es/components/modal";
 import {deleteHeader} from "@/utils/auth";
 import {outLogin} from "@/service/user/login";
-import {getUploadUrl, uploadFile} from "@/service/common/upload";
 
-const useStyles = createStyles(({token,isDarkMode}) => {
+const useStyles = createStyles(({token, isDarkMode}): any => {
     return {
         card: {
             ".adm-card-body": {
@@ -32,13 +31,14 @@ const useStyles = createStyles(({token,isDarkMode}) => {
             ".adm-list-body": {
                 borderTop: "none !important",
                 borderBottom: "none !important",
-                borderRadius: "8px"
+                borderRadius: "8px",
+                userSelect: "none",
             },
-            ".adm-list-item":{
-                paddingLeft:"0 !important"
+            ".adm-list-item": {
+                paddingLeft: "0 !important"
             },
-            ".adm-list-item-content":{
-                paddingLeft:"12px !important"
+            ".adm-list-item-content": {
+                paddingLeft: "12px !important",
             }
         },
         card1: {
@@ -69,29 +69,29 @@ const useStyles = createStyles(({token,isDarkMode}) => {
                 borderTop: "none !important",
                 borderBottom: "none !important",
             },
-            ".adm-list-item":{
-                paddingLeft:"0 !important"
+            ".adm-list-item": {
+                paddingLeft: "0 !important"
             }
         },
-        btn:{
-            ".adm-list-item-content":{
-                paddingRight:"0 !important"
+        btn: {
+            ".adm-list-item-content": {
+                paddingRight: "0 !important"
             }
         },
-        tag:{
+        tag: {
             backgroundColor: "#dbe6f0",
             color: `${token.colorPrimary} !important`,
             paddingBlock: "6px",
             "--border-radius": "5px",
             "--border-color": `${token.colorPrimary} !important`
         },
-        extra:{
+        extra: {
             fontSize: "13px", color: "gray"
         }
     }
 })
 export default () => {
-    const {styles: {card, list, card1, item, modal, label, formBody,btn,tag,extra}} = useStyles()
+    const {styles: {card, list, card1, item, modal, label, formBody, btn, tag, extra}} = useStyles()
     const theme = useTheme()
     const user = useModel("user")
     const modalRef = useRef<any>()
@@ -106,30 +106,17 @@ export default () => {
     const [form] = Form.useForm()
     const [btnLoading, setBtnLoading] = useState(false)
     const formFinish = async (values: any) => {
-        if(values?.nick_name == undefined || values?.nick_name == ""){
+        if (values?.nick_name == undefined || values?.nick_name == "") {
             Toast.show({
                 content: "请输入昵称",
                 position: 'top',
             })
             return
         }
-        if(values?.contact == undefined || values?.contact == ""){
+        if (values?.contact == undefined || values?.contact == "") {
             Toast.show({
                 content: "请输入联系方式",
                 position: 'top',
-            })
-            return
-        }
-        if (values?.email == undefined || values.email == "") {
-            Toast.show({
-                content: "邮箱不能为空",
-                position: "top"
-            })
-            return
-        } else if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
-            Toast.show({
-                content: "邮箱格式不正确",
-                position: "top"
             })
             return
         }
@@ -210,10 +197,11 @@ export default () => {
             content: (
                 <Form form={form} className={formBody} onFinish={formFinish}>
                     <Form.Item name="account" label="账号" className={label}>
-                        <Input placeholder="请输入账号" clearable />
+                        <Input placeholder="请输入账号" clearable/>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="submit" block color={"primary"} loading={btnLoading} style={{ letterSpacing: "1px" }}>保存</Button>
+                        <Button type="submit" block color={"primary"} loading={btnLoading}
+                                style={{letterSpacing: "1px"}}>保存</Button>
                     </Form.Item>
                 </Form>
             )
@@ -257,30 +245,13 @@ export default () => {
             )
         });
     };
-    /**
-     * 绑定邮箱
-     */
-    // const handleShowModalForEmailChange = () => {
-    //     modalRef.current = Modal.show({
-    //         className: modal,
-    //         showCloseButton: true,
-    //         content: (
-    //             <Form form={form} className={formBody} onFinish={formFinish}>
-    //                 <Form.Item name="email" label="邮箱" className={label}>
-    //                     <Input placeholder="请输入邮箱" clearable />
-    //                 </Form.Item>
-    //                 <Form.Item>
-    //                     <Button type="submit" block color={"primary"} loading={btnLoading} style={{ letterSpacing: "1px" }}>保存</Button>
-    //                 </Form.Item>
-    //             </Form>
-    //         )
-    //     })
-    // }
+
     return (
-        <Body showHeader={false} bodyStyle={{padding: 0}}>
+        <Body showHeader={false} bodyStyle={{padding: 0}} space={false}>
             <Grid columns={1} gap={8}>
                 <Grid.Item>
-                    <Card className={card} style={{backgroundColor: theme.colorPrimary, borderRadius: 0, paddingBlock: "15px"}}>
+                    <Card className={card}
+                          style={{backgroundColor: theme.colorPrimary, borderRadius: 0, paddingBlock: "15px"}}>
                         <Avatar src={user?.web?.avatar}
                                 style={{width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"}}/>
                         <div>
@@ -290,17 +261,19 @@ export default () => {
                         marginBottom: "10px"
                     }}>{user?.web?.nick_name}</span><br/>
                             <div style={{display: "flex", alignItems: "center"}}>
-                                <Tag className={tag}>{user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}</Tag>
+                                <Tag
+                                    className={tag}>{user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}</Tag>
                                 <Tag style={{marginLeft: "10px"}} className={tag}>ID:{user?.web?.id}</Tag>
                             </div>
                         </div>
                     </Card>
                 </Grid.Item>
             </Grid>
+
             <div style={{padding: "10px"}}>
                 <Grid columns={1} gap={8}>
                     <Grid.Item>
-                        <Card style={{ "--adm-card-padding-inline": 0}} className={card1}>
+                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
                             <List className={list} style={{borderRadius: "5px"}}>
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Money}/>}
@@ -329,7 +302,8 @@ export default () => {
                                                            <Input placeholder="请输入账户名称" clearable/>
                                                        </Form.Item>
                                                        <Form.Item className={btn}>
-                                                           <Button type="submit" block color={"primary"} loading={btnLoading}
+                                                           <Button type="submit" block color={"primary"}
+                                                                   loading={btnLoading}
                                                                    style={{letterSpacing: "1px"}}>保存</Button>
                                                        </Form.Item>
                                                    </Form>)
@@ -338,7 +312,8 @@ export default () => {
                                     我的昵称
                                 </List.Item>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}} type={Tongxunlu}/>}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}}
+                                                         type={Tongxunlu}/>}
                                            extra={<span className={extra}>{user?.web?.contact}</span>}
                                            onClick={() => {
                                                modalRef.current = Modal?.show({
@@ -351,7 +326,8 @@ export default () => {
                                                            <Input placeholder="请输入联系方式" clearable/>
                                                        </Form.Item>
                                                        <Form.Item className={btn}>
-                                                           <Button type="submit" block color={"primary"} loading={btnLoading}
+                                                           <Button type="submit" block color={"primary"}
+                                                                   loading={btnLoading}
                                                                    style={{letterSpacing: "1px"}}>保存</Button>
                                                        </Form.Item>
                                                    </Form>)
@@ -399,33 +375,18 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                            <List className={list} style={{borderRadius: "5px"}}>
-                                <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Email}/>}
-                                           extra={<span className={extra}>{user?.web?.email || "未绑定邮箱"}</span>}
-                                           onClick={()=>{
-                                               // if(user?.web?.email === null){
-                                               //     handleShowModalForEmailChange()
-                                               // }
-                                           }}>
-                                    绑定邮箱
-                                </List.Item>
-                            </List>
-                        </Card>
-                    </Grid.Item>
-                    <Grid.Item>
                         {outLoading &&
                             <div style={{
                                 color: '#00b578',
-                                textAlign:'center'
+                                textAlign: 'center'
                             }}>
                                 <DotLoading color={theme.colorPrimary}/>
                                 <span>退出登录中</span>
                             </div> || <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
                                 <List className={list} style={{borderRadius: "5px"}}>
                                     <List.Item className={item}
-                                               prefix={<Icon style={{fontSize: "22px", color: "#f65555"}} type={OutLogin}/>}
+                                               prefix={<Icon style={{fontSize: "22px", color: "#f65555"}}
+                                                             type={OutLogin}/>}
                                                onClick={async () => {
                                                    setOutLoading(true)
                                                    await outLogin({
@@ -435,7 +396,7 @@ export default () => {
                                                                content: r?.message,
                                                                position: 'top',
                                                            })
-                                                           historyPush("user.login")
+                                                           historyPush("login")
                                                        },
                                                        onFail: (r: any) => {
                                                            Toast.show({

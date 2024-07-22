@@ -149,3 +149,32 @@ export function getCurrentTabBarItems(pathName: any, hideMenu = true): any {
     }
     return [];
 }
+
+/**
+ * 获取当前访问路径
+ * @param pathName 当前路径
+ */
+export function getCurrentPath(pathName: any): any {
+    if (pathName == "/" || pathName == "") {
+        pathName = "/index/index";
+    }
+    let mode = "";
+    const regex = /\/([^/]+)\//; // 正则表达式匹配 / 之间的内容
+    const matches = pathName.match(regex); // 匹配结果数组
+    if (matches && matches.length >= 2) {
+        mode = matches[1];
+    }
+    if (mode == userPath) {
+        return '/' + userPath;
+    }
+    if (mode == indexPath) {
+        return '/' + indexPath;
+    }
+    if (mode == masterPath) {
+        return '/' + masterPath;
+    }
+    if (mode == adminPath) {
+        return '/' + adminPath;
+    }
+    return '/' + indexPath;
+}

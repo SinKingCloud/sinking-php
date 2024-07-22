@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Body} from "@/components";
 import {Button, Card, Form, Input, Modal, Toast, Image, SpinLoading} from "antd-mobile";
-import defaultSettings from "../../../../../config/defaultSettings";
+import defaultSettings from "../../../../config/defaultSettings";
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {useModel} from "umi";
 import {buySite, getSite} from "@/service/shop/site";

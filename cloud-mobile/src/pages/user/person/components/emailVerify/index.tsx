@@ -132,7 +132,7 @@ export default () => {
                 })
                 user?.refreshWebUser(() => {
                     deleteHeader()
-                    historyPush("user.login")
+                    historyPush("login")
                 })
             },
             onFail: (r: any) => {

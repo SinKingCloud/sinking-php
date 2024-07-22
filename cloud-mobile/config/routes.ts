@@ -20,9 +20,39 @@ export const user = [
     {
         path: "pay",
         title: "充值",
-        name: "user.pay",
         icon: 'icon-recharge',
-        component: "@/pages/user/recharge",
+        routes: [
+            {
+                path: "index",
+                component: "@/pages/user/pay",
+                title: "充值",
+                name: "user.pay",
+            },
+            {
+                path: "recharge",
+                component: "@/pages/user/pay/recharge",
+                title: "充值账户余额",
+                name: "user.pay.recharge",
+            },
+            {
+                path: "station",
+                component: "@/pages/user/pay/station",
+                title: "开通主站",
+                name: "user.pay.station",
+            },
+            {
+                path: "record",
+                component: "@/pages/user/pay/record",
+                title: "订单记录",
+                name: "user.pay.record",
+            },
+            {
+                path: "balance",
+                component: "@/pages/user/pay/balance",
+                title: "余额明细",
+                name: "user.pay.balance",
+            },
+        ]
     },
     {
         path: "help",
@@ -36,23 +66,24 @@ export const user = [
         title: "我的",
         name: "user.person",
         icon: 'icon-user',
-        component: "@/pages/user/my",
-    },
-    {
-        path: "person",
-        hideInTabBar: true,
-        routes:[
+        routes: [
+            {
+                path: "info",
+                title: "我的",
+                name: "user.person.info",
+                component: "@/pages/user/person",
+            },
             {
                 path: "phoneVerify",
                 title: "手机验证",
                 name: "person.phoneVerify",
-                component: "@/pages/user/my/components/phoneVerify",
+                component: "@/pages/user/person/components/phoneVerify",
             },
             {
                 path: "emailVerify",
                 title: "邮箱验证",
                 name: "person.emailVerify",
-                component: "@/pages/user/my/components/emailVerify",
+                component: "@/pages/user/person/components/emailVerify",
             },
         ]
     },
@@ -74,60 +105,6 @@ export const user = [
             },
         ]
     },
-    {
-        path: "login",
-        hideInTabBar: true,
-        routes: [
-            {
-                path: "smsLogin",
-                component: "@/pages/user/login/components/smsLogin",
-                title: "短信登录",
-                name: "login.smsLogin",
-            },
-            {
-                path: "qrLogin",
-                component: "@/pages/user/login/components/qrLogin",
-                title: "扫码登录",
-                name: "login.qrLogin",
-            },
-            {
-                path: "emailLogin",
-                component: "@/pages/user/login/components/emailLogin",
-                title: "邮箱登录",
-                name: "login.emailLogin",
-            },
-        ]
-    },
-    {
-        path: "pay",
-        hideInTabBar: true,
-        routes: [
-            {
-                path: "recharge",
-                component: "@/pages/user/recharge/components/pay",
-                title: "充值账户余额",
-                name: "pay.recharge",
-            },
-            {
-                path: "station",
-                component: "@/pages/user/recharge/components/station",
-                title: "开通主站",
-                name: "pay.station",
-            },
-            {
-                path: "record",
-                component: "@/pages/user/recharge/components/record",
-                title: "订单记录",
-                name: "pay.record",
-            },
-            {
-                path: "balance",
-                component: "@/pages/user/recharge/components/balance",
-                title: "余额明细",
-                name: "pay.balance",
-            },
-        ]
-    }
 ];
 /**
  * 系统后台路由
@@ -162,7 +139,7 @@ export const indexPath = "index";
 export const index = [
     {
         path: "index",
-        component: "@/pages/user/list",
+        component: "@/pages/index",
         title: "系统首页",
         name: "index.index",
         icon: 'icon-doc',
@@ -188,10 +165,28 @@ export default [
                 name: index[0]?.name,
             },
             {
-                path: '/' + userPath + '/login',
-                component: '@/pages/user/login',
-                name: "user.login",
+                path: '/login',
+                component: '@/pages/index/login',
+                name: "login",
                 title: "帐号登录",
+            },
+            {
+                path: '/login/sms',
+                component: "@/pages/index/login/sms",
+                title: "短信登录",
+                name: "login.sms",
+            },
+            {
+                path: '/login/qrcode',
+                component: "@/pages/index/login/qrcode",
+                title: "扫码登录",
+                name: "login.qrcode",
+            },
+            {
+                path: '/login/email',
+                component: "@/pages/index/login/email",
+                title: "邮箱登录",
+                name: "login.email",
             },
         ],
     },
@@ -280,60 +275,3 @@ export default [
         title: "页面不存在",
     }
 ];
-//
-// export default [
-//     {
-//         path: "/index",
-//         component: "@/pages/index",
-//         title: "首页",
-//         hideInMenu: false
-//     },
-//     {
-//         path: "/",
-//         redirect: "/index"
-//     },
-//     {
-//         path: "/login",
-//         component: "@/pages/login",
-//         hideInMenu: true,
-//         layout: false
-//     },
-//     {
-//         path: "/list",
-//         component: "@/pages/list",
-//         title: "列表",
-//         hideInMenu: false
-//     },
-//     {
-//         path: "/recharge",
-//         component: "@/pages/recharge",
-//         hideInMenu: false
-//     },
-//     {
-//         path: "/help",
-//         component: "@/pages/help",
-//         hideInMenu: false
-//     },
-//     {
-//         path: "/my",
-//         component: "@/pages/my",
-//         hideInMenu: false
-//     },
-//     {
-//         path: "/onlinePay",
-//         component: "@/pages/index/components/onlinePay",
-//         hideInMenu: true,
-//         layout: false
-//     },
-//     {
-//         path: "/cdkPay",
-//         component: "@/pages/index/components/cdkPay",
-//         hideInMenu: true,
-//         layout: false
-//     },
-//     {
-//         path: "/notice",
-//         component: "@/pages/index/components/notice",
-//         hideInMenu: true
-//     },
-// ]

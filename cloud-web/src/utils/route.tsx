@@ -202,7 +202,7 @@ export function getCurrentPath(pathName: any): any {
     if (mode == adminPath) {
         return '/' + adminPath;
     }
-    return "/";
+    return '/' + userPath;
 }
 
 /**

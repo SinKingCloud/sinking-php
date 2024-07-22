@@ -50,7 +50,7 @@ const check = async (ctx: any, next: any) => {
     ctx.req.options.headers = getHeaders();
     await next();
     if (ctx.res.code == 401) {
-        historyPush("user.login");//无权限页面;
+        historyPush("login");//无权限页面;
         deleteHeader()
     }
 }

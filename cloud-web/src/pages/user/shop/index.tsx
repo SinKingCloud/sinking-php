@@ -300,6 +300,7 @@ export default (): React.ReactNode => {
                     },
                     onFinally: () => {
                         setIsModalAddWebVisible(false);
+                        setIsModalAddWebBtnLoading(false);
                     }
                 });
             },
@@ -352,7 +353,7 @@ export default (): React.ReactNode => {
                 </Form.Item>
             </Form>
         </Modal>
-        <ProCard bodyStyle={{padding:0}}>
+        <ProCard bodyStyle={{padding: 0}}>
             <div className={mainTitle}>
                 <div className={topTitle}>合作加盟，专享超值权益</div>
             </div>

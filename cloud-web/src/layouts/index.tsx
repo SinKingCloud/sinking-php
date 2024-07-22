@@ -13,26 +13,6 @@ import {createStyles} from "antd-style";
  */
 const useStyles = createStyles((): any => {
     return {
-        collapsedImg: {
-            width: "35px",
-        },
-        unCollapsed: {
-            overflow: "hidden",
-            position: "absolute",
-            display: "inline-flex",
-            ">img": {
-                width: "35px",
-                float: "left"
-            },
-            ">div": {
-                fontSize: "25px",
-                marginLeft: "5px",
-                fontWeight: "bolder",
-                float: "left",
-                lineHeight: "30px",
-                whiteSpace: "nowrap",
-            }
-        },
         load: {
             margin: "0 auto",
             width: "100%",

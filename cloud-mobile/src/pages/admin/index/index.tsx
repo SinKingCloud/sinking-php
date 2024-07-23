@@ -16,7 +16,7 @@ const Info: React.FC<{
         <p style={{margin: 0, fontSize: "24px", lineHeight: "32px"}}>{value}</p>
         {bordered && <em style={{position: "absolute", top: 0, right: 0, width: "1px", height: "56px"}}/>}
     </div>
-);
+)
 export default () => {
     /**
      * 滚动公告信息

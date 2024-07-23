@@ -1,24 +1,40 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState} from 'react'
 import {Body, Icon} from "@/components";
 import {
     Avatar,
     Button,
     Card, DotLoading,
-    Form, Grid,
+    Form, Grid, ImageUploader,
     Input,
     List,
     Modal,
     Tag,
     Toast
 } from "antd-mobile";
+import { ImageUploadItem } from 'antd-mobile/es/components/image-uploader'
 import {historyPush} from "@/utils/route";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
-import {Cards, Clock, Money, NiCheng, OutLogin, Reset, Tongxunlu} from "@/components/icon";
-import {updateInfo} from "@/service/person/update";
+import {
+    Clock,
+    Email,
+    NiCheng,
+    OutLogin,
+    Phone,
+    Reset,
+    Text1,
+    Tongxunlu, TypeAll,
+    UploadImage
+} from "@/components/icon";
+import {updateEmail, updateInfo, updatePhone} from "@/service/person/update";
 import {ModalShowProps} from "antd-mobile/es/components/modal";
 import {deleteHeader} from "@/utils/auth";
 import {outLogin} from "@/service/user/login";
+import {sendSms} from "@/service/common/sms";
+import Captcha, {CaptchaRef} from "@/components/captcha";
+import {sendEmail} from "@/service/common/email";
+import {getUploadUrl, uploadFile} from "@/service/common/upload";
+import log from "@/pages/user/person/log";
 
 const useStyles = createStyles(({token, isDarkMode}): any => {
     return {
@@ -91,17 +107,37 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
     }
 })
 export default () => {
+    const captcha = useRef<CaptchaRef>({});
     const {styles: {card, list, card1, item, modal, label, formBody, btn, tag, extra}} = useStyles()
     const theme = useTheme()
     const user = useModel("user")
     const modalRef = useRef<any>()
     const verifyRef = useRef<any>()
     /**
+     * 获取验证码
+     */
+    const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
+    const [smsLoading, setSmsLoading] = useState(false)
+    const getCode = (e: any) => {
+        let time = 60;
+        const timer = setInterval(() => {
+            setSendCodeDisabled(true);
+            e.target.innerHTML = `${time}秒后重新获取`;
+            time--;
+            if (time <= 0) {
+                setSendCodeDisabled(false);
+                e.target.innerHTML = ' 获取验证码';
+                time = 0;
+                clearInterval(timer);
+            }
+        }, 1000);
+    };
+    /**
      * 退出登录
      */
     const [outLoading, setOutLoading] = useState(false)
     /**
-     * 表单提交
+     * 修改资料
      */
     const [form] = Form.useForm()
     const [btnLoading, setBtnLoading] = useState(false)
@@ -146,49 +182,130 @@ export default () => {
         })
     }
     /**
+     * 修改手机号码
+     */
+    const [phoneLoading, setPhoneLoading] = useState(false)
+    const phoneFinish = async (values: any) => {
+        if (values?.phone == undefined || values.phone == "") {
+            Toast.show({
+                content: "手机号不能为空",
+                position: "top"
+            })
+            return
+        } else if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)) {
+            Toast.show({
+                content: "请输入正确的手机号",
+                position: "top"
+            })
+            return
+        }
+        if (values?.sms_code == undefined || values.sms_code == "") {
+            Toast.show({
+                content: "验证码不能为空",
+                position: "top"
+            })
+            return
+        }
+        setPhoneLoading(true)
+        await updatePhone({
+            body: {
+                ...values
+            },
+            onSuccess: (r: any) => {
+                Toast.show({
+                    content: r?.message,
+                    position: 'top',
+                })
+                user?.refreshWebUser()
+                modalRef?.current?.close()
+                form.resetFields()
+            },
+            onFail: (r: any) => {
+                Toast.show({
+                    content: r?.message || "修改失败",
+                    position: "top"
+                })
+            },
+            onFinally: () => {
+                setPhoneLoading(false)
+            }
+        })
+    }
+    /**
+     * 修改邮箱账号
+     */
+    const [emailLoading, setEmailLoading] = useState(false)
+    const emailFinish = async (values: any) => {
+        if (values?.email == undefined || values?.email == "") {
+            Toast.show({
+                content: "邮箱不能为空",
+                position: "top"
+            });
+            return;
+        } else if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
+            Toast.show({
+                content: "邮箱格式不正确",
+                position: "top"
+            });
+            return
+        }
+        if (values?.email_code == undefined || values.email_code == "") {
+            Toast.show({
+                content: "验证码不能为空",
+                position: "top"
+            });
+            return;
+        }
+        setEmailLoading(true)
+        await updateEmail({
+            body: {
+                ...values
+            },
+            onSuccess: (r: any) => {
+                Toast.show({
+                    content: r?.message,
+                    position: 'top',
+                })
+                user?.refreshWebUser()
+                modalRef?.current?.close()
+                form.resetFields()
+            },
+            onFail: (r: any) => {
+                Toast.show({
+                    content: r?.message || "修改失败",
+                    position: "top"
+                })
+            },
+            onFinally: () => {
+                setEmailLoading(false)
+            }
+        })
+    }
+    /**
      * 上传头像
      */
-    // const Basic: FC = () => {
-    //     const [fileList, setFileList] = useState<ImageUploadItem[]>([
-    //         {
-    //             url: user?.web?.avatar,
-    //         },
-    //     ])
-    //     const beforeUpload = (file:any)=>{
-    //         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    //         if (!isJpgOrPng) {
-    //             Toast?.show({
-    //                 icon: 'fail',
-    //                 content: '图片只支持jpg/png格式',
-    //             })
-    //             return false;
-    //         }
-    //         const isLt2M = file.size / 1024 / 1024 < 2;
-    //         if (!isLt2M) {
-    //             Toast?.show({
-    //                 icon: 'fail',
-    //                 content: '图片不能大于2MB',
-    //             })
-    //             return false;
-    //         }
-    //         return isJpgOrPng && isLt2M;
-    //     }
-    //     const mockUpload = (file:any)=> {
-    //         return {
-    //             url: URL.createObjectURL(file),
-    //         }
-    //     }
-    //     return (
-    //         <ImageUploader
-    //             value={fileList}
-    //             onChange={setFileList}
-    //             upload={mockUpload}
-    //             beforeUpload={beforeUpload}
-    //         />
-    //     )
-    // }
+    const [files, setFiles] = useState<ImageUploadItem[]>([
+        {
+            url:user?.web?.avatar || ""
+        }
+    ]);
+    const beforeUpload = (file: any) => {
+        if (file.size > 1024 * 1024) {
+            Toast.show('请选择小于 1M 的图片')
+            return null
+        }
+        return file
+    }
+
+    const mockUploadFail = (file: File): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject(new Error('Fail to upload'));
+            }, 2000);
+        });
+    };
     /**
-     * 邮箱号码验证
+     * 号码验证
      */
     const handleShowModalForNullAccount = () => {
         modalRef.current = Modal.show({
@@ -248,6 +365,7 @@ export default () => {
 
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}} space={false}>
+            <Captcha ref={captcha}/>
             <Grid columns={1} gap={8}>
                 <Grid.Item>
                     <Card className={card}
@@ -275,19 +393,6 @@ export default () => {
                     <Grid.Item>
                         <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
                             <List className={list} style={{borderRadius: "5px"}}>
-                                <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Money}/>}
-                                           extra={<span className={extra}>{user?.web?.money}</span>}
-                                           onClick={() => historyPush("user.pay")}>
-                                    账户余额
-                                </List.Item>
-                                <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Cards}/>}
-                                           extra={<span className={extra}>{user?.web?.id}</span>}
-                                           onClick={() => {
-                                           }}>
-                                    账号ID
-                                </List.Item>
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={NiCheng}/>}
                                            extra={<span className={extra}>{user?.web?.nick_name}</span>}
@@ -338,21 +443,60 @@ export default () => {
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Clock}/>}
                                            extra={<span className={extra}>{user?.web?.login_time}</span>}
-                                           onClick={() => {
-                                           }}>
+                                           onClick={() => {}}>
                                     登录时间
                                 </List.Item>
-                                {/*<List.Item className={item}*/}
-                                {/*           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={UploadImage}/>}*/}
-                                {/*           onClick={() => {*/}
-                                {/*                Modal?.show({*/}
-                                {/*                   className: modal,*/}
-                                {/*                   showCloseButton: true,*/}
-                                {/*                   content: (<Basic/>)*/}
-                                {/*               } as ModalShowProps)*/}
-                                {/*           }}>*/}
-                                {/*    上传头像*/}
-                                {/*</List.Item>*/}
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}}
+                                                         type={UploadImage}/>}
+                                           onClick={() => {
+                                             modalRef.current =  Modal?.show({
+                                                   className: modal,
+                                                   showCloseButton: true,
+                                                   title: "头像上传",
+                                                   content: (
+                                                       <ImageUploader
+                                                           value={files}
+                                                           onChange={ async (info:any)=>{
+                                                               const index = info[0].url.indexOf("http");
+                                                               const result = info[0].url.substring(index);
+                                                               if(info.length>0){
+                                                                   setFiles(info[0].url)
+                                                               }
+                                                              await uploadFile({
+                                                                 body:{
+                                                                     avatar:result
+                                                                 },
+                                                                 onSuccess:(r:any)=>{
+                                                                     Toast.show({
+                                                                         content:r.message,
+                                                                         icon:"success"
+                                                                     })
+                                                                     modalRef.current?.close()
+                                                                     user?.refreshWebUser()
+                                                                 },
+                                                                 onFail:(r:any)=>{
+                                                                     Toast.show({
+                                                                         content:r.message,
+                                                                         icon:"fail"
+                                                                     })
+                                                                 }
+                                                             })
+                                                           }}
+                                                           preview
+                                                           beforeUpload={beforeUpload as any}
+                                                           upload={mockUploadFail as any}
+                                                       />
+                                                   )
+                                               } as ModalShowProps)
+                                           }}>
+                                    上传头像
+                                </List.Item>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#05d005"}} type={Text1}/>}
+                                           onClick={() => historyPush("person.log")}>
+                                    操作日志
+                                </List.Item>
                             </List>
                         </Card>
                     </Grid.Item>
@@ -370,6 +514,173 @@ export default () => {
                                                }
                                            }}>
                                     修改密码
+                                </List.Item>
+                            </List>
+                        </Card>
+                    </Grid.Item>
+                    <Grid.Item>
+                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
+                            <List className={list} style={{borderRadius: "5px"}}>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={Email}/>}
+                                           extra={<span className={extra}>{user?.web?.email || "未绑定邮箱"}</span>}
+                                           onClick={() => {
+                                               modalRef.current = Modal.show({
+                                                   className: modal,
+                                                   showCloseButton: true,
+                                                   title: "修改邮箱账号",
+                                                   content: (
+                                                       <Form form={form} className={formBody} onFinish={emailFinish}>
+                                                           <Form.Item name="email" label="邮箱" className={label}>
+                                                               <Input placeholder="请输入邮箱账号" clearable/>
+                                                           </Form.Item>
+                                                           <Form.Item label='验证码' name="email_code" className={label}
+                                                                      extra={<Button loading={smsLoading}
+                                                                                     disabled={sendCodeDisabled}
+                                                                                     style={{
+                                                                                         fontSize: "12px",
+                                                                                         color: theme.colorPrimary,
+                                                                                         "--border-width": "0px",
+                                                                                         padding: "0px"
+                                                                                     }}
+                                                                                     onClick={(e) => {
+                                                                                         const email = form.getFieldValue("email")
+                                                                                         if (email == undefined || email == "") {
+                                                                                             Toast.show({
+                                                                                                 content: "请输入邮箱",
+                                                                                                 icon: "fail"
+                                                                                             })
+                                                                                             return
+                                                                                         }
+                                                                                         setSmsLoading(true)
+                                                                                         captcha?.current?.Show?.(async (res) => {
+                                                                                             await sendEmail({
+                                                                                                 body: {
+                                                                                                     captcha_id: res?.randstr,
+                                                                                                     captcha_code: res?.ticket,
+                                                                                                     email: email,
+                                                                                                 },
+                                                                                                 onSuccess: (r) => {
+                                                                                                     Toast.show({
+                                                                                                         content: r?.message,
+                                                                                                         icon: "success"
+                                                                                                     })
+                                                                                                     getCode(e)
+                                                                                                 },
+                                                                                                 onFail: (r) => {
+                                                                                                     Toast.show({
+                                                                                                         content: r?.message,
+                                                                                                         icon: "fail"
+                                                                                                     })
+                                                                                                 },
+                                                                                                 onFinally: () => {
+                                                                                                     setSmsLoading(false)
+                                                                                                 }
+                                                                                             })
+                                                                                         }, () => {
+                                                                                             Toast.show({
+                                                                                                 content: "请完成验证码认证",
+                                                                                                 icon: "fail"
+                                                                                             })
+                                                                                             setSmsLoading(false)
+                                                                                         })
+                                                                                     }}>发送验证码</Button>}>
+                                                               <Input placeholder='请输入邮箱验证码' clearable/>
+                                                           </Form.Item>
+                                                           <Form.Item>
+                                                               <Button type="submit" block color={"primary"}
+                                                                       loading={emailLoading}
+                                                                       style={{letterSpacing: "1px"}}>修改</Button>
+                                                           </Form.Item>
+                                                       </Form>
+                                                   )
+                                               });
+                                           }}>
+                                    绑定邮箱
+                                </List.Item>
+                            </List>
+                        </Card>
+                    </Grid.Item>
+                    <Grid.Item>
+                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
+                            <List className={list} style={{borderRadius: "5px"}}>
+                                <List.Item className={item}
+                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Phone}/>}
+                                           extra={<span className={extra}>{user?.web?.phone || "未绑定手机号码"}</span>}
+                                           onClick={() => {
+                                               modalRef.current = Modal.show({
+                                                   className: modal,
+                                                   showCloseButton: true,
+                                                   title: "修改手机号码",
+                                                   content: (
+                                                       <Form form={form} className={formBody} onFinish={phoneFinish}>
+                                                           <Form.Item name="phone" label="手机号码" className={label}>
+                                                               <Input placeholder="新手机号码" clearable/>
+                                                           </Form.Item>
+                                                           <Form.Item label='验证码' name="sms_code" className={label}
+                                                                      extra={<Button loading={smsLoading}
+                                                                                     disabled={sendCodeDisabled}
+                                                                                     style={{
+                                                                                         fontSize: "12px",
+                                                                                         color: theme.colorPrimary,
+                                                                                         "--border-width": "0px",
+                                                                                         padding: "0px"
+                                                                                     }}
+                                                                                     onClick={(e) => {
+                                                                                         const phone = form.getFieldValue("phone")
+                                                                                         if (phone == undefined || phone == "") {
+                                                                                             Toast.show({
+                                                                                                 content: "请输入手机号码",
+                                                                                                 icon: "fail"
+                                                                                             })
+                                                                                             return
+                                                                                         }
+
+                                                                                         setSmsLoading(true)
+                                                                                         captcha?.current?.Show?.(async (res) => {
+                                                                                             await sendSms({
+                                                                                                 body: {
+                                                                                                     captcha_id: res?.randstr,
+                                                                                                     captcha_code: res?.ticket,
+                                                                                                     phone: phone,
+                                                                                                 },
+                                                                                                 onSuccess: (r) => {
+                                                                                                     Toast.show({
+                                                                                                         content: r?.message,
+                                                                                                         icon: "success"
+                                                                                                     })
+                                                                                                     getCode(e)
+                                                                                                 },
+                                                                                                 onFail: (r) => {
+                                                                                                     Toast.show({
+                                                                                                         content: r?.message,
+                                                                                                         icon: "fail"
+                                                                                                     })
+                                                                                                 },
+                                                                                                 onFinally: () => {
+                                                                                                     setSmsLoading(false)
+                                                                                                 }
+                                                                                             })
+                                                                                         }, () => {
+                                                                                             Toast.show({
+                                                                                                 content: "请完成验证码认证",
+                                                                                                 icon: "fail"
+                                                                                             })
+                                                                                             setSmsLoading(false)
+                                                                                         })
+                                                                                     }}>发送验证码</Button>}>
+                                                               <Input placeholder='请输入短信验证码' clearable/>
+                                                           </Form.Item>
+                                                           <Form.Item>
+                                                               <Button type="submit" block color="primary"
+                                                                       loading={phoneLoading}
+                                                                       style={{letterSpacing: "1px"}}>修改</Button>
+                                                           </Form.Item>
+                                                       </Form>
+                                                   )
+                                               });
+                                           }}>
+                                    绑定手机
                                 </List.Item>
                             </List>
                         </Card>

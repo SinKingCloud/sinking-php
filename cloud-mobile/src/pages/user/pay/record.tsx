@@ -5,7 +5,6 @@ import {getPayOrder} from "@/service/pay/order";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
 import {Dropdown, Typography} from "antd";
-
 export default () => {
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState([])
@@ -94,16 +93,6 @@ export default () => {
                         </Card>
                     ))
             }
-            {/*<InfiniteScroll*/}
-            {/*    loadMore={() => init(undefined, page + 1)}*/}
-            {/*    hasMore={hasMore()}*/}
-            {/*    loading={loading}*/}
-            {/*/>*/}
-            {/*<InfiniteScroll loadMore={loadMore} hasMore={hasMore}>*/}
-            {/*    <InfiniteScrollContent hasMore={hasMore} />*/}
-            {/*</InfiniteScroll>*/
-            }
-
         </Body>
     )
 }

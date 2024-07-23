@@ -131,6 +131,7 @@ export default () => {
                 content: "邮箱格式不正确",
                 position: "top"
             });
+            return
         }
         if (values?.email_code == undefined || values.email_code == "") {
             Toast.show({

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Body, Icon} from "@/components";
-import {Money, Refresh, Text1, Type} from "@/components/icon";
+import {Money, Refresh, Text1, TypeAll} from "@/components/icon";
 import {useModel} from "umi";
 import {Card, Grid, List, Toast} from "antd-mobile";
 import {getWebUserInfo} from "@/service/person/info";
@@ -67,7 +67,7 @@ export default () => {
                                 充值金额
                             </List.Item>
                             <List.Item className={item}
-                                       prefix={<Icon style={{fontSize: "22px", color: "#ff8f1f"}} type={Type}/>}
+                                       prefix={<Icon style={{fontSize: "22px", color: "#ff8f1f"}} type={TypeAll}/>}
                                        onClick={() => historyPush("user.pay.station")}>
                                 开通主站
                             </List.Item>

@@ -26,7 +26,7 @@ export default () => {
         }
     }, []);
     return (
-        <Body title={"系统公告"} bodyStyle={{padding:"10px"}}>
+        <Body title={"系统公告"} >
             {loading && <Skeleton.Paragraph  animated /> ||
                 <Card>
                     <p style={{

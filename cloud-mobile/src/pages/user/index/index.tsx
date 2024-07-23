@@ -1,12 +1,10 @@
 import {Body, Icon, Title} from "@/components";
-import {Avatar, Button, Card, Grid, List, NoticeBar, Skeleton} from "antd-mobile";
-import {Help, User, Message, Recharge, Tabulate,} from "@/components/icon";
+import {Avatar, Button, Card,  List, NoticeBar, Skeleton} from "antd-mobile";
+import {Admin, Help, Master, Recharge, User,} from "@/components/icon";
 import React, {useEffect, useState} from "react";
-import {createStyles, useTheme} from "antd-style";
+import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";
 import {getContact, getNotice} from "@/service/person/config";
-import {getNoticeList} from "@/service/person/notice";
-import {ago} from "@/utils/time";
 import {useModel} from "umi";
 import {Col, Row} from "antd";
 
@@ -19,15 +17,6 @@ const useStyles = createStyles(({isDarkMode}): any => {
             ".adm-list-header": {
                 borderRadius: "5px",
                 fontSize: "12px !important",
-            }
-        },
-        icon: {
-            ".adm-list-item-content-arrow": {
-                fontSize: "15px",
-                color: "rgba(0,0,0,0.7)"
-            },
-            ".adm-list-item-description": {
-                marginTop: "3px"
             }
         },
         btn: {
@@ -43,55 +32,26 @@ const useStyles = createStyles(({isDarkMode}): any => {
         nav: {
             display: "flex",
             flexDirection: "column",
-            textAlign: "center"
+            textAlign: "center",
+            fontSize:"12px"
         },
         tit: {
             fontSize: "14px",
             color: isDarkMode ? "#b3b3b3" : "#000",
             fontWeight: 600
+        },
+        icons:{
+            display: "block",
+            fontSize: "22px",
+            lineHeight: 1.3
         }
     }
 })
 export default function HomePage() {
-    const theme = useTheme()
+
     const user = useModel("user")
-    const {styles: {list, icon, card, nav, tit}} = useStyles()
-    /**
-     * 获取公告信息
-     */
-    const [noticeData, setNoticeData] = useState<any>([]);
-    const [noticeLoading, setNoticeLoading] = useState(false)
-    const getNoticeData = async () => {
-        setNoticeLoading(true)
-        const temp: any[] = [];
-        await getNoticeList({
-            body: {
-                page: 1, page_size: 3, web_id: 'system', place: "index"
-            },
-            onSuccess: (r: any) => {
-                r?.data?.list?.map((k: any) => {
-                    temp?.push(k);
-                });
-            },
-            onFinally: () => {
-                setNoticeLoading(false)
-            }
-        });
-        await getNoticeList({
-            body: {
-                page: 1, page_size: 5, web_id: 'my', place: "index"
-            },
-            onSuccess: (r: any) => {
-                r?.data?.list?.map((k: any) => {
-                    temp?.push(k);
-                });
-            },
-            onFinally: () => {
-                setNoticeLoading(false)
-            }
-        });
-        setNoticeData(temp);
-    };
+    const {styles: {list, card, nav, tit,icons}} = useStyles()
+
     /**
      * 滚动公告
      */
@@ -125,7 +85,7 @@ export default function HomePage() {
         })
     };
     useEffect(() => {
-        getNoticeData()
+
         getNoticeData2()
         getContactData()
     }, []);
@@ -151,38 +111,23 @@ export default function HomePage() {
             </Card>
             <Card>
                 <Row justify={"space-around"}>
-                    <Col onClick={() => historyPush('user.list')}>
-                        <div className={nav}><Icon type={Tabulate} style={{
-                            display: "block",
-                            fontSize: "22px",
-                            lineHeight: 1.3
-                        }}/>代练列表
-                        </div>
-                    </Col>
                     <Col onClick={() => historyPush('user.pay')}>
-                        <div className={nav}><Icon type={Recharge} style={{
-                            display: "block",
-                            fontSize: "22px",
-                            lineHeight: 1.3
-                        }}/>余额充值
+                        <div className={nav}><Icon type={Recharge} className={icons}/>余额充值
                         </div>
                     </Col>
-                    <Col onClick={() => historyPush('user.help')}>
-                        <div className={nav}><Icon type={Help} style={{
-                            display: "block",
-                            fontSize: "22px",
-                            lineHeight: 1.3
-                        }}/>使用帮助
+                    <Col onClick={() => historyPush('user.notice')}>
+                        <div className={nav}><Icon type={Help} className={icons}/>公告信息
                         </div>
                     </Col>
                     <Col onClick={() => historyPush('user.person')}>
-                        <div className={nav}><Icon type={User} style={{
-                            display: "block",
-                            fontSize: "22px",
-                            lineHeight: 1.3
-                        }}/>我的账户
-                        </div>
+                        <div className={nav}> <Icon type={User} className={icons}/>我的账户</div>
                     </Col>
+                    {user?.web?.is_admin && <Col onClick={() => historyPush('admin.index')}>
+                        <div className={nav}> <Icon type={Admin} className={icons}/>网站管理</div>
+                    </Col>}
+                    {user?.web?.is_master && <Col onClick={() => historyPush('master.index')}>
+                        <div className={nav}> <Icon type={Master} className={icons}/>系统管理</div>
+                    </Col>}
                 </Row>
             </Card>
             <Card className={card} title={<Title><span className={tit}>联系方式</span></Title>}>
@@ -229,30 +174,7 @@ export default function HomePage() {
                     }
                 </List>
             </Card>
-            <Card title={<Title><span className={tit}>系统公告</span></Title>} className={card}>
-                <List className={list} style={{"--border-top": "none", "--border-bottom": "none"}}>
-                    {noticeLoading && <Skeleton.Paragraph animated/> ||
-                        noticeData.map(user => (
-                            <List.Item
-                                className={icon}
-                                key={user?.id}
-                                prefix={<Icon type={Message} style={{fontSize: "18px", color: "#ff8f1f"}}/>}
-                                extra={''}
-                                description={<span
-                                    style={{fontSize: "10px"}}>发布于 {ago(user?.create_time)} ,共 {user?.look_num} 次浏览</span>}
-                                onClick={() => {
-                                    historyPush("index.notice", {id: user?.id})
-                                }}
-                            >
-                            <span style={{
-                                fontSize: "14px",
-                                color: theme.isDarkMode ? "#b3b3b3" : "#000"
-                            }}>{user?.title}</span>
-                            </List.Item>
-                        ))
-                    }
-                </List>
-            </Card>
+
         </Body>
     );
 }

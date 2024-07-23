@@ -8,6 +8,7 @@ import {useModel} from "umi";
 import {updateInfo, updatePassword} from "@/service/person/update";
 import {historyPush} from "@/utils/route";
 import {deleteHeader} from "@/utils/auth";
+import {sendEmail} from "@/service/common/email";
 
 const useStyles = createStyles(({css, isDarkMode, token}): any => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
@@ -96,7 +97,7 @@ export default () => {
             })
             return
         }
-        if (values?.email_code == undefined || values.email_code == "") {
+        if (values?.email_code == undefined || values?.email_code == "") {
             Toast.show({
                 content: "验证码不能为空",
                 position: "top"
@@ -151,15 +152,14 @@ export default () => {
               titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>
             {user?.web?.email == null && <Card>
-                    <p>还没有绑定邮箱账号，请先绑定邮箱账号</p>
-                    <p>点击跳转</p>
+                    <p style={{textAlign:"center"}}>还没有绑定邮箱账号，请先绑定邮箱账号</p>
                 </Card> ||
                 <Card>
-                    <Form form={form} initialValues={{phone: user?.web?.email}} className={body} onFinish={formFinish}>
+                    <Form form={form} initialValues={{email: user?.web?.email}} className={body} onFinish={formFinish}>
                         <Form.Item label='邮箱账号' name="email" className={label}>
                             <Input placeholder='请输入邮箱账号' clearable/>
                         </Form.Item>
-                        <Form.Item label='验证码' name="sms_code" className={label}
+                        <Form.Item label='验证码' name="email_code" className={label}
                                    extra={<Button loading={smsLoading} disabled={sendCodeDisabled}
                                                   style={{
                                                       fontSize: "12px",
@@ -178,7 +178,7 @@ export default () => {
                                                       }
                                                       setSmsLoading(true)
                                                       captcha?.current?.Show?.(async (res) => {
-                                                          await sendSms({
+                                                          await sendEmail({
                                                               body: {
                                                                   captcha_id: res?.randstr,
                                                                   captcha_code: res?.ticket,

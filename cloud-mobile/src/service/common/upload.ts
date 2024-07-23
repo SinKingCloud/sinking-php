@@ -1,14 +1,11 @@
 import Settings from "../../../config/defaultSettings";
-import request from "@/utils/request";
+import request, {post} from "@/utils/request";
+import {API} from "../../../typings";
 
 export function getUploadUrl(): string {
     return Settings.gateway + "/auth/upload/file"
 }
 
-export async function uploadFile(body: any, options?: { [key: string]: any }) {
-    return request('/auth/upload/file', {
-        method: 'POST',
-        data: body,
-        ...(options || {}),
-    });
+export async function uploadFile(params: API.RequestParams = {}) {
+    return post("/auth/upload/file", params?.body, params?.onSuccess, params?.onFail, params?.onFinally);
 }

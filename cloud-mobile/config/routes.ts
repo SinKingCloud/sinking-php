@@ -11,13 +11,6 @@ export const user = [
         component: "@/pages/user/index",
     },
     {
-        path: "list",
-        title: "列表",
-        name: "user.list",
-        icon: 'icon-tabulate',
-        component: "@/pages/user/list",
-    },
-    {
         path: "pay",
         title: "充值",
         icon: 'icon-recharge',
@@ -55,11 +48,19 @@ export const user = [
         ]
     },
     {
-        path: "help",
-        title: "帮助",
-        name: "user.help",
-        icon: 'icon-help',
-        component: "@/pages/user/help",
+        path: "notice",
+        title: "公告",
+        name: "user.notice",
+        icon: 'icon-notice',
+        component: "@/pages/user/notice/index",
+        routes: [
+            {
+                path: "info/:id",
+                title: "公告详情",
+                name: "user.noticeInfo",
+                component: "@/pages/user/notice/noticeInfo",
+            },
+        ]
     },
     {
         path: "person",
@@ -77,31 +78,19 @@ export const user = [
                 path: "phoneVerify",
                 title: "手机验证",
                 name: "person.phoneVerify",
-                component: "@/pages/user/person/components/phoneVerify",
+                component: "@/pages/user/person/phoneVerify",
             },
             {
                 path: "emailVerify",
                 title: "邮箱验证",
                 name: "person.emailVerify",
-                component: "@/pages/user/person/components/emailVerify",
-            },
-        ]
-    },
-    {
-        path: "index",
-        hideInTabBar: true,
-        routes: [
-            {
-                path: "notice/:id",
-                title: "公告信息",
-                name: "index.notice",
-                component: "@/pages/user/index/components/notice",
+                component: "@/pages/user/person/emailVerify",
             },
             {
-                path: "helpInfo",
-                title: "帮助信息",
-                name: "index.helpInfo",
-                component: "@/pages/user/index/components/helpInfo",
+                path: "log",
+                title: "操作日志",
+                name: "person.log",
+                component: "@/pages/user/person/log",
             },
         ]
     },
@@ -113,7 +102,7 @@ export const masterPath = "master";
 export const master = [
     {
         path: "index",
-        component: "@/pages/user/list",
+        component: "@/pages/master/index",
         title: "系统概览",
         icon: 'icon-system',
         name: "master.index",
@@ -126,10 +115,10 @@ export const adminPath = "admin";
 export const admin = [
     {
         path: "index",
-        component: "@/pages/user/list",
-        title: "网站概览",
+        component: "@/pages/admin/index",
+        title: "首页",
         name: "admin.index",
-        icon: 'icon-web',
+        icon: 'icon-admin',
     },
 ]
 /**

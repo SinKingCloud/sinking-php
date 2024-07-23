@@ -6,9 +6,28 @@ export const user = [
     {
         path: "index",
         title: "首页",
-        name: "user.index",
         icon: 'icon-home',
-        component: "@/pages/user/index",
+        routes:[
+            {
+                path: "index",
+                component: "@/pages/user/index",
+                title: "首页",
+                name: "user.index",
+            },
+            {
+                path: "info/:id",
+                component: "@/pages/user/index/info",
+                title: "公告详情",
+                name: "user.index.info",
+            },
+        ]
+    },
+    {
+        path:"list",
+        title:"列表",
+        name:"user.list",
+        icon:'icon-tabulate',
+        component:"@/pages/user/list",
     },
     {
         path: "pay",
@@ -47,50 +66,48 @@ export const user = [
             },
         ]
     },
+
     {
-        path: "notice",
-        title: "公告",
-        name: "user.notice",
-        icon: 'icon-notice',
-        component: "@/pages/user/notice/index",
-        routes: [
-            {
-                path: "info/:id",
-                title: "公告详情",
-                name: "user.noticeInfo",
-                component: "@/pages/user/notice/noticeInfo",
-            },
-        ]
+        path:"help",
+        title:"帮助",
+        name:"user.help",
+        icon:'icon-help',
+        component:"@/pages/user/help",
     },
     {
         path: "person",
         title: "我的",
-        name: "user.person",
         icon: 'icon-user',
         routes: [
             {
                 path: "info",
                 title: "我的",
-                name: "user.person.info",
+                name: "user.person",
                 component: "@/pages/user/person",
             },
             {
                 path: "phoneVerify",
                 title: "手机验证",
-                name: "person.phoneVerify",
+                name: "user.person.phoneVerify",
                 component: "@/pages/user/person/phoneVerify",
             },
             {
                 path: "emailVerify",
                 title: "邮箱验证",
-                name: "person.emailVerify",
+                name: "user.person.emailVerify",
                 component: "@/pages/user/person/emailVerify",
             },
             {
                 path: "log",
                 title: "操作日志",
-                name: "person.log",
+                name: "user.person.log",
                 component: "@/pages/user/person/log",
+            },
+            {
+                path: "update",
+                title: "修改资料",
+                name: "user.person.update",
+                component: "@/pages/user/person/update",
             },
         ]
     },

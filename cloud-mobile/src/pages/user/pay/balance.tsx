@@ -5,8 +5,19 @@ import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
 import {Dropdown, Typography} from "antd";
 import {getPayLog} from "@/service/pay";
-
+import {createStyles} from "antd-style";
+const useStyles = createStyles(()=>{
+    return{
+        extra:{
+            fontSize: "11px", color: "gray"
+        },
+        tit:{
+            fontSize: "12px", fontWeight: "normal"
+        }
+    }
+})
 export default () => {
+    const {styles:{extra,tit}} = useStyles()
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState()
     const [loading, setLoading] = useState(false)
@@ -56,14 +67,10 @@ export default () => {
             {loading && <Skeleton.Paragraph animated/> ||
                 orderData?.list?.map(user => (
                     <Card key={user.id} style={{marginBottom: "10px"}}
-                          title={<div style={{fontSize: "12px", fontWeight: "normal"}}>
-                              <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.title}
-                          </div>}
-                          extra={<div style={{
-                              fontSize: "11px",
-                              color: "gray"
-                          }}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
-                        <span style={{fontSize: "11px", color: "gray"}}>
+                          title={<div className={tit}>
+                              <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.title}</div>}
+                          extra={<div className={extra}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
+                        <span className={extra}>
                             <span style={{
                                 fontSize: "16px",
                                 fontWeight: "bold",
@@ -73,14 +80,11 @@ export default () => {
                             元
                         </span><br/>
                         <Paragraph copyable style={{marginBottom: "-22px"}}>
-                            <span style={{fontSize: "11px", color: "gray"}}>订单号：{user.content}</span>
+                            <span className={extra}>订单号：{user.content}</span>
                         </Paragraph><br/>
-
-
                     </Card>
                 ))
             }
-
         </Body>
     )
 }

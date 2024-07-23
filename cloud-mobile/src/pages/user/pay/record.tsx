@@ -5,7 +5,22 @@ import {getPayOrder} from "@/service/pay/order";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
 import {Dropdown, Typography} from "antd";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(()=>{
+    return{
+        tit:{
+            fontSize: "12px", fontWeight: "normal"
+        },
+        extra:{
+            fontSize: "11px", color: "gray"
+        },
+        money:{
+            fontSize: "16px", fontWeight: "bold", marginRight: "3px", color: "#33cc4b"
+        }
+    }
+})
 export default () => {
+    const {styles: {tit,extra,money}} = useStyles()
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -47,45 +62,33 @@ export default () => {
         },
     ]
     return (
-        <Body title="订单记录"
-              right={
+        <Body title="订单记录" right={
                   <Dropdown menu={{items}}>
                       <a onClick={(e) => e.preventDefault()}>
                           <Icon type={Ellipsis} style={{fontSize: "18px"}}/>
                       </a>
-                  </Dropdown>
-              }
-        >
+                  </Dropdown>}>
             {loading && <Skeleton.Paragraph animated/> ||
                     orderData?.list?.map(user => (
                         <Card key={user.id} style={{marginBottom: "10px"}}
-                              title={<div style={{fontSize: "12px", fontWeight: "normal"}}><Icon type={Recharge}
-                                                                                                 style={{marginRight: "3px"}}/>{user.name}
+                              title={<div className={tit}>
+                                  <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.name}
                               </div>}
-                              extra={<div style={{
-                                  fontSize: "11px",
-                                  color: "gray"
-                              }}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
-                        <span style={{fontSize: "11px", color: "gray"}}>
-                            <span style={{
-                                fontSize: "16px",
-                                fontWeight: "bold",
-                                marginRight: "3px",
-                                color: "#33cc4b"
-                            }}>{user.money}</span>
-                            元
+                              extra={<div className={extra}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
+                        <span className={extra}>
+                            <span className={money}>{user.money}</span>元
                         </span><br/>
                             <Paragraph copyable style={{marginBottom: "-22px"}}>
-                                <span style={{fontSize: "11px", color: "gray"}}>订单号：{user.trade_no}</span>
+                                <span className={extra}>订单号：{user.trade_no}</span>
                             </Paragraph><br/>
-                            <span style={{fontSize: "11px", color: "gray"}}>
+                            <span className={extra}>
                         支付方式：
                                 {user.order_type == 0 && "支付宝"}
                                 {user.order_type == 1 && "微信"}
                                 {user.order_type == 2 && "QQ"}
                                 {user.order_type == 3 && "余额"}
                     </span><br/>
-                            <span style={{fontSize: "11px", color: "gray"}}>
+                            <span className={extra}>
                         状态：
                                 {user.status == 0 && "未支付"}
                                 {user.status == 1 && "已支付"}

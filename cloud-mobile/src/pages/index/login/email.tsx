@@ -65,6 +65,30 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
                 padding: "0 !important",
                 lineHeight: 2.5
             }
+        },
+        icon:{
+            marginRight: "5px"
+        },
+        sms:{
+            fontSize: "12px",
+            color: token.colorPrimary,
+            "--border-width": "0px",
+            padding: "0px"
+        },
+        head:{
+            backgroundColor: `${token.colorPrimary} !important`, color: "#fff"
+        },
+        remember:{
+            fontSize: "12px", marginRight: "10px"
+        },
+        gong:{
+            fontSize: "11px", color: "gray"
+        },
+        butt:{
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary,
+            fontWeight: 600,
+            letterSpacing:"1px"
         }
     }
 });
@@ -72,26 +96,24 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 export default () => {
     const [form] = Form.useForm()
     const captcha = useRef<CaptchaRef>({});
-    const {styles: {label, body, check, btn, tab, card}} = useStyles();
+    const {styles: {label, body, check, btn, tab, card,icon,sms,head,remember,gong,butt}} = useStyles();
     const items = [
         {
             key: "password",
             label: (
-                <span onClick={() => historyPush('login')}><Icon type={Message}
-                                                                 style={{marginRight: "5px"}}/>密码登录</span>
+                <span onClick={() => historyPush('login')}><Icon type={Message} className={icon}/>密码登录</span>
             ),
         },
         {
             key: "qrcode",
             label: (
-                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode}
-                                                                        style={{marginRight: "5px"}}/>扫码登录</span>
+                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode} className={icon}/>扫码登录</span>
             ),
         },
         {
             key: "sms",
             label: (
-                <span onClick={() => historyPush('login.sms')}><Icon type={Email} style={{marginRight: "5px"}}/>短信登录</span>
+                <span onClick={() => historyPush('login.sms')}><Icon type={Email} className={icon}/>短信登录</span>
             ),
         },
     ]
@@ -176,15 +198,12 @@ export default () => {
             setLoading(false);
         });
     }
-    const theme = useTheme()
     const web = useModel("web")
     return (
-        <Body title="邮箱登录" headStyle={{backgroundColor: theme.colorPrimary, color: "#fff"}}
-              titleStyle={{color: "#fff"}} right={
+        <Body title="邮箱登录" headClassNames={head} titleStyle={{color: "#fff"}} right={
             <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>
                 <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
-            </Dropdown>
-        }>
+            </Dropdown>}>
             <Captcha ref={captcha}/>
             <Grid columns={1} gap={8}>
                 <Grid.Item>
@@ -194,12 +213,7 @@ export default () => {
                                 <Input placeholder='请输入邮箱' clearable/>
                             </Form.Item>
                             <Form.Item label='验证码' name="email_code" className={label}
-                                       extra={<Button loading={emailLoading} disabled={disabled} style={{
-                                           fontSize: "12px",
-                                           color: theme.colorPrimary,
-                                           "--border-width": "0px",
-                                           padding: "0px"
-                                       }}
+                                       extra={<Button loading={emailLoading} disabled={disabled} className={sms}
                                                       onClick={(e) => {
                                                           const email = form.getFieldValue("email")
                                                           if (email == undefined || email == "") {
@@ -246,17 +260,12 @@ export default () => {
                             </Form.Item>
                             <Form.Item name="checked" className={label}>
                                 <Checkbox className={check}>
-                                    <span style={{fontSize: "12px", marginRight: "10px"}}>记住登录状态</span>
-                                    <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
+                                    <span className={remember}>记住登录状态</span>
+                                    <span className={gong}>（在公共设备登录时请不要勾选）</span>
                                 </Checkbox>
                             </Form.Item>
                             <Form.Item className={btn}>
-                                <Button type={"submit"} loading={loading} style={{
-                                    "--background-color": theme.colorPrimary,
-                                    "--border-color": theme.colorPrimary,
-                                    fontWeight: 600,
-
-                                }} block color='primary'>登&nbsp;&nbsp;录</Button>
+                                <Button type={"submit"} loading={loading} className={butt} block color='primary'>登录</Button>
                             </Form.Item>
                         </Form>
                     </Card>

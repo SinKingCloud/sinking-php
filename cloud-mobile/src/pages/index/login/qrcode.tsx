@@ -8,7 +8,7 @@ import {genQrCode, qrLogin} from "@/service/user/login";
 import {setLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
 
-const useStyles = createStyles((): any => {
+const useStyles = createStyles(({token}): any => {
     return {
         notice: {
             borderRadius: "8px",
@@ -72,6 +72,19 @@ const useStyles = createStyles((): any => {
         sp: {
             fontSize: "11px",
             color: "#808080"
+        },
+        head:{
+            backgroundColor: `${token.colorPrimary} !important`, color: "#fff"
+        },
+        btn:{
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary,
+            fontWeight: 600,
+            fontSize: "15px",
+            letterSpacing: "0.5px"
+        },
+        verify:{
+            fontSize: "12px", fontWeight: 600, margin: 0
         }
     }
 });
@@ -88,6 +101,9 @@ export default () => {
             border_corner_right_bottom,
             qrcodeBorder,
             notice,
+            head,
+            btn,
+            verify
         }
     } = useStyles()
     const {mobile} = useResponsive()
@@ -152,8 +168,7 @@ export default () => {
 
     const theme = useTheme()
     return (
-        <Body title={"扫码登录"} headStyle={{backgroundColor: theme.colorPrimary, color: "#fff"}}
-              titleStyle={{color: "#fff"}}>
+        <Body title={"扫码登录"} headClassNames={head} titleStyle={{color: "#fff"}}>
             <Grid columns={1} gap={8}>
                 <Grid.Item>
                     <NoticeBar className={notice} content='请使用手机QQ扫码下方二维码' color='info' wrap/>
@@ -195,27 +210,20 @@ export default () => {
                             fontSize: "11px",
                             color: theme.isDarkMode ? "#b3b3b3" : ""
                         }} className={p}>需要在绑定的手机QQ登录后扫码，其他QQ扫码无效</p>
-                        <Button type={"submit"} block color='primary'
-                                style={{
-                                    "--background-color": theme.colorPrimary,
-                                    "--border-color": theme.colorPrimary,
-                                    fontWeight: 600,
-                                    fontSize: "15px",
-                                    letterSpacing: "0.5px"
-                                }} onClick={() => {
+                        <Button type={"submit"} block color='primary' className={btn} onClick={() => {
                             qqJumpUrl(qrcode);
                         }}>点击跳转到手机QQ登录</Button>
                     </Card>
                 </Grid.Item>
                 <Grid.Item>
                     <Card>
-                        <p style={{fontSize: "12px", fontWeight: 600, margin: 0}}>验证说明:</p>
+                        <p className={verify}>验证说明:</p>
                         <span className={sp}>1、使用手机QQ扫描二维码后，在QQ上授权登录。</span><br/>
                     </Card>
                 </Grid.Item>
                 <Grid.Item>
                     <Card>
-                        <p style={{fontSize: "12px", fontWeight: 600, margin: 0}}>扫码使用提示:</p>
+                        <p className={verify}>扫码使用提示:</p>
                         <span
                             className={sp}>1、如果跳转到手机QQ自动扫码无法使用，可长按二维码保存图片到手机，或者使用手机截图功能截图本页面。在手机QQ扫一扫界面，点右上角进入相册，选择刚才保存的二维码图片即可识别。</span><br/>
                         <span className={sp}>2、如QQ号已经不再使用，请返回选择其它验证方式</span><br/>

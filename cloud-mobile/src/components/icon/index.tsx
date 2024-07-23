@@ -3,13 +3,13 @@ import { createFromIconfontCN } from '@ant-design/icons';
  * 图标组件(生产环境需使用本地资源)
  */
 const Icon = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/c/font_4606373_soxwkdtsxt.js',
+    scriptUrl: '//at.alicdn.com/t/c/font_4606373_l146ogpb3g.js',
 });
 /**
  * 图标数据
  */
 const User = "icon-user"
-const Help = "icon-notice"
+const Help = "icon-help"
 const Recharge = "icon-recharge"
 const Tabulate = "icon-tabulate"
 const Right = "icon-right"
@@ -46,6 +46,7 @@ const TypeAll = "icon-type"
 const Master = "icon-master"
 const Admin = "icon-admin"
 const Notice = "icon-notice"
+const Data = "icon-data"
 export {
     Icon,
     User,
@@ -85,5 +86,6 @@ export {
     Phone,
     Master,
     Admin,
-    Notice
+    Notice,
+    Data
 }

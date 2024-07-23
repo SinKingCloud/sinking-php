@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Body} from "@/components";
-import {Button, Card, Form, Input, Modal, Toast, Image, SpinLoading} from "antd-mobile";
+import {Button, Card, Form, Input, Modal, Toast} from "antd-mobile";
 import defaultSettings from "../../../../config/defaultSettings";
 import {createStyles, useResponsive, useTheme} from "antd-style";
 import {useModel} from "umi";
@@ -131,7 +131,6 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
         describe: css`
             max-width: 80%;
             margin: 40px auto 0 auto;
-
             ${responsive.md} {
                 max-width: 100%;
                 margin: 0;
@@ -212,12 +211,29 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
             ".adm-form-item-child-inner":{
                 display:"flex"
             }
+        },
+        p:{
+            fontSize: "19px", fontWeight: 600, color: "#f38e1b", margin: "10px 0"
+        },
+        man:{
+            fontSize: "16px", fontWeight: 600, color: "#f655a6"
+        },
+        btn:{
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary,
+            fontWeight: 600,
+            color: "#fff"
+        },
+        inp:{
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+            width:"55%"
         }
     }
 })
 export default () => {
     const {
-        styles: {select, formBody, modal,label,to,inner}} = useStyles()
+        styles: {select, formBody, modal,label,to,inner,p,man,btn,inp}} = useStyles()
     /**
      * 初始化
      */
@@ -327,24 +343,14 @@ export default () => {
 
         })
     }
-    const theme = useTheme()
     return (
         <Body title="开通主站">
             <Card>
-                <p style={{fontSize: "19px", fontWeight: 600, color: "#f38e1b", margin: "10px 0"}}>搭建主站介绍</p>
+                <p className={p}>搭建主站介绍</p>
                 <span style={{fontSize: "12px"}}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，
                                     方便的自动化收款能力，拥有自己的用户管理体系，可极低的价格为用户开通主站等。</span>
-                <p style={{
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    color: "#f655a6"
-                }}>主站搭建费用:￥{parseInt(siteConfig?.['site.price'])}</p>
-                <Button block style={{
-                    "--background-color": theme.colorPrimary,
-                    "--border-color": theme.colorPrimary,
-                    fontWeight: 600,
-                    color: "#fff"
-                }} onClick={() => {
+                <p className={man}>主站搭建费用:￥{parseInt(siteConfig?.['site.price'])}</p>
+                <Button block className={btn} onClick={() => {
                     Modal?.show({
                         className: modal,
                         showCloseButton: true,
@@ -354,11 +360,7 @@ export default () => {
                             </Form.Item>
                             <Form.Item label={"绑定域名"} className={inner}>
                                 <Form.Item name="prefix" className={label} noStyle>
-                                    <Input style={{
-                                        borderTopRightRadius: 0,
-                                        borderBottomRightRadius: 0,
-                                        width:"55%"
-                                    }} placeholder="请输入前缀" />
+                                    <Input className={inp} placeholder="请输入前缀" />
                                 </Form.Item>
                                 <Form.Item name="domain" noStyle>
                                     <Select placeholder="请选择后缀" style={{width:"45%"}} className={select}>

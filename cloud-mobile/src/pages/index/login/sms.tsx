@@ -3,7 +3,7 @@ import {Ellipsis, Email, Message, Qrcode} from "@/components/icon";
 import React, {useRef, useState} from "react";
 import {Col, Dropdown, Row} from "antd";
 import {Button, Card, Checkbox, Form, Grid, Input, Toast} from "antd-mobile";
-import {createStyles, useResponsive, useTheme} from "antd-style";
+import {createStyles, useTheme} from "antd-style";
 import {historyPush} from "@/utils/route";
 import Captcha, {CaptchaRef} from "@/components/captcha";
 import {sendSms} from "@/service/common/sms";
@@ -65,6 +65,33 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
                 padding: "0 !important",
                 lineHeight: 2.5
             }
+        },
+        icon:{
+            marginRight: "5px"
+        },
+        head:{
+            backgroundColor: `${token.colorPrimary} !important`, color: "#fff"
+        },
+        sms:{
+            fontSize: "12px",
+            color: token.colorPrimary,
+            "--border-width": "0px",
+            padding: "0px"
+        },
+        elli:{
+            fontSize: "18px", color: "#fff"
+        },
+        rember:{
+            fontSize: "12px", marginRight: "10px"
+        },
+        gong:{
+            fontSize: "11px", color: "gray"
+        },
+        btns:{
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary,
+            fontWeight: 600,
+            letterSpacing:"1px"
         }
     }
 });
@@ -72,25 +99,24 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 export default () => {
     const captcha = useRef<CaptchaRef>({});
     const [form] = Form.useForm()
-    const {styles: {label, body, check, btn, tab, card}} = useStyles();
+    const {styles: {label, body, check, btn, tab, card,icon,head,sms,elli,rember,gong,btns}} = useStyles();
     const items = [
         {
             key: "password",
             label: (
-                <span onClick={() => historyPush('login')}><Icon type={Message}
-                                                                 style={{marginRight: "5px"}}/>密码登录</span>
+                <span onClick={() => historyPush('login')}><Icon type={Message} className={icon}/>密码登录</span>
             ),
         },
         {
             key: "qrcode",
             label: (
-                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode} style={{marginRight: "5px"}}/>扫码登录</span>
+                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode} className={icon}/>扫码登录</span>
             ),
         },
         {
             key: "email",
             label: (
-                <span onClick={() => historyPush('login.email')}><Icon type={Email} style={{marginRight: "5px"}}/>邮箱登录</span>
+                <span onClick={() => historyPush('login.email')}><Icon type={Email} className={icon}/>邮箱登录</span>
             ),
         },
     ]
@@ -178,12 +204,10 @@ export default () => {
         })
     }
     const web = useModel("web")
-    const theme = useTheme()
     return (
-        <Body title={"手机登录"} headStyle={{backgroundColor: theme.colorPrimary, color: "#fff"}}
-              titleStyle={{color: "#fff"}} right={
+        <Body title={"手机登录"} headClassNames={head} titleStyle={{color: "#fff"}} right={
             <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>
-                <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
+                <Icon type={Ellipsis} className={elli}/>
             </Dropdown>
         }>
             <Captcha ref={captcha}/>
@@ -195,13 +219,7 @@ export default () => {
                                 <Input placeholder='请输入手机号码' clearable/>
                             </Form.Item>
                             <Form.Item label='验证码' name="sms_code" className={label}
-                                       extra={<Button loading={smsLoading} disabled={sendCodeDisabled}
-                                                      style={{
-                                                          fontSize: "12px",
-                                                          color: theme.colorPrimary,
-                                                          "--border-width": "0px",
-                                                          padding: "0px"
-                                                      }}
+                                       extra={<Button loading={smsLoading} disabled={sendCodeDisabled} className={sms}
                                                       onClick={(e) => {
                                                           const phone = form.getFieldValue("phone")
                                                           if (phone == undefined || phone == "") {
@@ -211,7 +229,6 @@ export default () => {
                                                               })
                                                               return
                                                           }
-
                                                           setSmsLoading(true)
                                                           captcha?.current?.Show?.(async (res) => {
                                                               await sendSms({
@@ -249,16 +266,12 @@ export default () => {
                             </Form.Item>
                             <Form.Item name="checked" className={label}>
                                 <Checkbox className={check}>
-                                    <span style={{fontSize: "12px", marginRight: "10px"}}>记住登录状态</span>
-                                    <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
+                                    <span className={rember}>记住登录状态</span>
+                                    <span className={gong}>（在公共设备登录时请不要勾选）</span>
                                 </Checkbox>
                             </Form.Item>
                             <Form.Item className={btn}>
-                                <Button type="submit" loading={btnLoading} style={{
-                                    "--background-color": theme.colorPrimary,
-                                    "--border-color": theme.colorPrimary,
-                                    fontWeight: 600,
-                                }} block color='primary'>登&nbsp;&nbsp;录</Button>
+                                <Button type="submit" loading={btnLoading} className={btns} block color='primary'>登录</Button>
                             </Form.Item>
                         </Form>
                     </Card>

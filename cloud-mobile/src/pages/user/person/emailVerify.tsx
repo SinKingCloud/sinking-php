@@ -2,14 +2,12 @@ import React, {useRef, useState} from 'react'
 import {Body} from "@/components";
 import Captcha, {CaptchaRef} from "@/components/captcha";
 import {Button, Card, Form, Input, Toast} from "antd-mobile";
-import {sendSms} from "@/service/common/sms";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
-import {updateInfo, updatePassword} from "@/service/person/update";
+import { updatePassword} from "@/service/person/update";
 import {historyPush} from "@/utils/route";
 import {deleteHeader} from "@/utils/auth";
 import {sendEmail} from "@/service/common/email";
-
 const useStyles = createStyles(({css, isDarkMode, token}): any => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
     return {
@@ -18,7 +16,6 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
                 font-size: 12px !important;
                 width: 65px
             }
-
         ,
         . adm-form-item-label {
             line-height: 2

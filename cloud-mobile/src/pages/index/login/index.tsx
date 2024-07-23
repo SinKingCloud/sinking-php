@@ -68,6 +68,26 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
                 padding: "0 !important",
                 lineHeight: 2.5
             }
+        },
+        butt:{
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary,
+            fontWeight: 600,
+            letterSpacing:"1px"
+        },
+        icon:{
+            marginRight: "5px"
+        },
+        elli:{
+            fontSize: "18px", color: "#fff"
+        },
+        span:{
+            fontSize: "12px",
+            marginRight: "10px",
+            color: isDarkMode ? "#b3b3b3" : ""
+        },
+        gong:{
+            fontSize: "11px", color: "gray"
         }
     }
 });
@@ -75,25 +95,24 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
 
 export default () => {
     const [form] = Form.useForm()
-    const {styles: {label, body, check, btn, span, tab, card}} = useStyles();
+    const {styles: {label, body, check, btn, span, tab, card,butt,icon,elli,gong}} = useStyles();
     const items = [
         {
             key: "sms",
             label: (
-                <span onClick={() => historyPush('login.sms')}><Icon type={Message} style={{marginRight: "5px"}}/>短信登录</span>
+                <span onClick={() => historyPush('login.sms')}><Icon type={Message} className={icon}/>短信登录</span>
             ),
         },
         {
             key: "qrcode",
             label: (
-                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode}
-                                                                        style={{marginRight: "5px"}}/>扫码登录</span>
+                <span onClick={() => historyPush('login.qrcode')}><Icon type={Qrcode} className={icon}/>扫码登录</span>
             ),
         },
         {
             key: "email",
             label: (
-                <span onClick={() => historyPush('login.email')}><Icon type={Email} style={{marginRight: "5px"}}/>邮箱登录</span>
+                <span onClick={() => historyPush('login.email')}><Icon type={Email}  className={icon}/>邮箱登录</span>
             ),
         },
     ]
@@ -151,7 +170,7 @@ export default () => {
               right={
                   <Dropdown menu={{items}} placement="bottomRight" autoAdjustOverflow={false}
                             overlayStyle={{width: "max-content"}} arrow>
-                      <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
+                      <Icon type={Ellipsis} className={elli}/>
                   </Dropdown>
               }>
             <Grid columns={1} gap={8}>
@@ -166,21 +185,12 @@ export default () => {
                             </Form.Item>
                             <Form.Item name="checked" className={label}>
                                 <Checkbox className={check}>
-                        <span className={span} style={{
-                            fontSize: "12px",
-                            marginRight: "10px",
-                            color: theme.isDarkMode ? "#b3b3b3" : ""
-                        }}>记住登录状态</span>
-                                    <span style={{fontSize: "11px", color: "gray"}}>（在公共设备登录时请不要勾选）</span>
+                        <span className={span}>记住登录状态</span>
+                            <span className={gong}>（在公共设备登录时请不要勾选）</span>
                                 </Checkbox>
                             </Form.Item>
                             <Form.Item className={btn}>
-                                <Button type={"submit"} block color='primary' loading={loading}
-                                        style={{
-                                            "--background-color": theme.colorPrimary,
-                                            "--border-color": theme.colorPrimary,
-                                            fontWeight: 600,
-                                        }}>登&nbsp;&nbsp;录</Button>
+                                <Button type={"submit"} block color='primary' loading={loading} className={butt}>登录</Button>
                             </Form.Item>
                         </Form>
                     </Card>

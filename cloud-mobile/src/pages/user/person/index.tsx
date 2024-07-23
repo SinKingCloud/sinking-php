@@ -4,7 +4,7 @@ import {
     Avatar,
     Button,
     Card, DotLoading,
-    Form, Grid, ImageUploader,
+    Form, Grid,
     Input,
     List,
     Modal,
@@ -16,25 +16,20 @@ import {historyPush} from "@/utils/route";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
 import {
-    Clock,
     Email,
     NiCheng,
     OutLogin,
     Phone,
     Reset,
     Text1,
-    Tongxunlu, TypeAll,
-    UploadImage
+    Tongxunlu,
 } from "@/components/icon";
-import {updateEmail, updateInfo, updatePhone} from "@/service/person/update";
-import {ModalShowProps} from "antd-mobile/es/components/modal";
+import {updateEmail, updatePhone} from "@/service/person/update";
 import {deleteHeader} from "@/utils/auth";
 import {outLogin} from "@/service/user/login";
 import {sendSms} from "@/service/common/sms";
 import Captcha, {CaptchaRef} from "@/components/captcha";
 import {sendEmail} from "@/service/common/email";
-import {getUploadUrl, uploadFile} from "@/service/common/upload";
-import log from "@/pages/user/person/log";
 
 const useStyles = createStyles(({token, isDarkMode}): any => {
     return {
@@ -66,7 +61,10 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
             ".adm-list-item-content-arrow": {
                 fontSize: "14px"
             },
-            fontSize: "14px", color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
+            fontSize: "14px", color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)",
+            ":hover":{
+                    color:isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
+            }
         },
         modal: {
             ".adm-center-popup-wrap": {
@@ -113,6 +111,7 @@ export default () => {
     const user = useModel("user")
     const modalRef = useRef<any>()
     const verifyRef = useRef<any>()
+    const [form] = Form.useForm()
     /**
      * 获取验证码
      */
@@ -136,51 +135,6 @@ export default () => {
      * 退出登录
      */
     const [outLoading, setOutLoading] = useState(false)
-    /**
-     * 修改资料
-     */
-    const [form] = Form.useForm()
-    const [btnLoading, setBtnLoading] = useState(false)
-    const formFinish = async (values: any) => {
-        if (values?.nick_name == undefined || values?.nick_name == "") {
-            Toast.show({
-                content: "请输入昵称",
-                position: 'top',
-            })
-            return
-        }
-        if (values?.contact == undefined || values?.contact == "") {
-            Toast.show({
-                content: "请输入联系方式",
-                position: 'top',
-            })
-            return
-        }
-        setBtnLoading(true)
-        await updateInfo({
-            body: {
-                ...values
-            },
-            onSuccess: (r: any) => {
-                Toast.show({
-                    content: r?.message,
-                    position: 'top',
-                })
-                user?.refreshWebUser()
-                modalRef?.current?.close()
-                form.resetFields()
-            },
-            onFail: (r: any) => {
-                Toast.show({
-                    content: r?.message || "修改失败",
-                    position: 'top',
-                })
-            },
-            onFinally: () => {
-                setBtnLoading(false)
-            }
-        })
-    }
     /**
      * 修改手机号码
      */
@@ -307,23 +261,6 @@ export default () => {
     /**
      * 号码验证
      */
-    const handleShowModalForNullAccount = () => {
-        modalRef.current = Modal.show({
-            className: modal,
-            showCloseButton: true,
-            content: (
-                <Form form={form} className={formBody} onFinish={formFinish}>
-                    <Form.Item name="account" label="账号" className={label}>
-                        <Input placeholder="请输入账号" clearable/>
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="submit" block color={"primary"} loading={btnLoading}
-                                style={{letterSpacing: "1px"}}>保存</Button>
-                    </Form.Item>
-                </Form>
-            )
-        });
-    };
     const handleShowModalForPasswordChange = () => {
         verifyRef.current = Modal.show({
             className: modal,
@@ -347,7 +284,7 @@ export default () => {
                         "--background-color": theme.colorPrimary,
                         "--border-color": theme.colorPrimary
                     }} onClick={() => {
-                        historyPush("person.phoneVerify");
+                        historyPush("user.person.phoneVerify");
                         verifyRef.current.close();
                     }}>通过手机验证</Button>
                     <Button block color={"primary"} style={{
@@ -355,7 +292,7 @@ export default () => {
                         "--background-color": theme.colorPrimary,
                         "--border-color": theme.colorPrimary
                     }} onClick={() => {
-                        historyPush("person.emailVerify");
+                        historyPush("user.person.emailVerify");
                         verifyRef.current.close();
                     }}>通过邮箱验证</Button>
                 </>
@@ -387,7 +324,6 @@ export default () => {
                     </Card>
                 </Grid.Item>
             </Grid>
-
             <div style={{padding: "10px"}}>
                 <Grid columns={1} gap={8}>
                     <Grid.Item>
@@ -396,105 +332,70 @@ export default () => {
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={NiCheng}/>}
                                            extra={<span className={extra}>{user?.web?.nick_name}</span>}
-                                           onClick={() => {
-                                               modalRef.current = Modal?.show({
-                                                   className: modal,
-                                                   showCloseButton: true,
-                                                   content: (<Form form={form}
-                                                                   initialValues={{nick_name: user?.web?.nick_name || "未设置"}}
-                                                                   className={formBody} onFinish={formFinish}>
-                                                       <Form.Item name="nick_name" label="昵称" className={label}>
-                                                           <Input placeholder="请输入账户名称" clearable/>
-                                                       </Form.Item>
-                                                       <Form.Item className={btn}>
-                                                           <Button type="submit" block color={"primary"}
-                                                                   loading={btnLoading}
-                                                                   style={{letterSpacing: "1px"}}>保存</Button>
-                                                       </Form.Item>
-                                                   </Form>)
-                                               } as ModalShowProps)
-                                           }}>
+                                           onClick={() => {}}>
                                     我的昵称
                                 </List.Item>
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}}
                                                          type={Tongxunlu}/>}
                                            extra={<span className={extra}>{user?.web?.contact}</span>}
-                                           onClick={() => {
-                                               modalRef.current = Modal?.show({
-                                                   className: modal,
-                                                   showCloseButton: true,
-                                                   content: (<Form form={form}
-                                                                   initialValues={{contact: user?.web?.contact || "未设置"}}
-                                                                   className={formBody} onFinish={formFinish}>
-                                                       <Form.Item name="contact" label="联系方式" className={label}>
-                                                           <Input placeholder="请输入联系方式" clearable/>
-                                                       </Form.Item>
-                                                       <Form.Item className={btn}>
-                                                           <Button type="submit" block color={"primary"}
-                                                                   loading={btnLoading}
-                                                                   style={{letterSpacing: "1px"}}>保存</Button>
-                                                       </Form.Item>
-                                                   </Form>)
-                                               } as ModalShowProps)
-                                           }}>
+                                           onClick={() => {}}>
                                     联系方式
                                 </List.Item>
+                                {/*<List.Item className={item}*/}
+                                {/*           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}}*/}
+                                {/*                         type={UploadImage}/>}*/}
+                                {/*           onClick={() => {*/}
+                                {/*             modalRef.current =  Modal?.show({*/}
+                                {/*                   className: modal,*/}
+                                {/*                   showCloseButton: true,*/}
+                                {/*                   title: "头像上传",*/}
+                                {/*                   content: (*/}
+                                {/*                       <ImageUploader*/}
+                                {/*                           value={files}*/}
+                                {/*                           onChange={ async (info:any)=>{*/}
+                                {/*                               const index = info[0].url.indexOf("http");*/}
+                                {/*                               const result = info[0].url.substring(index);*/}
+                                {/*                               if(info.length>0){*/}
+                                {/*                                   setFiles(info[0].url)*/}
+                                {/*                               }*/}
+                                {/*                              await uploadFile({*/}
+                                {/*                                 body:{*/}
+                                {/*                                     avatar:result*/}
+                                {/*                                 },*/}
+                                {/*                                 onSuccess:(r:any)=>{*/}
+                                {/*                                     Toast.show({*/}
+                                {/*                                         content:r.message,*/}
+                                {/*                                         icon:"success"*/}
+                                {/*                                     })*/}
+                                {/*                                     modalRef.current?.close()*/}
+                                {/*                                     user?.refreshWebUser()*/}
+                                {/*                                 },*/}
+                                {/*                                 onFail:(r:any)=>{*/}
+                                {/*                                     Toast.show({*/}
+                                {/*                                         content:r.message,*/}
+                                {/*                                         icon:"fail"*/}
+                                {/*                                     })*/}
+                                {/*                                 }*/}
+                                {/*                             })*/}
+                                {/*                           }}*/}
+                                {/*                           preview*/}
+                                {/*                           beforeUpload={beforeUpload as any}*/}
+                                {/*                           upload={mockUploadFail as any}*/}
+                                {/*                       />*/}
+                                {/*                   )*/}
+                                {/*               } as ModalShowProps)*/}
+                                {/*           }}>*/}
+                                {/*    上传头像*/}
+                                {/*</List.Item>*/}
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#33cc4d"}} type={Clock}/>}
-                                           extra={<span className={extra}>{user?.web?.login_time}</span>}
-                                           onClick={() => {}}>
-                                    登录时间
-                                </List.Item>
-                                <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}}
-                                                         type={UploadImage}/>}
-                                           onClick={() => {
-                                             modalRef.current =  Modal?.show({
-                                                   className: modal,
-                                                   showCloseButton: true,
-                                                   title: "头像上传",
-                                                   content: (
-                                                       <ImageUploader
-                                                           value={files}
-                                                           onChange={ async (info:any)=>{
-                                                               const index = info[0].url.indexOf("http");
-                                                               const result = info[0].url.substring(index);
-                                                               if(info.length>0){
-                                                                   setFiles(info[0].url)
-                                                               }
-                                                              await uploadFile({
-                                                                 body:{
-                                                                     avatar:result
-                                                                 },
-                                                                 onSuccess:(r:any)=>{
-                                                                     Toast.show({
-                                                                         content:r.message,
-                                                                         icon:"success"
-                                                                     })
-                                                                     modalRef.current?.close()
-                                                                     user?.refreshWebUser()
-                                                                 },
-                                                                 onFail:(r:any)=>{
-                                                                     Toast.show({
-                                                                         content:r.message,
-                                                                         icon:"fail"
-                                                                     })
-                                                                 }
-                                                             })
-                                                           }}
-                                                           preview
-                                                           beforeUpload={beforeUpload as any}
-                                                           upload={mockUploadFail as any}
-                                                       />
-                                                   )
-                                               } as ModalShowProps)
-                                           }}>
-                                    上传头像
+                                           prefix={<Icon style={{fontSize: "22px", color: "#f65555"}} type={NiCheng}/>}
+                                           onClick={() => historyPush("user.person.update")}>
+                                    修改资料
                                 </List.Item>
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#05d005"}} type={Text1}/>}
-                                           onClick={() => historyPush("person.log")}>
+                                           onClick={() => historyPush("user.person.log")}>
                                     操作日志
                                 </List.Item>
                             </List>
@@ -508,7 +409,7 @@ export default () => {
                                            extra={<span className={extra}>{user?.web?.account || "未绑定账号"}</span>}
                                            onClick={() => {
                                                if (user?.web?.account === null) {
-                                                   handleShowModalForNullAccount();
+                                                   historyPush("user.person.update")
                                                } else {
                                                    handleShowModalForPasswordChange();
                                                }

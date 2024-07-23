@@ -5,7 +5,28 @@ import {Look, Time, User} from "@/components/icon";
 import {useParams} from "umi"
 import {getNoticeInfo} from "@/service/person/notice";
 import {ago} from "@/utils/time";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(():any=>{
+    return{
+        p:{
+            fontSize: "15px",
+            color: "red",
+            textAlign: "center",
+            fontWeight: 600,
+            marginBottom:0,
+            marginTop:0
+        },
+        div:{
+            fontSize: "11px",
+            color: "gray",
+            borderBottom: "1px dashed #eeeeee",
+            paddingBottom: "10px",
+            textAlign:"center"
+        }
+    }
+})
 export default () => {
+    const { styles:{p,div} } = useStyles();
     const params = useParams<any>()
     const [noticeData,setNoticeData] = useState()
     const [loading,setLoading] = useState(false)
@@ -29,21 +50,8 @@ export default () => {
         <Body title={"系统公告"} >
             {loading && <Skeleton.Paragraph  animated /> ||
                 <Card>
-                    <p style={{
-                        fontSize: "15px",
-                        color: "red",
-                        textAlign: "center",
-                        fontWeight: 600,
-                        marginBottom:0,
-                        marginTop:0
-                    }}>{noticeData?.title}</p>
-                    <div style={{
-                        fontSize: "11px",
-                        color: "gray",
-                        borderBottom: "1px dashed #eeeeee",
-                        paddingBottom: "10px",
-                        textAlign:"center"
-                    }}>
+                    <p className={p}>{noticeData?.title}</p>
+                    <div className={div}>
                         <span style={{marginRight: "15px"}}><Icon type={User} style={{marginRight: "2px"}}/>管理员</span>
                         <span style={{marginRight:"5px"}}><Icon type={Time} style={{marginRight: "2px"}}/>{ago(noticeData?.create_time || '0000-00-00 00:00:00')}</span>
                         <span><Icon type={Look} style={{marginRight: "2px",fontSize:"24px"}}/>{noticeData?.look_num || 0}次</span>

@@ -6,6 +6,7 @@ import {getNoticeList} from "@/service/person/notice";
 import {Message} from "@/components/icon";
 import {ago} from "@/utils/time";
 import {historyPush} from "@/utils/route";
+import {Empty} from "antd";
 const useStyles = createStyles(({token,isDarkMode})=>{
     return {
         head:{
@@ -95,7 +96,7 @@ export default () => {
                             >
                                 <span className={listSpan}>{user?.title}</span>
                             </List.Item>
-                        )) || noticeData.length === 0 && <p style={{textAlign:"center"}}>暂无帮助信息</p>
+                        )) || noticeData.length === 0 &&  <Empty style={{marginTop:"10px"}} description='暂无数据' />
                     }
                 </List>
             </Card>

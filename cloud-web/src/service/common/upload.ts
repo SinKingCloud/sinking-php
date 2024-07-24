@@ -1,7 +1,7 @@
 import Settings from "../../../config/defaultSettings";
 import request from "@/utils/request";
 
-export function getUploadUrl(): string {
+export function getUploadUrl(){
     return Settings.gateway + "/auth/upload/file"
 }
 

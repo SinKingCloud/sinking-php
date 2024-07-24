@@ -3,7 +3,7 @@ import {Body, Icon} from "@/components";
 import {Card, Skeleton} from "antd-mobile";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
-import {Dropdown, Typography} from "antd";
+import {Dropdown, Empty, Typography} from "antd";
 import {getPayLog} from "@/service/pay";
 import {createStyles} from "antd-style";
 const useStyles = createStyles(()=>{
@@ -65,7 +65,7 @@ export default () => {
             </a>
         </Dropdown>}>
             {loading && <Skeleton.Paragraph animated/> ||
-                orderData?.list?.map(user => (
+               orderData?.list?.length >0 && orderData?.list?.map(user => (
                     <Card key={user.id} style={{marginBottom: "10px"}}
                           title={<div className={tit}>
                               <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.title}</div>}
@@ -83,7 +83,7 @@ export default () => {
                             <span className={extra}>订单号：{user.content}</span>
                         </Paragraph><br/>
                     </Card>
-                ))
+                )) ||  <Empty description='暂无数据' />
             }
         </Body>
     )

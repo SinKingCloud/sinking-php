@@ -15,8 +15,7 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
             .adm-list-item-content-prefix {
                 font-size: 12px !important;
                 width: 65px
-            }
-        ,
+            } ,
         . adm-form-item-label {
             line-height: 2
         },

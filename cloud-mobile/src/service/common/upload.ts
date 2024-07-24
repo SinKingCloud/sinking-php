@@ -1,5 +1,5 @@
 import Settings from "../../../config/defaultSettings";
-import request, {post} from "@/utils/request";
+import  {post} from "@/utils/request";
 import {API} from "../../../typings";
 
 export function getUploadUrl(): string {

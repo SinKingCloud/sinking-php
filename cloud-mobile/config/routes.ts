@@ -104,10 +104,22 @@ export const user = [
                 component: "@/pages/user/person/log",
             },
             {
-                path: "update",
+                path: "updateInfo",
                 title: "修改资料",
                 name: "user.person.update",
                 component: "@/pages/user/person/update",
+            },
+            {
+                path: "updateEmail",
+                title: "修改邮箱",
+                name: "user.person.updateEmail",
+                component: "@/pages/user/person/updateEmail",
+            },
+            {
+                path: "updatePhone",
+                title: "修改手机",
+                name: "user.person.updatePhone",
+                component: "@/pages/user/person/updatePhone",
             },
         ]
     },
@@ -136,6 +148,19 @@ export const admin = [
         title: "首页",
         name: "admin.index",
         icon: 'icon-admin',
+    },
+    {
+        path: "set",
+        title: "设置",
+        icon: 'icon-set',
+        routes:[
+            {
+                path:"money",
+                component:"@/pages/admin/set/index",
+                title:"价格设置",
+                name:"admin.set.money",
+            }
+        ]
     },
 ]
 /**

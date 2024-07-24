@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
-import {Card, Skeleton} from "antd-mobile";
+import {Card, ErrorBlock, Skeleton} from "antd-mobile";
 import {getPayOrder} from "@/service/pay/order";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
@@ -94,7 +94,7 @@ export default () => {
                             {user.status == 1 && "已支付"}
                     </span>
                     </Card>
-                )) ||  <Empty description='暂无数据' />
+                )) ||  <ErrorBlock status='empty' />
             }
         </Body>
     )

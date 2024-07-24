@@ -155,8 +155,14 @@ export const admin = [
         icon: 'icon-set',
         routes: [
             {
-                path: "money",
+                path: "index",
                 component: "@/pages/admin/set/index",
+                title: "设置",
+                name: "admin.set.index",
+            },
+            {
+                path: "money",
+                component: "@/pages/admin/set/money",
                 title: "价格设置",
                 name: "admin.set.money",
             }

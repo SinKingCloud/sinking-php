@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
-import {Card, Skeleton} from "antd-mobile";
+import {Card, ErrorBlock, Skeleton} from "antd-mobile";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
 import {Dropdown, Empty, Typography} from "antd";
@@ -83,7 +83,7 @@ export default () => {
                             <span className={extra}>订单号：{user.content}</span>
                         </Paragraph><br/>
                     </Card>
-                )) ||  <Empty description='暂无数据' />
+                )) ||  <ErrorBlock status='empty' />
             }
         </Body>
     )

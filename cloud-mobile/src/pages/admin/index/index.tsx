@@ -5,7 +5,7 @@ import {getNotice} from "@/service/person/config";
 import PageLoading from "@/pages/components/pageLoading";
 import IntroduceRow from "@/pages/admin/index/introduceRow";
 import {getChart, getCount, getToDo, getTopWeb} from "@/service/admin";
-import {Col, Row,List} from "antd";
+import {Col, Row, List} from "antd";
 import numeral from "numeral";
 import {getNoticeList} from "@/service/person/notice";
 import {useModel} from "umi";
@@ -14,7 +14,7 @@ import {ago} from "@/utils/time";
 import {NotificationOutlined} from "@ant-design/icons";
 import SalesCard from "@/pages/admin/index/salesCard";
 import {Donut} from "@ant-design/charts";
-
+import {createStyles} from "antd-style";
 const Info: React.FC<{
     title: React.ReactNode;
     value: React.ReactNode;
@@ -26,15 +26,27 @@ const Info: React.FC<{
         {bordered && <em style={{position: "absolute", top: 0, right: 0, width: "1px", height: "56px"}}/>}
     </div>
 )
+const useStyles = createStyles(({token})=>{
+    return{
+        head:{
+            backgroundColor:`${token.colorPrimary} !important`,
+            color:"#fff"
+        },
+        notice:{
+            fontSize: "14px", borderRadius: "5px"
+        }
+    }
+})
 export default () => {
+    const {styles:{head,notice}} = useStyles()
     /**
      * 滚动公告信息
      */
     const [notice2Loading, setNotice2Loading] = useState(true);
     const [notice2Data, setNotice2Data] = useState({});
-    const getNotice2Data = () => {
+    const getNotice2Data = async () => {
         setNotice2Loading(true);
-        getNotice({
+        await getNotice({
             body: {
                 type: "p"
             },
@@ -51,9 +63,9 @@ export default () => {
      */
     const [countLoading, setCountLoading] = useState(true);
     const [countData, setCountData] = useState<any>({});
-    const getGenCount = () => {
+    const getGenCount = async () => {
         setCountLoading(true);
-        getCount({
+        await getCount({
             onSuccess: (r: any) => {
                 setCountData(r?.data);
             },
@@ -64,9 +76,9 @@ export default () => {
     };
     const [toDoLoading, setToDoLoading] = useState(true);
     const [toDoData, setToDoData] = useState<any>({});
-    const getToDoData = () => {
+    const getToDoData = async () => {
         setToDoLoading(true);
-        getToDo({
+        await getToDo({
             onSuccess: (r: any) => {
                 setToDoData(r?.data);
             },
@@ -182,31 +194,29 @@ export default () => {
         setNoticeData(temp);
         setNoticeLoading(false);
     };
-    /**
-     * 查看公告
-     */
-    const [noticeId, setNoticeId] = useState(0);
-    const [noticeVisible, setNoticeVisible] = useState(false);
-    const showNoticeInfoModal = (id: number) => {
-        setNoticeId(id);
-        setNoticeVisible(true);
-    }
-    const hideNoticeInfoModal = () => {
-        setNoticeId(0);
-        setNoticeVisible(false);
-    }
+    const [pageLoading, setPageLoading] = useState(false)
     useEffect(() => {
-        getNotice2Data()
-        getGenCount()
-        getToDoData()
-        getChartData()
-        getNoticeData()
+        setPageLoading(true)
+        getNotice2Data().then(() => {
+            setPageLoading(false)
+        })
+        getGenCount().then(() => {
+            setPageLoading(false)
+        })
+        getToDoData().then(() => {
+            setPageLoading(false)
+        })
+        getChartData().then(() => {
+            setPageLoading(false)
+        })
+        getNoticeData().then(() => {
+            setPageLoading(false)
+        })
     }, []);
     return (
-        <Body title="网站管理" showBack={true}>
+        <Body title="网站首页" showBack={true} titleStyle={{color:"#fff"}} headClassNames={head} loading={pageLoading}>
             {notice2Loading && <Skeleton.Paragraph animated/> ||
-                notice2Data?.['notice.admin'] != null && <NoticeBar content={notice2Data?.['notice.admin']} color='info'
-                                                                    style={{fontSize: "14px", borderRadius: "5px"}}/>
+                notice2Data?.['notice.admin'] != null && <NoticeBar content={notice2Data?.['notice.admin']} color='info' className={notice}/>
             }
             <Suspense fallback={<PageLoading/>}>
                 <IntroduceRow loading={countLoading} countData={countData?.sum} visitData={countData?.count}/>
@@ -301,36 +311,30 @@ export default () => {
                     <Grid.Item>
                         <Card title={<Title>系统公告</Title>}>
                             {noticeData.length > 0 && <List
-                                loading={noticeLoading}
-                                itemLayout="horizontal"
-                                dataSource={noticeData}
-                                renderItem={(item: any) => (
-                                    <Skeleton avatar title={false} loading={noticeLoading} active>
-                                        <List.Item
-                                            actions={[<a key="list-loadmore-edit" onClick={() => {
-                                                showNoticeInfoModal(item?.id || 0);
-                                            }}>查看</a>]}
-                                        >
-                                            <List.Item.Meta
-                                                key={"notice-" + item?.id}
-                                                avatar={<NotificationOutlined
-                                                    style={{fontSize: "20px", lineHeight: "50px"}}/>}
-                                                title={item?.title}
-                                                description={<span
-                                                    style={{fontSize: "10px"}}>发布于 {ago(item?.create_time)} ,共 {item?.look_num} 次浏览</span>}
-                                            />
-                                        </List.Item>
-                                    </Skeleton>
-                                )}
-                            /> ||
-                                <Empty description='暂无数据' />
+                                    loading={noticeLoading}
+                                    itemLayout="horizontal"
+                                    dataSource={noticeData}
+                                    renderItem={(item: any) => (
+                                        <Skeleton avatar title={false} loading={noticeLoading} active>
+                                            <List.Item>
+                                                <List.Item.Meta
+                                                    key={"notice-" + item?.id}
+                                                    avatar={<NotificationOutlined
+                                                        style={{fontSize: "20px", lineHeight: "50px"}}/>}
+                                                    title={item?.title}
+                                                    description={<span
+                                                        style={{fontSize: "10px"}}>发布于 {ago(item?.create_time)} ,共 {item?.look_num} 次浏览</span>}
+                                                />
+                                            </List.Item>
+                                        </Skeleton>
+                                    )}
+                                /> ||
+                                <Empty description='暂无数据'/>
                             }
 
                         </Card>
                     </Grid.Item>
                 </Grid>
-
-
             </Suspense>
             <Suspense fallback={null}>
                 <SalesCard

@@ -1,9 +1,9 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Body, Icon} from "@/components";
-import {Button, Form, Input, Selector, Toast} from "antd-mobile";
+import {Button, Form, Input, Selector, Toast,Skeleton} from "antd-mobile";
 import {createStyles, useResponsive} from "antd-style";
 import {Mayun, Qq, Weinxin} from "@/components/icon";
-import {recharge} from "@/service/pay";
+import {getPayConfig, recharge} from "@/service/pay";
 import {setPayJumpUrl} from "@/utils/pay";
 import {historyPush} from "@/utils/route";
 const useStyles = createStyles(({token}): any => {
@@ -55,6 +55,17 @@ export default () => {
     const [loading, setLoading] = useState(false)
     const {mobile} = useResponsive()
     const formFinish = async (values: any) => {
+        if(values?.money == "" || values?.money == undefined){
+            Toast?.show({
+                content:"请输入充值金额",
+                position: 'top',
+            })
+        }else if(!/\d/.test(values?.money)){
+            Toast?.show({
+                content:"格式错误",
+                position: 'top',
+            })
+        }
         values = {money: parseInt(values?.money), type: parseInt(values?.type)}
         setLoading(true)
         await recharge({
@@ -86,6 +97,22 @@ export default () => {
             }
         })
     }
+    /**
+     * 支付配置
+     */
+    const [configLoading, setConfigLoading] = useState(false)
+    const [payConfig, setPayConfig] = useState({});
+    useEffect(() => {
+        setConfigLoading(true)
+        getPayConfig({
+            onSuccess:(r:any)=>{
+                setPayConfig(r?.data);
+            },
+            onFinally:()=>{
+                setConfigLoading(false);
+            }
+        });
+    }, []);
     return (
         <Body title="充值账户余额">
             <Form layout="horizontal" form={form} className={body} onFinish={formFinish}>
@@ -94,31 +121,34 @@ export default () => {
                     <Input placeholder="请输入充值金额" clearable/>
                 </Form.Item>
                 <p className={p}>支付方式</p>
-                <Form.Item name="type" className={label}>
-                    <Selector
-                        style={{"--border-radius": "5px", "--padding": "10px 14px"}}
-                        options={[
-                            {
-                                label: (
-                                    <span className={span}><Icon type={Mayun} className={icon}/>支付宝</span>
-                                ),
-                                value: 0,
-                            },
-                            {
-                                label: (
-                                    <span className={span}><Icon type={Weinxin} className={icon}/>微信</span>
-                                ),
-                                value: 1,
-                            },
-                            {
-                                label: (
-                                    <span className={span}><Icon type={Qq} className={icon}/>QQ</span>
-                                ),
-                                value: 2,
-                            }
-                        ]}
-                        defaultValue={[0]}
-                    />
+                <Form.Item name="type"  className={label}>
+                    {configLoading && <Skeleton.Paragraph animated /> ||
+                        <Selector
+                            style={{"--border-radius": "5px", "--padding": "10px 14px"}}
+                            options={[
+                                {
+                                    label: (
+                                        <span className={span}><Icon type={Mayun} className={icon}/>支付宝</span>
+                                    ),
+                                    value: 0,
+                                },
+                                {
+                                    label: (
+                                        <span className={span}><Icon type={Weinxin} className={icon}/>微信</span>
+                                    ),
+                                    value: 1,
+                                },
+                                {
+                                    label: (
+                                        <span className={span}><Icon type={Qq} className={icon}/>QQ</span>
+                                    ),
+                                    value: 2,
+                                }
+
+                            ]}
+                            defaultValue={[0]}
+                        />
+                    }
                 </Form.Item>
                 <Form.Item className={label}>
                     <Button type={"submit"} block color='primary' loading={loading} className={btn}>立即支付</Button>

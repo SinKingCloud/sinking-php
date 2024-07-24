@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
-import {Card, List, Skeleton} from "antd-mobile";
+import {Card, ErrorBlock, List, Skeleton} from "antd-mobile";
 import {createStyles} from "antd-style";
 import {getNoticeList} from "@/service/person/notice";
 import {Message} from "@/components/icon";
@@ -72,11 +72,15 @@ export default () => {
         });
         setNoticeData(temp);
     };
+    const [pageLoading,setPageLoading] = useState(false)
     useEffect(() => {
-        getNoticeData()
+        setPageLoading(true)
+        getNoticeData().then(()=>{
+            setPageLoading(false)
+        })
     }, []);
     return (
-        <Body title="帮助中心" titleStyle={{color:"#fff"}} headClassNames={head} space={true}>
+        <Body title="帮助中心" titleStyle={{color:"#fff"}} loading={pageLoading} headClassNames={head} space={true}>
             <Card >
                 <p className={p}>问题帮助中心</p>
                 <span className={span}>这里提供使用注意事项、常见问题解答帮助等内容，欢迎查看</span>
@@ -96,7 +100,7 @@ export default () => {
                             >
                                 <span className={listSpan}>{user?.title}</span>
                             </List.Item>
-                        )) || noticeData.length === 0 &&  <Empty style={{marginTop:"10px"}} description='暂无数据' />
+                        )) || noticeData.length === 0 &&  <ErrorBlock status='empty'/>
                     }
                 </List>
             </Card>

@@ -1,24 +1,28 @@
 import {Body, Icon, Title} from "@/components";
 import {Avatar, Button, Card, Grid, List, NoticeBar, Skeleton} from "antd-mobile";
-import {Admin, Data, Help, Master, Message, Recharge, User,} from "@/components/icon";
+import { Data, Help, Message, Recharge, User,} from "@/components/icon";
 import React, {useEffect, useState} from "react";
 import {createStyles, useTheme} from "antd-style";
 import {historyPush} from "@/utils/route";
 import {getContact, getNotice} from "@/service/person/config";
 import {useModel} from "umi";
 import {Col, Row} from "antd";
-import {ago} from "@/utils/time";
 import {getNoticeList} from "@/service/person/notice";
 
 const useStyles = createStyles(({isDarkMode}): any => {
     return {
         list: {
             ".adm-list-item ": {
-                paddingLeft: "0 !important"
+                paddingLeft: "0 !important",
+                lineHeight:"0.8 !Important"
             },
             ".adm-list-header": {
                 borderRadius: "5px",
                 fontSize: "12px !important",
+            },
+            " .adm-list-body":{
+                borderBottomLeftRadius: "10px",
+                borderBottomRightRadius: "10px"
             },
             "--border-top": "none",
             "--border-bottom": "none"
@@ -30,7 +34,7 @@ const useStyles = createStyles(({isDarkMode}): any => {
         },
         card: {
             ".adm-card-body": {
-                padding: "var(--adm-card-body-padding-block, 0px) 0"
+                padding: "var(--adm-card-body-padding-block,0) 0"
             }
         },
         nav: {
@@ -71,14 +75,14 @@ const useStyles = createStyles(({isDarkMode}): any => {
             borderRadius: "50%", height: "50px", width: "50px"
         },
         listSpan:{
-            fontSize: "14px",
-            color: isDarkMode ? "#b3b3b3" : "#000"
+            fontSize: "12px",
+            color: isDarkMode ? "#b3b3b3" : "#4f4f4f"
         },
         connact:{
-            borderRadius: "5px", height: "36px", width: "36px"
+            borderRadius: "5px", height: "28px", width: "28px"
         },
         tex:{
-            fontSize: "14px", marginBottom: "4px"
+            fontSize: "12px", marginBottom: "4px",display:"inline-block"
         },
         cardLine:{
             ".adm-card":{
@@ -95,10 +99,13 @@ const useStyles = createStyles(({isDarkMode}): any => {
             }
         },
         preFix:{
-            fontSize: "18px", color: "#ff8f1f"
+            fontSize: "14px", color: "#ff8f1f"
         },
         extra:{
             fontSize: "12px"
+        },
+        small:{
+            fontSize:"10px"
         }
     }
 })
@@ -106,8 +113,7 @@ export default function HomePage() {
 
     const user = useModel("user")
     const {styles: {list, card, nav, tit,icons,icon,notice,home,ava,
-        listSpan,connact,tex,cardLine,preFix,extra}} = useStyles()
-
+        listSpan,connact,tex,cardLine,preFix,extra,small}} = useStyles()
     /**
      * 滚动公告
      */
@@ -165,9 +171,9 @@ export default function HomePage() {
      */
     const [contactLoading, setContactLoading] = useState(true);
     const [contactData, setContactData] = useState({});
-    const getContactData = () => {
+    const getContactData = async() => {
         setContactLoading(true);
-        getContact({
+       await getContact({
             onSuccess: (r: any) => {
                 setContactData(r?.data);
             },
@@ -176,21 +182,26 @@ export default function HomePage() {
             }
         })
     };
+    const [pageLoading,setPageLoading] = useState(false)
     useEffect(() => {
-        getNoticeData()
-        getNoticeData2()
-        getContactData()
+        setPageLoading(true)
+        getNoticeData().then(()=>{
+            setPageLoading(false)
+        })
+        getNoticeData2().then(()=>{
+            setPageLoading(false)
+        })
+        getContactData().then(() => {
+            setPageLoading(false)
+        })
     }, []);
-    const theme = useTheme()
     return (
-        <Body showHeader={false} loading={!user?.web} space={true}>
-            <Grid columns={1} gap={8}>
-                <Grid.Item>
+        <Body showHeader={false} loading={pageLoading} space={true}>
+
                     {noticeLoading2 && <Skeleton.Paragraph animated/> ||
                         <NoticeBar content={noticeData2?.['notice.index']} color="info" className={notice}/>
                     }
-                </Grid.Item>
-                <Grid.Item>
+
                     <Card>
                         <div className={home}>
                             <Avatar src={user?.web?.avatar} className={ava}/>
@@ -199,8 +210,7 @@ export default function HomePage() {
                                 style={{fontWeight: 600}}>{user?.web?.nick_name}</span>，欢迎回来！</span>
                         </div>
                     </Card>
-                </Grid.Item>
-                <Grid.Item>
+
                     <Card>
                         <Row justify={"space-around"}>
                             <Col onClick={() => historyPush('user.list')}>
@@ -220,31 +230,28 @@ export default function HomePage() {
                             </Col>
                         </Row>
                     </Card>
-                </Grid.Item>
                 <Grid.Item className={cardLine}>
-                    <Card title={<Title><span className={tit}>系统公告</span></Title>} >
+                    {noticeData.length > 0 && <Card title={<Title><span className={tit}>系统公告</span></Title>} >
                         <List className={list} >
                             {noticeLoading && <Skeleton.Paragraph animated/> ||
-                                noticeData.length > 0 && noticeData.map(user => (
+                                noticeData.map(user => (
                                     <List.Item
                                         className={icon}
                                         key={user?.id}
                                         prefix={<Icon type={Message} className={preFix}/>}
                                         extra={''}
-                                        description={<span
-                                            style={{fontSize: "10px"}}>发布于 {ago(user?.create_time)} ,共 {user?.look_num} 次浏览</span>}
                                         onClick={() => {
                                             historyPush("user.notice.info", {id: user?.id})
                                         }}
                                     >
-                                <span className={listSpan}>{user?.title}</span>
+                                        <span className={listSpan}>{user?.title}</span>
                                     </List.Item>
                                 ))
                             }
                         </List>
-                    </Card>
+                    </Card> || null}
+
                 </Grid.Item>
-                <Grid.Item>
                     <Card className={card} title={<Title><span className={tit}>联系方式</span></Title>}>
                         <List className={list}>
                             {contactLoading && <Skeleton.Paragraph animated/> ||
@@ -253,8 +260,8 @@ export default function HomePage() {
                                         <Avatar
                                             src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
                                             size="large" shape="square" className={connact}/>}
-                                               description={<span>QQ:{contactData?.['contact.one']}</span>}
-                                               extra={<Button fill='outline' color='primary' size={"small"}
+                                               description={<span className={small}>QQ:{contactData?.['contact.one']}</span>}
+                                               extra={<Button fill='outline' color='primary' size={"mini"}
                                                               className={extra} onClick={() => {
                                                    window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.one'] + "&site=qq&menu=yes");
                                                }}>联系</Button>}>
@@ -264,8 +271,8 @@ export default function HomePage() {
                                         <Avatar
                                             src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.two'] || 10000) + "&spec=100"}
                                             size="large" shape="square" className={connact}/>}
-                                               description={<span>QQ:{contactData?.['contact.two']}</span>}
-                                               extra={<Button fill='outline' color='primary' size={"small"}
+                                               description={<span className={small}>QQ:{contactData?.['contact.two']}</span>}
+                                               extra={<Button fill='outline' color='primary' size={"mini"}
                                                               className={extra} onClick={() => {
                                                    window.open("https://wpa.qq.com/wpa_jump_page?v=3&uin=" + contactData?.['contact.two'] + "&site=qq&menu=yes");
                                                }}>联系</Button>}>
@@ -275,8 +282,8 @@ export default function HomePage() {
                                         <Avatar
                                             src={"https://p.qlogo.cn/gh/" + (contactData?.['contact.three'] || 10000) + "/" + (contactData?.['contact.three'] || 1000) + "/100"}
                                             size="large" shape="square" className={connact}/>}
-                                               description={<span>群号:{contactData?.['contact.three']}</span>}
-                                               extra={<Button fill='outline' color='primary' size={"small"}
+                                               description={<span className={small}>群号:{contactData?.['contact.three']}</span>}
+                                               extra={<Button fill='outline' color='primary' size={"mini"}
                                                               className={extra} onClick={() => {
                                                    window.open(contactData?.['contact.four']);
                                                }}>加入</Button>}>
@@ -286,8 +293,6 @@ export default function HomePage() {
                             }
                         </List>
                     </Card>
-                </Grid.Item>
-            </Grid>
         </Body>
     );
 }

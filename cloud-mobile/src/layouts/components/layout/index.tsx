@@ -6,7 +6,6 @@ import {getLoginToken} from "@/utils/auth";
 import {useModel} from "umi";
 import request from "@/utils/request";
 import {createStyles} from "antd-style";
-import Loading from "@/loading";
 import {Spin} from "antd";
 
 /**

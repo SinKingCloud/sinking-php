@@ -6,28 +6,16 @@ export const user = [
     {
         path: "index",
         title: "首页",
+        name: "user.index",
         icon: 'icon-home',
-        routes:[
-            {
-                path: "index",
-                component: "@/pages/user/index",
-                title: "首页",
-                name: "user.index",
-            },
-            {
-                path: "info/:id",
-                component: "@/pages/user/index/info",
-                title: "公告详情",
-                name: "user.index.info",
-            },
-        ]
+        component: "@/pages/user/index",
     },
     {
-        path:"list",
-        title:"列表",
-        name:"user.list",
-        icon:'icon-tabulate',
-        component:"@/pages/user/list",
+        path: "list",
+        title: "列表",
+        name: "user.list",
+        icon: 'icon-tabulate',
+        component: "@/pages/user/list",
     },
     {
         path: "pay",
@@ -66,13 +54,12 @@ export const user = [
             },
         ]
     },
-
     {
-        path:"help",
-        title:"帮助",
-        name:"user.help",
-        icon:'icon-help',
-        component:"@/pages/user/help",
+        path: "help",
+        title: "帮助",
+        name: "user.help",
+        icon: 'icon-help',
+        component: "@/pages/user/help",
     },
     {
         path: "person",
@@ -104,7 +91,7 @@ export const user = [
                 component: "@/pages/user/person/log",
             },
             {
-                path: "updateInfo",
+                path: "update",
                 title: "修改资料",
                 name: "user.person.update",
                 component: "@/pages/user/person/update",
@@ -120,6 +107,19 @@ export const user = [
                 title: "修改手机",
                 name: "user.person.updatePhone",
                 component: "@/pages/user/person/updatePhone",
+            },
+        ]
+    },
+    {
+        path: "notice",
+        title: "公告",
+        hideInTabBar: true,
+        routes: [
+            {
+                path: "info/:id",
+                component: "@/pages/user/index/info",
+                title: "公告详情",
+                name: "user.notice.info",
             },
         ]
     },
@@ -153,12 +153,12 @@ export const admin = [
         path: "set",
         title: "设置",
         icon: 'icon-set',
-        routes:[
+        routes: [
             {
-                path:"money",
-                component:"@/pages/admin/set/index",
-                title:"价格设置",
-                name:"admin.set.money",
+                path: "money",
+                component: "@/pages/admin/set/index",
+                title: "价格设置",
+                name: "admin.set.money",
             }
         ]
     },

@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Body} from "@/components";
 import {Form, Input, Toast, Button, ImageUploader} from "antd-mobile";
 import {useModel} from "umi";
 import {updateInfo} from "@/service/person/update";
 import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";
-import {getUploadUrl, uploadFile} from "@/service/common/upload";
+import {uploadFile} from "@/service/common/upload";
 import {ImageUploadItem} from "antd-mobile/es/components/image-uploader";
 
 const useStyles = createStyles(({token, isDarkMode, css}): any => {
@@ -15,18 +15,19 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
             .adm-list-item-content-prefix {
                 font-size: 12px !important;
                 width: 65px
-            },
-            . adm-form-item-label {
-                line-height: 2;
-                margin-bottom: 6px !important;
-            },
-            . adm-list-item-content {
-                border-bottom: ${border};
-                border-top: none !important;
-            },
-            . adm-input-element {
-                font-size: 12px !important;
             }
+        ,
+        . adm-form-item-label {
+            line-height: 2;
+            margin-bottom: 6px !important;
+        },
+        . adm-list-item-content {
+            border-bottom: ${border};
+            border-top: none !important;
+        },
+        . adm-input-element {
+            font-size: 12px !important;
+        }
         `,
         btn: {
             ".adm-list-item-content": {
@@ -69,22 +70,22 @@ export default () => {
             url: user?.web?.avatar || ""
         }
     ]);
-    const beforeUpload = (file: any) => {
-        if (file.size > 1024 * 1024) {
-            Toast.show('请选择小于 1M 的图片')
+    useEffect(() => {
+        console.log(files)
+    }, []);
+    const mockUpload = async (file: File) => {
+        if (file.size > 1024 * 1024 * 10) {
+            Toast.show('请选择小于 10M 的图片')
             return null
         }
-        return file
-    }
-    const handleImageUpload = (info) => {
-        console.log(info)
-    }
-    const mockUpload =(file: File)=> {
-        // const formData = new FormData();
-        // formData.append('file', file);
-        return {
-            url:URL.createObjectURL(file),
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await uploadFile(formData);
+        if (res?.code != 200) {
+            return undefined
         }
+        setFiles([{url: res?.data}]);
+        return {url: res?.data}
     }
     /**
      * 表单提交
@@ -106,7 +107,9 @@ export default () => {
             return
         }
         delete values?.avatar
-        values.avatar = files
+        if (files?.length > 0) {
+            values.avatar = files[0]?.url || "";
+        }
         setBtnLoading(true)
         await updateInfo({
             body: {
@@ -144,11 +147,10 @@ export default () => {
                 <Form.Item name="nick_name" label="昵称" className={label}>
                     <Input placeholder="请输入账户名称" clearable/>
                 </Form.Item>
-                <Form.Item name="avatar" label="头像" className={label}>
+                <Form.Item name="avatar" label="头像" className={label} initialValue={files}>
                     <ImageUploader
                         value={files}
-                        onChange={handleImageUpload}
-                        beforeUpload={beforeUpload as any}
+                        maxCount="1"
                         upload={mockUpload as any}
                     />
                 </Form.Item>

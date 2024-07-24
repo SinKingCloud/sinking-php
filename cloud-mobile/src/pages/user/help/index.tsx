@@ -91,7 +91,7 @@ export default () => {
                                 description={<span
                                     style={{fontSize: "10px"}}>发布于 {ago(user?.create_time)} ,共 {user?.look_num} 次浏览</span>}
                                 onClick={() => {
-                                    historyPush("user.index.info", {id: user?.id})
+                                    historyPush("user.notice.info", {id: user?.id})
                                 }}
                             >
                                 <span className={listSpan}>{user?.title}</span>

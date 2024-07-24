@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
 import {Body} from "@/components";
-import { Form, Input, Toast,Button} from "antd-mobile";
+import {Form, Input, Toast, Button, ImageUploader} from "antd-mobile";
 import {useModel} from "umi";
 import {updateInfo} from "@/service/person/update";
-import {createStyles, useTheme} from "antd-style";
+import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";
+import {getUploadUrl, uploadFile} from "@/service/common/upload";
+import {ImageUploadItem} from "antd-mobile/es/components/image-uploader";
 
 const useStyles = createStyles(({token, isDarkMode, css}): any => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
@@ -13,20 +15,18 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
             .adm-list-item-content-prefix {
                 font-size: 12px !important;
                 width: 65px
+            },
+            . adm-form-item-label {
+                line-height: 2;
+                margin-bottom: 6px !important;
+            },
+            . adm-list-item-content {
+                border-bottom: ${border};
+                border-top: none !important;
+            },
+            . adm-input-element {
+                font-size: 12px !important;
             }
-        ,
-        . adm-form-item-label {
-            line-height: 2;
-            margin-bottom: 6px !important;
-        },
-        . adm-list-item-content {
-            border-bottom: ${border};
-            border-top: none !important;
-        },
-        . adm-input-element {
-            font-size: 12px !important;
-        },
-
         `,
         btn: {
             ".adm-list-item-content": {
@@ -43,25 +43,49 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
                 borderBottom: "none !important",
             },
             ".adm-list-item": {
-                paddingRight:"12px"
+                paddingRight: "12px"
             },
             ".adm-input-element": {
                 fontSize: "12px !important"
             },
         },
-        butt:{
+        butt: {
             "--background-color": token.colorPrimary,
             "--border-color": token.colorPrimary,
             fontWeight: 600,
-            letterSpacing:"1px"
+            letterSpacing: "1px"
         }
     }
 })
 export default () => {
-    const {styles: {label, btn, body,butt}} = useStyles()
+    const {styles: {label, btn, body, butt}} = useStyles()
     const [form] = Form.useForm()
     const user = useModel("user")
-    const theme = useTheme()
+    /**
+     * 上传头像
+     */
+    const [files, setFiles] = useState<ImageUploadItem[]>([
+        {
+            url: user?.web?.avatar || ""
+        }
+    ]);
+    const beforeUpload = (file: any) => {
+        if (file.size > 1024 * 1024) {
+            Toast.show('请选择小于 1M 的图片')
+            return null
+        }
+        return file
+    }
+    const handleImageUpload = (info) => {
+        console.log(info)
+    }
+    const mockUpload =(file: File)=> {
+        // const formData = new FormData();
+        // formData.append('file', file);
+        return {
+            url:URL.createObjectURL(file),
+        }
+    }
     /**
      * 表单提交
      */
@@ -81,10 +105,12 @@ export default () => {
             })
             return
         }
+        delete values?.avatar
+        values.avatar = files
         setBtnLoading(true)
         await updateInfo({
             body: {
-                ...values
+                ...values,
             },
             onSuccess: (r: any) => {
                 Toast.show({
@@ -117,6 +143,14 @@ export default () => {
                 </Form.Item>
                 <Form.Item name="nick_name" label="昵称" className={label}>
                     <Input placeholder="请输入账户名称" clearable/>
+                </Form.Item>
+                <Form.Item name="avatar" label="头像" className={label}>
+                    <ImageUploader
+                        value={files}
+                        onChange={handleImageUpload}
+                        beforeUpload={beforeUpload as any}
+                        upload={mockUpload as any}
+                    />
                 </Form.Item>
                 <Form.Item name="login_time" label="登录时间" className={label}>
                     <Input disabled={true}/>

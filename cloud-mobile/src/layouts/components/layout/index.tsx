@@ -92,7 +92,7 @@ export default function () {
     const {styles: {body, load}} = useStyles();
     return <>
         {(!web?.info?.id && <Spin spinning={true} size="large" className={load}></Spin>) ||
-            <Mobile bodyClassName={!isIndex() ? body : ""} tabBar={tabBarItems}
+            <Mobile bodyClassName={body} tabBar={tabBarItems}
                     onTabBarChange={(key) => {
                         historyPush(key);
                     }}

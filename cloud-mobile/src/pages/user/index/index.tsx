@@ -11,6 +11,9 @@ import {getNoticeList} from "@/service/person/notice";
 
 const useStyles = createStyles(({isDarkMode}): any => {
     return {
+        body: {
+            userSelect: "none"
+        },
         list: {
             ".adm-list-item ": {
                 paddingLeft: "0 !important",
@@ -34,7 +37,7 @@ const useStyles = createStyles(({isDarkMode}): any => {
         },
         card: {
             ".adm-card-body": {
-                padding: "var(--adm-card-body-padding-block,0) 0"
+                padding: "var(--adm-card-body-padding-block,0) 0",
             }
         },
         nav: {
@@ -102,7 +105,11 @@ const useStyles = createStyles(({isDarkMode}): any => {
             fontSize: "14px", color: "#ff8f1f"
         },
         extra: {
-            fontSize: "12px"
+            fontSize: "10px !important",
+            width: "40px",
+            height: "20px",
+            padding: "5px",
+            lineHeight: "5px"
         },
         small: {
             fontSize: "10px"
@@ -110,14 +117,13 @@ const useStyles = createStyles(({isDarkMode}): any => {
     }
 })
 export default function HomePage() {
-
     const user = useModel("user")
     const {
         styles: {
             list, card, nav, tit, icons, icon, notice, home, ava,
-            listSpan, connact, tex, cardLine, preFix, extra, small
+            listSpan, connact, tex, cardLine, preFix, extra, small, body
         }
-    } = useStyles()
+    } = useStyles();
     /**
      * 滚动公告
      */
@@ -198,11 +204,8 @@ export default function HomePage() {
         });
     }, []);
     return (
-        <Body showHeader={false} loading={pageLoading} space={true}>
-            {noticeLoading2 && <Skeleton.Paragraph animated/> ||
-                <NoticeBar content={noticeData2?.['notice.index']} color="info" className={notice}/>
-            }
-            <Card>
+        <Body showHeader={false} loading={pageLoading} space={true} bodyClassNames={body}>
+            <Card style={{background:"red"}}>
                 <div className={home}>
                     <Avatar src={user?.web?.avatar} className={ava}/>
                     <span style={{fontSize: "26px"}}>你好,{user?.web?.nick_name}</span>
@@ -210,6 +213,9 @@ export default function HomePage() {
                         style={{fontWeight: 600}}>{user?.web?.nick_name}</span>，欢迎回来！</span>
                 </div>
             </Card>
+            {noticeLoading2 && <Skeleton.Paragraph animated/> ||
+                <NoticeBar content={noticeData2?.['notice.index']} color="info" className={notice}/>
+            }
             <Card>
                 <Row justify={"space-around"}>
                     <Col onClick={() => historyPush('user.list')}>

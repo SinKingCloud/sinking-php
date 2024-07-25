@@ -146,7 +146,7 @@ export default () => {
         }
     ]
     return (
-        <Body title="充值账户余额">
+        <Body title="充值账户余额" loading={configLoading}>
             <Form layout="horizontal" form={form} initialValues={{type: "0"}} className={body} onFinish={formFinish}>
                 <p className={p}>充值金额</p>
                 <Form.Item name="money" label={"￥"} className={label}>
@@ -154,12 +154,10 @@ export default () => {
                 </Form.Item>
                 <p className={p}>支付方式</p>
                 <Form.Item name="type" className={label}>
-                    {configLoading && <Skeleton.Paragraph animated/> ||
-                        <Selector
-                            style={{"--border-radius": "5px", "--padding": "10px 14px"}}
-                            options={options.filter(option => option.show)}
-                        />
-                    }
+                    <Selector
+                        style={{"--border-radius": "5px", "--padding": "10px 14px"}}
+                        options={options.filter(option => option.show)}
+                    />
                 </Form.Item>
                 <Form.Item className={label}>
                     <Button type={"submit"} block color='primary' loading={loading} className={btn}>立即支付</Button>

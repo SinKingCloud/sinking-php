@@ -343,7 +343,7 @@ export default () => {
         })
     }
     return (
-        <Body title="开通主站">
+        <Body title="开通主站" loading={loading}>
             <Card>
                 <p className={p}>搭建主站介绍</p>
                 <span style={{fontSize: "12px"}}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，

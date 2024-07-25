@@ -22,15 +22,10 @@ const check = async (ctx: any, next: any) => {
 request.use(check);
 
 const useStyles = createStyles(({isDarkMode, css}): any => {
-    const border = isDarkMode ? `0.5px solid rgb(46, 46, 46) !important`: `0.5px solid rgb(233, 233, 233) !important`
     const bac = "radial-gradient(191.09% 94.72% at 12.72264631043257% 89.55399061032864%, rgba(247, 171, 171, 0.3) 0%, rgba(150, 240, 250, 0.21) 45.59%, rgba(181, 174, 245, 0.15) 66.76%, rgba(255, 255, 255, 0.3) 100%) !important"
     return {
         body: css`
             background: ${bac};
-            .adm-list-item-content{
-                border-top:${border}
-            }
-            user-select: none;
         `,
         load: {
             margin: "0 auto",

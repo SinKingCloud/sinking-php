@@ -33,6 +33,9 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
             flex: "1 1 auto",
             overflow: "hidden",
             background: isDarkMode ? "rgb(20,20,20)" : "rgb(246,246,246)",
+            ".adm-list-item-content": {
+                borderTop: isDarkMode ? `0.5px solid rgb(46, 46, 46) !important` : `0.5px solid rgb(233, 233, 233) !important`
+            }
         },
         tab: {
             borderTop: "0.5px solid " + (isDarkMode ? "rgb(29, 29, 29)" : "rgb(236, 236, 236)"),

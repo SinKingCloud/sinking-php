@@ -18,6 +18,9 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         body: {
             overflowY: "auto",
             flex: 1,
+            ".adm-list-item-content": {
+                borderTop: isDarkMode ? `0.5px solid rgb(46, 46, 46) !important` : `0.5px solid rgb(233, 233, 233) !important`
+            }
         },
         title2: {
             fontSize: "15px",
@@ -92,13 +95,13 @@ const Content: React.FC<BodyProps> = (props: any) => {
             {title && <span className={title2} style={titleStyle}>{title}</span>}
         </NavBar>}
         <div className={body + " " + bodyClassNames} style={bodyStyle}>
-            <Animation animate={animate ? Animate.FadeUp : Animate.None}>
-                {(loading && <Spin spinning={true} size="large" className={load}></Spin>) || <>
+            {(loading && <Spin spinning={true} size="large" className={load}/>) || <>
+                <Animation animate={animate ? Animate.FadeUp : Animate.None}>
                     {(space && <Space direction="vertical" size="small" className={gutter}>
                         {children}
                     </Space>) || children}
-                </>}
-            </Animation>
+                </Animation>
+            </>}
         </div>
     </ConfigProvider>;
 };

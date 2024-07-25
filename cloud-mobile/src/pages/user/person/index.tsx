@@ -1,16 +1,16 @@
-import React, { useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {Body, Icon} from "@/components";
 import {
     Avatar,
     Button,
-    Card, DotLoading,
+    Card, Dialog, DotLoading,
     Grid,
     List,
     Modal,
     Tag,
     Toast
 } from "antd-mobile";
-import { ImageUploadItem } from 'antd-mobile/es/components/image-uploader'
+import {ImageUploadItem} from 'antd-mobile/es/components/image-uploader'
 import {historyPush} from "@/utils/route";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
@@ -25,6 +25,7 @@ import {
 } from "@/components/icon";
 import {deleteHeader} from "@/utils/auth";
 import {outLogin} from "@/service/user/login";
+
 const useStyles = createStyles(({token, isDarkMode}): any => {
     return {
         card: {
@@ -57,8 +58,8 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
                 fontSize: "14px"
             },
             fontSize: "14px", color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)",
-            ":hover":{
-                    color:isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
+            ":hover": {
+                color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
             }
         },
         modal: {
@@ -101,7 +102,7 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
 })
 export default () => {
 
-    const {styles: {card, list, card1, item, modal,tag, extra}} = useStyles()
+    const {styles: {card, list, card1, item, modal, tag, extra}} = useStyles()
     const theme = useTheme()
     const user = useModel("user")
     const verifyRef = useRef<any>()
@@ -185,7 +186,7 @@ export default () => {
                                            onClick={() => {
                                                historyPush("admin.index")
                                            }}>
-                                    系统后台
+                                    网站后台
                                 </List.Item>
                             </List>
                         </Card>
@@ -196,14 +197,16 @@ export default () => {
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={NiCheng}/>}
                                            extra={<span className={extra}>{user?.web?.nick_name}</span>}
-                                           onClick={() => {}}>
+                                           onClick={() => {
+                                           }}>
                                     我的昵称
                                 </List.Item>
                                 <List.Item className={item}
                                            prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}}
                                                          type={Tongxunlu}/>}
                                            extra={<span className={extra}>{user?.web?.contact}</span>}
-                                           onClick={() => {}}>
+                                           onClick={() => {
+                                           }}>
                                     联系方式
                                 </List.Item>
                                 <List.Item className={item}
@@ -278,27 +281,34 @@ export default () => {
                                     <List.Item className={item}
                                                prefix={<Icon style={{fontSize: "22px", color: "#f65555"}}
                                                              type={OutLogin}/>}
-                                               onClick={async () => {
-                                                   setOutLoading(true)
-                                                   await outLogin({
-                                                       onSuccess: (r: any) => {
-                                                           deleteHeader()
-                                                           Toast.show({
-                                                               content: r?.message,
-                                                               position: 'top',
+                                               onClick={() => {
+                                                   Dialog?.confirm({
+                                                       title:"提示",
+                                                       content: '确定退出登录吗？',
+                                                       onConfirm: async () => {
+                                                           setOutLoading(true)
+                                                           await outLogin({
+                                                               onSuccess: (r: any) => {
+                                                                   deleteHeader()
+                                                                   Toast.show({
+                                                                       content: r?.message,
+                                                                       position: 'top',
+                                                                   })
+                                                                   historyPush("login")
+                                                               },
+                                                               onFail: (r: any) => {
+                                                                   Toast.show({
+                                                                       content: r?.message,
+                                                                       position: 'top',
+                                                                   })
+                                                               },
+                                                               onFinally: () => {
+                                                                   setOutLoading(false)
+                                                               }
                                                            })
-                                                           historyPush("login")
                                                        },
-                                                       onFail: (r: any) => {
-                                                           Toast.show({
-                                                               content: r?.message,
-                                                               position: 'top',
-                                                           })
-                                                       },
-                                                       onFinally: () => {
-                                                           setOutLoading(false)
-                                                       }
                                                    })
+
 
                                                }}>
                                         退出登录

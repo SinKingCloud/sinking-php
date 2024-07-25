@@ -193,8 +193,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
         },
         modal: {
             ".adm-center-popup-wrap": {
-                minWidth: "96% !important",
-                maxWidth: "96% !important"
+                minWidth: "370px !important",
             }
         },
         label:{
@@ -359,7 +358,7 @@ export default () => {
                                 <Input placeholder="请输入网站名称" clearable/>
                             </Form.Item>
                             <Form.Item label={"绑定域名"} className={inner}>
-                                <Form.Item name="prefix" className={label} noStyle>
+                                <Form.Item name="prefix"  noStyle>
                                     <Input className={inp} placeholder="请输入前缀" />
                                 </Form.Item>
                                 <Form.Item name="domain" noStyle>
@@ -371,7 +370,7 @@ export default () => {
                                     </Select>
                                 </Form.Item>
                             </Form.Item>
-                            <Form.Item name="type" label="支付方式">
+                            <Form.Item name="type" label="支付方式" className={label}>
                                 <Select placeholder="请选择支付方式" defaultValue={3} style={{width: "100%"}}>
                                     <Select.Option
                                         value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>

@@ -70,9 +70,6 @@ export default () => {
             url: user?.web?.avatar || ""
         }
     ]);
-    useEffect(() => {
-        console.log(files)
-    }, []);
     const mockUpload = async (file: File) => {
         if (file.size > 1024 * 1024 * 10) {
             Toast.show('请选择小于 10M 的图片')

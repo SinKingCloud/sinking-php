@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react"
 import {Body, Icon} from "@/components";
-import {Button, Form, Input, Selector, Toast,Skeleton} from "antd-mobile";
+import {Button, Form, Input, Selector, Toast, Skeleton} from "antd-mobile";
 import {createStyles, useResponsive} from "antd-style";
 import {Mayun, Qq, Weinxin} from "@/components/icon";
 import {getPayConfig, recharge} from "@/service/pay";
 import {setPayJumpUrl} from "@/utils/pay";
 import {historyPush} from "@/utils/route";
+
 const useStyles = createStyles(({token}): any => {
     return {
         label: {
@@ -29,48 +30,47 @@ const useStyles = createStyles(({token}): any => {
             },
             marginBottom: "10px",
         },
-        p:{
+        p: {
             fontSize: "14px", marginLeft: "20px"
         },
-        span:{
+        span: {
             fontSize: "12px", fontWeight: 600
         },
-        icon:{
+        icon: {
             fontSize: "14px", marginRight: "5px"
         },
-        btn:{
+        btn: {
             "--background-color": token.colorPrimary,
             "--border-color": token.colorPrimary,
             fontWeight: 600,
             letterSpacing: "1px"
         },
-        notice:{
-            color: "#b3b3b3",fontSize: "12px",textAlign: "center"
+        notice: {
+            color: "#b3b3b3", fontSize: "12px", textAlign: "center"
         }
     }
 })
 export default () => {
     const [form] = Form.useForm();
-    const {styles: {label, body,p,span,icon,btn,notice}} = useStyles();
+    const {styles: {label, body, p, span, icon, btn, notice}} = useStyles();
     const [loading, setLoading] = useState(false)
     const {mobile} = useResponsive()
     const formFinish = async (values: any) => {
-        if(values?.money == "" || values?.money == undefined){
+        if (values?.money == "" || values?.money == undefined) {
             Toast?.show({
-                content:"请输入充值金额",
+                content: "请输入充值金额",
                 position: 'top',
             })
             return
-        }else if(!/\d/.test(values?.money)){
+        } else if (!/\d/.test(values?.money)) {
             Toast?.show({
-                content:"格式错误",
+                content: "格式错误",
                 position: 'top',
             })
             return
-        }
-        else if(values?.money < 10){
+        } else if (values?.money < 10) {
             Toast?.show({
-                content:"充值金额最少为10",
+                content: "充值金额最少为10",
                 position: 'top',
             })
             return
@@ -114,47 +114,47 @@ export default () => {
     useEffect(() => {
         setConfigLoading(true)
         getPayConfig({
-            onSuccess:(r:any)=>{
+            onSuccess: (r: any) => {
                 setPayConfig(r?.data)
             },
-            onFinally:()=>{
+            onFinally: () => {
                 setConfigLoading(false);
             }
         });
     }, []);
     const options = [
-            {
-                label: (
-                    <span className={span}><Icon type={Mayun} className={icon}/>支付宝</span>
-                ),
-                value: 0,
-                show: payConfig?.["pay.alipay.type"],
-            },
-            {
-                label: (
-                    <span className={span}><Icon type={Weinxin} className={icon}/>微信</span>
-                ),
-                value: 1,
-                show: payConfig?.["pay.wxpay.type"]
-            },
-             {
-                label: (
-                    <span className={span}><Icon type={Qq} className={icon}/>QQ</span>
-                ),
-                value: 2,
-                 show: payConfig?.["pay.qqpay.type"]
-            }
+        {
+            label: (
+                <span className={span}><Icon type={Mayun} className={icon}/>支付宝</span>
+            ),
+            value: 0,
+            show: payConfig?.["pay.alipay.type"],
+        },
+        {
+            label: (
+                <span className={span}><Icon type={Weinxin} className={icon}/>微信</span>
+            ),
+            value: 1,
+            show: payConfig?.["pay.wxpay.type"]
+        },
+        {
+            label: (
+                <span className={span}><Icon type={Qq} className={icon}/>QQ</span>
+            ),
+            value: 2,
+            show: payConfig?.["pay.qqpay.type"]
+        }
     ]
     return (
         <Body title="充值账户余额">
-            <Form layout="horizontal" form={form} initialValues={{ type: "0"}} className={body} onFinish={formFinish}>
+            <Form layout="horizontal" form={form} initialValues={{type: "0"}} className={body} onFinish={formFinish}>
                 <p className={p}>充值金额</p>
                 <Form.Item name="money" label={"￥"} className={label}>
                     <Input placeholder="请输入充值金额" clearable/>
                 </Form.Item>
                 <p className={p}>支付方式</p>
-                <Form.Item name="type"  className={label}>
-                    {configLoading && <Skeleton.Paragraph animated /> ||
+                <Form.Item name="type" className={label}>
+                    {configLoading && <Skeleton.Paragraph animated/> ||
                         <Selector
                             style={{"--border-radius": "5px", "--padding": "10px 14px"}}
                             options={options.filter(option => option.show)}

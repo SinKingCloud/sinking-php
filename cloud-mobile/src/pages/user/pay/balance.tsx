@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
-import {Card, ErrorBlock, Skeleton} from "antd-mobile";
+import {Card, ErrorBlock, InfiniteScroll, PullToRefresh, Skeleton, Toast} from "antd-mobile";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
 import {Dropdown, Empty, Typography} from "antd";
 import {getPayLog} from "@/service/pay";
 import {createStyles} from "antd-style";
+import {PullStatus} from "antd-mobile/es/components/pull-to-refresh";
 const useStyles = createStyles(()=>{
     return{
         extra:{
@@ -21,11 +22,28 @@ export default () => {
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState()
     const [loading, setLoading] = useState(false)
+    /**
+     * 下拉刷新
+     */
+    const statusRecord: Record<PullStatus, string> = {
+        pulling: '用力拉',
+        canRelease: '松开吧',
+        refreshing: '玩命加载中...',
+        complete: '好啦',
+    }
+    /**
+     * 上拉加载
+     */
+
+    /**
+     * 初始化获取数据
+     * @param type
+     */
     const init = (type?: any) => {
         setLoading(true)
         getPayLog({
             body: {
-                type: type
+                type: type,
             },
             onSuccess: (r: any) => {
                 setOrderData(r?.data)
@@ -65,7 +83,18 @@ export default () => {
             </a>
         </Dropdown>}>
             {loading && <Skeleton.Paragraph animated/> ||
-               orderData?.list?.length >0 && orderData?.list?.map(user => (
+                <PullToRefresh
+                    onRefresh={async () => {
+                           await getPayLog({
+                                onSuccess: (r: any) => {
+                                    setOrderData(r?.data)
+                                },
+                            })
+                    }}
+                    renderText={status => {
+                        return <div>{statusRecord[status]}</div>
+                    }}>
+                    {orderData?.list?.length >0 && orderData?.list?.map(user => (
                     <Card key={user.id} style={{marginBottom: "10px"}}
                           title={<div className={tit}>
                               <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.title}</div>}
@@ -83,7 +112,9 @@ export default () => {
                             <span className={extra}>订单号：{user.content}</span>
                         </Paragraph><br/>
                     </Card>
-                )) ||  <ErrorBlock status='empty' />
+                    ))}
+                </PullToRefresh>
+                || <ErrorBlock status='empty' />
             }
         </Body>
     )

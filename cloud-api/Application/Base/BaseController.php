@@ -73,9 +73,8 @@ class BaseController extends Controller
      * @param array $value 方法入参
      * @return void
      */
-    public function beforeAction($action, $value)
+    protected function beforeAction($action, $value)
     {
-
         header('Access-Control-Allow-Origin:*');
         header("Access-Control-Allow-Headers:*");
         header('Access-Control-Allow-Methods:*');
@@ -92,7 +91,7 @@ class BaseController extends Controller
      * @param array $value 方法入参
      * @return void
      */
-    public function afterAction($action, $value)
+    protected function afterAction($action, $value)
     {
     }
 
@@ -103,7 +102,7 @@ class BaseController extends Controller
      * @param array $data 内容
      * @return array 响应数据
      */
-    public function success($message = 'success', $data = array())
+    protected function success($message = 'success', $data = array())
     {
         return array(
             'code' => 200,
@@ -120,7 +119,7 @@ class BaseController extends Controller
      * @param array $data 内容
      * @return array 响应数据
      */
-    public function error($message = 'error', $data = array())
+    protected function error($message = 'error', $data = array())
     {
         return array(
             'code' => 500,

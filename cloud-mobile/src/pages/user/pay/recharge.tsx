@@ -60,11 +60,20 @@ export default () => {
                 content:"请输入充值金额",
                 position: 'top',
             })
+            return
         }else if(!/\d/.test(values?.money)){
             Toast?.show({
                 content:"格式错误",
                 position: 'top',
             })
+            return
+        }
+        else if(values?.money < 10){
+            Toast?.show({
+                content:"充值金额最少为10",
+                position: 'top',
+            })
+            return
         }
         values = {money: parseInt(values?.money), type: parseInt(values?.type)}
         setLoading(true)
@@ -106,16 +115,39 @@ export default () => {
         setConfigLoading(true)
         getPayConfig({
             onSuccess:(r:any)=>{
-                setPayConfig(r?.data);
+                setPayConfig(r?.data)
             },
             onFinally:()=>{
                 setConfigLoading(false);
             }
         });
     }, []);
+    const options = [
+            {
+                label: (
+                    <span className={span}><Icon type={Mayun} className={icon}/>支付宝</span>
+                ),
+                value: 0,
+                show: payConfig?.["pay.alipay.type"],
+            },
+            {
+                label: (
+                    <span className={span}><Icon type={Weinxin} className={icon}/>微信</span>
+                ),
+                value: 1,
+                show: payConfig?.["pay.wxpay.type"]
+            },
+             {
+                label: (
+                    <span className={span}><Icon type={Qq} className={icon}/>QQ</span>
+                ),
+                value: 2,
+                 show: payConfig?.["pay.qqpay.type"]
+            }
+    ]
     return (
         <Body title="充值账户余额">
-            <Form layout="horizontal" form={form} className={body} onFinish={formFinish}>
+            <Form layout="horizontal" form={form} initialValues={{ type: "0"}} className={body} onFinish={formFinish}>
                 <p className={p}>充值金额</p>
                 <Form.Item name="money" label={"￥"} className={label}>
                     <Input placeholder="请输入充值金额" clearable/>
@@ -125,28 +157,7 @@ export default () => {
                     {configLoading && <Skeleton.Paragraph animated /> ||
                         <Selector
                             style={{"--border-radius": "5px", "--padding": "10px 14px"}}
-                            options={[
-                                {
-                                    label: (
-                                        <span className={span}><Icon type={Mayun} className={icon}/>支付宝</span>
-                                    ),
-                                    value: 0,
-                                },
-                                {
-                                    label: (
-                                        <span className={span}><Icon type={Weinxin} className={icon}/>微信</span>
-                                    ),
-                                    value: 1,
-                                },
-                                {
-                                    label: (
-                                        <span className={span}><Icon type={Qq} className={icon}/>QQ</span>
-                                    ),
-                                    value: 2,
-                                }
-
-                            ]}
-                            defaultValue={[0]}
+                            options={options.filter(option => option.show)}
                         />
                     }
                 </Form.Item>

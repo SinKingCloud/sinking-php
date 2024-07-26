@@ -31,7 +31,8 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         card: {
             ".adm-card-body": {
                 display: "flex"
-            }
+            },
+            backgroundColor: token.colorPrimary, borderRadius: 0, paddingBlock: "15px"
         },
         list: {
             ".adm-list-body": {
@@ -97,92 +98,102 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         },
         extra: {
             fontSize: "13px", color: "gray"
+        },
+        update:{
+            textAlign: "center",
+            fontSize: "14px",
+            color: "#f655a6",
+            marginBottom: "10px"
+        },
+        p1:{
+            textAlign: "center",
+            fontSize: "12px",
+            color: "gray"
+        },
+        btn1:{
+            letterSpacing: "1px",
+            margin: "20px 0",
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary
+        },
+        btn2:{
+            letterSpacing: "1px",
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary
+        },
+        ava:{
+            width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"
+        },
+        nick:{
+            color: "#fff", display: "inline-block", marginBottom: "10px"
+        },
+        inner:{
+            marginLeft: "10px"
+        },
+        main:{
+           padding: "10px"
+        },
+        ic1:{
+            fontSize: "22px", color: "#f655a6"
+        },
+        ic2:{
+            fontSize: "22px", color: "#19b3e6"
+        },
+        ic3:{
+            fontSize: "22px", color: "#d125f4"
+        },
+        ic4:{
+            fontSize: "22px", color: "#f65555"
+        },
+        ic5:{
+            fontSize: "22px", color: "#05d005"
+        },
+        ic6:{
+            fontSize: "22px", color: "#f38e1b"
+        },
+        loading:{
+            color: '#00b578', textAlign: 'center'
+        },
+        login:{
+            fontSize: "22px", color: "#f65555"
         }
     }
 })
 export default () => {
 
-    const {styles: {card, list, card1, item, modal, tag, extra}} = useStyles()
+    const {styles: {card, list, card1, item, modal, tag, extra,update,p1,btn1,btn2,ava,
+        nick,inner,main,ic1,ic2,ic3,ic4,ic5,ic6,loading,login}} = useStyles()
     const theme = useTheme()
     const user = useModel("user")
-    const verifyRef = useRef<any>()
     /**
      * 退出登录
      */
     const [outLoading, setOutLoading] = useState(false)
-    /**
-     * 号码验证
-     */
-    const handleShowModalForPasswordChange = () => {
-        verifyRef.current = Modal.show({
-            className: modal,
-            showCloseButton: true,
-            content: (
-                <>
-                    <p style={{
-                        textAlign: "center",
-                        fontSize: "14px",
-                        color: "#f655a6",
-                        marginBottom: "10px"
-                    }}>请选择一种方式进行修改</p>
-                    <p style={{
-                        textAlign: "center",
-                        fontSize: "12px",
-                        color: "gray"
-                    }}>未绑定手机号和邮箱的用户需要先进行绑定才能修改密码</p>
-                    <Button block color={"primary"} style={{
-                        letterSpacing: "1px",
-                        margin: "20px 0",
-                        "--background-color": theme.colorPrimary,
-                        "--border-color": theme.colorPrimary
-                    }} onClick={() => {
-                        historyPush("user.person.phoneVerify");
-                        verifyRef.current.close();
-                    }}>通过手机验证</Button>
-                    <Button block color={"primary"} style={{
-                        letterSpacing: "1px",
-                        "--background-color": theme.colorPrimary,
-                        "--border-color": theme.colorPrimary
-                    }} onClick={() => {
-                        historyPush("user.person.emailVerify");
-                        verifyRef.current.close();
-                    }}>通过邮箱验证</Button>
-                </>
-            )
-        });
-    };
 
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}} space={false}>
             <Grid columns={1} gap={8}>
-
                 <Grid.Item>
-                    <Card className={card}
-                          style={{backgroundColor: theme.colorPrimary, borderRadius: 0, paddingBlock: "15px"}}>
-                        <Avatar src={user?.web?.avatar}
-                                style={{width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"}}/>
+                    <Card className={card}>
+                        <Avatar src={user?.web?.avatar} className={ava}/>
                         <div>
-                    <span style={{
-                        color: "#fff",
-                        display: "inline-block",
-                        marginBottom: "10px"
-                    }}>{user?.web?.nick_name}</span><br/>
-                            <div style={{display: "flex", alignItems: "center"}}>
+                    <span className={nick}>{user?.web?.nick_name}</span><br/>
+                            <div >
                                 <Tag
                                     className={tag}>{user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}</Tag>
-                                <Tag style={{marginLeft: "10px"}} className={tag}>ID:{user?.web?.id}</Tag>
+                                <Tag  className={tag + " " +inner }>ID:{user?.web?.id}</Tag>
                             </div>
                         </div>
                     </Card>
                 </Grid.Item>
             </Grid>
-            <div style={{padding: "10px"}}>
+            <div className={main}>
                 <Grid columns={1} gap={8}>
                     <Grid.Item>
                         <Card className={card1}>
-                            <List className={list} style={{borderRadius: "5px"}}>
+                            <List className={list} >
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f655a6"}} type={TypeAll}/>}
+                                           prefix={<Icon className={ic1} type={TypeAll}/>}
                                            onClick={() => {
                                                historyPush("admin.index")
                                            }}>
@@ -192,30 +203,29 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                            <List className={list} style={{borderRadius: "5px"}}>
+                        <Card className={card1}>
+                            <List className={list}>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={NiCheng}/>}
+                                           prefix={<Icon className={ic2} type={NiCheng}/>}
                                            extra={<span className={extra}>{user?.web?.nick_name}</span>}
                                            onClick={() => {
                                            }}>
                                     我的昵称
                                 </List.Item>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#d125f4"}}
-                                                         type={Tongxunlu}/>}
+                                           prefix={<Icon className={ic3} type={Tongxunlu}/>}
                                            extra={<span className={extra}>{user?.web?.contact}</span>}
                                            onClick={() => {
                                            }}>
                                     联系方式
                                 </List.Item>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f65555"}} type={NiCheng}/>}
+                                           prefix={<Icon className={ic4} type={NiCheng}/>}
                                            onClick={() => historyPush("user.person.update")}>
                                     修改资料
                                 </List.Item>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#05d005"}} type={Text1}/>}
+                                           prefix={<Icon className={ic5} type={Text1}/>}
                                            onClick={() => historyPush("user.person.log")}>
                                     操作日志
                                 </List.Item>
@@ -223,16 +233,22 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                            <List className={list} style={{borderRadius: "5px"}}>
+                        <Card  className={card1}>
+                            <List className={list}>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f655a6"}} type={Reset}/>}
+                                           prefix={<Icon className={ic1} type={Reset}/>}
                                            extra={<span className={extra}>{user?.web?.account || "未绑定账号"}</span>}
                                            onClick={() => {
                                                if (user?.web?.account === null) {
-                                                   historyPush("user.person.update")
+                                                   Toast?.show({
+                                                       content:"请先绑定账号",
+                                                       position:"top",
+                                                       afterClose:()=>{
+                                                           historyPush("user.person.update")
+                                                       }
+                                                   })
                                                } else {
-                                                   handleShowModalForPasswordChange();
+                                                   historyPush("user.person.phoneVerify");
                                                }
                                            }}>
                                     修改密码
@@ -241,10 +257,10 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                            <List className={list} style={{borderRadius: "5px"}}>
+                        <Card className={card1}>
+                            <List className={list}>
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#19b3e6"}} type={Email}/>}
+                                           prefix={<Icon className={ic2} type={Email}/>}
                                            extra={<span className={extra}>{user?.web?.email || "未绑定邮箱"}</span>}
                                            onClick={() => {
                                                historyPush("user.person.updateEmail")
@@ -255,10 +271,10 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                            <List className={list} style={{borderRadius: "5px"}}>
+                        <Card  className={card1}>
+                            <List className={list} >
                                 <List.Item className={item}
-                                           prefix={<Icon style={{fontSize: "22px", color: "#f38e1b"}} type={Phone}/>}
+                                           prefix={<Icon className={ic6} type={Phone}/>}
                                            extra={<span className={extra}>{user?.web?.phone || "未绑定手机号码"}</span>}
                                            onClick={() => {
                                                historyPush("user.person.updatePhone")
@@ -270,17 +286,13 @@ export default () => {
                     </Grid.Item>
                     <Grid.Item>
                         {outLoading &&
-                            <div style={{
-                                color: '#00b578',
-                                textAlign: 'center'
-                            }}>
+                            <div className={loading}>
                                 <DotLoading color={theme.colorPrimary}/>
                                 <span>退出登录中</span>
-                            </div> || <Card style={{"--adm-card-padding-inline": 0}} className={card1}>
-                                <List className={list} style={{borderRadius: "5px"}}>
+                            </div> || <Card className={card1}>
+                                <List className={list}>
                                     <List.Item className={item}
-                                               prefix={<Icon style={{fontSize: "22px", color: "#f65555"}}
-                                                             type={OutLogin}/>}
+                                               prefix={<Icon className={login} type={OutLogin}/>}
                                                onClick={() => {
                                                    Dialog?.confirm({
                                                        title:"提示",
@@ -308,8 +320,6 @@ export default () => {
                                                            })
                                                        },
                                                    })
-
-
                                                }}>
                                         退出登录
                                     </List.Item>

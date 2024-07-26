@@ -113,6 +113,15 @@ const useStyles = createStyles(({isDarkMode}): any => {
         },
         small: {
             fontSize: "10px"
+        },
+        hel:{
+            fontSize: "26px"
+        },
+        respect:{
+            fontSize: "16px", marginTop: "10px"
+        },
+        back:{
+            fontWeight: 600
         }
     }
 })
@@ -120,8 +129,8 @@ export default function HomePage() {
     const user = useModel("user")
     const {
         styles: {
-            list, card, nav, tit, icons, icon, notice, home, ava,
-            listSpan, connact, tex, cardLine, preFix, extra, small, body
+            list, card, nav, tit, icons, icon, notice, home, ava,respect,
+            listSpan, connact, tex, cardLine, preFix, extra, small, body,hel,back
         }
     } = useStyles();
     /**
@@ -205,12 +214,12 @@ export default function HomePage() {
     }, []);
     return (
         <Body showHeader={false} loading={pageLoading} space={true} bodyClassNames={body}>
-            <Card style={{background:"red"}}>
+            <Card>
                 <div className={home}>
                     <Avatar src={user?.web?.avatar} className={ava}/>
-                    <span style={{fontSize: "26px"}}>你好,{user?.web?.nick_name}</span>
-                    <span style={{fontSize: "16px", marginTop: "10px"}}>尊敬的 <span
-                        style={{fontWeight: 600}}>{user?.web?.nick_name}</span>，欢迎回来！</span>
+                    <span className={hel}>你好,{user?.web?.nick_name}</span>
+                    <span className={respect}>尊敬的 <span
+                        className={back}>{user?.web?.nick_name}</span>，欢迎回来！</span>
                 </div>
             </Card>
             {noticeLoading2 && <Skeleton.Paragraph animated/> ||

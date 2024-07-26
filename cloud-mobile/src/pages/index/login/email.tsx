@@ -89,6 +89,9 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
             "--border-color": token.colorPrimary,
             fontWeight: 600,
             letterSpacing:"1px"
+        },
+        size:{
+          fontSize: "18px", color: "#fff"
         }
     }
 });
@@ -96,7 +99,7 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 export default () => {
     const [form] = Form.useForm()
     const captcha = useRef<CaptchaRef>({});
-    const {styles: {label, body, check, btn, tab, card,icon,sms,head,remember,gong,butt}} = useStyles();
+    const {styles: {label, body, check, btn, tab, card,icon,sms,head,remember,gong,butt,size}} = useStyles();
     const items = [
         {
             key: "password",
@@ -202,7 +205,7 @@ export default () => {
     return (
         <Body title="邮箱登录" headClassNames={head} titleStyle={{color: "#fff"}} right={
             <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>
-                <Icon type={Ellipsis} style={{fontSize: "18px", color: "#fff"}}/>
+                <Icon type={Ellipsis} className={size}/>
             </Dropdown>}>
             <Captcha ref={captcha}/>
             <Grid columns={1} gap={8}>

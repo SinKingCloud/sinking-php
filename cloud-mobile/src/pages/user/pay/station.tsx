@@ -181,7 +181,8 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
             .ant-select-selector {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-            }
+            },
+            width:45%
         `,
         formBody: {
             ".adm-list-body": {
@@ -227,12 +228,18 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
             width:"55%"
+        },
+        size:{
+            fontSize: "12px"
+        },
+        pay:{
+            width: "100%"
         }
     }
 })
 export default () => {
     const {
-        styles: {select, formBody, modal,label,to,inner,p,man,btn,inp}} = useStyles()
+        styles: {select, formBody, modal,label,to,inner,p,man,btn,inp,size,pay}} = useStyles()
     /**
      * 初始化
      */
@@ -346,7 +353,7 @@ export default () => {
         <Body title="开通主站" loading={loading}>
             <Card>
                 <p className={p}>搭建主站介绍</p>
-                <span style={{fontSize: "12px"}}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，
+                <span className={size}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，
                                     方便的自动化收款能力，拥有自己的用户管理体系，可极低的价格为用户开通主站等。</span>
                 <p className={man}>主站搭建费用:￥{parseInt(siteConfig?.['site.price'])}</p>
                 <Button block className={btn} onClick={() => {
@@ -362,7 +369,7 @@ export default () => {
                                     <Input className={inp} placeholder="请输入前缀" />
                                 </Form.Item>
                                 <Form.Item name="domain" noStyle>
-                                    <Select placeholder="请选择后缀" style={{width:"45%"}} className={select}>
+                                    <Select placeholder="请选择后缀"  className={select}>
                                         {siteConfig?.['master.domains']?.map((k: any) => {
                                             return <Select.Option key={"domain_" + k}
                                                                   value={k}>.{k}</Select.Option>
@@ -371,7 +378,7 @@ export default () => {
                                 </Form.Item>
                             </Form.Item>
                             <Form.Item name="type" label="支付方式" className={label}>
-                                <Select placeholder="请选择支付方式" defaultValue={3} style={{width: "100%"}}>
+                                <Select placeholder="请选择支付方式" defaultValue={3} className={pay}>
                                     <Select.Option
                                         value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
                                     {payConfig?.['pay.qqpay.type'] &&

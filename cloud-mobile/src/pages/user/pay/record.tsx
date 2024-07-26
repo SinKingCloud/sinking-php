@@ -1,17 +1,14 @@
 import React, { useState} from 'react'
 import {Body, Icon, Title} from "@/components";
-import {Card, InfiniteScroll, PullToRefresh, Popover, Toast, Popup, Form, Button, Selector} from "antd-mobile";
+import {Card, InfiniteScroll, PullToRefresh, Popup, Form, Button, Selector} from "antd-mobile";
 import {getPayOrder} from "@/service/pay/order";
-import {Mayun, Qq, Recharge, TypeAll, Weinxin} from "@/components/icon";
+import { Recharge, TypeAll} from "@/components/icon";
 import dayjs from "dayjs";
 import {Typography} from "antd";
 import {createStyles} from "antd-style";
 import {PullStatus} from "antd-mobile/es/components/pull-to-refresh";
-import {Action} from "antd-mobile/es/components/popover";
-import {Simulate} from "react-dom/test-utils";
-import change = Simulate.change;
 
-const useStyles = createStyles(({css,isDarkMode}) => {
+const useStyles = createStyles(({css,isDarkMode}):any => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
     return {
         tit: {
@@ -81,7 +78,8 @@ const useStyles = createStyles(({css,isDarkMode}) => {
             },
             ".adm-selector-item":{
                 width:"70%"
-            }
+            },
+            "--border-radius": "5px !important", "--padding": "10px 14px !important"
         },
         pop:{
             height: '70%',
@@ -89,11 +87,26 @@ const useStyles = createStyles(({css,isDarkMode}) => {
             borderTopRightRadius: '8px',
             padding: "15px",
             boxSizing: "border-box",
+        },
+        size:{
+            fontSize: "18px"
+        },
+        btn1:{
+            width: "42%", marginRight: "8%"
+        },
+        btn2:{
+            width: "42%"
+        },
+        rig:{
+           marginRight: "3px"
+        },
+        par:{
+            marginBottom:"-22px !important"
         }
     }
 })
 export default () => {
-    const {styles: {tit, extra, money,label,btn,body,list,pop}} = useStyles()
+    const {styles: {tit, extra, money,label,btn,body,list,pop,size,btn1,btn2,rig,par}} = useStyles()
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState([])
     const options = [
@@ -145,7 +158,7 @@ export default () => {
         if (append?.data?.list?.length > 0) {
             setOrderData(prevData => [...prevData, ...append?.data?.list]);
             setCurrentPage(prevPage => prevPage + 1);
-            setHasMore(append?.data?.list?.length === 10);
+            setHasMore(append?.data?.list?.length >0);
         } else {
             setHasMore(false);
         }
@@ -157,6 +170,7 @@ export default () => {
     const [form] = Form.useForm()
     const formFinish = async(values:any)=> {
         setOrderData([])
+        setHasMore(true)
         if(values.type[0] == 1){
            await loadMore(1).finally(()=>{
                 setVisible(false)
@@ -175,8 +189,8 @@ export default () => {
         }
     }
         return (
-            <Body title="订单记录"
-                  right={<Icon type={TypeAll} style={{fontSize: "18px"}} onClick={() => setVisible(true)}/>}>
+            <Body title="订单记录" space={true}
+                  right={<Icon type={TypeAll} className={size} onClick={() => setVisible(true)}/>}>
                 <Popup
                     forceRender={true}
                     visible={visible}
@@ -188,13 +202,12 @@ export default () => {
                         <Form.Item className={label} name="type" label={<Title>快捷筛选</Title>}>
                             <Selector
                                 className={list}
-                                style={{"--border-radius": "5px", "--padding": "10px 14px"}}
                                 options={options}
                             />
                         </Form.Item>
                         <Form.Item className={btn}>
-                            <Button style={{width: "42%", marginRight: "8%"}} type="reset">重置</Button>
-                            <Button color="primary" type="submit" style={{width: "42%"}}>确定</Button>
+                            <Button className={btn1} type="reset">重置</Button>
+                            <Button color="primary" type="submit" className={btn2}>确定</Button>
                         </Form.Item>
                     </Form>
                 </Popup>
@@ -210,15 +223,15 @@ export default () => {
                         return <div>{statusRecord[status]}</div>
                     }}>
                     {orderData?.length > 0 && orderData?.map(user => (
-                        <Card key={user.id} style={{marginBottom: "10px"}}
+                        <Card key={user.id}
                               title={<div className={tit}>
-                                  <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.name}
+                                  <Icon type={Recharge} className={rig}/>{user.name}
                               </div>}
                               extra={<div className={extra}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
                         <span className={extra}>
                             <span className={money}>{user.money}</span>元
                         </span><br/>
-                            <Paragraph copyable style={{marginBottom: "-22px"}}>
+                            <Paragraph copyable className={par}>
                                 <span className={extra}>订单号：{user.trade_no}</span>
                             </Paragraph><br/>
                             <span className={extra}>

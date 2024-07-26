@@ -47,12 +47,15 @@ const useStyles = createStyles(({token}): any => {
         },
         notice: {
             color: "#b3b3b3", fontSize: "12px", textAlign: "center"
+        },
+        selector:{
+           "--border-radius": "5px !important", "--padding": "10px 14px !important"
         }
     }
 })
 export default () => {
     const [form] = Form.useForm();
-    const {styles: {label, body, p, span, icon, btn, notice}} = useStyles();
+    const {styles: {label, body, p, span, icon, btn, notice,selector}} = useStyles();
     const [loading, setLoading] = useState(false)
     const {mobile} = useResponsive()
     const formFinish = async (values: any) => {
@@ -155,7 +158,7 @@ export default () => {
                 <p className={p}>支付方式</p>
                 <Form.Item name="type" className={label}>
                     <Selector
-                        style={{"--border-radius": "5px", "--padding": "10px 14px"}}
+                        className={selector}
                         options={options.filter(option => option.show)}
                     />
                 </Form.Item>

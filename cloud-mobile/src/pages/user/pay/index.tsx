@@ -7,7 +7,7 @@ import {getWebUserInfo} from "@/service/person/info";
 import {historyPush} from "@/utils/route";
 import {createStyles} from "antd-style";
 
-const useStyles = createStyles(({isDarkMode,token}) => {
+const useStyles = createStyles(({isDarkMode, token}) => {
     return {
         list: {
             ".adm-list-body": {
@@ -32,35 +32,38 @@ const useStyles = createStyles(({isDarkMode,token}) => {
         item: {
             fontSize: "14px",
             color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)",
-            ":hover":{
-                color:isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
+            ":hover": {
+                color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
             }
         },
-        card1:{
+        card1: {
             backgroundColor: token.colorPrimary, paddingLeft: "20px", borderRadius: 0
         },
-        money:{
+        money: {
             color: "rgba(255,255,255,0.8)", fontSize: "15px"
         },
-        h1:{
+        h1: {
             color: "#fff",
             fontSize: "40px",
             marginTop: "0",
             marginBottom: "0"
         },
-        blue:{
+        blue: {
             fontSize: "22px", color: "blue"
         },
-        green:{
+        green: {
             fontSize: "22px", color: "#05d005"
         },
-        orange:{
+        orange: {
             fontSize: "22px", color: "#ff8f1f"
+        },
+        lef: {
+            marginLeft: "10px"
         }
     }
 })
 export default () => {
-    const {styles: {list, card, item,card1,money,h1,blue,green,orange}} = useStyles()
+    const {styles: {list, card, item, card1, money, h1, blue, green, orange, lef}} = useStyles()
     const user = useModel("user")
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}} space={false}>
@@ -73,13 +76,13 @@ export default () => {
                                 content: '刷新成功',
                                 position: 'top',
                             })
-                        }} style={{marginLeft: "10px"}} type={Refresh}/></p>
+                        }} className={lef} type={Refresh}/></p>
                         <h1 className={h1}>{user?.web?.money}</h1>
                     </Card>
                 </Grid.Item>
                 <Grid.Item>
                     <Card className={card}>
-                        <List className={list} style={{borderRadius: "5px"}}>
+                        <List className={list} >
                             <List.Item className={item}
                                        prefix={<Icon className={blue} type={Money}/>}
                                        onClick={() => historyPush("user.pay.recharge")}>
@@ -102,7 +105,7 @@ export default () => {
                                 订单记录
                             </List.Item>
                             <List.Item className={item}
-                                       prefix={<Icon className={green}  type={Text1}/>}
+                                       prefix={<Icon className={green} type={Text1}/>}
                                        onClick={() => historyPush("user.pay.balance")}>
                                 余额明细
                             </List.Item>

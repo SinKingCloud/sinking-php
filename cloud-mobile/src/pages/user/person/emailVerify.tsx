@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react'
 import {Body} from "@/components";
 import Captcha, {CaptchaRef} from "@/components/captcha";
 import {Button, Card, Form, Input, Toast} from "antd-mobile";
-import {createStyles, useTheme} from "antd-style";
+import {createStyles} from "antd-style";
 import {useModel} from "umi";
 import { updatePassword} from "@/service/person/update";
 import {historyPush} from "@/utils/route";
@@ -47,14 +47,38 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
                 fontSize: "12px !important"
             }
         },
+        head:{
+            backgroundColor: `${token.colorPrimary} !important`, color: "#fff"
+        },
+        code:{
+            fontSize: "12px",
+            color: token.colorPrimary,
+            "--border-width": "0px",
+            padding: "0px"
+        },
+        btn1:{
+            "--background-color": token.colorPrimary,
+            "--border-color": token.colorPrimary,
+            fontWeight: 600,
+        },
+        cen:{
+            textAlign:"center"
+        },
+        num:{
+            color:"red",fontWeight:600
+        },
+        p:{
+            textAlign:"center",
+            fontSize:"13px",
+            color:"rgba(0.0.0.0.8)",
+            margin:0
+        },
     }
 })
 export default () => {
     const captcha = useRef<CaptchaRef>({});
     const [form] = Form.useForm()
-    const [emailForm] = Form.useForm()
-    const {styles: {label, body, btn}} = useStyles();
-    const theme = useTheme()
+    const {styles: {label, body, btn,head,code,btn1,cen,num,p}} = useStyles();
     const user = useModel("user")
     /**
      * 获取验证码
@@ -80,19 +104,6 @@ export default () => {
      */
     const [btnLoading, setBtnLoading] = useState(false)
     const formFinish = async (values: any) => {
-        if (values?.email == undefined || values.email == "") {
-            Toast.show({
-                content: "邮箱不能为空",
-                position: "top"
-            })
-            return
-        } else if (!/^([0-9]|[a-z]|\w|-)+@([0-9]|[a-z])+\.([a-z]{2,4})$/.test(values?.email)) {
-            Toast.show({
-                content: "邮箱格式不正确",
-                position: "top"
-            })
-            return
-        }
         if (values?.email_code == undefined || values?.email_code == "") {
             Toast.show({
                 content: "验证码不能为空",
@@ -144,27 +155,24 @@ export default () => {
         })
     }
     return (
-        <Body title={"邮箱账号验证"} headStyle={{backgroundColor: theme.colorPrimary, color: "#fff"}}
+        <Body title={"邮箱账号验证"}  headClassNames={head}
               titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>
             {user?.web?.email == null && <Card>
-                    <p style={{textAlign:"center"}}>还没有绑定邮箱账号，请先绑定邮箱账号</p>
+                    <p className={cen}>还没有绑定邮箱账号，请先绑定邮箱账号</p>
                 </Card> ||
+                <>
                 <Card>
-                    <Form form={form} initialValues={{email: user?.web?.email}} className={body} onFinish={formFinish}>
-                        <Form.Item label='邮箱账号' name="email" className={label}>
-                            <Input placeholder='请输入邮箱账号' clearable/>
-                        </Form.Item>
+                    <p className={p}>当前账号的绑定的邮箱为：
+                        <span className={num}>{user?.web?.email}</span>
+                    </p>
+                </Card>
+                <Card>
+                    <Form form={form}  className={body} onFinish={formFinish}>
                         <Form.Item label='验证码' name="email_code" className={label}
-                                   extra={<Button loading={smsLoading} disabled={sendCodeDisabled}
-                                                  style={{
-                                                      fontSize: "12px",
-                                                      color: theme.colorPrimary,
-                                                      "--border-width": "0px",
-                                                      padding: "0px"
-                                                  }}
+                                   extra={<Button loading={smsLoading} disabled={sendCodeDisabled} className={code}
                                                   onClick={(e) => {
-                                                      const email = form.getFieldValue("email")
+                                                      const email = user?.web?.email
                                                       if (email == undefined || email == "") {
                                                           Toast.show({
                                                               content: "请输入邮箱",
@@ -211,17 +219,12 @@ export default () => {
                             <Input placeholder="请输入新密码" type={"password"}/>
                         </Form.Item>
                         <Form.Item className={btn}>
-                            <Button type="submit" loading={btnLoading} style={{
-                                "--background-color": theme.colorPrimary,
-                                "--border-color": theme.colorPrimary,
-                                fontWeight: 600,
-                            }} block color='primary'>修改</Button>
+                            <Button type="submit" loading={btnLoading} className={btn1} block color='primary'>修改</Button>
                         </Form.Item>
                     </Form>
                 </Card>
+                </>
             }
-
         </Body>
     )
-
 }

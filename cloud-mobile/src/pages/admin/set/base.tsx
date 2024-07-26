@@ -135,7 +135,6 @@ export default () => {
         getConfigs()
         getMyPrice()
     }, []);
-
     return (
         <Body title="基本设置" titleStyle={{color:"#fff"}} headClassNames={head}>
             {isLoading && <Skeleton.Paragraph animated/> ||

@@ -8,7 +8,7 @@ import {genQrCode, qrLogin} from "@/service/user/login";
 import {setLoginToken} from "@/utils/auth";
 import {historyPush} from "@/utils/route";
 
-const useStyles = createStyles(({token}): any => {
+const useStyles = createStyles(({token,isDarkMode}): any => {
     return {
         notice: {
             borderRadius: "8px",
@@ -85,6 +85,18 @@ const useStyles = createStyles(({token}): any => {
         },
         verify:{
             fontSize: "12px", fontWeight: 600, margin: 0
+        },
+        qr:{
+            fontSize: "13px",
+            fontWeight: 600,
+            color: "#10bb10",
+        },
+        num:{
+        fontSize: "11px",
+            color: isDarkMode ? "#b3b3b3" : ""
+        },
+        code:{
+            margin: "50px auto"
         }
     }
 });
@@ -103,7 +115,10 @@ export default () => {
             notice,
             head,
             btn,
-            verify
+            verify,
+            qr,
+            num,
+            code
         }
     } = useStyles()
     const {mobile} = useResponsive()
@@ -188,7 +203,7 @@ export default () => {
                             <div
                                 className={border_corner + " " + border_corner_left_top}
                                 style={{borderColor: theme.colorPrimary}}></div>
-                            {qrcodeLoading && <SpinLoading color='primary' style={{margin: "50px auto"}}/> ||
+                            {qrcodeLoading && <SpinLoading color='primary' className={code} />||
                                 <QRCode
                                     value={qrcode}
                                     size={150}
@@ -201,15 +216,8 @@ export default () => {
                                 getQrCode()
                             }}>点此获取新二维码</span>
                         </p>
-                        <p style={{
-                            fontSize: "13px",
-                            fontWeight: 600,
-                            color: "#10bb10",
-                        }} className={p}>请使用手机QQ扫码二维码，并授权登录</p>
-                        <p style={{
-                            fontSize: "11px",
-                            color: theme.isDarkMode ? "#b3b3b3" : ""
-                        }} className={p}>需要在绑定的手机QQ登录后扫码，其他QQ扫码无效</p>
+                        <p  className={p + " " + qr}>请使用手机QQ扫码二维码，并授权登录</p>
+                        <p  className={p + " " + num}>需要在绑定的手机QQ登录后扫码，其他QQ扫码无效</p>
                         <Button type={"submit"} block color='primary' className={btn} onClick={() => {
                             qqJumpUrl(qrcode);
                         }}>点击跳转到手机QQ登录</Button>

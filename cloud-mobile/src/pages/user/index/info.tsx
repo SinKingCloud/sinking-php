@@ -22,11 +22,23 @@ const useStyles = createStyles(():any=>{
             borderBottom: "1px dashed #eeeeee",
             paddingBottom: "10px",
             textAlign:"center"
+        },
+        manage:{
+            marginRight: "15px"
+        },
+        rig:{
+            marginRight: "2px"
+        },
+        sp:{
+            marginRight:"5px"
+        },
+        look:{
+            marginRight: "2px",fontSize:"24px"
         }
     }
 })
 export default () => {
-    const { styles:{p,div} } = useStyles();
+    const { styles:{p,div,manage,rig,sp,look} } = useStyles();
     const params = useParams<any>()
     const [noticeData,setNoticeData] = useState()
     const [loading,setLoading] = useState(false)
@@ -52,9 +64,9 @@ export default () => {
                 <Card>
                     <p className={p}>{noticeData?.title}</p>
                     <div className={div}>
-                        <span style={{marginRight: "15px"}}><Icon type={User} style={{marginRight: "2px"}}/>管理员</span>
-                        <span style={{marginRight:"5px"}}><Icon type={Time} style={{marginRight: "2px"}}/>{ago(noticeData?.create_time || '0000-00-00 00:00:00')}</span>
-                        <span><Icon type={Look} style={{marginRight: "2px",fontSize:"24px"}}/>{noticeData?.look_num || 0}次</span>
+                        <span className={manage}><Icon type={User} className={rig}/>管理员</span>
+                        <span className={sp}><Icon type={Time} className={rig}/>{ago(noticeData?.create_time || '0000-00-00 00:00:00')}</span>
+                        <span><Icon type={Look} className={look}/>{noticeData?.look_num || 0}次</span>
                     </div>
                     <p dangerouslySetInnerHTML={{__html: noticeData?.content || ""}}/>
                 </Card>

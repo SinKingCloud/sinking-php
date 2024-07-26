@@ -136,8 +136,12 @@ export default () => {
             <Form form={form} initialValues={{
                 contact: user?.web?.contact || "未设置",
                 nick_name: user?.web?.nick_name || "未设置",
-                login_time: user?.web?.login_time
+                login_time: user?.web?.login_time,
+                account: user?.web?.account
             }} onFinish={formFinish} className={body}>
+                <Form.Item name="account" label="账号" className={label}>
+                    <Input placeholder="请输入账号" clearable disabled={user?.web?.account}/>
+                </Form.Item>
                 <Form.Item name="contact" label="联系方式" className={label}>
                     <Input placeholder="请输入联系方式" clearable/>
                 </Form.Item>

@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
 import {Body} from "@/components";
-import {Button, Form, Input, Toast} from "antd-mobile";
+import {Button, Form, Input, Toast,Card} from "antd-mobile";
 import {sendSms} from "@/service/common/sms";
 import Captcha, {CaptchaRef} from "@/components/captcha";
 import {updatePhone} from "@/service/person/update";
@@ -65,11 +65,25 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
         head: {
             backgroundColor: `${token.colorPrimary} !important`,
             color: "#fff"
+        },
+        num:{
+            color:"red",fontWeight:600
+        },
+        p:{
+            textAlign:"center",
+            fontSize:"13px",
+            color:"rgba(0.0.0.0.8)",
+            margin:0
+        },
+        sp:{
+            fontSize:"11px",
+            color:"#b3b3b3",
+            lineHeight:1.3
         }
     }
 })
 export default () => {
-    const {styles: {label, btn, body,butt,sms,head}} = useStyles()
+    const {styles: {label, btn, body,butt,sms,head,p,num,sp}} = useStyles()
     const [form] = Form.useForm()
     const user = useModel("user")
     const captcha = useRef<CaptchaRef>({});
@@ -140,9 +154,22 @@ export default () => {
             }
         })
     }
+    function hideMiddleDigits(phoneNumber) {
+        const prefix = phoneNumber.slice(0, 3);
+        const suffix = phoneNumber.slice(-2);
+        const middle = '******';
+        return prefix + middle + suffix;
+    }
+    const phoneNumber = hideMiddleDigits(user?.web?.phone.toString())
     return (
-        <Body space={true} title="修改手机" headClassNames={head} titleStyle={{color:"#fff"}} showBack={true}>
+        <Body space={true} title="修改手机" headClassNames={head} titleStyle={{color:"#fff"}} showBack={true} >
             <Captcha ref={captcha}/>
+            <Card>
+                <p className={p}>当前账号的绑定的手机为：
+                    <span className={num}>{phoneNumber || "未设置"}</span>
+                </p>
+                <p className={sp}>如网站显示的手机号与此页不同，请以此页显示为准，网站显示的可能为缓存内容，如需更换手机号可在下方修改即可</p>
+            </Card>
             <Form form={form} className={body} onFinish={phoneFinish}>
                 <Form.Item name="phone" label="手机号码" className={label}>
                     <Input placeholder="请输入新手机号码" clearable/>

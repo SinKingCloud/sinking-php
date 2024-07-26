@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
-import {Card, ErrorBlock, InfiniteScroll, PullToRefresh, Skeleton, Toast} from "antd-mobile";
+import {Card, ErrorBlock, PullToRefresh, Skeleton} from "antd-mobile";
 import {Ellipsis, Recharge} from "@/components/icon";
 import dayjs from "dayjs";
-import {Dropdown, Empty, Typography} from "antd";
+import {Dropdown, Typography} from "antd";
 import {getPayLog} from "@/service/pay";
 import {createStyles} from "antd-style";
 import {PullStatus} from "antd-mobile/es/components/pull-to-refresh";
@@ -14,11 +14,25 @@ const useStyles = createStyles(()=>{
         },
         tit:{
             fontSize: "12px", fontWeight: "normal"
+        },
+        rig:{
+            marginRight: "3px"
+        },
+        size:{
+            fontSize: "18px"
+        },
+        money:{
+            fontSize: "16px",
+            fontWeight: "bold",
+            marginRight: "3px",
+        },
+        par:{
+            marginBottom:"-22px !important"
         }
     }
 })
 export default () => {
-    const {styles:{extra,tit}} = useStyles()
+    const {styles:{extra,tit,rig,size,money,par}} = useStyles()
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState()
     const [loading, setLoading] = useState(false)
@@ -77,9 +91,9 @@ export default () => {
         },
     ]
     return (
-        <Body title="余额明细" right={<Dropdown menu={{items}}>
+        <Body title="余额明细" right={<Dropdown menu={{items}} space={true}>
             <a onClick={(e) => e.preventDefault()}>
-                <Icon type={Ellipsis} style={{fontSize: "18px"}}/>
+                <Icon type={Ellipsis} className={size}/>
             </a>
         </Dropdown>}>
             {loading && <Skeleton.Paragraph animated/> ||
@@ -95,20 +109,16 @@ export default () => {
                         return <div>{statusRecord[status]}</div>
                     }}>
                     {orderData?.list?.length >0 && orderData?.list?.map(user => (
-                    <Card key={user.id} style={{marginBottom: "10px"}}
+                    <Card key={user.id}
                           title={<div className={tit}>
-                              <Icon type={Recharge} style={{marginRight: "3px"}}/>{user.title}</div>}
+                              <Icon type={Recharge} className={rig}/>{user.title}</div>}
                           extra={<div className={extra}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
                         <span className={extra}>
-                            <span style={{
-                                fontSize: "16px",
-                                fontWeight: "bold",
-                                marginRight: "3px",
-                                color: user.type == 0 ? "#33cc4b" : "#F65555"
-                            }}>{user.type == 0 ? "+" : "-"}{user.money}</span>
+                            <span style={{color: user.type == 0 ? "#33cc4b" : "#F65555"}} className={money}>
+                                {user.type == 0 ? "+" : "-"}{user.money}</span>
                             元
                         </span><br/>
-                        <Paragraph copyable style={{marginBottom: "-22px"}}>
+                        <Paragraph copyable className={par}>
                             <span className={extra}>订单号：{user.content}</span>
                         </Paragraph><br/>
                     </Card>

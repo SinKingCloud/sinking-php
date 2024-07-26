@@ -1,11 +1,32 @@
 import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
 import {Dropdown, Typography} from "antd";
-import {Ellipsis, Recharge} from "@/components/icon";
+import {Ellipsis} from "@/components/icon";
 import {Card, Skeleton} from "antd-mobile";
 import dayjs from "dayjs";
 import {getLogList} from "@/service/person/log";
+import {createStyles} from "antd-style";
+const useStyles = createStyles(()=>{
+    return{
+        size:{
+            fontSize: "18px"
+        },
+        tit:{
+            fontSize: "12px", fontWeight: "normal"
+        },
+        extra:{
+            fontSize: "11px", color: "gray"
+        },
+        par:{
+            marginBottom:"-22px !important"
+        },
+        sp:{
+            fontSize: "11px", color: "gray"
+        }
+    }
+})
 export default () => {
+    const {styles: {size,tit,extra,par,sp}} = useStyles()
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -68,36 +89,31 @@ export default () => {
         <Body title="操作日志"  right={
             <Dropdown menu={{items}}>
                 <a onClick={(e) => e.preventDefault()}>
-                    <Icon type={Ellipsis} style={{fontSize: "18px"}}/>
+                    <Icon type={Ellipsis} className={size}/>
                 </a>
             </Dropdown>
-        }>
+        } space={true}>
             {loading && <Skeleton.Paragraph animated/> ||
                 orderData?.list?.map(user => (
-                    <Card key={user.id} style={{marginBottom: "10px"}}
-                          title={<div style={{fontSize: "12px", fontWeight: "normal"}}>{user.title}</div>}
-                          extra={<div style={{
-                              fontSize: "11px",
-                              color: "gray"
-                          }}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
-                        <Paragraph copyable style={{marginBottom: "-22px"}}>
-                            <span style={{fontSize: "11px", color: "gray"}}>请求ID：{user.request_id}</span>
+                    <Card key={user.id}
+                          title={<div className={tit}>{user.title}</div>}
+                          extra={<div className={extra}>{dayjs(user.create_time).format('YYYY-MM-DD')}</div>}>
+                        <Paragraph copyable className={par}>
+                            <span className={sp}>请求ID：{user.request_id}</span>
                         </Paragraph><br/>
-                        <Paragraph copyable style={{marginBottom: "-22px"}}>
-                            <span style={{fontSize: "11px", color: "gray"}}>请求IP：{user.request_ip}</span>
+                        <Paragraph copyable className={par}>
+                            <span className={sp}>请求IP：{user.request_ip}</span>
                         </Paragraph><br/>
-                        <span style={{fontSize: "11px", color: "gray"}}>
+                        <span className={sp}>
                             事件类型：{user?.type == 1 && "查看"}
                             {user?.type == 0 && "登录"}
                             {user?.type == 2 && "删除"}
                             {user?.type == 3 && "修改"}
                             {user?.type == 4 && "创建"}
                         </span><br/>
-                        <span style={{fontSize: "11px", color: "gray"}}>
+                        <span className={sp}>
                            内容：{user?.content}
                         </span><br/>
-
-
                     </Card>
                 ))
             }

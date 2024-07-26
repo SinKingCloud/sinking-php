@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {Body} from "@/components";
 import {createStyles} from "antd-style";
-import {Button, Form, Input, Skeleton, Toast} from "antd-mobile";
-import {getMy, getWeb, setWeb} from "@/service/admin/price";
+import {Button, Form, Input, Skeleton, TextArea, Toast} from "antd-mobile";
+import {getWeb, setWeb} from "@/service/admin/set";
+import {useModel} from "umi";
+import {getMy} from "@/service/admin/price";
 const useStyles = createStyles(({token,css,isDarkMode}) => {
     const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
     return {
@@ -51,12 +53,17 @@ const useStyles = createStyles(({token,css,isDarkMode}) => {
             fontWeight: 600,
             letterSpacing:"1px"
         },
+        inner:{
+            ".adm-form-item-child-inner":{
+                display:"flex"
+            }
+        },
     }
 })
 export default () => {
-    const {styles:{head,body,label,btn,butt}} = useStyles()
+    const {styles:{head,body,label,btn,butt,inner}} = useStyles()
     const [form] = Form.useForm()
-    const [myPrice, setMyPrice] = useState({});
+    const web = useModel("web")
     /**
      * 初始化表单值
      */
@@ -68,42 +75,22 @@ export default () => {
                 form.setFieldsValue(r?.data)
             },
             onFail: (r: any) => {
-                r?.error(r?.message || "请求失败")
+                Toast?.show({
+                    content: r?.message || "请求失败",
+                    position:"top"
+                })
             },
             onFinally: () => {
                 setIsLoading(false)
             }
         });
     }
-    /**
-     * 获取成本价格
-     */
-    const getMyPrice = async () => {
-        setIsLoading(true);
-        return await getMy({
-            onSuccess: (r: any) => {
-                setMyPrice(r?.data)
-            },
-            onFail: (r: any) => {
-                r?.error(r?.message || "请求失败")
-            },
-            onFinally: () => {
-                setIsLoading(false)
-            }
-        });
-    }
+
     /**
      * 表单提交
      */
     const [loading,setLoading] = useState(false)
     const formFinish = async (values:any)=>{
-        if(values?.site.price == '' || values?.site.price == undefined){
-            Toast.show({
-                content:"请输入分站开通价格",
-                position:"top"
-            })
-            return
-        }
         setLoading(true)
         await setWeb({
             body: {
@@ -111,20 +98,38 @@ export default () => {
             },
             onSuccess: (r: any) => {
                 Toast?.show({
-                    content:r?.message || "修改成功",
+                    content: r?.message,
                     position:"top"
                 })
+                web?.refreshInfo()
             },
             onFail: (r: any) => {
                 Toast?.show({
-                    content:r?.message || "修改失败",
+                    content: r?.message || "请求失败",
                     position:"top"
                 })
             },
             onFinally:()=>{
                 setLoading(false)
             }
-        })
+        });
+    }
+    /**
+     * 获取成本价格
+     */
+    const [myPrice, setMyPrice] = useState({});
+    const getMyPrice = async () => {
+        await getMy({
+            onSuccess: (r: any) => {
+                setMyPrice(r?.data || {});
+            },
+            onFail: (r: any) => {
+                Toast?.show({
+                    content: r?.message || "请求失败",
+                    position:"top"
+                })
+            }
+        });
     }
     useEffect(() => {
         getConfigs()
@@ -132,11 +137,28 @@ export default () => {
     }, []);
 
     return (
-        <Body title="分站价格" titleStyle={{color:"#fff"}} headClassNames={head}>
+        <Body title="基本设置" titleStyle={{color:"#fff"}} headClassNames={head}>
             {isLoading && <Skeleton.Paragraph animated/> ||
                 <Form form={form} onFinish={formFinish} className={body}>
-                    <Form.Item name="site.price" className={label} label={"开通价格,成本:" + (myPrice['site.cost.price'] || 0) + "元/" + (myPrice['site.month'] || 0) + "月,最低售价:" + (myPrice['site.min.price'] || 0) + "元/" + (myPrice['site.month'] || 0) + "月"}>
-                        <Input placeholder={"请输入用户开通分站价格"}/>
+                    <Form.Item label="网站名称" name="name" className={label}>
+                        <Input placeholder="请输入网站名称"/>
+                    </Form.Item>
+                    <Form.Item label="网站标题" name="title" className={label}>
+                        <Input placeholder="请输入网站标题"/>
+                    </Form.Item>
+                    <Form.Item label="网站关键词" name="keywords" className={label}>
+                        <TextArea placeholder='请输入网站关键词'/>
+                    </Form.Item>
+                    <Form.Item label="网站描述" name="description" className={label}>
+                        <TextArea placeholder='请输入网站描述'/>
+                    </Form.Item>
+                    <Form.Item label="到期时间" style={{display:"flex"}}  className={inner}>
+                        <Form.Item noStyle className={label}>
+                            <Input disabled={true} width="80%" value={web?.info?.expire_time}/>
+                        </Form.Item>
+                       <Form.Item noStyle>
+                           <Button width="18%" color='primary'>续期</Button>
+                       </Form.Item>
                     </Form.Item>
                     <Form.Item className={btn}>
                         <Button type={"submit"} block color='primary' loading={loading} className={butt}>提交</Button>

@@ -214,7 +214,7 @@ export default () => {
         })
     }, []);
     return (
-        <Body title="网站首页" showBack={true} titleStyle={{color:"#fff"}} headClassNames={head} loading={pageLoading}>
+        <Body title="网站概览" showBack={true} titleStyle={{color:"#fff"}} headClassNames={head} loading={pageLoading}>
             {notice2Loading && <Skeleton.Paragraph animated/> ||
                 notice2Data?.['notice.admin'] != null && <NoticeBar content={notice2Data?.['notice.admin']} color='info' className={notice}/>
             }

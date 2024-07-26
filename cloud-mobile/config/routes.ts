@@ -165,6 +165,12 @@ export const admin = [
                 component: "@/pages/admin/set/money",
                 title: "价格设置",
                 name: "admin.set.money",
+            },
+            {
+                path: "base",
+                component: "@/pages/admin/set/base",
+                title: "基本设置",
+                name: "admin.set.base",
             }
         ]
     },

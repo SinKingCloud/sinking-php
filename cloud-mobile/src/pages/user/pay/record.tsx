@@ -1,14 +1,18 @@
-import React, {useEffect, useState} from 'react'
-import {Body, Icon} from "@/components";
-import {Card, ErrorBlock, InfiniteScroll, PullToRefresh, Skeleton} from "antd-mobile";
+import React, { useState} from 'react'
+import {Body, Icon, Title} from "@/components";
+import {Card, InfiniteScroll, PullToRefresh, Popover, Toast, Popup, Form, Button, Selector} from "antd-mobile";
 import {getPayOrder} from "@/service/pay/order";
-import {Ellipsis, Recharge} from "@/components/icon";
+import {Mayun, Qq, Recharge, TypeAll, Weinxin} from "@/components/icon";
 import dayjs from "dayjs";
-import {Dropdown, Typography} from "antd";
+import {Typography} from "antd";
 import {createStyles} from "antd-style";
 import {PullStatus} from "antd-mobile/es/components/pull-to-refresh";
+import {Action} from "antd-mobile/es/components/popover";
+import {Simulate} from "react-dom/test-utils";
+import change = Simulate.change;
 
-const useStyles = createStyles(() => {
+const useStyles = createStyles(({css,isDarkMode}) => {
+    const border = isDarkMode ? "1px solid rgb(40,40,40) !important" : "1px solid #eeeeee !important"
     return {
         tit: {
             fontSize: "12px", fontWeight: "normal"
@@ -18,14 +22,100 @@ const useStyles = createStyles(() => {
         },
         money: {
             fontSize: "16px", fontWeight: "bold", marginRight: "3px", color: "#33cc4b"
+        },
+        label: css`
+        . adm-form-item-label {
+            line-height: 2
+        },
+        . adm-list-item-content {
+            border-bottom: ${border};
+            border-top: none !important;
+        },
+        .adm-input-element{
+            font-size: 12px !important;
+        },
+         .adm-form-item-label {
+            margin-bottom: 10px !important;
+            color: #000 !important;
+            font-weight: 600;
+            font-size: 16px !important;
+        `,
+        btn: {
+            ".adm-list-item-content": {
+                borderBottom: "none !important",
+                borderTop: "none !important",
+                paddingBlock: "9px",
+                paddingRight:"0 !important",
+            },
+            ".adm-form-item-child-position-normal":{
+                width:"100%",
+                position:"fixed",
+                bottom:"20px",
+            },
+        },
+        body: {
+            ".adm-list-body": {
+                borderRadius: "5px",
+                borderTop:"none !important",
+                borderBottom:"none !important",
+            },
+            ".adm-list-item": {
+                paddingLeft: "0 !important"
+            },
+            ".adm-list-item-content":{
+                paddingRight:"0px !important"
+            },
+            ".adm-list-item-content-main":{
+                paddingTop:"0px !important"
+            }
+        },
+        span: {
+            fontSize: "12px", fontWeight: 600
+        },
+        list:{
+            ".adm-space":{
+                width:"100%"
+            },
+            ".adm-space-item":{
+                width:"31%"
+            },
+            ".adm-selector-item":{
+                width:"70%"
+            }
+        },
+        pop:{
+            height: '70%',
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
+            padding: "15px",
+            boxSizing: "border-box",
         }
     }
 })
 export default () => {
-    const {styles: {tit, extra, money}} = useStyles()
+    const {styles: {tit, extra, money,label,btn,body,list,pop}} = useStyles()
     const {Paragraph} = Typography;
     const [orderData, setOrderData] = useState([])
-
+    const options = [
+        {
+            label: (
+                <span>全部记录</span>
+            ),
+            value: 2,
+        },
+        {
+            label: (
+                <span>已支付</span>
+            ),
+            value: 1,
+        },
+        {
+            label: (
+                <span>未支付</span>
+            ),
+            value: 0,
+        }
+    ]
     /**
      * 下拉刷新
      */
@@ -40,10 +130,17 @@ export default () => {
      */
     const [currentPage, setCurrentPage] = useState(1); // 初始页码
     const [hasMore, setHasMore] = useState(true);
-    const [loading,setLoading] = useState(false)
-    const loadMore = async () => {
+    const loadMore = async (status?:any) => {
+        const requestBody = {
+            page: currentPage,
+            page_size: 10
+        };
+        if (status) {
+            requestBody.status = status;
+            requestBody.page = 1
+        }
         const append = await getPayOrder({
-            body: {page: currentPage, page_size: 10}
+            body: requestBody
         });
         if (append?.data?.list?.length > 0) {
             setOrderData(prevData => [...prevData, ...append?.data?.list]);
@@ -53,48 +150,65 @@ export default () => {
             setHasMore(false);
         }
     };
-    // const items = [
-    //     {
-    //         key: 0,
-    //         label: (
-    //             <span onClick={() => loadMore()}>全部记录</span>
-    //         )
-    //     },
-    //     {
-    //         key: 1,
-    //         label: (
-    //             <span onClick={() => loadMore(1)}>已支付记录</span>
-    //         )
-    //     },
-    //     {
-    //         key: 2,
-    //         label: (
-    //             <span onClick={() => loadMore(0)}>未支付记录</span>
-    //         )
-    //     },
-    // ]
-    return (
-        <Body title="订单记录"
-            // right={
-            //     <Dropdown menu={{items}}>
-            //         <a onClick={(e) => e.preventDefault()}>
-            //             <Icon type={Ellipsis} style={{fontSize: "18px"}}/>
-            //         </a>
-            //     </Dropdown>}
-        >
-            {loading && <Skeleton.Paragraph animated/> ||
+    /**
+     * 表单提交
+     */
+    const [visible, setVisible] = useState(false);
+    const [form] = Form.useForm()
+    const formFinish = async(values:any)=> {
+        setOrderData([])
+        if(values.type[0] == 1){
+           await loadMore(1).finally(()=>{
+                setVisible(false)
+                form.setFieldValue("type",[2])
+            })
+        }else if(values.type[0] == 0){
+            await loadMore(0).finally(()=>{
+                setVisible(false)
+                form.setFieldValue("type",[2])
+            })
+        } else if(values.type[0] == 2){
+            await loadMore().finally(()=>{
+                setVisible(false)
+                form.setFieldValue("type",[2])
+            })
+        }
+    }
+        return (
+            <Body title="订单记录"
+                  right={<Icon type={TypeAll} style={{fontSize: "18px"}} onClick={() => setVisible(true)}/>}>
+                <Popup
+                    forceRender={true}
+                    visible={visible}
+                    onMaskClick={() => {
+                        setVisible(false)
+                    }}
+                    bodyClassName={pop}>
+                    <Form form={form} initialValues={{type:[2]}} className={body} onFinish={formFinish}>
+                        <Form.Item className={label} name="type" label={<Title>快捷筛选</Title>}>
+                            <Selector
+                                className={list}
+                                style={{"--border-radius": "5px", "--padding": "10px 14px"}}
+                                options={options}
+                            />
+                        </Form.Item>
+                        <Form.Item className={btn}>
+                            <Button style={{width: "42%", marginRight: "8%"}} type="reset">重置</Button>
+                            <Button color="primary" type="submit" style={{width: "42%"}}>确定</Button>
+                        </Form.Item>
+                    </Form>
+                </Popup>
                 <PullToRefresh
                     onRefresh={async () => {
-                        await getPayOrder({
+                        getPayOrder({
                             onSuccess: (r: any) => {
-                                setOrderData(r.data);
-                            },
+                                setOrderData(r?.data?.list)
+                            }
                         })
                     }}
                     renderText={status => {
                         return <div>{statusRecord[status]}</div>
-                    }}
-                >
+                    }}>
                     {orderData?.length > 0 && orderData?.map(user => (
                         <Card key={user.id} style={{marginBottom: "10px"}}
                               title={<div className={tit}>
@@ -121,9 +235,8 @@ export default () => {
                     </span>
                         </Card>
                     ))}
-                    <InfiniteScroll loadMore={loadMore} hasMore={hasMore}/>
-                </PullToRefresh> || <ErrorBlock status='empty'/>
-            }
-        </Body>
-    )
-}
+                </PullToRefresh>
+                <InfiniteScroll loadMore={loadMore} hasMore={hasMore}/>
+            </Body>
+        )
+    }

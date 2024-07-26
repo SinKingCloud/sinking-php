@@ -49,6 +49,7 @@ export default () => {
             <Card className={card}>
                 <List className={list}>
                     <List.Item className={item} prefix={<Icon type={Text1}/>} onClick={() => {
+                        historyPush("admin.set.base")
                     }}>
                         基本设置
                     </List.Item>

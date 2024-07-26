@@ -5,7 +5,7 @@ import {useModel} from "umi";
 import {Card, Grid, List, Toast} from "antd-mobile";
 import {getWebUserInfo} from "@/service/person/info";
 import {historyPush} from "@/utils/route";
-import {createStyles, useTheme} from "antd-style";
+import {createStyles} from "antd-style";
 
 const useStyles = createStyles(({isDarkMode,token}) => {
     return {

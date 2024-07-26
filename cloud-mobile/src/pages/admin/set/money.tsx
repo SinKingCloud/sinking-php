@@ -126,13 +126,17 @@ export default () => {
             }
         })
     }
+    const [pageLoading,setPageLoading] = useState(false)
     useEffect(() => {
-        getConfigs()
-        getMyPrice()
+        setPageLoading(true)
+        getConfigs().finally(()=>{
+            getMyPrice().finally(()=>{
+                setPageLoading(false)
+            })
+        })
     }, []);
-
     return (
-        <Body title="分站价格" titleStyle={{color:"#fff"}} headClassNames={head}>
+        <Body title="分站价格" titleStyle={{color:"#fff"}} headClassNames={head} loading={pageLoading}>
             {isLoading && <Skeleton.Paragraph animated/> ||
                 <Form form={form} onFinish={formFinish} className={body}>
                     <Form.Item name="site.price" className={label} label={"开通价格,成本:" + (myPrice['site.cost.price'] || 0) + "元/" + (myPrice['site.month'] || 0) + "月,最低售价:" + (myPrice['site.min.price'] || 0) + "元/" + (myPrice['site.month'] || 0) + "月"}>

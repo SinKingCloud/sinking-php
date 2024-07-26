@@ -3,6 +3,7 @@ import {Column} from '@ant-design/charts';
 import type {DatePickerProps} from 'antd';
 import numeral from 'numeral';
 import {createStyles} from "antd-style";
+
 const {RangePicker} = DatePicker;
 export type SalesProps = {
     rangePickerValue: any;
@@ -25,6 +26,7 @@ const useStyles = createStyles(({css, responsive}): any => {
             align-items: center;
             margin-top: 16px;
             zoom: 1;
+
             &::before,
             &::after {
                 display: table;
@@ -69,7 +71,7 @@ const useStyles = createStyles(({css, responsive}): any => {
 
             a {
                 margin-left: 24px;
-                color: rgb(122,122,122);
+                color: rgb(122, 122, 122);
                 font-size: 14px;
             }
         `,
@@ -122,6 +124,9 @@ const useStyles = createStyles(({css, responsive}): any => {
         active: {
             color: "#fff",
             backgroundColor: "#314659",
+        },
+        sp1: {
+            float: "right"
         }
     }
 })
@@ -145,7 +150,8 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
             salesExtra,
             salesBar,
             salesRank,
-            active
+            active,
+            sp1
         }
     } = useStyles()
     return (
@@ -153,8 +159,8 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
             <Tabs items={[
                 {
                     label: '用户量',
-                    key:"sales",
-                    children:(
+                    key: "sales",
+                    children: (
                         <Row>
                             <Col xl={16} lg={12} md={12} sm={24} xs={24}>
                                 <div className={salesBar}>
@@ -197,7 +203,7 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
                                                     <span className={rankingItemTitle} title={item?.web?.name}>
                                                     {item?.web?.name}
                                             </span>
-                                                    <span style={{float: "right"}}>
+                                                    <span className={sp1}>
                                                     {numeral(item?.user_num).format('0,0')}
                                           </span>
                                                 </li>
@@ -213,7 +219,7 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
                 },
                 {
                     label: '订单量',
-                    key:"views",
+                    key: "views",
                     children: (
                         <Row>
                             <Col xl={16} lg={12} md={12} sm={24} xs={24}>
@@ -250,14 +256,14 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
                                     {(salesData?.topOrder?.length || 0) > 0 && <ul className={rankingList}>
                                         {salesData?.topOrder?.map((item: any, i: number) => (
                                             <li key={"topOrder_" + i}>
-                      <span className={`${rankingItemNumber} ${i < 3 ? active : ''}`}>
-                        {i + 1}
-                      </span>
+                                              <span className={`${rankingItemNumber} ${i < 3 ? active : ''}`}>
+                                                        {i + 1}
+                                              </span>
                                                 <span className={rankingItemTitle} title={item?.web?.name}>
-                        {item?.web?.name}
-                      </span>
+                                                        {item?.web?.name}
+                                                </span>
                                                 <span
-                                                    style={{float: "right"}}>{numeral(item?.order_succ_num).format('0,0')}</span>
+                                                    className={sp1}>{numeral(item?.order_succ_num).format('0,0')}</span>
                                             </li>
                                         ))}
                                     </ul>}

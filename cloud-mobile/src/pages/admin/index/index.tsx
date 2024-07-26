@@ -34,11 +34,14 @@ const useStyles = createStyles(({token})=>{
         },
         notice:{
             fontSize: "14px", borderRadius: "5px"
+        },
+        ava:{
+            fontSize: "20px", lineHeight: "50px"
         }
     }
 })
 export default () => {
-    const {styles:{head,notice}} = useStyles()
+    const {styles:{head,notice,ava}} = useStyles()
     /**
      * 滚动公告信息
      */
@@ -197,20 +200,16 @@ export default () => {
     const [pageLoading, setPageLoading] = useState(false)
     useEffect(() => {
         setPageLoading(true)
-        getNotice2Data().then(() => {
-            setPageLoading(false)
-        })
-        getGenCount().then(() => {
-            setPageLoading(false)
-        })
-        getToDoData().then(() => {
-            setPageLoading(false)
-        })
-        getChartData().then(() => {
-            setPageLoading(false)
-        })
-        getNoticeData().then(() => {
-            setPageLoading(false)
+        getNotice2Data().finally(() => {
+            getGenCount().finally(() => {
+                getToDoData().finally(() => {
+                    getChartData().finally(() => {
+                        getNoticeData().finally(() => {
+                            setPageLoading(false)
+                        })
+                    })
+                })
+            })
         })
     }, []);
     return (
@@ -319,8 +318,7 @@ export default () => {
                                             <List.Item>
                                                 <List.Item.Meta
                                                     key={"notice-" + item?.id}
-                                                    avatar={<NotificationOutlined
-                                                        style={{fontSize: "20px", lineHeight: "50px"}}/>}
+                                                    avatar={<NotificationOutlined className={ava}/>}
                                                     title={item?.title}
                                                     description={<span
                                                         style={{fontSize: "10px"}}>发布于 {ago(item?.create_time)} ,共 {item?.look_num} 次浏览</span>}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import {createStyles} from "antd-style";
 import {TabBar} from "antd-mobile";
 import {Outlet} from "umi";
@@ -25,6 +25,24 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
 
             ${responsive.mobile} {
                 max-width: none;
+            }
+            
+            .adm-mask{
+                max-width: 500px !important;
+                width: 100%;
+                left: initial !important;
+            }
+
+            .adm-popup {
+                max-width: 500px !important;
+                margin: 0 auto !important;
+            }
+
+            .adm-popup-body {
+                max-width: 500px !important;
+                width: 100%;
+                left: initial !important;
+                box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.2);
             }
         `,
         body: {
@@ -75,6 +93,8 @@ export type MobileProps = {
     bodyClassName?: any;//内容class
 }
 
+let VirtualRef = null;//虚拟挂载节点
+
 const SkLayout: React.FC<MobileProps> = (props: any) => {
 
     const {styles: {tab, container, body}} = useStyles();
@@ -91,10 +111,14 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         bodyStyle = undefined,
         bodyClassName = "",
     } = props;
+
+    VirtualRef = useRef();
+
     return <ConfigProvider locale={zhCN}>
         <AntdConfigProvider locale={antdZhCN}>
             <App>
                 <div className={container}>
+                    <div ref={VirtualRef}/>
                     <div className={body + " " + bodyClassName} style={bodyStyle}>
                         <Outlet/>
                     </div>
@@ -115,4 +139,9 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         </AntdConfigProvider>
     </ConfigProvider>;
 }
+
+export {
+    VirtualRef
+}
+
 export default SkLayout

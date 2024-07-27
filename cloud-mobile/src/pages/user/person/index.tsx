@@ -1,16 +1,13 @@
-import React, {useRef, useState} from 'react'
-import {Body, Icon} from "@/components";
+import React, {useState} from 'react'
+import {Body, Icon, VirtualRef} from "@/components";
 import {
     Avatar,
-    Button,
     Card, Dialog, DotLoading,
     Grid,
     List,
-    Modal,
     Tag,
     Toast
 } from "antd-mobile";
-import {ImageUploadItem} from 'antd-mobile/es/components/image-uploader'
 import {historyPush} from "@/utils/route";
 import {createStyles, useTheme} from "antd-style";
 import {useModel} from "umi";
@@ -99,70 +96,74 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         extra: {
             fontSize: "13px", color: "gray"
         },
-        update:{
+        update: {
             textAlign: "center",
             fontSize: "14px",
             color: "#f655a6",
             marginBottom: "10px"
         },
-        p1:{
+        p1: {
             textAlign: "center",
             fontSize: "12px",
             color: "gray"
         },
-        btn1:{
+        btn1: {
             letterSpacing: "1px",
             margin: "20px 0",
             "--background-color": token.colorPrimary,
             "--border-color": token.colorPrimary
         },
-        btn2:{
+        btn2: {
             letterSpacing: "1px",
             "--background-color": token.colorPrimary,
             "--border-color": token.colorPrimary
         },
-        ava:{
+        ava: {
             width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"
         },
-        nick:{
+        nick: {
             color: "#fff", display: "inline-block", marginBottom: "10px"
         },
-        inner:{
+        inner: {
             marginLeft: "10px"
         },
-        main:{
-           padding: "10px"
+        main: {
+            padding: "10px"
         },
-        ic1:{
+        ic1: {
             fontSize: "22px", color: "#f655a6"
         },
-        ic2:{
+        ic2: {
             fontSize: "22px", color: "#19b3e6"
         },
-        ic3:{
+        ic3: {
             fontSize: "22px", color: "#d125f4"
         },
-        ic4:{
+        ic4: {
             fontSize: "22px", color: "#f65555"
         },
-        ic5:{
+        ic5: {
             fontSize: "22px", color: "#05d005"
         },
-        ic6:{
+        ic6: {
             fontSize: "22px", color: "#f38e1b"
         },
-        loading:{
+        loading: {
             color: '#00b578', textAlign: 'center'
         },
-        login:{
+        login: {
             fontSize: "22px", color: "#f65555"
         }
     }
 })
 export default () => {
 
-    const {styles: {card, list, card1, item, modal, tag, extra,update,p1,btn1,btn2,ava,
-        nick,inner,main,ic1,ic2,ic3,ic4,ic5,ic6,loading,login}} = useStyles()
+    const {
+        styles: {
+            card, list, card1, item, modal, tag, extra, update, p1, btn1, btn2, ava,
+            nick, inner, main, ic1, ic2, ic3, ic4, ic5, ic6, loading, login
+        }
+    } = useStyles()
     const theme = useTheme()
     const user = useModel("user")
     /**
@@ -177,11 +178,11 @@ export default () => {
                     <Card className={card}>
                         <Avatar src={user?.web?.avatar} className={ava}/>
                         <div>
-                    <span className={nick}>{user?.web?.nick_name}</span><br/>
-                            <div >
+                            <span className={nick}>{user?.web?.nick_name}</span><br/>
+                            <div>
                                 <Tag
                                     className={tag}>{user?.web?.is_master ? '管理员' : (user?.web?.is_admin ? '站长' : '会员')}</Tag>
-                                <Tag  className={tag + " " +inner }>ID:{user?.web?.id}</Tag>
+                                <Tag className={tag + " " + inner}>ID:{user?.web?.id}</Tag>
                             </div>
                         </div>
                     </Card>
@@ -191,7 +192,7 @@ export default () => {
                 <Grid columns={1} gap={8}>
                     <Grid.Item>
                         <Card className={card1}>
-                            <List className={list} >
+                            <List className={list}>
                                 <List.Item className={item}
                                            prefix={<Icon className={ic1} type={TypeAll}/>}
                                            onClick={() => {
@@ -233,7 +234,7 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card  className={card1}>
+                        <Card className={card1}>
                             <List className={list}>
                                 <List.Item className={item}
                                            prefix={<Icon className={ic1} type={Reset}/>}
@@ -241,9 +242,9 @@ export default () => {
                                            onClick={() => {
                                                if (user?.web?.account === null) {
                                                    Toast?.show({
-                                                       content:"请先绑定账号",
-                                                       position:"top",
-                                                       afterClose:()=>{
+                                                       content: "请先绑定账号",
+                                                       position: "top",
+                                                       afterClose: () => {
                                                            historyPush("user.person.update")
                                                        }
                                                    })
@@ -271,8 +272,8 @@ export default () => {
                         </Card>
                     </Grid.Item>
                     <Grid.Item>
-                        <Card  className={card1}>
-                            <List className={list} >
+                        <Card className={card1}>
+                            <List className={list}>
                                 <List.Item className={item}
                                            prefix={<Icon className={ic6} type={Phone}/>}
                                            extra={<span className={extra}>{user?.web?.phone || "未绑定手机号码"}</span>}
@@ -295,8 +296,9 @@ export default () => {
                                                prefix={<Icon className={login} type={OutLogin}/>}
                                                onClick={() => {
                                                    Dialog?.confirm({
-                                                       title:"提示",
+                                                       title: "提示",
                                                        content: '确定退出登录吗？',
+                                                       getContainer: VirtualRef?.current,
                                                        onConfirm: async () => {
                                                            setOutLoading(true)
                                                            await outLogin({

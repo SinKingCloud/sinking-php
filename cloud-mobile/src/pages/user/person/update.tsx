@@ -153,6 +153,7 @@ export default () => {
                         value={files}
                         maxCount="1"
                         upload={mockUpload as any}
+
                     />
                 </Form.Item>
                 <Form.Item name="login_time" label="登录时间" className={label}>

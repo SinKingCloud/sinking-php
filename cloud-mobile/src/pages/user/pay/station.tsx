@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import {Body} from "@/components";
-import {Button, Card, Form, Input, Modal, Toast} from "antd-mobile";
+import {Body, VirtualRef} from "@/components";
+import {Button, Card, Form, Input, Modal, ModalShowProps, Toast} from "antd-mobile";
 import defaultSettings from "../../../../config/defaultSettings";
-import {createStyles, useResponsive, useTheme} from "antd-style";
+import {createStyles, useResponsive} from "antd-style";
 import {useModel} from "umi";
 import {buySite, getSite} from "@/service/shop/site";
 import {getPayConfig} from "@/service/pay";
@@ -131,6 +131,7 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
         describe: css`
             max-width: 80%;
             margin: 40px auto 0 auto;
+
             ${responsive.md} {
                 max-width: 100%;
                 margin: 0;
@@ -181,8 +182,10 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
             .ant-select-selector {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-            },
-            width:45%
+            }
+
+        ,
+        width: 45 %
         `,
         formBody: {
             ".adm-list-body": {
@@ -197,49 +200,50 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
                 minWidth: "370px !important",
             }
         },
-        label:{
-            ".adm-input-element":{
-                fontSize:"14px !important"
+        label: {
+            ".adm-input-element": {
+                fontSize: "14px !important"
             }
         },
-        to:{
-            ".adm-list-item-content":{
+        to: {
+            ".adm-list-item-content": {
                 borderTop: "none !important"
             }
         },
-        inner:{
-            ".adm-form-item-child-inner":{
-                display:"flex"
+        inner: {
+            ".adm-form-item-child-inner": {
+                display: "flex"
             }
         },
-        p:{
+        p: {
             fontSize: "19px", fontWeight: 600, color: "#f38e1b", margin: "10px 0"
         },
-        man:{
+        man: {
             fontSize: "16px", fontWeight: 600, color: "#f655a6"
         },
-        btn:{
+        btn: {
             "--background-color": token.colorPrimary,
             "--border-color": token.colorPrimary,
             fontWeight: 600,
             color: "#fff"
         },
-        inp:{
+        inp: {
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
-            width:"55%"
+            width: "55%"
         },
-        size:{
+        size: {
             fontSize: "12px"
         },
-        pay:{
+        pay: {
             width: "100%"
         }
     }
 })
 export default () => {
     const {
-        styles: {select, formBody, modal,label,to,inner,p,man,btn,inp,size,pay}} = useStyles()
+        styles: {select, formBody, modal, label, to, inner, p, man, btn, inp, size, pay}
+    } = useStyles()
     /**
      * 初始化
      */
@@ -268,7 +272,7 @@ export default () => {
     /**
      * 表单提交
      */
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const [btnLoading, setBtnLoading] = useState(false)
     const formFinish = (values: any) => {
         const url = values.prefix + '.' + values.domain;
@@ -356,20 +360,23 @@ export default () => {
                 <span className={size}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，
                                     方便的自动化收款能力，拥有自己的用户管理体系，可极低的价格为用户开通主站等。</span>
                 <p className={man}>主站搭建费用:￥{parseInt(siteConfig?.['site.price'])}</p>
+                <div id="test"></div>
                 <Button block className={btn} onClick={() => {
                     Modal?.show({
-                        className: modal,
+                        forceRender: true,
+                        getContainer: VirtualRef?.current,
+                        //className: modal,
                         showCloseButton: true,
                         content: (<Form form={form} className={formBody} onFinish={formFinish}>
-                            <Form.Item name="name" label="网站名称"  className={label}>
+                            <Form.Item name="name" label="网站名称" className={label}>
                                 <Input placeholder="请输入网站名称" clearable/>
                             </Form.Item>
                             <Form.Item label={"绑定域名"} className={inner}>
-                                <Form.Item name="prefix"  noStyle>
-                                    <Input className={inp} placeholder="请输入前缀" />
+                                <Form.Item name="prefix" noStyle>
+                                    <Input className={inp} placeholder="请输入前缀"/>
                                 </Form.Item>
                                 <Form.Item name="domain" noStyle>
-                                    <Select placeholder="请选择后缀"  className={select}>
+                                    <Select placeholder="请选择后缀" className={select}>
                                         {siteConfig?.['master.domains']?.map((k: any) => {
                                             return <Select.Option key={"domain_" + k}
                                                                   value={k}>.{k}</Select.Option>
@@ -378,7 +385,7 @@ export default () => {
                                 </Form.Item>
                             </Form.Item>
                             <Form.Item name="type" label="支付方式" className={label}>
-                                <Select placeholder="请选择支付方式" defaultValue={3} className={pay}>
+                                <Select placeholder="请选择支付方式" className={pay}>
                                     <Select.Option
                                         value={3}>余额支付(余额:￥{parseFloat(user?.web?.money).toFixed(2)})</Select.Option>
                                     {payConfig?.['pay.qqpay.type'] &&
@@ -393,7 +400,7 @@ export default () => {
                                 <Button type="submit" block color={"primary"} loading={btnLoading}>开通</Button>
                             </Form.Item>
                         </Form>)
-                    })
+                    } as ModalShowProps)
                     form?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
                 }}>
                     我要搭建

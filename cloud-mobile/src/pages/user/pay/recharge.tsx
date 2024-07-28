@@ -48,14 +48,14 @@ const useStyles = createStyles(({token}): any => {
         notice: {
             color: "#b3b3b3", fontSize: "12px", textAlign: "center"
         },
-        selector:{
-           "--border-radius": "5px !important", "--padding": "10px 14px !important"
+        selector: {
+            "--border-radius": "5px !important", "--padding": "10px 14px !important"
         }
     }
 })
 export default () => {
     const [form] = Form.useForm();
-    const {styles: {label, body, p, span, icon, btn, notice,selector}} = useStyles();
+    const {styles: {label, body, p, span, icon, btn, notice, selector}} = useStyles();
     const [loading, setLoading] = useState(false)
     const {mobile} = useResponsive()
     const formFinish = async (values: any) => {
@@ -112,17 +112,16 @@ export default () => {
     /**
      * 支付配置
      */
-    const [configLoading, setConfigLoading] = useState(false)
+    const [configLoading, setConfigLoading] = useState(true);
     const [payConfig, setPayConfig] = useState({});
     useEffect(() => {
         setConfigLoading(true)
         getPayConfig({
             onSuccess: (r: any) => {
                 setPayConfig(r?.data)
-            },
-            onFinally: () => {
-                setConfigLoading(false);
             }
+        }).finally(() => {
+            setConfigLoading(false);
         });
     }, []);
     const options = [

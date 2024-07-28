@@ -114,13 +114,13 @@ const useStyles = createStyles(({isDarkMode}): any => {
         small: {
             fontSize: "10px"
         },
-        hel:{
+        hel: {
             fontSize: "26px"
         },
-        respect:{
+        respect: {
             fontSize: "16px", marginTop: "10px"
         },
-        back:{
+        back: {
             fontWeight: 600
         }
     }
@@ -129,8 +129,8 @@ export default function HomePage() {
     const user = useModel("user")
     const {
         styles: {
-            list, card, nav, tit, icons, icon, notice, home, ava,respect,
-            listSpan, connact, tex, cardLine, preFix, extra, small, body,hel,back
+            list, card, nav, tit, icons, icon, notice, home, ava, respect,
+            listSpan, connact, tex, cardLine, preFix, extra, small, body, hel, back
         }
     } = useStyles();
     /**
@@ -244,8 +244,8 @@ export default function HomePage() {
                     </Col>
                 </Row>
             </Card>
-            <Grid.Item className={cardLine}>
-                {noticeData.length > 0 && <Card title={<Title><span className={tit}>系统公告</span></Title>}>
+            {noticeData.length > 0 && <Grid.Item className={cardLine}>
+                <Card title={<Title><span className={tit}>系统公告</span></Title>}>
                     <List className={list}>
                         {noticeLoading && <Skeleton.Paragraph animated/> ||
                             noticeData.map(user => (
@@ -263,8 +263,8 @@ export default function HomePage() {
                             ))
                         }
                     </List>
-                </Card> || null}
-            </Grid.Item>
+                </Card>
+            </Grid.Item> || null}
             <Card className={card} title={<Title><span className={tit}>联系方式</span></Title>}>
                 <List className={list}>
                     {contactLoading && <Skeleton.Paragraph animated/> ||

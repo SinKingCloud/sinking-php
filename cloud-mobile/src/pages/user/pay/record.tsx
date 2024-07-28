@@ -1,6 +1,13 @@
 import React, {useState} from 'react'
 import {Body, Icon, Title, VirtualRef} from "@/components";
-import {Card, InfiniteScroll, PullToRefresh, Popup, Dropdown, Radio, Space, DotLoading, ErrorBlock} from "antd-mobile";
+import {
+    Card,
+    InfiniteScroll,
+    PullToRefresh,
+    Popup,
+    ErrorBlock,
+    ActionSheet, Toast, Button
+} from "antd-mobile";
 import {getPayOrder} from "@/service/pay/order";
 import {Recharge, TypeAll} from "@/components/icon";
 import dayjs from "dayjs";
@@ -19,7 +26,8 @@ const useStyles = createStyles(({css, isDarkMode}): any => {
             fontSize: "16px", fontWeight: "bold", marginRight: "3px", color: "#33cc4b"
         },
     }
-})
+});
+
 export default () => {
     const {styles: {tit, extra, money}} = useStyles()
 
@@ -83,6 +91,20 @@ export default () => {
         setSearchVisible(false);
     }
 
+    const actions: any[] = [
+        {
+            text: '复制',
+            key: 'copy',
+        },
+        {
+            text: '修改',
+            key: 'edit',
+            onClick: () => {
+
+            },
+        },
+    ]
+
     return (
         <Body title="订单记录"
               right={
@@ -112,6 +134,19 @@ export default () => {
               } bodyStyle={{
             userSelect: "none"
         }}>
+            <Button
+                onClick={() => {
+                    ActionSheet.show({
+                        getContainer:VirtualRef?.current,
+                        actions,
+                        onClose: () => {
+                            Toast.show('动作面板关闭')
+                        },
+                    })
+                }}
+            >
+                显示
+            </Button>
             <Popup
                 getContainer={VirtualRef?.current}
                 forceRender={true}

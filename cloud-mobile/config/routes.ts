@@ -117,7 +117,7 @@ export const user = [
         routes: [
             {
                 path: "info/:id",
-                component: "@/pages/user/index/info",
+                component: "@/pages/user/notice",
                 title: "公告详情",
                 name: "user.notice.info",
             },

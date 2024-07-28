@@ -6,30 +6,31 @@ import {Card, Skeleton} from "antd-mobile";
 import dayjs from "dayjs";
 import {getLogList} from "@/service/person/log";
 import {createStyles} from "antd-style";
-const useStyles = createStyles(()=>{
-    return{
-        size:{
+
+const useStyles = createStyles(() => {
+    return {
+        size: {
             fontSize: "18px"
         },
-        tit:{
+        tit: {
             fontSize: "12px", fontWeight: "normal"
         },
-        extra:{
+        extra: {
             fontSize: "11px", color: "gray"
         },
-        par:{
-            marginBottom:"-22px !important"
+        par: {
+            marginBottom: "-22px !important"
         },
-        sp:{
+        sp: {
             fontSize: "11px", color: "gray"
         }
     }
 })
 export default () => {
-    const {styles: {size,tit,extra,par,sp}} = useStyles()
+    const {styles: {size, tit, extra, par, sp}} = useStyles()
     const {Paragraph} = Typography;
-    const [orderData, setOrderData] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [orderData, setOrderData] = useState<any>([])
+    const [loading, setLoading] = useState(true)
     const init = (type?: any) => {
         setLoading(true)
         getLogList({
@@ -39,10 +40,9 @@ export default () => {
             onSuccess: (r: any) => {
                 setOrderData(r.data);
             },
-            onFinally: () => {
-                setLoading(false)
-            }
-        })
+        }).finally(() => {
+            setLoading(false);
+        });
     }
     useEffect(() => {
         init()
@@ -86,14 +86,14 @@ export default () => {
         },
     ]
     return (
-        <Body title="操作日志"  right={
+        <Body title="操作日志" right={
             <Dropdown menu={{items}}>
                 <a onClick={(e) => e.preventDefault()}>
                     <Icon type={Ellipsis} className={size}/>
                 </a>
             </Dropdown>
-        } space={true}>
-            {loading && <Skeleton.Paragraph animated/> ||
+        } space={true} loading={loading}>
+            {
                 orderData?.list?.map(user => (
                     <Card key={user.id}
                           title={<div className={tit}>{user.title}</div>}

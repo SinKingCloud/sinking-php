@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Body, VirtualRef} from "@/components";
 import {Button, Card, Form, Input, Modal, ModalShowProps, Toast} from "antd-mobile";
-import defaultSettings from "../../../../config/defaultSettings";
 import {createStyles, useResponsive} from "antd-style";
 import {useModel} from "umi";
 import {buySite, getSite} from "@/service/shop/site";
@@ -9,183 +8,20 @@ import {getPayConfig} from "@/service/pay";
 import {Select, Typography} from 'antd';
 import {setPayJumpUrl} from "@/utils/pay";
 
-const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
-    const base = ((defaultSettings?.basePath || "/") + "images/buy-bg.png")
-    const base1 = ((defaultSettings?.basePath || "/") + "images/personPackage.svg")
+const useStyles = createStyles(({css, responsive, token}): any => {
     return {
         modals: css`
             .ant-modal-title {
                 margin-bottom: 15px;
             }
         `,
-        mainTitle: css`
-            background-image: url(${base});
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 250px;
-            text-align: center;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-
-            ${responsive.md} {
-                height: 60px;
-            }
-        `,
-        topTitle: css`
-            font-size: 30px;
-            color: #cfc8bd !important;
-            padding-top: 45px;
-            box-sizing: border-box;
-
-            ${responsive.md} {
-                font-size: 14px;
-                padding-top: 12px;
-            }
-        `,
-        main: {
-            maxWidth: "600px",
-            margin: "0 auto",
-            boxShadow: isDarkMode ? "0 5px 10px 0 rgba(95, 94, 94, 0.68)" : "0 50px 40px 0 #eeeeeead",
-        }
-        ,
-        body: css`
-            margin: -100px auto 0 auto;
-
-            ${responsive.md} {
-                margin: -15px auto 0 auto;
-            }
-        `,
-        cardTitle: css`
-            position: relative;
-            background-image: url(${base1});
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 120px;
-            border-radius: 10px 10px 0 0;
-            text-align: center;
-
-            ${responsive.md} {
-                height: 90px;
-                width: 90%;
-                margin-left: 5%;
-            }
-        `,
-        topTitle2: css`
-            font-size: 27px;
-            font-weight: bolder;
-            color: #af6e01;
-            height: 65px;
-            line-height: 75px;
-
-            ${responsive.md} {
-                font-size: 20px;
-                height: 50px;
-                line-height: 65px;
-            }
-        `,
-        bottomTitle: css`
-            font-size: 18px;
-            color: #af6e01;
-
-            ${responsive.md} {
-                font-size: 13px;
-            }
-        `,
-        cardBody: {
-            borderRadius: "0 0 10px 10px !important",
-            padding: "12px 0"
-        },
-        box: {
-            backgroundColor: "rgb(255 249 238)",
-            border: "1px solid #ffdea8",
-            maxWidth: "350px",
-            margin: "20px auto 0 auto",
-            borderRadius: "5px",
-            cursor: "pointer",
-        },
-        top: {
-            height: "100px",
-            textAlign: "left",
-        },
-        tips: {
-            backgroundColor: "rgb(233 198 140)",
-            position: "absolute",
-            borderRadius: "7px 0 7px 0",
-            padding: " 5px 10px",
-            marginTop: "-15px",
-            fontSize: "12px",
-            color: "white",
-        },
-        bottom: {
-            height: "40px",
-            lineHeight: "40px",
-            backgroundColor: "papayawhip",
-            padding: "0 10px 0 10px",
-        },
-        left: {
-            float: "left"
-        },
-        right: {
-            float: "right"
-        },
-        describe: css`
-            max-width: 80%;
-            margin: 40px auto 0 auto;
-
-            ${responsive.md} {
-                max-width: 100%;
-                margin: 0;
-            }
-        `,
-        contain: {
-            overflowY: "hidden"
-        },
-        table: {
-            width: "800px",
-            overflowX: "scroll",
-            border: isDarkMode ? "1px solid rgb(50, 50, 50)" : "1px solid #ebebeb",
-            borderRadius: "15px",
-            margin: "0 auto",
-        },
-        thead: {
-            textAlign: "center",
-            width: "100%",
-            display: "flex",
-            borderBottom: "1px solid #ccc",
-            borderBottomColor: "rgba(205, 206, 207, 0.5)",
-            alignItems: "center",
-            height: "90px",
-            backgroundColor: isDarkMode ? "rgb(139,137,137)" : "#e4e4e4",
-            borderTopLeftRadius: "15px",
-            borderTopRightRadius: "15px"
-        },
-        tbody: {
-            textAlign: "center",
-            fontWeight: "lighter",
-            borderBottomLeftRadius: "15px",
-            borderBottomRightRadius: "15px"
-        },
-        tr: {
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontWeight: "bolder"
-        },
-        th: {
-            flex: 8
-        },
-        td: {
-            flex: 8
-        },
         select: css`
             .ant-select-selector {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
             }
 
-        ,
-        width: 45 %
+            width: 45%;
         `,
         formBody: {
             ".adm-list-body": {
@@ -239,7 +75,8 @@ const useStyles = createStyles(({css, responsive, isDarkMode, token}): any => {
             width: "100%"
         }
     }
-})
+});
+
 export default () => {
     const {
         styles: {select, formBody, modal, label, to, inner, p, man, btn, inp, size, pay}
@@ -247,8 +84,8 @@ export default () => {
     /**
      * 初始化
      */
-    const {mobile} = useResponsive()
-    const user = useModel("user")
+    const {mobile} = useResponsive();
+    const user = useModel("user");
     const [siteConfig, setSiteConfig] = useState({});
     const [payConfig, setPayConfig] = useState({});
     const [loading, setLoading] = useState(true);
@@ -347,25 +184,22 @@ export default () => {
                     content: r?.message || "开通失败"
                 })
             },
-            onFinally: () => {
-                setLoading(false)
-            }
-
-        })
+        }).finally(() => {
+            setLoading(false)
+        });
     }
     return (
         <Body title="开通主站" loading={loading}>
             <Card>
                 <p className={p}>搭建主站介绍</p>
-                <span className={size}>无需建站技术，一键搭建与本站完全相同的代练网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，支持对接支付接口，
-                                    方便的自动化收款能力，拥有自己的用户管理体系，可极低的价格为用户开通主站等。</span>
+                <span className={size}>无需建站技术，一键搭建与本站完全相同的网站，自己做站长，无需服务器，赠送二级域名，可进入网站控制后台，可自定义网站名称、公告、帮助等内容，拥有自己的用户管理体系，可极低的价格为用户开通主站等。</span>
                 <p className={man}>主站搭建费用:￥{parseInt(siteConfig?.['site.price'])}</p>
                 <div id="test"></div>
                 <Button block className={btn} onClick={() => {
                     Modal?.show({
                         forceRender: true,
                         getContainer: VirtualRef?.current,
-                        //className: modal,
+                        className: modal,
                         showCloseButton: true,
                         content: (<Form form={form} className={formBody} onFinish={formFinish}>
                             <Form.Item name="name" label="网站名称" className={label}>
@@ -400,7 +234,7 @@ export default () => {
                                 <Button type="submit" block color={"primary"} loading={btnLoading}>开通</Button>
                             </Form.Item>
                         </Form>)
-                    } as ModalShowProps)
+                    } as ModalShowProps);
                     form?.setFieldsValue({domain: siteConfig?.['master.domains']?.[0], type: 3});
                 }}>
                     我要搭建

@@ -32,7 +32,6 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
                 paddingBlock: "9px",
                 paddingRight: "0 !important"
             },
-
         },
         body: {
             ".adm-list-body": {
@@ -77,9 +76,9 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 })
 export default () => {
     const captcha = useRef<CaptchaRef>({});
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const {styles: {label, body, btn,head,code,btn1,cen,num,p}} = useStyles();
-    const user = useModel("user")
+    const user = useModel("user");
     /**
      * 获取验证码
      */
@@ -102,7 +101,7 @@ export default () => {
     /**
      * 表单提交
      */
-    const [btnLoading, setBtnLoading] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false);
     const formFinish = async (values: any) => {
         if (values?.email_code == undefined || values?.email_code == "") {
             Toast.show({
@@ -126,7 +125,7 @@ export default () => {
         }
         const code = values?.email_code
         delete values?.email_code
-        setBtnLoading(true)
+        setBtnLoading(true);
         await updatePassword({
             body: {
                 type: "email",
@@ -138,10 +137,9 @@ export default () => {
                     content: r?.message,
                     icon: "success"
                 })
-                user?.refreshWebUser(() => {
-                    deleteHeader()
-                    historyPush("login")
-                })
+                user?.refreshWebUser()
+                deleteHeader()
+                historyPush("login")
             },
             onFail: (r: any) => {
                 Toast?.show({
@@ -150,7 +148,7 @@ export default () => {
                 })
             },
             onFinally: () => {
-                setBtnLoading(false)
+                setBtnLoading(false);
             }
         })
     }

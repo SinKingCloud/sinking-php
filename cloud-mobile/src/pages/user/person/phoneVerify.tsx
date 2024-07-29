@@ -138,10 +138,9 @@ export default () => {
                     content: r?.message,
                     icon: "success"
                 })
-                user?.refreshWebUser(() => {
-                    deleteHeader()
-                    historyPush("login")
-                })
+                user?.refreshWebUser()
+                deleteHeader()
+                historyPush("login")
             },
             onFail: (r: any) => {
                 Toast?.show({

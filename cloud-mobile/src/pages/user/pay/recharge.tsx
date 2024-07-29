@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {Body, Icon} from "@/components";
-import {Button, Form, Input, Selector, Toast, Skeleton} from "antd-mobile";
+import {Button, Form, Input, Selector, Toast} from "antd-mobile";
 import {createStyles, useResponsive} from "antd-style";
 import {Mayun, Qq, Weinxin} from "@/components/icon";
 import {getPayConfig, recharge} from "@/service/pay";

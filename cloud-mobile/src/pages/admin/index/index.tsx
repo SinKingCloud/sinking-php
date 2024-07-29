@@ -1,6 +1,6 @@
 import React, {Suspense, useEffect, useState} from 'react'
 import {Body, Title} from "@/components";
-import {Card, Grid, Empty, NoticeBar, Skeleton} from "antd-mobile";
+import {Card, Grid,NoticeBar, Skeleton, ErrorBlock} from "antd-mobile";
 import {getNotice} from "@/service/person/config";
 import PageLoading from "@/pages/components/pageLoading";
 import IntroduceRow from "@/pages/admin/index/introduceRow";
@@ -39,9 +39,9 @@ const useStyles = createStyles(({token})=>{
             fontSize: "20px", lineHeight: "50px"
         }
     }
-})
+});
 export default () => {
-    const {styles:{head,notice,ava}} = useStyles()
+    const {styles:{head,notice,ava}} = useStyles();
     /**
      * 滚动公告信息
      */
@@ -152,7 +152,7 @@ export default () => {
         })
         setChartData(temp);
         setChartLoading(false);
-    }
+    };
     // 更改日期事件
     const handleRangePickerChange = (value: any) => {
         setRangePickerValue(value);
@@ -166,7 +166,7 @@ export default () => {
     /**
      * 获取公告信息
      */
-    const user = useModel("user")
+    const user = useModel("user");
     const [noticeLoading, setNoticeLoading] = useState(true);
     const [noticeData, setNoticeData] = useState<any>([]);
     const getNoticeData = async () => {
@@ -197,7 +197,7 @@ export default () => {
         setNoticeData(temp);
         setNoticeLoading(false);
     };
-    const [pageLoading, setPageLoading] = useState(false)
+    const [pageLoading, setPageLoading] = useState(false);
     useEffect(() => {
         setPageLoading(true)
         getNotice2Data().finally(() => {
@@ -206,11 +206,11 @@ export default () => {
                     getChartData().finally(() => {
                         getNoticeData().finally(() => {
                             setPageLoading(false)
-                        })
-                    })
-                })
-            })
-        })
+                        });
+                    });
+                });
+            });
+        });
     }, []);
     return (
         <Body title="网站概览" showBack={true} titleStyle={{color:"#fff"}} headClassNames={head} loading={pageLoading}>
@@ -327,7 +327,7 @@ export default () => {
                                         </Skeleton>
                                     )}
                                 /> ||
-                                <Empty description='暂无数据'/>
+                                <ErrorBlock status='empty' />
                             }
 
                         </Card>

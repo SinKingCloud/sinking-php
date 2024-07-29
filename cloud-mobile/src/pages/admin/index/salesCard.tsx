@@ -129,7 +129,7 @@ const useStyles = createStyles(({css, responsive}): any => {
             float: "right"
         }
     }
-})
+});
 const SalesCard: React.FC<SalesProps> = ({...props}) => {
     const {
         rangePickerValue,
@@ -138,7 +138,7 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
         loading,
         selectDate,
         dateType,
-    } = props
+    } = props;
     const {
         styles: {
             currentDate,
@@ -153,7 +153,7 @@ const SalesCard: React.FC<SalesProps> = ({...props}) => {
             active,
             sp1
         }
-    } = useStyles()
+    } = useStyles();
     return (
         <Card loading={loading} bordered={false}>
             <Tabs items={[

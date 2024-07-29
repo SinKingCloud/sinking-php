@@ -171,6 +171,12 @@ export const admin = [
                 component: "@/pages/admin/set/base",
                 title: "基本设置",
                 name: "admin.set.base",
+            },
+            {
+                path: "ui",
+                component: "@/pages/admin/set/ui",
+                title: "界面设置",
+                name: "admin.set.ui",
             }
         ]
     },

@@ -2,7 +2,7 @@ import {Body, Icon, Title} from "@/components";
 import {Avatar, Button, Card, Grid, List, NoticeBar, Skeleton} from "antd-mobile";
 import {Data, Help, Message, Recharge, User,} from "@/components/icon";
 import React, {useEffect, useState} from "react";
-import {createStyles, useTheme} from "antd-style";
+import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";
 import {getContact, getNotice} from "@/service/person/config";
 import {useModel} from "umi";
@@ -137,25 +137,18 @@ export default function HomePage() {
      * 滚动公告
      */
     const [noticeData2, setNoticeData2] = useState()
-    const [noticeLoading2, setNoticeLoading2] = useState(false)
     const getNoticeData2 = async () => {
-        setNoticeLoading2(true)
         await getNotice({
             onSuccess: (r: any) => {
                 setNoticeData2(r?.data);
             },
-            onFinally: () => {
-                setNoticeLoading2(false);
-            }
         })
     }
     /**
      * 获取公告信息
      */
     const [noticeData, setNoticeData] = useState<any>([]);
-    const [noticeLoading, setNoticeLoading] = useState(false)
     const getNoticeData = async () => {
-        setNoticeLoading(true)
         const temp: any[] = [];
         await getNoticeList({
             body: {
@@ -166,9 +159,6 @@ export default function HomePage() {
                     temp?.push(k);
                 });
             },
-            onFinally: () => {
-                setNoticeLoading(false)
-            }
         });
         await getNoticeList({
             body: {
@@ -179,26 +169,18 @@ export default function HomePage() {
                     temp?.push(k);
                 });
             },
-            onFinally: () => {
-                setNoticeLoading(false)
-            }
         });
         setNoticeData(temp);
     };
     /**
      * 客服信息
      */
-    const [contactLoading, setContactLoading] = useState(true);
     const [contactData, setContactData] = useState({});
     const getContactData = async () => {
-        setContactLoading(true);
         await getContact({
             onSuccess: (r: any) => {
                 setContactData(r?.data);
             },
-            onFinally: () => {
-                setContactLoading(false);
-            }
         })
     };
     const [pageLoading, setPageLoading] = useState(true)
@@ -222,9 +204,7 @@ export default function HomePage() {
                         className={back}>{user?.web?.nick_name}</span>，欢迎回来！</span>
                 </div>
             </Card>
-            {noticeLoading2 && <Skeleton.Paragraph animated/> ||
                 <NoticeBar content={noticeData2?.['notice.index']} color="info" className={notice}/>
-            }
             <Card>
                 <Row justify={"space-around"}>
                     <Col onClick={() => historyPush('user.list')}>
@@ -247,28 +227,24 @@ export default function HomePage() {
             {noticeData.length > 0 && <Grid.Item className={cardLine}>
                 <Card title={<Title><span className={tit}>系统公告</span></Title>}>
                     <List className={list}>
-                        {noticeLoading && <Skeleton.Paragraph animated/> ||
-                            noticeData.map(user => (
-                                <List.Item
-                                    className={icon}
-                                    key={user?.id}
-                                    prefix={<Icon type={Message} className={preFix}/>}
-                                    extra={''}
-                                    onClick={() => {
-                                        historyPush("user.notice.info", {id: user?.id})
-                                    }}
-                                >
-                                    <span className={listSpan}>{user?.title}</span>
-                                </List.Item>
-                            ))
-                        }
+                        {noticeData.map(user => (
+                            <List.Item
+                                className={icon}
+                                key={user?.id}
+                                prefix={<Icon type={Message} className={preFix}/>}
+                                extra={''}
+                                onClick={() => {
+                                    historyPush("user.notice.info", {id: user?.id})
+                                }}
+                            >
+                                <span className={listSpan}>{user?.title}</span>
+                            </List.Item>
+                        ))}
                     </List>
                 </Card>
             </Grid.Item> || null}
             <Card className={card} title={<Title><span className={tit}>联系方式</span></Title>}>
                 <List className={list}>
-                    {contactLoading && <Skeleton.Paragraph animated/> ||
-                        <>
                             <List.Item prefix={
                                 <Avatar
                                     src={"https://q4.qlogo.cn/headimg_dl?dst_uin=" + (contactData?.['contact.one'] || 10000) + "&spec=100"}
@@ -303,8 +279,6 @@ export default function HomePage() {
                                        }}>加入</Button>}>
                                 <span className={tex}>官方Q群</span>
                             </List.Item>
-                        </>
-                    }
                 </List>
             </Card>
         </Body>

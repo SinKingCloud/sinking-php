@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {App, ColorPicker, ColorPickerProps, Form, Spin, Upload} from "antd";
+import {App, ColorPicker, Form, Spin, Upload} from "antd";
 import ProForm, {ProFormItem, ProFormSelect, ProFormText} from "@ant-design/pro-form";
 import {getUi, setUi} from "@/service/admin/set";
 import {getUploadUrl} from "@/service/common/upload";

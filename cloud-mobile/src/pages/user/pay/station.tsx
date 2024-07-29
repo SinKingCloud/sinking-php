@@ -33,7 +33,7 @@ const useStyles = createStyles(({css, responsive, token}): any => {
         },
         modal: {
             ".adm-center-popup-wrap": {
-                minWidth: "370px !important",
+                minWidth: "354px !important",
             }
         },
         label: {
@@ -211,6 +211,7 @@ export default () => {
                                 </Form.Item>
                                 <Form.Item name="domain" noStyle>
                                     <Select placeholder="请选择后缀" className={select}>
+
                                         {siteConfig?.['master.domains']?.map((k: any) => {
                                             return <Select.Option key={"domain_" + k}
                                                                   value={k}>.{k}</Select.Option>

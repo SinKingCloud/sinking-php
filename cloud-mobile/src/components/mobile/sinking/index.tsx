@@ -111,9 +111,7 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         bodyStyle = undefined,
         bodyClassName = "",
     } = props;
-
     VirtualRef = useRef();
-
     return <ConfigProvider locale={zhCN}>
         <AntdConfigProvider locale={antdZhCN}>
             <App>

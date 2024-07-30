@@ -8,8 +8,6 @@
 
 namespace Systems;
 
-use Systems\Config;
-
 class Jwt
 {
     //头部
@@ -42,10 +40,8 @@ class Jwt
      * [
      *  'iss'=>'jwt_admin',  //该JWT的签发者
      *  'iat'=>time(),  //签发时间
-     *  'exp'=>time()+7200,  //过期时间
+     *  'expire'=>time()+7200,  //过期时间
      *  'nbf'=>time()+60,  //该时间之前不接收处理该Token
-     *  'sub'=>'www.admin.com',  //面向的用户
-     *  'jti'=>md5(uniqid('JWT').time())  //该Token唯一标识
      * ]
      * @return bool|string
      */
@@ -58,8 +54,8 @@ class Jwt
             if (!isset($payload['expire'])) {
                 $payload['expire'] = self::getExpireTime();
             }
-            $base64header = self::base64UrlEncode(Util::jsonEncode(self::$header));
-            $base64payload = self::base64UrlEncode(Util::jsonEncode($payload));
+            $base64header = self::base64UrlEncode(json_encode(self::$header));
+            $base64payload = self::base64UrlEncode(json_encode($payload));
             $token = $base64header . '.' . $base64payload . '.' . self::signature($base64header . '.' . $base64payload, $key, self::$header['alg']);
             return $token;
         } else {
@@ -80,11 +76,11 @@ class Jwt
         if (count($tokens) != 3) return false;
         list($base64header, $base64payload, $sign) = $tokens;
         //获取jwt算法
-        $base64decodeheader = json_decode(self::base64UrlDecode($base64header), JSON_OBJECT_AS_ARRAY);
+        $base64decodeheader = json_decode(self::base64UrlDecode($base64header), true);
         if (empty($base64decodeheader['alg'])) return false;
         //签名验证
         if (self::signature($base64header . '.' . $base64payload, $key, $base64decodeheader['alg']) !== $sign) return false;
-        $payload = json_decode(self::base64UrlDecode($base64payload), JSON_OBJECT_AS_ARRAY);
+        $payload = json_decode(self::base64UrlDecode($base64payload), true);
         //签发时间大于当前服务器时间验证失败
         if (isset($payload['iat']) && $payload['iat'] > time()) return false;
         //过期时间小于当前服务器时间验证失败

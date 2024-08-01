@@ -81,10 +81,14 @@ export default () => {
                     }}>
                         界面设置
                     </List.Item>
-                    <List.Item className={item} prefix={<Icon type={KeFu} className={ic4}/>} onClick={() => {}}>
+                    <List.Item className={item} prefix={<Icon type={KeFu} className={ic4}/>} onClick={() => {
+                        historyPush("admin.set.contact")
+                    }}>
                         客服设置
                     </List.Item>
-                    <List.Item className={item} prefix={<Icon type={Notice} className={ic5}/>} onClick={() => {}}>
+                    <List.Item className={item} prefix={<Icon type={Notice} className={ic5}/>} onClick={() => {
+                        historyPush("admin.set.notice")
+                    }}>
                         通知设置
                     </List.Item>
                     <List.Item className={item} prefix={<Icon type={Admin} className={ic6}/>} onClick={() => {}}>

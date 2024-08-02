@@ -14,10 +14,13 @@ const useStyles = createStyles(({css}): any => {
             user-select: none;
             flex: 1;
         `,
+        swiper:{
+            height:"100%"
+        }
     }
 })
 export default () => {
-    const {styles: {content}} = useStyles();
+    const {styles: {content,swiper}} = useStyles();
     const tabItems = [
         {key: 'fruits', title: '测试1'},
         {key: 'vegetables', title: '测试2'},
@@ -40,6 +43,7 @@ export default () => {
                     ))}
                 </Tabs>
                 <Swiper
+                    className={swiper}
                     direction='horizontal'
                     loop
                     indicator={() => null}
@@ -48,7 +52,6 @@ export default () => {
                     onIndexChange={index => {
                         setActiveIndex(index)
                     }}
-                    style={{height: "100%",width:"100%"}}
                 >
                     <Swiper.Item>
                         <div className={content}>tab1</div>

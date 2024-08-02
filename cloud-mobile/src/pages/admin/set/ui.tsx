@@ -53,7 +53,7 @@ export default ()=>{
         return await getUi({
             onSuccess: (r: any) => {
                 form.setFieldsValue(r?.data);
-                setLogo(r?.data?.["ui.logo"])
+                // setLogo([{url:r?.data["ui.logo"]}])
             },
             onFail: (r: any) => {
                 Toast?.show({
@@ -92,57 +92,53 @@ export default ()=>{
     const [theme,setTheme] = useState<any>()
     const [watermark,setWatermark] = useState<any>()
     const onFinish = async (values: any) => {
-        if(values["ui.index"] == "" || values["ui.index"] == undefined){
+        if(!values["ui.index"]){
             Toast?.show({
                 content:"请选择首页模板",
                 position:"top"
             });
             return
         }
-        if(values["ui.compact"] == "" || values["ui.compact"] == undefined){
+        if(!values["ui.compact"]){
             Toast?.show({
                 content:"请选择紧凑模式是否开启",
                 position:"top"
             });
             return
         }
-        if(values["ui.layout"] == "" || values["ui.layout"] == undefined){
+        if(!values["ui.layout"]){
             Toast?.show({
                 content:"请选择网站布局",
                 position:"top"
             });
             return
         }
-        if(values["ui.theme"] == "" || values["ui.theme"] == undefined){
+        if(!values["ui.theme"]){
             Toast?.show({
                 content:"请选择菜单主题",
                 position:"top"
             });
             return
         }
-        if(values["ui.watermark"] == "" || values["ui.watermark"] == undefined){
+        if(!values["ui.watermark"]){
             Toast?.show({
                 content:"请选择是否打开界面水印",
                 position:"top"
             });
             return
         }
-        delete values["ui.index"]
-        delete values["ui.compact"]
-        delete values["ui.layout"]
-        delete values["ui.theme"]
-        delete values["ui.watermark"]
-        values["ui.index"] = index
-        values["ui.compact"] = compact
-        values["ui.layout"] = layout
-        values["ui.theme"] = theme
-        values["ui.watermark"] = watermark
-        values["ui.logo"] = logo
+        const updatedValues = {
+            ...values,
+            "ui.index": index,
+            "ui.compact": compact,
+            "ui.layout": layout,
+            "ui.theme": theme,
+            "ui.watermark": watermark,
+            "ui.logo": logo,
+        };
         setBtnLoading(true)
         await setUi({
-            body: {
-                ...values
-            },
+            body: updatedValues,
             onSuccess: (r: any) => {
                 Toast?.show({
                     content:r?.message,
@@ -170,7 +166,7 @@ export default ()=>{
     return(
         <Body title="界面设置" loading={isLoading} titleStyle={{color:"#fff"}} headClassNames={head}>
             <Form form={form}  onFinish={onFinish} className={body}>
-                <Form.Item label="首页模板" name="ui.index">
+                <Form.Item label="首页模板" name="ui.index" >
                     <Selector
                         className={sel}
                         options={[
@@ -188,7 +184,7 @@ export default ()=>{
                         }}
                     />
                 </Form.Item>
-                <Form.Item label="紧凑模式" name="ui.compact">
+                <Form.Item label="紧凑模式" name="ui.compact" >
                     <Selector
                         className={sel}
                         options={[
@@ -206,7 +202,7 @@ export default ()=>{
                         }}
                     />
                 </Form.Item>
-                <Form.Item label="网站布局" name="ui.layout">
+                <Form.Item label="网站布局" name="ui.layout" >
                     <Selector
                         className={sel}
                         options={[
@@ -242,7 +238,7 @@ export default ()=>{
                         }}
                     />
                 </Form.Item>
-                <Form.Item label="界面水印" name="ui.watermark">
+                <Form.Item label="界面水印" name="ui.watermark" >
                     <Selector
                         className={sel}
                         options={[
@@ -260,7 +256,7 @@ export default ()=>{
                         }}
                     />
                 </Form.Item>
-                <Form.Item label="主题颜色" name="ui.color">
+                <Form.Item label="主题颜色" name="ui.color" >
                     <ColorPicker
                         format="rgb"
                         defaultFormat="rgb"
@@ -271,7 +267,9 @@ export default ()=>{
                 </Form.Item>
                 <Form.Item  label="网站LOGO" >
                     <ImageUploader
+                        // value={logo}
                         maxCount="1"
+                        // onChange={setLogo}
                         upload={mockUpload as any}
                     />
                 </Form.Item>

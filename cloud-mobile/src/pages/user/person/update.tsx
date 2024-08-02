@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Body} from "@/components";
 import {Form, Input, Toast, Button, ImageUploader} from "antd-mobile";
 import {useModel} from "umi";
@@ -139,13 +139,13 @@ export default () => {
                 login_time: user?.web?.login_time,
                 account: user?.web?.account
             }} onFinish={formFinish} className={body}>
-                <Form.Item name="account" label="账号" className={label}>
+                <Form.Item name="account" label="账号" className={label} >
                     <Input placeholder="请输入账号" clearable disabled={user?.web?.account}/>
                 </Form.Item>
-                <Form.Item name="contact" label="联系方式" className={label}>
+                <Form.Item name="contact" label="联系方式" className={label} >
                     <Input placeholder="请输入联系方式" clearable/>
                 </Form.Item>
-                <Form.Item name="nick_name" label="昵称" className={label}>
+                <Form.Item name="nick_name" label="昵称" className={label}  >
                     <Input placeholder="请输入账户名称" clearable/>
                 </Form.Item>
                 <Form.Item name="avatar" label="头像" className={label} initialValue={files}>
@@ -155,7 +155,7 @@ export default () => {
                         upload={mockUpload as any}
                     />
                 </Form.Item>
-                <Form.Item name="login_time" label="登录时间" className={label}>
+                <Form.Item name="login_time" label="登录时间" className={label}  help="上次登录时间">
                     <Input disabled={true}/>
                 </Form.Item>
                 <Form.Item className={btn}>

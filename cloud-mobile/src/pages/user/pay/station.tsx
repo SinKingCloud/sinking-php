@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Body, VirtualRef} from "@/components";
-import {Button, Card, Form, Input, Modal, ModalShowProps, Toast} from "antd-mobile";
+import {Button, Card, Form, Input, Modal, ModalShowProps, Selector, Toast} from "antd-mobile";
 import {createStyles, useResponsive} from "antd-style";
 import {useModel} from "umi";
 import {buySite, getSite} from "@/service/shop/site";
@@ -201,7 +201,7 @@ export default () => {
                         getContainer: VirtualRef?.current,
                         className: modal,
                         showCloseButton: true,
-                        content: (<Form form={form} className={formBody} onFinish={formFinish}>
+                        content: (<Form form={form}  className={formBody} onFinish={formFinish}>
                             <Form.Item name="name" label="网站名称" className={label}>
                                 <Input placeholder="请输入网站名称" clearable/>
                             </Form.Item>

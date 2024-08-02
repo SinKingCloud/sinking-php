@@ -51,8 +51,11 @@ const useStyles = createStyles(({token,css,isDarkMode}):any => {
                 borderTop: "none !important",
                 borderBottom: "none !important",
             },
+            ".adm-list-item": {
+                paddingRight: "12px"
+            },
             ".adm-input-element": {
-                fontSize: "13px !important"
+                fontSize: "12px !important"
             },
         },
         butt:{
@@ -203,19 +206,19 @@ export default () => {
     return (
         <Body title="基本设置" titleStyle={{color:"#fff"}} loading={pageLoading} headClassNames={head}>
                 <Form form={form} onFinish={formFinish} className={body}>
-                    <Form.Item label="网站名称" name="name" className={label}>
-                        <Input placeholder="请输入网站名称"/>
+                    <Form.Item label="网站名称" name="name" className={label} >
+                        <Input placeholder="请输入网站名称" clearable />
                     </Form.Item>
-                    <Form.Item label="网站标题" name="title" className={label}>
-                        <Input placeholder="请输入网站标题"/>
+                    <Form.Item label="网站标题" name="title" className={label} >
+                        <Input placeholder="请输入网站标题" clearable />
                     </Form.Item>
-                    <Form.Item label="网站关键词" name="keywords" className={label}>
-                        <Input placeholder='请输入网站关键词'/>
+                    <Form.Item label="网站关键词" name="keywords" className={label} >
+                        <Input placeholder='请输入网站关键词' clearable />
                     </Form.Item>
                     <Form.Item label="网站描述" name="description" className={label}>
                         <TextArea placeholder='请输入网站描述'/>
                     </Form.Item>
-                    <Form.Item label="到期时间"  className={inner + " " + inp}>
+                    <Form.Item label="到期时间"  className={inner + " " + inp} >
                         <Form.Item noStyle className={label}>
                             <Input disabled={true}  value={web?.info?.expire_time}/>
                         </Form.Item>
@@ -238,25 +241,30 @@ export default () => {
                                                 }}>取消</Button>
                                                 <Button size="mini" color='primary' loading={btnLoading} className={lef} onClick={async()=>{
                                                     setBtnLoading(true);
-                                                    await buySite({
-                                                        onSuccess: (r: any) => {
-                                                            Toast?.show({
-                                                                content:r?.message,
-                                                                position:"top"
-                                                            })
-                                                            web?.refreshInfo();
-                                                            modalShow?.current?.close();
-                                                        },
-                                                        onFail: (r: any) => {
-                                                            Toast?.show({
-                                                                content:r?.message || "续期失败",
-                                                                position:"top"
-                                                            })
-                                                        },
-                                                        onFinally: () => {
-                                                            setBtnLoading(false);
-                                                        }
-                                                    });
+                                                    try {
+                                                        await buySite({
+                                                            onSuccess: (r: any) => {
+                                                                Toast?.show({
+                                                                    content:r?.message,
+                                                                    position:"top"
+                                                                })
+                                                                web?.refreshInfo();
+                                                                modalShow?.current?.close();
+                                                            },
+                                                            onFail: (r: any) => {
+                                                                Toast?.show({
+                                                                    content:r?.message || "续期失败",
+                                                                    position:"top"
+                                                                })
+                                                            },
+                                                            onFinally: () => {
+                                                                setBtnLoading(false);
+                                                            }
+                                                        });
+                                                    }finally {
+                                                        setBtnLoading(false);
+                                                    }
+
                                                 }}>确定</Button>
                                             </div>
                                        </>

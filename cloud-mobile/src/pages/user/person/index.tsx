@@ -60,12 +60,6 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
                 color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
             }
         },
-        modal: {
-            ".adm-center-popup-wrap": {
-                minWidth: "96% !important",
-                maxWidth: "96% !important"
-            }
-        },
         label: {
             ".adm-input-element": {
                 fontSize: "14px !important"
@@ -95,28 +89,6 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         },
         extra: {
             fontSize: "13px", color: "gray"
-        },
-        update: {
-            textAlign: "center",
-            fontSize: "14px",
-            color: "#f655a6",
-            marginBottom: "10px"
-        },
-        p1: {
-            textAlign: "center",
-            fontSize: "12px",
-            color: "gray"
-        },
-        btn1: {
-            letterSpacing: "1px",
-            margin: "20px 0",
-            "--background-color": token.colorPrimary,
-            "--border-color": token.colorPrimary
-        },
-        btn2: {
-            letterSpacing: "1px",
-            "--background-color": token.colorPrimary,
-            "--border-color": token.colorPrimary
         },
         ava: {
             width: "60px", height: "60px", marginRight: "15px", borderRadius: "8px"
@@ -160,7 +132,7 @@ export default () => {
 
     const {
         styles: {
-            card, list, card1, item, modal, tag, extra, update, p1, btn1, btn2, ava,
+            card, list, card1, item,  tag, extra,ava,
             nick, inner, main, ic1, ic2, ic3, ic4, ic5, ic6, loading, login
         }
     } = useStyles()

@@ -40,8 +40,11 @@ const useStyles = createStyles(({token,css,isDarkMode}) => {
                 borderTop: "none !important",
                 borderBottom: "none !important",
             },
+            ".adm-list-item": {
+                paddingRight: "12px"
+            },
             ".adm-input-element": {
-                fontSize: "13px !important"
+                fontSize: "12px !important"
             },
         },
         butt:{

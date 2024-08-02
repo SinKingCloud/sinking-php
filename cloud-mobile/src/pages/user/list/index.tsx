@@ -6,7 +6,6 @@ import {createStyles} from "antd-style";
 const useStyles = createStyles(({css}): any => {
     return {
         content: css`
-            //height: 75vh;
             color: #999999;
             display: flex;
             justify-content: center;
@@ -25,9 +24,9 @@ export default () => {
         {key: 'animals', title: '测试3'},
     ]
     const swiperRef = useRef<SwiperRef>();
-    const [activeIndex, setActiveIndex] = useState(1)
+    const [activeIndex, setActiveIndex] = useState(1);
     return (
-        <Body showHeader={false} space={false}>
+        <Body showHeader={false} space={false} >
                 <Tabs
                     activeKey={tabItems[activeIndex].key}
                     onChange={key => {
@@ -49,6 +48,7 @@ export default () => {
                     onIndexChange={index => {
                         setActiveIndex(index)
                     }}
+                    style={{height: "100%",width:"100%"}}
                 >
                     <Swiper.Item>
                         <div className={content}>tab1</div>

@@ -120,16 +120,16 @@ export default () => {
             num,
             code
         }
-    } = useStyles()
-    const {mobile} = useResponsive()
+    } = useStyles();
+    const {mobile} = useResponsive();
     /**
      * 生成二维码
      */
     const [qrcode, setQrcode] = useState("qrcode");
-    const [qrcodeLoading, setQrcodeLoading] = useState(false)
+    const [qrcodeLoading, setQrcodeLoading] = useState(false);
     const getQrCode = async () => {
         const tempToken = getRandStr(32);
-        setQrcodeLoading(true)
+        setQrcodeLoading(true);
         await genQrCode({
             body: {
                 captcha_id: tempToken,
@@ -137,22 +137,22 @@ export default () => {
             onSuccess: (r: any) => {
                 localStorage.setItem("captcha_id", tempToken);
                 setQrcode(r?.data);
-                queryQrCodeStatus(tempToken)
+                queryQrCodeStatus(tempToken);
             },
             onFail: () => {
             },
             onFinally: () => {
-                setQrcodeLoading(false)
+                setQrcodeLoading(false);
             }
         });
-    }
+    };
     useEffect(() => {
         getQrCode();
     }, []);
 
     const queryQrCodeStatus = (id?: any) => {
         if (localStorage.getItem("captcha_id") != id) {
-            return
+            return;
         }
         qrLogin({
             body: {
@@ -167,7 +167,7 @@ export default () => {
                 Toast.show({
                     content: r?.message || "登录成功,正在跳转",
                     icon: "success"
-                })
+                });
             },
             onFail: (r: any) => {
                 if (r?.data?.code == -1) {
@@ -175,13 +175,13 @@ export default () => {
                 } else if (r?.data?.code == 0) {
                     setTimeout(() => {
                         queryQrCodeStatus(id);
-                    }, 1000)
+                    }, 1000);
                 }
             },
-        })
-    }
+        });
+    };
 
-    const theme = useTheme()
+    const theme = useTheme();
     return (
         <Body title={"扫码登录"} headClassNames={head} titleStyle={{color: "#fff"}}>
             <Grid columns={1} gap={8}>

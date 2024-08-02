@@ -135,13 +135,13 @@ export default () => {
             card, list, card1, item,  tag, extra,ava,
             nick, inner, main, ic1, ic2, ic3, ic4, ic5, ic6, loading, login
         }
-    } = useStyles()
-    const theme = useTheme()
-    const user = useModel("user")
+    } = useStyles();
+    const theme = useTheme();
+    const user = useModel("user");
     /**
      * 退出登录
      */
-    const [outLoading, setOutLoading] = useState(false)
+    const [outLoading, setOutLoading] = useState(false);
 
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}} space={false}>

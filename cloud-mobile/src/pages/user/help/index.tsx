@@ -101,7 +101,7 @@ export default () => {
     const [noticeData, setNoticeData] = useState<any>([]);
     const [noticeLoading, setNoticeLoading] = useState(true);
     const getNoticeData = async () => {
-        setNoticeLoading(true)
+        setNoticeLoading(true);
         const temp: any[] = [];
         await getNoticeList({
             body: {
@@ -113,17 +113,17 @@ export default () => {
                 });
             },
             onFinally: () => {
-                setNoticeLoading(false)
+                setNoticeLoading(false);
             }
         });
         setNoticeData(temp);
     };
 
-    const [pageLoading, setPageLoading] = useState(false)
+    const [pageLoading, setPageLoading] = useState(false);
     useEffect(() => {
         setPageLoading(true);
         getNoticeData().then(() => {
-            setPageLoading(false)
+            setPageLoading(false);
         });
     }, []);
 

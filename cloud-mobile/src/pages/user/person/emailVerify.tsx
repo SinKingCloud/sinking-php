@@ -83,7 +83,7 @@ export default () => {
      * 获取验证码
      */
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
-    const [smsLoading, setSmsLoading] = useState(false)
+    const [smsLoading, setSmsLoading] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
         const timer = setInterval(() => {
@@ -107,21 +107,21 @@ export default () => {
             Toast.show({
                 content: "验证码不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         if (values?.password == undefined || values?.password == "") {
             Toast?.show({
                 content: "请输入新密码",
                 position: "top"
-            })
-            return
+            });
+            return;
         } else if (values.password.length > 20 || values.password.length < 6) {
             Toast?.show({
                 content: "密码长度必须为6-20位之间",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         const code = values?.email_code
         delete values?.email_code
@@ -136,22 +136,22 @@ export default () => {
                 Toast.show({
                     content: r?.message,
                     icon: "success"
-                })
-                user?.refreshWebUser()
-                deleteHeader()
-                historyPush("login")
+                });
+                user?.refreshWebUser();
+                deleteHeader();
+                historyPush("login");
             },
             onFail: (r: any) => {
                 Toast?.show({
                     content: r?.message || "修改失败",
                     icon: "fail"
-                })
+                });
             },
             onFinally: () => {
                 setBtnLoading(false);
             }
-        })
-    }
+        });
+    };
     return (
         <Body title={"邮箱账号验证"}  headClassNames={head}
               titleStyle={{color: "#fff"}}>

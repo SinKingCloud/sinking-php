@@ -94,7 +94,7 @@ const useStyles = createStyles(({isDarkMode, css, token}): any => {
 
 
 export default () => {
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const {styles: {label, body, check, btn, span, tab, card,butt,icon,elli,gong}} = useStyles();
     const items = [
         {
@@ -115,26 +115,26 @@ export default () => {
                 <span onClick={() => historyPush('login.email')}><Icon type={Email}  className={icon}/>邮箱登录</span>
             ),
         },
-    ]
+    ];
     /**
      * 表单提交
      */
-    const user = useModel("user")
-    const [loading, setLoading] = useState<any>(false)
+    const user = useModel("user");
+    const [loading, setLoading] = useState<any>(false);
     const finish = async (values: any) => {
         if (values?.account == undefined || values.account == "") {
             Toast.show({
                 content: "账号不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         if (values?.password == undefined || values.password == "") {
             Toast.show({
                 content: "密码不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         setLoading(true)
         await loginByPwd({
@@ -161,7 +161,7 @@ export default () => {
                 setLoading(false);
             }
         });
-    }
+    };
     const theme = useTheme();
     const web = useModel("web");
     return (

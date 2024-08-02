@@ -98,7 +98,7 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 
 export default () => {
     const captcha = useRef<CaptchaRef>({});
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const {styles: {label, body, check, btn, tab, card,icon,head,sms,elli,rember,gong,btns}} = useStyles();
     const items = [
         {
@@ -119,12 +119,12 @@ export default () => {
                 <span onClick={() => historyPush('login.email')}><Icon type={Email} className={icon}/>邮箱登录</span>
             ),
         },
-    ]
+    ];
     /**
      * 获取验证码
      */
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
-    const [smsLoading, setSmsLoading] = useState(false)
+    const [smsLoading, setSmsLoading] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
         const timer = setInterval(() => {
@@ -143,31 +143,31 @@ export default () => {
      * 表单提交
      * @param values
      */
-    const [btnLoading, setLoading] = useState(false)
-    const user = useModel("user")
+    const [btnLoading, setLoading] = useState(false);
+    const user = useModel("user");
     const formFinish = async (values: any) => {
         if (values?.phone == undefined || values.phone == "") {
             Toast.show({
                 content: "手机号不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         } else if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)) {
             Toast.show({
                 content: "请输入正确的手机号",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         if (values?.sms_code == undefined || values.sms_code == "") {
             Toast.show({
                 content: "验证码不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
 
-        setLoading(true)
+        setLoading(true);
         captcha?.current?.Show?.(async (res) => {
             await loginBySms({
                 body: {
@@ -179,31 +179,31 @@ export default () => {
                     Toast.show({
                         content: r?.message,
                         icon: "success"
-                    })
+                    });
                     user?.refreshWebUser(() => {
-                        historyPush("user.index")
-                    })
+                        historyPush("user.index");
+                    });
                     setLoginToken("mobile", r?.data?.token);
                 },
                 onFail: (r: any) => {
                     Toast.show({
                         content: r?.message || "登录失败",
                         icon: "fail"
-                    })
+                    });
                 },
                 onFinally: () => {
-                    setLoading(false)
+                    setLoading(false);
                 }
-            })
+            });
         }, () => {
             Toast.show({
                 content: "请完成验证码认证",
                 icon: "fail"
-            })
-            setLoading(false)
-        })
-    }
-    const web = useModel("web")
+            });
+            setLoading(false);
+        });
+    };
+    const web = useModel("web");
     return (
         <Body title={"手机登录"} headClassNames={head} titleStyle={{color: "#fff"}} right={
             <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>

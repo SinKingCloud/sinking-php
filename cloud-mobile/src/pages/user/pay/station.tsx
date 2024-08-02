@@ -80,7 +80,7 @@ const useStyles = createStyles(({css, responsive, token}): any => {
 export default () => {
     const {
         styles: {select, formBody, modal, label, to, inner, p, man, btn, inp, size, pay}
-    } = useStyles()
+    } = useStyles();
     /**
      * 初始化
      */
@@ -110,38 +110,38 @@ export default () => {
      * 表单提交
      */
     const [form] = Form.useForm();
-    const [btnLoading, setBtnLoading] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false);
     const formFinish = (values: any) => {
         const url = values.prefix + '.' + values.domain;
         if (values?.name == undefined || values?.name == "") {
             Toast.show({
                 position: "top",
                 content: "请输入网站名称"
-            })
-            return
+            });
+            return;
         }
         if (values?.prefix == undefined || values?.prefix == "") {
             Toast.show({
                 position: "top",
                 content: "请输入前缀"
-            })
-            return
+            });
+            return;
         }
         if (values?.domain == undefined || values?.domain == "") {
             Toast.show({
                 position: "top",
                 content: "请选择后缀"
-            })
-            return
+            });
+            return;
         }
         if (values?.type == undefined || values?.type == "") {
             Toast.show({
                 position: "top",
                 content: "请选择支付方式"
-            })
-            return
+            });
+            return;
         }
-        setBtnLoading(true)
+        setBtnLoading(true);
         buySite({
             body: {
                 ...values
@@ -150,7 +150,7 @@ export default () => {
                 Toast?.show({
                     icon: "success",
                     content: r?.message
-                })
+                });
                 //支付成功
                 if (r?.code == 200 && values.type == 3) {
                     Modal?.confirm({
@@ -160,7 +160,7 @@ export default () => {
                         onConfirm: () => {
                             window.location.href = location.protocol + '//' + url
                         }
-                    })
+                    });
                 } else {
                     setPayJumpUrl(location.protocol + '//' + url);
                     if (mobile) {
@@ -175,17 +175,17 @@ export default () => {
                         onConfirm: () => {
                             window.location.href = location.protocol + '//' + url
                         }
-                    })
+                    });
                 }
             },
             onFail: (r: any) => {
                 Toast?.show({
                     icon: "fail",
                     content: r?.message || "开通失败"
-                })
+                });
             },
         }).finally(() => {
-            setLoading(false)
+            setLoading(false);
         });
     }
     return (

@@ -126,7 +126,7 @@ const useStyles = createStyles(({isDarkMode}): any => {
     }
 })
 export default function HomePage() {
-    const user = useModel("user")
+    const user = useModel("user");
     const {
         styles: {
             list, card, nav, tit, icons, icon, notice, home, ava, respect,
@@ -136,14 +136,14 @@ export default function HomePage() {
     /**
      * 滚动公告
      */
-    const [noticeData2, setNoticeData2] = useState()
+    const [noticeData2, setNoticeData2] = useState();
     const getNoticeData2 = async () => {
         await getNotice({
             onSuccess: (r: any) => {
                 setNoticeData2(r?.data);
             },
-        })
-    }
+        });
+    };
     /**
      * 获取公告信息
      */
@@ -181,11 +181,11 @@ export default function HomePage() {
             onSuccess: (r: any) => {
                 setContactData(r?.data);
             },
-        })
+        });
     };
-    const [pageLoading, setPageLoading] = useState(true)
+    const [pageLoading, setPageLoading] = useState(true);
     useEffect(() => {
-        setPageLoading(true)
+        setPageLoading(true);
         getNoticeData().finally(() => {
             getNoticeData2().finally(() => {
                 getContactData().finally(() => {

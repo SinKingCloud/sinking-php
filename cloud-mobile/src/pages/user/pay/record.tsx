@@ -29,7 +29,7 @@ const useStyles = createStyles(({css, isDarkMode}): any => {
 });
 
 export default () => {
-    const {styles: {tit, extra, money}} = useStyles()
+    const {styles: {tit, extra, money}} = useStyles();
 
     /**
      * 数据信息
@@ -71,7 +71,7 @@ export default () => {
             temp.page++;
             setPage(temp);
         }
-    }
+    };
     /**
      * 重置数据
      */
@@ -79,7 +79,7 @@ export default () => {
         const pageInfo = {...page, ...{page: 2}};
         setPage(pageInfo);
         await loadData({...page, ...{page: 1}});
-    }
+    };
     /**
      * 筛选弹出层
      */
@@ -103,7 +103,7 @@ export default () => {
 
             },
         },
-    ]
+    ];
 
     return (
         <Body title="订单记录"

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Body, Icon} from "@/components";
 import {Dropdown, Typography} from "antd";
 import {Ellipsis} from "@/components/icon";
-import {Card, Skeleton} from "antd-mobile";
+import {Card} from "antd-mobile";
 import dayjs from "dayjs";
 import {getLogList} from "@/service/person/log";
 import {createStyles} from "antd-style";
@@ -27,12 +27,12 @@ const useStyles = createStyles(() => {
     }
 })
 export default () => {
-    const {styles: {size, tit, extra, par, sp}} = useStyles()
+    const {styles: {size, tit, extra, par, sp}} = useStyles();
     const {Paragraph} = Typography;
-    const [orderData, setOrderData] = useState<any>([])
-    const [loading, setLoading] = useState(true)
+    const [orderData, setOrderData] = useState<any>([]);
+    const [loading, setLoading] = useState(true);
     const init = (type?: any) => {
-        setLoading(true)
+        setLoading(true);
         getLogList({
             body: {
                 type: type,
@@ -45,7 +45,7 @@ export default () => {
         });
     }
     useEffect(() => {
-        init()
+        init();
     }, []);
     const items = [
         {
@@ -84,7 +84,7 @@ export default () => {
                 <span onClick={() => init(4)}>创建</span>
             )
         },
-    ]
+    ];
     return (
         <Body title="操作日志" right={
             <Dropdown menu={{items}}>

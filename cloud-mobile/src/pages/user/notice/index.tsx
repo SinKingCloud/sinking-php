@@ -47,17 +47,17 @@ export default () => {
 
     useEffect(() => {
         if (params?.id != undefined || params?.id != "") {
-            setLoading(true)
+            setLoading(true);
             getNoticeInfo({
                 body: {
                     id: params?.id
                 },
                 onSuccess: (r: any) => {
-                    setNoticeData(r?.data)
+                    setNoticeData(r?.data);
                 },
             }).finally(() => {
                 setLoading(false);
-            })
+            });
         }
     }, []);
 

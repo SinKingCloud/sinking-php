@@ -77,14 +77,14 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 })
 export default () => {
     const captcha = useRef<CaptchaRef>({});
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const {styles: {label, body, btn, head, extra, btn1,p,num,sp}} = useStyles();
-    const user = useModel("user")
+    const user = useModel("user");
     /**
      * 获取验证码
      */
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
-    const [smsLoading, setSmsLoading] = useState(false)
+    const [smsLoading, setSmsLoading] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
         const timer = setInterval(() => {
@@ -102,27 +102,27 @@ export default () => {
     /**
      * 表单提交
      */
-    const [btnLoading, setBtnLoading] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false);
     const formFinish = async (values: any) => {
         if (values?.sms_code == undefined || values?.sms_code == "") {
             Toast?.show({
                 content: "请输入验证码",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         if (values?.password == undefined || values?.password == "") {
             Toast?.show({
                 content: "请输入新密码",
                 position: "top"
-            })
-            return
+            });
+            return;
         } else if (values.password.length > 20 || values.password.length < 6) {
             Toast?.show({
                 content: "密码长度必须为6-20位之间",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         const code = values?.sms_code
         delete values?.sms_code
@@ -137,29 +137,29 @@ export default () => {
                 Toast.show({
                     content: r?.message,
                     icon: "success"
-                })
-                user?.refreshWebUser()
-                deleteHeader()
-                historyPush("login")
+                });
+                user?.refreshWebUser();
+                deleteHeader();
+                historyPush("login");
             },
             onFail: (r: any) => {
                 Toast?.show({
                     content: r?.message || "修改失败",
                     icon: "fail"
-                })
+                });
             },
             onFinally: () => {
-                setBtnLoading(false)
+                setBtnLoading(false);
             }
-        })
-    }
+        });
+    };
     function hideMiddleDigits(phoneNumber) {
         const prefix = phoneNumber.slice(0, 3);
         const suffix = phoneNumber.slice(-2);
         const middle = '******';
         return prefix + middle + suffix;
     }
-    const phoneNumber = hideMiddleDigits(user?.web?.phone.toString())
+    const phoneNumber = hideMiddleDigits(user?.web?.phone.toString());
     return (
         <Body title={"手机号码验证"} headClassNames={head} titleStyle={{color: "#fff"}}>
             <Captcha ref={captcha}/>

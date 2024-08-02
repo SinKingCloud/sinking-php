@@ -83,15 +83,15 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
     }
 })
 export default () => {
-    const {styles: {label, btn, body,butt,sms,head,num,p,sp}} = useStyles()
-    const [form] = Form.useForm()
-    const user = useModel("user")
+    const {styles: {label, btn, body,butt,sms,head,num,p,sp}} = useStyles();
+    const [form] = Form.useForm();
+    const user = useModel("user");
     const captcha = useRef<CaptchaRef>({});
     /**
      * 获取验证码
      */
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
-    const [smsLoading, setSmsLoading] = useState(false)
+    const [smsLoading, setSmsLoading] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
         const timer = setInterval(() => {
@@ -109,7 +109,7 @@ export default () => {
     /**
      * 修改邮箱账号
      */
-    const [emailLoading, setEmailLoading] = useState(false)
+    const [emailLoading, setEmailLoading] = useState(false);
     const emailFinish = async (values: any) => {
         if (values?.email == undefined || values?.email == "") {
             Toast.show({
@@ -122,7 +122,7 @@ export default () => {
                 content: "邮箱格式不正确",
                 position: "top"
             });
-            return
+            return;
         }
         if (values?.email_code == undefined || values?.email_code == "") {
             Toast.show({
@@ -140,20 +140,20 @@ export default () => {
                 Toast.show({
                     content: r?.message,
                     position: 'top',
-                })
-                user?.refreshWebUser()
+                });
+                user?.refreshWebUser();
             },
             onFail: (r: any) => {
                 Toast.show({
                     content: r?.message || "修改失败",
                     position: "top"
-                })
+                });
             },
             onFinally: () => {
-                setEmailLoading(false)
+                setEmailLoading(false);
             }
-        })
-    }
+        });
+    };
     return (
         <Body space={true} title="修改邮箱" headClassNames={head} titleStyle={{color:"#fff"}} showBack={true}>
             <Captcha ref={captcha}/>

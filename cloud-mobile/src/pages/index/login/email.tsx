@@ -1,9 +1,9 @@
 import {Body, Icon} from "@/components";
 import {Ellipsis, Email, Message, Qrcode} from "@/components/icon";
-import React, {useEffect, useRef, useState} from "react";
+import React, { useRef, useState} from "react";
 import {Col, Dropdown, Row} from "antd";
 import {Button, Card, Checkbox, Form, Grid, Input, Toast} from "antd-mobile";
-import {createStyles, useResponsive, useTheme} from "antd-style";
+import {createStyles} from "antd-style";
 import {historyPush} from "@/utils/route";
 import Captcha, {CaptchaRef} from "@/components/captcha";
 import {sendEmail} from "@/service/common/email";
@@ -97,7 +97,7 @@ const useStyles = createStyles(({css, isDarkMode, token}): any => {
 });
 
 export default () => {
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const captcha = useRef<CaptchaRef>({});
     const {styles: {label, body, check, btn, tab, card,icon,sms,head,remember,gong,butt,size}} = useStyles();
     const items = [
@@ -119,12 +119,12 @@ export default () => {
                 <span onClick={() => historyPush('login.sms')}><Icon type={Email} className={icon}/>短信登录</span>
             ),
         },
-    ]
+    ];
     /**
      * 获取邮箱验证码
      */
-    const [emailLoading, setEmailLoading] = useState(false)
-    const [disabled, setDisabled] = useState(false)
+    const [emailLoading, setEmailLoading] = useState(false);
+    const [disabled, setDisabled] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
         const timer = setInterval(() => {
@@ -200,8 +200,8 @@ export default () => {
             })
             setLoading(false);
         });
-    }
-    const web = useModel("web")
+    };
+    const web = useModel("web");
     return (
         <Body title="邮箱登录" headClassNames={head} titleStyle={{color: "#fff"}} right={
             <Dropdown menu={{items}} placement="bottomLeft" overlayStyle={{width: "max-content"}} arrow>

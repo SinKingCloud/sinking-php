@@ -63,8 +63,8 @@ const useStyles = createStyles(({isDarkMode, token}) => {
     }
 })
 export default () => {
-    const {styles: {list, card, item, card1, money, h1, blue, green, orange, lef}} = useStyles()
-    const user = useModel("user")
+    const {styles: {list, card, item, card1, money, h1, blue, green, orange, lef}} = useStyles();
+    const user = useModel("user");
     return (
         <Body showHeader={false} bodyStyle={{padding: 0}} space={false}>
             <Grid columns={1} gap={8}>

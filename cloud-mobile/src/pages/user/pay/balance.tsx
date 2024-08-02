@@ -32,10 +32,10 @@ const useStyles = createStyles(()=>{
     }
 })
 export default () => {
-    const {styles:{extra,tit,rig,size,money,par}} = useStyles()
+    const {styles:{extra,tit,rig,size,money,par}} = useStyles();
     const {Paragraph} = Typography;
-    const [orderData, setOrderData] = useState()
-    const [loading, setLoading] = useState(false)
+    const [orderData, setOrderData] = useState();
+    const [loading, setLoading] = useState(false);
     /**
      * 下拉刷新
      */
@@ -54,21 +54,21 @@ export default () => {
      * @param type
      */
     const init = (type?: any) => {
-        setLoading(true)
+        setLoading(true);
         getPayLog({
             body: {
                 type: type,
             },
             onSuccess: (r: any) => {
-                setOrderData(r?.data)
+                setOrderData(r?.data);
             },
             onFinally: () => {
-                setLoading(false)
+                setLoading(false);
             }
-        })
-    }
+        });
+    };
     useEffect(() => {
-        init()
+        init();
     }, []);
     const items = [
         {
@@ -89,7 +89,7 @@ export default () => {
                 <span onClick={() => init(1)}>减少记录</span>
             )
         },
-    ]
+    ];
     return (
         <Body title="余额明细" right={<Dropdown menu={{items}} space={true}>
             <a onClick={(e) => e.preventDefault()}>

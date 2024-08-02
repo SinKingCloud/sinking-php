@@ -56,30 +56,30 @@ const useStyles = createStyles(({token}): any => {
 export default () => {
     const [form] = Form.useForm();
     const {styles: {label, body, p, span, icon, btn, notice, selector}} = useStyles();
-    const [loading, setLoading] = useState(false)
-    const {mobile} = useResponsive()
+    const [loading, setLoading] = useState(false);
+    const {mobile} = useResponsive();
     const formFinish = async (values: any) => {
         if (values?.money == "" || values?.money == undefined) {
             Toast?.show({
                 content: "请输入充值金额",
                 position: 'top',
-            })
-            return
+            });
+            return;
         } else if (!/\d/.test(values?.money)) {
             Toast?.show({
                 content: "格式错误",
                 position: 'top',
-            })
-            return
+            });
+            return;
         } else if (values?.money < 10) {
             Toast?.show({
                 content: "充值金额最少为10",
                 position: 'top',
-            })
-            return
+            });
+            return;
         }
-        values = {money: parseInt(values?.money), type: parseInt(values?.type)}
-        setLoading(true)
+        values = {money: parseInt(values?.money), type: parseInt(values?.type)};
+        setLoading(true);
         await recharge({
             body: {
                 ...values
@@ -96,29 +96,29 @@ export default () => {
                     afterClose: () => {
                         historyPush("user.pay")
                     },
-                })
+                });
             },
             onFail: (r: any) => {
                 Toast.show({
                     content: r?.message || "请求错误",
                     position: 'top',
-                })
+                });
             },
             onFinally: () => {
                 setLoading(false)
             }
-        })
-    }
+        });
+    };
     /**
      * 支付配置
      */
     const [configLoading, setConfigLoading] = useState(true);
     const [payConfig, setPayConfig] = useState({});
     useEffect(() => {
-        setConfigLoading(true)
+        setConfigLoading(true);
         getPayConfig({
             onSuccess: (r: any) => {
-                setPayConfig(r?.data)
+                setPayConfig(r?.data);
             }
         }).finally(() => {
             setConfigLoading(false);
@@ -146,7 +146,7 @@ export default () => {
             value: 2,
             show: payConfig?.["pay.qqpay.type"]
         }
-    ]
+    ];
     return (
         <Body title="充值账户余额" loading={configLoading}>
             <Form layout="horizontal" form={form} initialValues={{type: "0"}} className={body} onFinish={formFinish}>

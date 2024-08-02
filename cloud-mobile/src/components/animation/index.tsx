@@ -16,6 +16,7 @@ export const Animate = {
 const useStyles = createStyles(({css}): any => {
     return {
         fadeInUp: css`
+            height:calc(100% - 50px);
             @keyframes fadeInUp {
                 0% {
                     opacity: 0;

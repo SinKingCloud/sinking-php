@@ -59,9 +59,9 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
     }
 })
 export default () => {
-    const {styles: {label, btn, body, butt}} = useStyles()
-    const [form] = Form.useForm()
-    const user = useModel("user")
+    const {styles: {label, btn, body, butt}} = useStyles();
+    const [form] = Form.useForm();
+    const user = useModel("user");
     /**
      * 上传头像
      */
@@ -72,42 +72,42 @@ export default () => {
     ]);
     const mockUpload = async (file: File) => {
         if (file.size > 1024 * 1024 * 10) {
-            Toast.show('请选择小于 10M 的图片')
-            return null
+            Toast.show('请选择小于 10M 的图片');
+            return null;
         }
         const formData = new FormData();
         formData.append('file', file);
         const res = await uploadFile(formData);
         if (res?.code != 200) {
-            return undefined
+            return undefined;
         }
         setFiles([{url: res?.data}]);
-        return {url: res?.data}
-    }
+        return {url: res?.data};
+    };
     /**
      * 表单提交
      */
-    const [btnLoading, setBtnLoading] = useState(false)
+    const [btnLoading, setBtnLoading] = useState(false);
     const formFinish = async (values: any) => {
         if (values?.nick_name == undefined || values?.nick_name == "") {
             Toast.show({
                 content: "请输入昵称",
                 position: 'top',
-            })
-            return
+            });
+            return;
         }
         if (values?.contact == undefined || values?.contact == "") {
             Toast.show({
                 content: "请输入联系方式",
                 position: 'top',
-            })
-            return
+            });
+            return;
         }
         delete values?.avatar
         if (files?.length > 0) {
             values.avatar = files[0]?.url || "";
         }
-        setBtnLoading(true)
+        setBtnLoading(true);
         await updateInfo({
             body: {
                 ...values,
@@ -116,21 +116,21 @@ export default () => {
                 Toast.show({
                     content: r?.message,
                     position: 'top',
-                })
-                user?.refreshWebUser()
-                historyPush("user.person")
+                });
+                user?.refreshWebUser();
+                historyPush("user.person");
             },
             onFail: (r: any) => {
                 Toast.show({
                     content: r?.message || "修改失败",
                     position: 'top',
-                })
+                });
             },
             onFinally: () => {
-                setBtnLoading(false)
+                setBtnLoading(false);
             }
-        })
-    }
+        });
+    };
     return (
         <Body title="修改资料" space={true}>
             <Form form={form} initialValues={{

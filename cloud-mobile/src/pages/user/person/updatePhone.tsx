@@ -83,15 +83,15 @@ const useStyles = createStyles(({token, isDarkMode, css}): any => {
     }
 })
 export default () => {
-    const {styles: {label, btn, body,butt,sms,head,p,num,sp}} = useStyles()
-    const [form] = Form.useForm()
-    const user = useModel("user")
+    const {styles: {label, btn, body,butt,sms,head,p,num,sp}} = useStyles();
+    const [form] = Form.useForm();
+    const user = useModel("user");
     const captcha = useRef<CaptchaRef>({});
     /**
      * 获取验证码
      */
     const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
-    const [smsLoading, setSmsLoading] = useState(false)
+    const [smsLoading, setSmsLoading] = useState(false);
     const getCode = (e: any) => {
         let time = 60;
         const timer = setInterval(() => {
@@ -109,29 +109,29 @@ export default () => {
     /**
      * 修改手机号码
      */
-    const [phoneLoading, setPhoneLoading] = useState(false)
+    const [phoneLoading, setPhoneLoading] = useState(false);
     const phoneFinish = async (values: any) => {
         if (values?.phone == undefined || values.phone == "") {
             Toast.show({
                 content: "手机号不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         } else if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(values.phone)) {
             Toast.show({
                 content: "请输入正确的手机号",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
         if (values?.sms_code == undefined || values.sms_code == "") {
             Toast.show({
                 content: "验证码不能为空",
                 position: "top"
-            })
-            return
+            });
+            return;
         }
-        setPhoneLoading(true)
+        setPhoneLoading(true);
         await updatePhone({
             body: {
                 ...values
@@ -140,27 +140,27 @@ export default () => {
                 Toast.show({
                     content: r?.message,
                     position: 'top',
-                })
-                user?.refreshWebUser()
+                });
+                user?.refreshWebUser();
             },
             onFail: (r: any) => {
                 Toast.show({
                     content: r?.message || "修改失败",
                     position: "top"
-                })
+                });
             },
             onFinally: () => {
-                setPhoneLoading(false)
+                setPhoneLoading(false);
             }
-        })
-    }
+        });
+    };
     function hideMiddleDigits(phoneNumber) {
         const prefix = phoneNumber.slice(0, 3);
         const suffix = phoneNumber.slice(-2);
         const middle = '******';
         return prefix + middle + suffix;
     }
-    const phoneNumber = hideMiddleDigits(user?.web?.phone.toString())
+    const phoneNumber = hideMiddleDigits(user?.web?.phone.toString());
     return (
         <Body space={true} title="修改手机" headClassNames={head} titleStyle={{color:"#fff"}} showBack={true} >
             <Captcha ref={captcha}/>

@@ -91,7 +91,9 @@ export default () => {
                     }}>
                         通知设置
                     </List.Item>
-                    <List.Item className={item} prefix={<Icon type={Admin} className={ic6}/>} onClick={() => {}}>
+                    <List.Item className={item} prefix={<Icon type={Admin} className={ic6}/>} onClick={() => {
+                        historyPush("admin.set.domain")
+                    }}>
                         域名设置
                     </List.Item>
                 </List>

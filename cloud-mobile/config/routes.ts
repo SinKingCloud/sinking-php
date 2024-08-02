@@ -177,6 +177,24 @@ export const admin = [
                 component: "@/pages/admin/set/ui",
                 title: "界面设置",
                 name: "admin.set.ui",
+            },
+            {
+                path: "contact",
+                component: "@/pages/admin/set/contact",
+                title: "客服设置",
+                name: "admin.set.contact",
+            },
+            {
+                path: "notice",
+                component: "@/pages/admin/set/notice",
+                title: "通知设置",
+                name: "admin.set.notice",
+            },
+            {
+                path: "domain",
+                component: "@/pages/admin/set/domain",
+                title: "域名设置",
+                name: "admin.set.domain",
             }
         ]
     },

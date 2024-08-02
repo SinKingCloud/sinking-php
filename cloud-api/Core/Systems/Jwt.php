@@ -14,6 +14,7 @@ class Jwt
     private static $header = array(
         'alg' => 'md5', //生成signature的算法
     );
+
     /**
      * 获取加密key
      *
@@ -24,6 +25,7 @@ class Jwt
         $conf = Config::get('jwt');
         return $conf['key'];
     }
+
     /**
      * 获取过期时间
      *
@@ -34,6 +36,7 @@ class Jwt
         $conf = Config::get('jwt');
         return time() + $conf['expire_time'];
     }
+
     /**
      * 获取jwt token
      * @param array $payload jwt载荷   格式如下非必须
@@ -62,6 +65,7 @@ class Jwt
             return false;
         }
     }
+
     /**
      * 验证token是否有效,默认验证exp,nbf,iat时间
      * @param string $Token 需要验证的token
@@ -89,6 +93,7 @@ class Jwt
         if (isset($payload['nbf']) && $payload['nbf'] > time()) return false;
         return $payload;
     }
+
     /**
      * base64UrlEncode   https://jwt.io/  中base64UrlEncode编码实现
      * @param string $input 需要编码的字符串
@@ -98,6 +103,7 @@ class Jwt
     {
         return str_replace('=', '', strtr(base64_encode($input), '+/', '-_'));
     }
+
     /**
      * base64UrlEncode  https://jwt.io/  中base64UrlEncode解码实现
      * @param string $input 需要解码的字符串
@@ -112,14 +118,15 @@ class Jwt
         }
         return base64_decode(strtr($input, '-_', '+/'));
     }
+
     /**
      * HMACSHA256签名   https://jwt.io/  中HMACSHA256签名实现
      * @param string $input 为base64UrlEncode(header).".".base64UrlEncode(payload)
      * @param string $key
-     * @param string $alg   算法方式
+     * @param string $alg 算法方式
      * @return mixed
      */
-    private static function signature($input,  $key, $alg = 'SHA256')
+    private static function signature($input, $key, $alg = 'SHA256')
     {
         return self::base64UrlEncode(hash_hmac($alg, $input, $key, true));
     }

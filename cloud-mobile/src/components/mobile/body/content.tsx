@@ -5,6 +5,7 @@ import React from "react";
 import {createStyles} from "antd-style";
 import zhCN from "antd-mobile/es/locales/zh-CN";
 import {Space, Spin} from "antd";
+import {useLocation} from "umi";
 
 const useStyles = createStyles(({token, isDarkMode}): any => {
     return {
@@ -65,7 +66,7 @@ const Content: React.FC<BodyProps> = (props: any) => {
     const back = () => {
         window?.history?.back();
     }
-
+    const location = useLocation()
     const {
         onBack = back,
         title = undefined,
@@ -96,7 +97,7 @@ const Content: React.FC<BodyProps> = (props: any) => {
         </NavBar>}
         <div className={body + " " + bodyClassNames} style={bodyStyle}>
             {(loading && <Spin spinning={true} size="large" className={load}/>) || <>
-                <Animation animate={animate ? Animate.FadeUp : Animate.None}>
+                <Animation animate={animate ? Animate.FadeUp : Animate.None} style={{height:location.pathname == "/user/list" ? "calc(100% - 45px)" : "auto"}}>
                     {(space && <Space direction="vertical" size="small" className={gutter}>
                         {children}
                     </Space>) || children}
@@ -105,5 +106,4 @@ const Content: React.FC<BodyProps> = (props: any) => {
         </div>
     </ConfigProvider>;
 };
-
 export default Content

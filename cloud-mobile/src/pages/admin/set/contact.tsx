@@ -77,7 +77,7 @@ export default () => {
                 });
             },
         });
-    }
+    };
     /**
      * 提交表单
      */
@@ -111,7 +111,7 @@ export default () => {
             });
             return
         }
-        setBtnLoading(true)
+        setBtnLoading(true);
         await setContact({
             body: {
                 ...values
@@ -138,7 +138,7 @@ export default () => {
         setPageLoading(true);
         getConfigs().finally(()=>{
             setPageLoading(false);
-        })
+        });
     }, []);
     return (
         <Body title="客服设置" titleStyle={{color:"#fff"}} loading={pageLoading} headClassNames={head}>

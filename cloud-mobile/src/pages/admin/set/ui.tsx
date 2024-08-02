@@ -6,7 +6,6 @@ import {useModel} from "umi";
 import {getUi, setUi} from "@/service/admin/set";
 import {ColorPicker} from "antd";
 import {NamePath} from "rc-field-form/es/interface";
-import {ImageUploadItem} from "antd-mobile/es/components/image-uploader";
 import {uploadFile} from "@/service/common/upload";
 const useStyles = createStyles(({token}):any=>{
     return{
@@ -45,7 +44,7 @@ export default ()=>{
     const {styles:{head,sel,btn,btn1,body}} = useStyles();
     const [isLoading, setIsLoading] = useState(true);
     const [form] = Form.useForm();
-    const web = useModel("web")
+    const web = useModel("web");
     /**
      * 初始化表单值
      */
@@ -66,16 +65,16 @@ export default ()=>{
     /**
      * 上传头像
      */
-    const [logo,setLogo] = useState()
+    const [logo,setLogo] = useState();
     const mockUpload = async (file: File) => {
         if (file.size > 1024 * 1024 * 10) {
             Toast.show('请选择小于 10M 的图片');
             return null
-        }
+        };
         const formData = new FormData();
         formData.append('file', file);
         const res = await uploadFile(formData);
-        setLogo(res?.data)
+        setLogo(res?.data);
         if (res?.code != 200) {
             return undefined
         }
@@ -86,11 +85,11 @@ export default ()=>{
      * @param values
      */
     const [btnLoading,setBtnLoading] = useState(false);
-    const [index,setIndex] = useState<any>()
-    const [compact,setCompact] = useState<any>()
-    const [layout,setLayout] = useState<any>()
-    const [theme,setTheme] = useState<any>()
-    const [watermark,setWatermark] = useState<any>()
+    const [index,setIndex] = useState<any>();
+    const [compact,setCompact] = useState<any>();
+    const [layout,setLayout] = useState<any>();
+    const [theme,setTheme] = useState<any>();
+    const [watermark,setWatermark] = useState<any>();
     const onFinish = async (values: any) => {
         if(!values["ui.index"]){
             Toast?.show({
@@ -136,7 +135,7 @@ export default ()=>{
             "ui.watermark": watermark,
             "ui.logo": logo,
         };
-        setBtnLoading(true)
+        setBtnLoading(true);
         await setUi({
             body: updatedValues,
             onSuccess: (r: any) => {
@@ -150,17 +149,17 @@ export default ()=>{
                 Toast?.show({
                     content:r?.message || "修改失败",
                     position:"top"
-                })
+                });
             },
             onFinally:()=>{
-                setBtnLoading(false)
+                setBtnLoading(false);
             }
         });
     };
     useEffect(() => {
-        setIsLoading(true)
+        setIsLoading(true);
         getConfigs().finally(()=>{
-            setIsLoading(false)
+            setIsLoading(false);
         });
     }, []);
     return(

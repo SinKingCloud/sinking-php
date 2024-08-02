@@ -73,7 +73,7 @@ export default () => {
                 setCountData(r?.data);
             },
             onFinally: () => {
-                setCountLoading(false)
+                setCountLoading(false);
             }
         });
     };
@@ -137,7 +137,7 @@ export default () => {
             onSuccess: (r: any) => {
                 temp.topUser = r?.data;
             }
-        })
+        });
         await getTopWeb({
             body: {
                 type: type,
@@ -149,7 +149,7 @@ export default () => {
             onSuccess: (r: any) => {
                 temp.topOrder = r?.data;
             }
-        })
+        });
         setChartData(temp);
         setChartLoading(false);
     };
@@ -199,7 +199,7 @@ export default () => {
     };
     const [pageLoading, setPageLoading] = useState(false);
     useEffect(() => {
-        setPageLoading(true)
+        setPageLoading(true);
         getNotice2Data().finally(() => {
             getGenCount().finally(() => {
                 getToDoData().finally(() => {

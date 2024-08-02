@@ -195,7 +195,7 @@ export default () => {
     };
     const [pageLoading,setPageLoading] = useState(true);
     useEffect(() => {
-        setPageLoading(true)
+        setPageLoading(true);
         getConfigs().finally(()=>{
             getMyPrice().finally(()=>{
                 setPageLoading(false);

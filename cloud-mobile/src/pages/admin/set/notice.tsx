@@ -76,7 +76,7 @@ export default () => {
                 });
             },
         });
-    }
+    };
     /**
      * 提交表单
      */
@@ -100,16 +100,16 @@ export default () => {
                 });
             },
             onFinally:()=>{
-                setBtnLoading(false)
+                setBtnLoading(false);
             }
         });
-    }
-    const [pageLoading,setPageLoading] = useState(true)
+    };
+    const [pageLoading,setPageLoading] = useState(true);
     useEffect(() => {
-        setPageLoading(true)
+        setPageLoading(true);
         getConfigs().finally(()=>{
-            setPageLoading(false)
-        })
+            setPageLoading(false);
+        });
     }, []);
     return (
         <Body title="公告设置" titleStyle={{color:"#fff"}} loading={pageLoading} headClassNames={head}>

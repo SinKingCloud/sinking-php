@@ -124,15 +124,15 @@ export default () => {
      */
     const handle = (val:any)=>{
         if(val?.key == "add"){
-            setAddOpen(true)
-            setVisible(false)
+            setAddOpen(true);
+            setVisible(false);
         }
         if(val?.key == "delete"){
             Modal?.show({
                 content: '人在天边月上明',
-            })
+            });
         }
-    }
+    };
     const [pageLoading,setPageLoading] = useState(true);
     useEffect(() => {
         setPageLoading(true);

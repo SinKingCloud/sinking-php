@@ -202,7 +202,8 @@ export default (): React.ReactNode => {
                 }/>
             </Modal>
             <Row>
-                <Col xs={{span: 24, offset: 0}} md={{span: 18, offset: 3}} lg={{span: 16, offset: 4}} xl={{span: 12, offset: 6}}>
+                <Col xs={{span: 24, offset: 0}} md={{span: 18, offset: 3}} lg={{span: 16, offset: 4}}
+                     xl={{span: 12, offset: 6}}>
                     <Card title={<Title>账户设置</Title>} bordered>
                         <Row>
                             <Col lg={12} style={{textAlign: "center", margin: "0px auto 20px auto", width: "100%"}}>
@@ -232,34 +233,35 @@ export default (): React.ReactNode => {
                                                         return false;
                                                     }
                                                     return isJpgOrPng && isLt2M;
-                                                }} onChange={async (info: any) => {
-                                            if (info.file.status == "uploading") {
-                                                setIsUploadAvatarLoading(true);
-                                            } else if (info.file.status === 'done') {
-                                                const url = info.file.response.data;
-                                                if (url != undefined && url != "") {
-                                                    await updateInfo({
-                                                        body: {
-                                                            avatar: url
-                                                        },
-                                                        onSuccess: (r: any) => {
-                                                            message?.success(r?.message)
-                                                            user?.refreshWebUser();
-                                                        },
-                                                        onFail: (r: any) => {
-                                                            message?.error(r?.message || "请求失败");
-                                                        }, onFinally: () => {
+                                                }}
+                                                onChange={async (info: any) => {
+                                                    if (info.file.status == "uploading") {
+                                                        setIsUploadAvatarLoading(true);
+                                                    } else if (info.file.status === 'done') {
+                                                        const url = info.file.response.data;
+                                                        if (url != undefined && url != "") {
+                                                            await updateInfo({
+                                                                body: {
+                                                                    avatar: url
+                                                                },
+                                                                onSuccess: (r: any) => {
+                                                                    message?.success(r?.message)
+                                                                    user?.refreshWebUser();
+                                                                },
+                                                                onFail: (r: any) => {
+                                                                    message?.error(r?.message || "请求失败");
+                                                                }, onFinally: () => {
+                                                                    setIsUploadAvatarLoading(false);
+                                                                }
+                                                            })
+                                                        } else {
                                                             setIsUploadAvatarLoading(false);
                                                         }
-                                                    })
-                                                } else {
-                                                    setIsUploadAvatarLoading(false);
-                                                }
-                                            } else if (info.file.status === 'error') {
-                                                setIsUploadAvatarLoading(false);
-                                                message?.error(`文件上传失败`);
-                                            }
-                                        }}>
+                                                    } else if (info.file.status === 'error') {
+                                                        setIsUploadAvatarLoading(false);
+                                                        message?.error(`文件上传失败`);
+                                                    }
+                                                }}>
                                             <Button loading={isUploadAvatarLoading}>
                                                 <UploadOutlined/> 上传头像
                                             </Button>

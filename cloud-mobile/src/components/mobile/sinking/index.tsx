@@ -22,15 +22,17 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
             max-width: 500px;
             margin: 0 auto;
             box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.13);
+            touch-action: none !important;
 
             ${responsive.mobile} {
                 max-width: none;
             }
-            
-            .adm-mask{
+
+            .adm-mask {
                 max-width: 500px !important;
                 width: 100%;
                 left: initial !important;
+                -webkit-backdrop-filter: blur(5px);
             }
 
             .adm-popup {
@@ -43,6 +45,10 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
                 width: 100%;
                 left: initial !important;
                 box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.2);
+            }
+
+            .adm-picker-view-column-wheel {
+                touch-action: none !important;
             }
         `,
         body: {
@@ -116,8 +122,7 @@ const SkLayout: React.FC<MobileProps> = (props: any) => {
         <AntdConfigProvider locale={antdZhCN}>
             <App>
                 <div className={container}>
-                    <div ref={VirtualRef}/>
-                    <div className={body + " " + bodyClassName} style={bodyStyle}>
+                    <div className={body + " " + bodyClassName} style={bodyStyle} ref={VirtualRef}>
                         <Outlet/>
                     </div>
                     {showTabBar && (tabBar?.length || 0) > 0 && <div className={tab}>

@@ -52,7 +52,10 @@ export default () => {
                     onIndexChange={index => {
                         setActiveIndex(index)
                     }}
-                >
+                    style={{
+                        width:"100%",
+                        height:"70vh"
+                    }}>
                     <Swiper.Item>
                         <div className={content}>tab1</div>
                     </Swiper.Item>

@@ -47,11 +47,7 @@ export default function () {
         return getCurrentPath(location?.pathname) == '/index';
     }
     const initUser = () => {
-        if (isIndex()) {
-            return;
-        }
-        if (getLoginToken() == "") {
-            historyPush("login");
+        if (isIndex() || getLoginToken() == "") {
             return;
         }
         user?.getWebUser()?.then((u: any) => {

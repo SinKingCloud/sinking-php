@@ -77,7 +77,7 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
         },
         icon: {
             ".adm-list-item-content-arrow": {
-                fontSize: "15px",
+                fontSize: "10px",
                 color: isDarkMode ? "#b3b3b3" : "rgba(0,0,0,0.7)"
             },
             ".adm-list-item-description": {

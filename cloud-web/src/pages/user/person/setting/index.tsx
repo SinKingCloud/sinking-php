@@ -203,7 +203,7 @@ export default (): React.ReactNode => {
             </Modal>
             <Row>
                 <Col xs={{span: 24, offset: 0}} md={{span: 18, offset: 3}} lg={{span: 16, offset: 4}}
-                     xl={{span: 12, offset: 6}}>
+                     xl={{span: 14, offset: 6}}>
                     <Card title={<Title>账户设置</Title>} bordered>
                         <Row>
                             <Col lg={12} style={{textAlign: "center", margin: "0px auto 20px auto", width: "100%"}}>

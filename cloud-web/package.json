@@ -2,7 +2,7 @@
   "private": true,
   "author": "",
   "scripts": {
-    "dev": "umi dev",
+    "dev": "PORT=9002 umi dev",
     "build": "umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",

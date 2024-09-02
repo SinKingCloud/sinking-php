@@ -14,7 +14,7 @@ import {
 } from "antd-mobile";
 import {Title, VirtualRef} from "@/components";
 import dayjs from "dayjs";
-import type {FormInstance, NamePath} from "rc-field-form/es/interface";
+import type {FormInstance} from "rc-field-form/es/interface";
 
 const useStyles = createStyles(({isDarkMode}): any => {
     return {

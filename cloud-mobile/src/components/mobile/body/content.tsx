@@ -5,7 +5,6 @@ import React from "react";
 import {createStyles} from "antd-style";
 import zhCN from "antd-mobile/es/locales/zh-CN";
 import {Space, Spin} from "antd";
-import {useLocation} from "umi";
 
 const useStyles = createStyles(({token, isDarkMode}): any => {
     return {
@@ -21,7 +20,7 @@ const useStyles = createStyles(({token, isDarkMode}): any => {
             flex: 1,
             ".adm-list-item-content": {
                 borderTop: isDarkMode ? `0.5px solid rgb(46, 46, 46) !important` : `0.5px solid rgb(233, 233, 233) !important`
-            }
+            },
         },
         title2: {
             fontSize: "15px",
@@ -66,7 +65,6 @@ const Content: React.FC<BodyProps> = (props: any) => {
     const back = () => {
         window?.history?.back();
     }
-    const location = useLocation()
     const {
         onBack = back,
         title = undefined,
@@ -97,7 +95,7 @@ const Content: React.FC<BodyProps> = (props: any) => {
         </NavBar>}
         <div className={body + " " + bodyClassNames} style={bodyStyle}>
             {(loading && <Spin spinning={true} size="large" className={load}/>) || <>
-                <Animation animate={animate ? Animate.FadeUp : Animate.None} style={{height:location.pathname == "/user/list" ? "calc(100% - 45px)" : "auto"}}>
+                <Animation animate={animate ? Animate.FadeUp : Animate.None}>
                     {(space && <Space direction="vertical" size="small" className={gutter}>
                         {children}
                     </Space>) || children}

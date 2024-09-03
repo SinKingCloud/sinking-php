@@ -16,8 +16,18 @@ import {Title, VirtualRef} from "@/components";
 import dayjs from "dayjs";
 import type {FormInstance} from "rc-field-form/es/interface";
 
-const useStyles = createStyles(({isDarkMode}): any => {
+const useStyles = createStyles(({css, isDarkMode, responsive}): any => {
     return {
+        body: {
+            ".adm-pull-to-refresh": {
+                touchAction: "none",
+            },
+            [responsive.mobile]: {
+                ".adm-pull-to-refresh": {
+                    touchAction: "auto",
+                },
+            }
+        },
         popup: {
             ".adm-card": {
                 background: "transparent !important",
@@ -106,7 +116,7 @@ const ProList = React.forwardRef<ProListRef, ProListProps>((props, ref) => {
             formFields,
             formDefaultValues
         } = props;
-        const {styles: {popup, mask}} = useStyles();
+        const {styles: {body, popup, mask}} = useStyles();
         /**
          * 筛选弹出层
          */
@@ -193,7 +203,7 @@ const ProList = React.forwardRef<ProListRef, ProListProps>((props, ref) => {
         }));
 
         return (
-            <>
+            <div className={body}>
                 <Popup
                     getContainer={VirtualRef?.current}
                     forceRender={true}
@@ -252,7 +262,6 @@ const ProList = React.forwardRef<ProListRef, ProListProps>((props, ref) => {
                                     {dom}
                                 </Form.Item>;
                             }))}
-
                         </Form>
                     </Card>
                 </Popup>
@@ -267,7 +276,7 @@ const ProList = React.forwardRef<ProListRef, ProListProps>((props, ref) => {
                     {!loading && !hasMore && <div> 没有更多了</div>}
                     {!loading && hasMore && <div> 上拉加载更多</div>}
                 </InfiniteScroll>}
-            </>
+            </div>
         )
     }
 )

@@ -32,7 +32,7 @@ const useStyles = createStyles(({token, isDarkMode, css, responsive}): any => {
                 max-width: 500px !important;
                 width: 100%;
                 left: initial !important;
-                -webkit-backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(3px);
             }
 
             .adm-popup {

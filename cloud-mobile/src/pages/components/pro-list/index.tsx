@@ -84,9 +84,6 @@ const useStyles = createStyles(({css, isDarkMode, responsive}): any => {
                 padding: "0 15px"
             }
         },
-        mask: {
-            backdropFilter: "blur(5px) !important",
-        }
     }
 });
 
@@ -116,7 +113,7 @@ const ProList = React.forwardRef<ProListRef, ProListProps>((props, ref) => {
             formFields,
             formDefaultValues
         } = props;
-        const {styles: {body, popup, mask}} = useStyles();
+        const {styles: {body, popup}} = useStyles();
         /**
          * 筛选弹出层
          */
@@ -210,7 +207,6 @@ const ProList = React.forwardRef<ProListRef, ProListProps>((props, ref) => {
                     visible={searchVisible}
                     onMaskClick={closeSearch}
                     onClose={closeSearch}
-                    maskClassName={mask}
                     position={"bottom"}
                     closeOnSwipe={true} className={popup}>
                     <Card

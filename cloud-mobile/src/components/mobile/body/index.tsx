@@ -1,9 +1,18 @@
 import React from "react";
 import Theme from "@/components/theme";
 import Content from "./content";
-import {Toast, ToastShowProps} from "antd-mobile";
+import {
+    ActionSheet,
+    ActionSheetProps,
+    Dialog,
+    DialogAlertProps,
+    DialogConfirmProps,
+    DialogProps, Modal, ModalAlertProps, ModalConfirmProps, ModalShowProps,
+    Toast,
+    ToastShowProps
+} from "antd-mobile";
 import {createStyles} from "antd-style";
-import {Animate} from "@/components/animation";
+import {VirtualRef} from "@/components";
 
 export type BodyProps = {
     onBack?: () => void, //返回按钮的事件
@@ -27,10 +36,19 @@ export type BodyProps = {
 
 export interface BodyRef {
     showToast?: (params: ToastShowProps, animate?: boolean) => any;//toast提示
+    showActions?: (params: ActionSheetProps) => any;//action提示
     clearToast?: () => void;//清理toast提示
+    showDialog?: (params: DialogProps) => any;//dialog提示
+    showDialogAlert?: (params: DialogAlertProps) => any;//dialog alert提示
+    showDialogConfirm?: (params: DialogConfirmProps) => any;//dialog confirm提示
+    clearDialog?: () => void;//清理dialog提示
+    showModal?: (params: ModalShowProps) => any;//modal提示
+    showModalAlert?: (params: ModalAlertProps) => any;//modal alert提示
+    showModalConfirm?: (params: ModalConfirmProps) => any;//modal confirm提示
+    clearModal?: () => void;//清理modal提示
 }
 
-const useStyles = createStyles(({css, isDarkMode, responsive}): any => {
+const useStyles = createStyles(({css}): any => {
     return {
         toast: css`
             @keyframes fadeInUp200px {
@@ -79,11 +97,97 @@ const Body = React.forwardRef<BodyRef, BodyProps>((props, ref) => {
     }
 
     /**
+     * 显示action
+     * @param params
+     */
+    const showActions = (params: ActionSheetProps) => {
+        params.getContainer = VirtualRef?.current;
+        return ActionSheet?.show(params);
+    }
+
+    /**
+     * 显示Dialog
+     * @param params
+     */
+    const showDialog = (params: DialogProps) => {
+        params.getContainer = VirtualRef?.current;
+        return Dialog?.show(params);
+    }
+
+    /**
+     * dialog提示
+     * @param params
+     */
+    const showDialogAlert = (params: DialogAlertProps) => {
+        params.getContainer = VirtualRef?.current;
+        return Dialog?.alert(params);
+    }
+
+    /**
+     * dialog对话框
+     * @param params
+     */
+    const showDialogConfirm = (params: DialogConfirmProps) => {
+        params.getContainer = VirtualRef?.current;
+        return Dialog?.confirm(params);
+    }
+
+    /**
+     * 清理dialog提示
+     */
+    const clearDialog = () => {
+        Dialog?.clear();
+    }
+
+    /**
+     * 显示Modal
+     * @param params
+     */
+    const showModal = (params: ModalShowProps) => {
+        params.getContainer = VirtualRef?.current;
+        return Dialog?.show(params);
+    }
+
+    /**
+     * Modal提示
+     * @param params
+     */
+    const showModalAlert = (params: ModalAlertProps) => {
+        params.getContainer = VirtualRef?.current;
+        return Modal?.alert(params);
+    }
+
+    /**
+     * Modal对话框
+     * @param params
+     */
+    const showModalConfirm = (params: ModalConfirmProps) => {
+        params.getContainer = VirtualRef?.current;
+        return Modal?.confirm(params);
+    }
+
+    /**
+     * 清理Modal提示
+     */
+    const clearModal = () => {
+        Modal?.clear();
+    }
+
+    /**
      * 注册方法
      */
     React.useImperativeHandle(ref, () => ({
-        showToast: showToast,
-        clearToast: clearToast,
+        showToast,
+        clearToast,
+        showActions,
+        showDialog,
+        showDialogAlert,
+        showDialogConfirm,
+        clearDialog,
+        showModal,
+        showModalAlert,
+        showModalConfirm,
+        clearModal
     }));
 
     /**

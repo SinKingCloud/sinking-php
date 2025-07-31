@@ -26,7 +26,6 @@ class Job extends Command
      */
     public function producer($data = array(), $retry = 3, $delay = 0)
     {
-        $config = Config::get();
         $temp = array(
             'id' => Util::getUuid(), //任务ID
             'name' => $this->name, //任务名称
@@ -113,12 +112,11 @@ class Job extends Command
     private function getJob($num = 200)
     {
         //使用并发锁，避免进程冲突
-        $res = 0;
         $obj = &$this;
         $file = $this->getJobFile();
         $txts = array();
         $bottom = false;
-        Cache::lock(__CLASS__ . __FUNCTION__ . $this->name, function () use (&$obj, &$file, &$res, &$num, &$txts, &$bottom) {
+        Cache::lock(__CLASS__ . __FUNCTION__ . $this->name, function () use (&$obj, &$file, &$num, &$txts, &$bottom) {
             $index = $obj->getJobIndex(); //获取行数
             $index = $index <= 1 ? 1 : $index;
             $d = $obj->getFileLines($file, $index, $num);

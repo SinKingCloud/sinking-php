@@ -170,7 +170,7 @@ class Job extends Command
      * @param integer $lines 截取行数
      * @return void
      */
-    public function getFileLines($filename, $start_line = 1, $lines = 1)
+    private function getFileLines($filename, $start_line = 1, $lines = 1)
     {
         $content = array();
         $fp = new \SplFileObject($filename, 'rb');
@@ -206,7 +206,7 @@ class Job extends Command
      *
      * @return void
      */
-    public function getJobIndex()
+    private function getJobIndex()
     {
         $config = Config::get();
         $file = $config['cache_dir'] . '/Job/Index_' . $this->name . '.php';
@@ -219,7 +219,7 @@ class Job extends Command
      * @param integer $index 下标
      * @return void
      */
-    public function setJobIndex($index = 0)
+    private function setJobIndex($index = 0)
     {
         $config = Config::get();
         $file = $config['cache_dir'] . '/Job/Index_' . $this->name . '.php';
